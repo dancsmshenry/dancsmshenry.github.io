@@ -338,11 +338,70 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             </div>
             <div class="tag-chips">
                 
+                
+                <a href="/tags/C/" title="C++: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="C++" style="background-color: #F9EBEA;">C++
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Algorithm/" title="Algorithm: 2">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Algorithm" style="background-color: #F5EEF8;">Algorithm
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Binary-Tree/" title="Binary Tree: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Binary Tree" style="background-color: #D5F5E3;">Binary Tree
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/tags/Dynamic-Programming/" title="Dynamic Programming: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="Dynamic Programming" style="background-color: #E8F8F5;">Dynamic Programming
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
             </div>
         </div>
     </div>
 </div>
 
+    
+    <link rel="stylesheet" type="text/css" href="/libs/jqcloud/jqcloud.css">
+<style type="text/css">
+    #tag-wordcloud {
+        width: 100%;
+        height: 300px;
+    }
+</style>
+
+<div class="container" data-aos="fade-up">
+    <div class="card">
+        <div id="tag-wordcloud" class="card-content"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/libs/jqcloud/jqcloud-1.0.4.min.js"></script>
+<script type="text/javascript">
+    
+
+    $('#tag-wordcloud').jQCloud([{"text":"C++","weight":2,"link":"/tags/C/"},{"text":"Algorithm","weight":2,"link":"/tags/Algorithm/"},{"text":"Binary Tree","weight":1,"link":"/tags/Binary-Tree/"},{"text":"Dynamic Programming","weight":1,"link":"/tags/Dynamic-Programming/"}], {
+        autoResize: true
+    });
+</script>
     
 
 </main>
@@ -350,11 +409,11 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2017-2020 WeiYang. 版权所有
+            &copy; 2019-2022 dancsmshenry. 版权所有
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">7.9k</span>
+            <span class="white-color">12.4k</span>
             
 
             <br>
@@ -412,7 +471,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     });
 </script>
 
-<script language=javascript>
+<!-- <script language=javascript>
     function siteTime() {
         window.setTimeout("siteTime()", 1000);
         var seconds = 1000;
@@ -446,7 +505,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
     }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
     siteTime();
-</script>
+</script> -->
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">

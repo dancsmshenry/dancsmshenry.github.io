@@ -1,1 +1,2 @@
-http://example.com/2022/10/07/dynamic-progming/
+http://example.com/2022/10/07/binary-tree/
+http://example.com/2022/10/07/dynamic-programming/
