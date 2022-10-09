@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-10-07T03:39:55.931Z</updated>
+  <updated>2022-10-09T14:52:05.571Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Binary Tree</title>
-    <link href="http://example.com/2022/10/07/binary-tree/"/>
-    <id>http://example.com/2022/10/07/binary-tree/</id>
-    <published>2022-10-07T03:39:06.000Z</published>
-    <updated>2022-10-07T03:39:55.931Z</updated>
+    <title>Deep into Sort</title>
+    <link href="http://example.com/2022/10/09/deep-into-sort/"/>
+    <id>http://example.com/2022/10/09/deep-into-sort/</id>
+    <published>2022-10-09T14:40:33.000Z</published>
+    <updated>2022-10-09T14:52:05.571Z</updated>
     
     <summary type="html">
     
@@ -29,46 +29,16 @@
       
         
         
-          &lt;h1 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h1&gt;&lt;h2 id=&quot;二叉树的基本性质&quot;&gt;&lt;a href=&quot;#二叉树的基本性质&quot; class=&quot;headerlink&quot;
+          &lt;h1 id=&quot;QuickSort&quot;&gt;&lt;a href=&quot;#QuickSort&quot; class=&quot;headerlink&quot; title=&quot;QuickSort&quot;&gt;&lt;/a&gt;QuickSort&lt;/h1&gt;&lt;h2 id=&quot;代码实现&quot;&gt;&lt;a href=&quot;#代码实现&quot;
         
       
     
     </summary>
     
     
-      <category term="C++" scheme="http://example.com/tags/C/"/>
-    
       <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
     
-      <category term="Binary Tree" scheme="http://example.com/tags/Binary-Tree/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Dynamic Programming</title>
-    <link href="http://example.com/2022/10/07/dynamic-programming/"/>
-    <id>http://example.com/2022/10/07/dynamic-programming/</id>
-    <published>2022-10-07T03:31:57.000Z</published>
-    <updated>2022-10-07T03:39:43.553Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;目录&quot;&gt;&lt;a href=&quot;#目录&quot; class=&quot;headerlink&quot; title=&quot;目录&quot;&gt;&lt;/a&gt;目录&lt;/h1&gt;&lt;h2 id=&quot;Path-Problem&quot;&gt;&lt;a href=&quot;#Path-Problem&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="C++" scheme="http://example.com/tags/C/"/>
-    
-      <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
-    
-      <category term="Dynamic Programming" scheme="http://example.com/tags/Dynamic-Programming/"/>
+      <category term="Sort" scheme="http://example.com/tags/Sort/"/>
     
   </entry>
   

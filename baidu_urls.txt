@@ -1,2 +1,1 @@
-http://example.com/2022/10/07/binary-tree/
-http://example.com/2022/10/07/dynamic-programming/
+http://example.com/2022/10/09/deep-into-sort/

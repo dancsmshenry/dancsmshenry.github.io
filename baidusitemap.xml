@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://example.com/2022/10/07/binary-tree/</loc>
-    <lastmod>2022-10-07</lastmod>
-  </url>  <url>
-    <loc>http://example.com/2022/10/07/dynamic-programming/</loc>
-    <lastmod>2022-10-07</lastmod>
+    <loc>http://example.com/2022/10/09/deep-into-sort/</loc>
+    <lastmod>2022-10-09</lastmod>
   </url>
 </urlset>
