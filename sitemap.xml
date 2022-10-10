@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/10/10/deep-into-binarytree/</loc>
+    
+    <lastmod>2022-10-10T02:47:43.200Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/10/09/deep-into-sort/</loc>
     
-    <lastmod>2022-10-09T17:38:07.034Z</lastmod>
+    <lastmod>2022-10-10T01:28:27.771Z</lastmod>
     
   </url>
   
@@ -30,6 +37,13 @@
   </url>
   
   <url>
+    <loc>http://example.com/archives/index.html</loc>
+    
+    <lastmod>2022-10-06T16:37:29.873Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/about/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
@@ -38,13 +52,6 @@
   
   <url>
     <loc>http://example.com/categories/index.html</loc>
-    
-    <lastmod>2022-10-06T16:37:29.873Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     

@@ -1,1 +1,2 @@
+http://example.com/2022/10/10/deep-into-binarytree/
 http://example.com/2022/10/09/deep-into-sort/

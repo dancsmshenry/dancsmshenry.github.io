@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-10-09T17:38:07.034Z</updated>
+  <updated>2022-10-10T02:47:43.200Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Deep into BinaryTree</title>
+    <link href="http://example.com/2022/10/10/deep-into-binarytree/"/>
+    <id>http://example.com/2022/10/10/deep-into-binarytree/</id>
+    <published>2022-10-10T01:31:17.000Z</published>
+    <updated>2022-10-10T02:47:43.200Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;二叉树的基本性质&quot;&gt;&lt;a href=&quot;#二叉树的基本性质&quot; class=&quot;headerlink&quot; title=&quot;二叉树的基本性质&quot;&gt;&lt;/a&gt;二叉树的基本性质&lt;/h1&gt;&lt;h2 id=&quot;思路&quot;&gt;&lt;a href=&quot;#思路&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
+    
+      <category term="BinaryTree" scheme="http://example.com/tags/BinaryTree/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Deep into Sort</title>
     <link href="http://example.com/2022/10/09/deep-into-sort/"/>
     <id>http://example.com/2022/10/09/deep-into-sort/</id>
     <published>2022-10-09T14:40:33.000Z</published>
-    <updated>2022-10-09T17:38:07.034Z</updated>
+    <updated>2022-10-10T01:28:27.771Z</updated>
     
     <summary type="html">
     
