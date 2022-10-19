@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-10-10T02:47:43.200Z</updated>
+  <updated>2022-10-10T04:57:34.479Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Deep into DynamicProgming</title>
+    <link href="http://example.com/2022/10/10/deep-into-dynamicprogming/"/>
+    <id>http://example.com/2022/10/10/deep-into-dynamicprogming/</id>
+    <published>2022-10-10T04:35:33.000Z</published>
+    <updated>2022-10-10T04:57:34.479Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;路径问题（Path-Problem）&quot;&gt;&lt;a href=&quot;#路径问题（Path-Problem）&quot; class=&quot;headerlink&quot; title=&quot;路径问题（Path Problem）&quot;&gt;&lt;/a&gt;路径问题（Path Problem）&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
+    
+      <category term="DynamicProgming" scheme="http://example.com/tags/DynamicProgming/"/>
+    
+  </entry>
   
   <entry>
     <title>Deep into BinaryTree</title>
@@ -47,7 +73,7 @@
     <link href="http://example.com/2022/10/09/deep-into-sort/"/>
     <id>http://example.com/2022/10/09/deep-into-sort/</id>
     <published>2022-10-09T14:40:33.000Z</published>
-    <updated>2022-10-10T01:28:27.771Z</updated>
+    <updated>2022-10-12T04:42:34.397Z</updated>
     
     <summary type="html">
     
