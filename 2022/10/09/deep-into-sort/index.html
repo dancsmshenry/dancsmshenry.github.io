@@ -302,7 +302,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -474,10 +474,10 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <span class="token keyword">void</span> <span class="token function">quick_sort</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token operator">&amp;</span>arr<span class="token punctuation">,</span> <span class="token keyword">int</span> left<span class="token punctuation">,</span> <span class="token keyword">int</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token comment" spellcheck="true">/*当前只有一个数（或边界left>right）的时候，就不需要排序了*/</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>left <span class="token operator">>=</span> right<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-
+    
     <span class="token comment" spellcheck="true">/*选取位于最左边的数作为排序的标准，i从左边开始，j从右边开始*/</span>
     <span class="token keyword">int</span> temp <span class="token operator">=</span> arr<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">,</span> i <span class="token operator">=</span> left <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">,</span> j <span class="token operator">=</span> right <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// int temp = nums[rand() % (right - left) + left];    //    可以rand的选值</span>
+    <span class="token comment" spellcheck="true">// int temp = nums[rand() % (right - left) + left];	//	可以rand的选值</span>
     <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> j<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">/*从左边开始，寻找大于等于temp的数*/</span>
         <span class="token keyword">do</span> i <span class="token operator">++</span> <span class="token punctuation">;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;</span> temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -486,12 +486,13 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
         <span class="token comment" spellcheck="true">/*交换数字*/</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> j<span class="token punctuation">)</span> <span class="token function">swap</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-
+    
     <span class="token comment" spellcheck="true">/*对左边的部分进行快排*/</span>
     <span class="token function">quick_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">/*对右边的部分进行快排*/</span>
     <span class="token function">quick_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <p>1、一次完整的遍历后，<code>arr[j]</code>和<code>temp</code>的关系</p>
@@ -574,7 +575,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
     <span class="token function">quick_sort_stable</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> a<span class="token punctuation">,</span> s <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">quick_sort_stable</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> s <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>挖坑</strong>（问到的比较少；有点没看懂）</p>
 <br>
 
@@ -604,7 +606,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
             s<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="稳定性分析"><a href="#稳定性分析" class="headerlink" title="稳定性分析"></a>稳定性分析</h2><ul>
@@ -613,9 +616,9 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <br>
 
 <h2 id="时间复杂度分析"><a href="#时间复杂度分析" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><h3 id="最优的情况"><a href="#最优的情况" class="headerlink" title="最优的情况"></a>最优的情况</h3><ul>
-<li><p>每次都能刚好二分，即确认第一个数需要遍历n个数，确认第二个数需要遍历n/2个数，确认第三个数需要遍历n/4个数字</p>
+<li><p>每次都能刚好二分，即确认第一个数需要遍历n个数，确认第二个数需要遍历n&#x2F;2个数，确认第三个数需要遍历n&#x2F;4个数字</p>
 </li>
-<li><p><img src="/medias/Deep-into-Sort/%E5%BF%AB%E6%8E%92%E6%9C%80%E4%BC%98%E6%83%85%E5%86%B5.png" alt></p>
+<li><p><img src="/medias/Deep-into-Sort/%E5%BF%AB%E6%8E%92%E6%9C%80%E4%BC%98%E6%83%85%E5%86%B5.png"></p>
 </li>
 <li><p>总共有log2n层</p>
 </li>
@@ -666,7 +669,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
         <span class="token comment" spellcheck="true">/*没有发生数据交换，退出循环*/</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>check<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="稳定性分析-1"><a href="#稳定性分析-1" class="headerlink" title="稳定性分析"></a>稳定性分析</h2><ul>
@@ -702,7 +706,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
     <span class="token function">merge_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> left<span class="token punctuation">,</span> mid<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">/*对右边数据排序*/</span>
     <span class="token function">merge_sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
+    
     <span class="token comment" spellcheck="true">/*这里假设数据左右数据都排好序了，进行归并操作*/</span>
     <span class="token keyword">int</span> i <span class="token operator">=</span> left<span class="token punctuation">,</span> j <span class="token operator">=</span> mid <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
     <span class="token comment" spellcheck="true">/*
@@ -714,17 +718,18 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
     <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;=</span> mid <span class="token operator">&amp;&amp;</span> j <span class="token operator">&lt;=</span> right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment" spellcheck="true">/*哪一边的比较小，就放入哪一边的数*/</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;=</span> arr<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span> tmp<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i <span class="token operator">++</span> <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">//    如果这里把=归到else这里，那么就不是稳定排序了    </span>
+        <span class="token comment" spellcheck="true">//	如果这里把=归到else这里，那么就不是稳定排序了    </span>
         <span class="token keyword">else</span> tmp<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>j <span class="token operator">++</span> <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token comment" spellcheck="true">//    可能左边或右边的数没有全部放完，于是用while把数据全部放进去</span>
-       <span class="token comment" spellcheck="true">//    ps：左边和右边只可能有一边的数据没有完全放完</span>
+    <span class="token comment" spellcheck="true">//	可能左边或右边的数没有全部放完，于是用while把数据全部放进去</span>
+       <span class="token comment" spellcheck="true">//	ps：左边和右边只可能有一边的数据没有完全放完</span>
     <span class="token keyword">while</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;=</span> mid<span class="token punctuation">)</span> tmp<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i <span class="token operator">++</span> <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">while</span> <span class="token punctuation">(</span>j <span class="token operator">&lt;=</span> right<span class="token punctuation">)</span> tmp<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>j <span class="token operator">++</span> <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
+    
     <span class="token comment" spellcheck="true">/*把排好序的数据放回arr中*/</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> t<span class="token operator">:</span> tmp<span class="token punctuation">)</span> arr<span class="token punctuation">[</span>left <span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> t<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h3 id="自底向上"><a href="#自底向上" class="headerlink" title="自底向上"></a>自底向上</h3><ul>
@@ -743,8 +748,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
 <h2 id="时间复杂度分析-2"><a href="#时间复杂度分析-2" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><ul>
 <li>假设一开始有n个数，每次对半的整理排序</li>
-<li><img src="/medias/Deep-into-Sort/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%88%86%E6%9E%90.png" alt></li>
-<li>那每一层需要排序的时间就是n，而又已知T(1)=0，所以现在只要求解这颗二叉树的层数即可</li>
+<li><img src="/medias/Deep-into-Sort/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%88%86%E6%9E%90.png"></li>
+<li>那每一层需要排序的时间就是n，而又已知T(1)&#x3D;0，所以现在只要求解这颗二叉树的层数即可</li>
 <li>而二叉树的层数是log2n+1，去掉第一行就是log2n</li>
 <li>所以最好和最坏的时间复杂度都是O（nlogn）</li>
 </ul>
@@ -771,16 +776,16 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <li>对于一层中的最左边的结点i，他到最右边的结点之间是差了i的，参考2的n+1次方和2的n次方的关系，这里的i就相当于2的n次方，最后一个节点就相当于2的n+1次方</li>
 </ul>
 <p>对于大根堆，选择都是选择当前结点，两个子节点中三者的最大值作为父母结点</p>
-<p>一个完全二叉树的最后一个非叶子节点的下标是n / 2 - 1（数组是从0开始计数的）（<a href="https://blog.csdn.net/weixin_41558411/article/details/104950162" target="_blank" rel="noopener">证明过程</a>）</p>
+<p>一个完全二叉树的最后一个非叶子节点的下标是n &#x2F; 2 - 1（数组是从0开始计数的）（<a href="https://blog.csdn.net/weixin_41558411/article/details/104950162" target="_blank" rel="noopener">证明过程</a>）</p>
 <p>构建堆的时间复杂度是O(n)（<a href="https://blog.csdn.net/qq_52433890/article/details/121502538" target="_blank" rel="noopener">证明过程</a>）</p>
 <br>
 
-<h2 id="代码实现-3"><a href="#代码实现-3" class="headerlink" title="代码实现"></a>代码实现</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    构建大根堆</span>
+<h2 id="代码实现-3"><a href="#代码实现-3" class="headerlink" title="代码实现"></a>代码实现</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//	构建大根堆</span>
 <span class="token keyword">void</span> <span class="token function">create_heap</span><span class="token punctuation">(</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token operator">&amp;</span>arr<span class="token punctuation">,</span> <span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">int</span> l <span class="token operator">=</span> x <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> r <span class="token operator">=</span> x <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">;</span>
     <span class="token keyword">int</span> max <span class="token operator">=</span> x<span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">//    这里需要判断l和r是否小于n，因为是完全二叉树，有可能出现没有子节点的情况</span>
+    
+    <span class="token comment" spellcheck="true">//	这里需要判断l和r是否小于n，因为是完全二叉树，有可能出现没有子节点的情况</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>l <span class="token operator">&lt;</span> n <span class="token operator">&amp;&amp;</span> arr<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">></span> arr<span class="token punctuation">[</span>max<span class="token punctuation">]</span><span class="token punctuation">)</span> max <span class="token operator">=</span> l<span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>r <span class="token operator">&lt;</span> n <span class="token operator">&amp;&amp;</span> arr<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">></span> arr<span class="token punctuation">[</span>max<span class="token punctuation">]</span><span class="token punctuation">)</span> max <span class="token operator">=</span> r<span class="token punctuation">;</span>
 
@@ -790,21 +795,22 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">//    堆排序</span>
+<span class="token comment" spellcheck="true">//	堆排序</span>
 <span class="token keyword">void</span> <span class="token function">heap_sort</span><span class="token punctuation">(</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token operator">&amp;</span>arr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">//    构建大根堆（因为是完全二叉树，所以从n/2-1的位置开始构造）</span>
-    <span class="token comment" spellcheck="true">//    证明：设数组的长度为n，最后一个父母结点是从头开始数的第n/2-1的那个数（可以自己画一个图去求证）</span>
+    <span class="token comment" spellcheck="true">//	构建大根堆（因为是完全二叉树，所以从n/2-1的位置开始构造）</span>
+    <span class="token comment" spellcheck="true">//	证明：设数组的长度为n，最后一个父母结点是从头开始数的第n/2-1的那个数（可以自己画一个图去求证）</span>
     <span class="token keyword">int</span> n <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> n <span class="token operator">/</span> <span class="token number">2</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token function">create_heap</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> i<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-
-    <span class="token comment" spellcheck="true">//    每次将最大的元素放到最后，然后重新构建堆</span>
+    
+    <span class="token comment" spellcheck="true">//	每次将最大的元素放到最后，然后重新构建堆</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">--</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         std<span class="token operator">::</span><span class="token function">swap</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token function">create_heap</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="稳定性分析-3"><a href="#稳定性分析-3" class="headerlink" title="稳定性分析"></a>稳定性分析</h2><ul>
@@ -847,7 +853,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="稳定性分析-4"><a href="#稳定性分析-4" class="headerlink" title="稳定性分析"></a>稳定性分析</h2><ul>
@@ -891,7 +898,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
         <span class="token comment" spellcheck="true">/*交换到它应对的位置*/</span>
         std<span class="token operator">::</span><span class="token function">swap</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>record<span class="token punctuation">]</span><span class="token punctuation">,</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="稳定性分析-5"><a href="#稳定性分析-5" class="headerlink" title="稳定性分析"></a>稳定性分析</h2><ul>
@@ -930,7 +938,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
                 <span class="token punctuation">}</span>
             <span class="token punctuation">}</span>
     <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>increment <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="稳定性分析-6"><a href="#稳定性分析-6" class="headerlink" title="稳定性分析"></a>稳定性分析</h2><ul>
@@ -962,7 +971,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <br>
 
 <h2 id="快速选择"><a href="#快速选择" class="headerlink" title="快速选择"></a>快速选择</h2><h3 id="215、数组中的第K个最大元素"><a href="#215、数组中的第K个最大元素" class="headerlink" title="215、数组中的第K个最大元素"></a>215、数组中的第K个最大元素</h3><p>镜像：剑指 Offer II 076. 数组中的第 k 大的数字</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    方法一：快速选择</span>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//	方法一：快速选择</span>
 <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
     <span class="token keyword">int</span> <span class="token function">findKthLargest</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1003,7 +1012,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//    方法二：魔改快排</span>
+<span class="token comment" spellcheck="true">//	方法二：魔改快排</span>
 <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
     <span class="token keyword">int</span> <span class="token function">findKthLargest</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1021,10 +1030,10 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
             <span class="token keyword">do</span> <span class="token punctuation">{</span><span class="token operator">--</span> j<span class="token punctuation">;</span><span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">></span> mid<span class="token punctuation">)</span><span class="token punctuation">;</span>
             <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">&lt;</span> j<span class="token punctuation">)</span> <span class="token function">swap</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
-
-        <span class="token comment" spellcheck="true">//    这里没写出来，需要注意的就是i和j最后的位置问题</span>
-        <span class="token comment" spellcheck="true">//    第一种情况，i==j;第二种情况j=i-1</span>
-        <span class="token comment" spellcheck="true">//    至于为什么要用j来表示，可以参考上面快排的注解</span>
+        
+        <span class="token comment" spellcheck="true">//	这里没写出来，需要注意的就是i和j最后的位置问题</span>
+        <span class="token comment" spellcheck="true">//	第一种情况，i==j;第二种情况j=i-1</span>
+        <span class="token comment" spellcheck="true">//	至于为什么要用j来表示，可以参考上面快排的注解</span>
         <span class="token keyword">int</span> length <span class="token operator">=</span> right <span class="token operator">-</span> j<span class="token punctuation">;</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">>=</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">return</span> <span class="token function">quick_sort</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> j <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> right<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -1032,12 +1041,13 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
         <span class="token keyword">return</span> <span class="token function">quick_sort</span><span class="token punctuation">(</span>nums<span class="token punctuation">,</span> left<span class="token punctuation">,</span> j<span class="token punctuation">,</span> k <span class="token operator">-</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h3 id="剑指-Offer-40-最小的k个数"><a href="#剑指-Offer-40-最小的k个数" class="headerlink" title="剑指 Offer 40. 最小的k个数"></a>剑指 Offer 40. 最小的k个数</h3><p>镜像：面试题 17.14. 最小K个数</p>
 <p>PS：找最小的k个数（或最小的第k个数），和找最大的k个数（或最大的第k个数）的区别，就是<strong>找最小的时候，可以直接用当前的坐标值进行判断</strong>（当前做坐标是i，就代表左边有i个数），而不改变k值；而<strong>找最大的k个数时，是不能根据坐标判断</strong>（当前坐标是i，但是不知道右边还有多少个数字），因此要修改k值</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    方法一：魔改快排（递归版）</span>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//	方法一：魔改快排（递归版）</span>
 <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
     vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">getLeastNumbers</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> arr<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1067,7 +1077,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
 
-<span class="token comment" spellcheck="true">//    方法二：魔改快排（非递归版）</span>
+<span class="token comment" spellcheck="true">//	方法二：魔改快排（非递归版）</span>
 <span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
     vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">smallestK</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> arr<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -1096,7 +1106,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
         <span class="token keyword">return</span> vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span>arr<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> k<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h3 id="973、最接近原点的K个点"><a href="#973、最接近原点的K个点" class="headerlink" title="973、最接近原点的K个点"></a>973、最接近原点的K个点</h3><p>重写cmp函数即可</p>
@@ -1132,7 +1143,8 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
             <span class="token punctuation">}</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <br>
@@ -1164,7 +1176,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <p>稳定性的定义：</p>
 <ul>
 <li>假定在待排序的记录序列中，存在多个具有相同的关键字的记录</li>
-<li>若经过排序，这些记录的相对次序保持不变，即在原序列中，r[i]=r[j]，且r[i]在r[j]之前</li>
+<li>若经过排序，这些记录的相对次序保持不变，即在原序列中，r[i]&#x3D;r[j]，且r[i]在r[j]之前</li>
 <li>而在排序后的序列中，r[i]仍在r[j]之前，则称这种排序算法是稳定的；否则称为不稳定的</li>
 </ul>
 
@@ -1212,7 +1224,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Deep into BinaryTree">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Deep into BinaryTree">
                         
                         <span class="card-title">Deep into BinaryTree</span>
                     </div>
@@ -1223,8 +1235,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
                             二叉树的基本性质思路
 二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质
 从前，中遍历或中，后遍历能够推出二叉树
-关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 n0 = n2 + 1
-
+关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 n0 &#x3D; n2
                         
                     </div>
                     <div class="publish-info">
@@ -1262,7 +1273,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Deep into Sort">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Deep into Sort">
                         
                         <span class="card-title">Deep into Sort</span>
                     </div>
@@ -1429,7 +1440,7 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">17.2k</span>
+            <span class="white-color">20.9k</span>
             
 
             <br>

@@ -11,8 +11,7 @@
     <meta name="description" content="二叉树的基本性质思路
 二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质
 从前，中遍历或中，后遍历能够推出二叉树
-关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 n0 = n2 + 1
-">
+关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 n0 &amp;#x3D; n2">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -305,7 +304,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -476,7 +475,7 @@
                 <h1 id="二叉树的基本性质"><a href="#二叉树的基本性质" class="headerlink" title="二叉树的基本性质"></a>二叉树的基本性质</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
 <li>二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质</li>
 <li>从前，中遍历或中，后遍历能够推出二叉树</li>
-<li>关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 <strong>n0 = n2 + 1</strong><ul>
+<li>关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 <strong>n0 &#x3D; n2 + 1</strong><ul>
 <li>即叶子结点比二分支结点多一个</li>
 </ul>
 </li>
@@ -494,7 +493,7 @@
 </ul>
 </li>
 <li>问题就转化为如何用同一套代码能够将这两种情况都包含，或是说二者的共同点在哪儿</li>
-<li>思路：为什么会出现只走左/右子树，是因为走左/右子树只能得到小于等于0的结果；因此得到一个思路，在寻找最大路径和的时候，左子树给出的结果应该是<code>max(0,dfs(root -&gt; left))</code></li>
+<li>思路：为什么会出现只走左&#x2F;右子树，是因为走左&#x2F;右子树只能得到小于等于0的结果；因此得到一个思路，在寻找最大路径和的时候，左子树给出的结果应该是<code>max(0,dfs(root -&gt; left))</code></li>
 <li>整体逻辑：设置全局变量maxn，设最开始的<code>maxn为root -&gt; val</code>（如果nullptr就返回0）</li>
 <li>分别对各个点进行左右遍历，得到<code>left = max(0, dfs(root -&gt; left))</code>和<code>right = max(0, dfs(root -&gt; right))</code></li>
 <li>然后，得到<code>max1 = left + right + root -&gt; val</code>，<code>maxn = max(max1, maxn)</code>，最后，当前函数需要返回<code>root -&gt; val + max(left, right)</code>（因为当前节点又会被上一层给调用）</li>
@@ -601,7 +600,7 @@
 </ul>
 <br>
 
-<h2 id="例题-2"><a href="#例题-2" class="headerlink" title="例题"></a>例题</h2><p>94、二叉树的中序遍历（递归/非递归版）</p>
+<h2 id="例题-2"><a href="#例题-2" class="headerlink" title="例题"></a>例题</h2><p>94、二叉树的中序遍历（递归&#x2F;非递归版）</p>
 <p>98、验证二叉搜索树</p>
 <ul>
 <li>这道题是用到了二叉搜索树的性质+中序遍历。即对于每棵树，根节点是大于左子树的节点的，右子树的节点是大于根节点的</li>
@@ -618,10 +617,10 @@
 <ul>
 <li>同105一样的思路，类似的题还有剑指 offer07</li>
 </ul>
-<p>144、二叉树的前序遍历（递归/非递归版）</p>
-<p>145、二叉树的后序遍历（递归/非递归版；非递归实现思路，后序遍历是左右根，那么就相当于是根右左反过来，所以只要求得根右左，反转后便是结果）</p>
-<p>589、N叉树的前序遍历（递归/非递归版）</p>
-<p>590、N叉树的后序遍历（递归/非递归版）</p>
+<p>144、二叉树的前序遍历（递归&#x2F;非递归版）</p>
+<p>145、二叉树的后序遍历（递归&#x2F;非递归版；非递归实现思路，后序遍历是左右根，那么就相当于是根右左反过来，所以只要求得根右左，反转后便是结果）</p>
+<p>589、N叉树的前序遍历（递归&#x2F;非递归版）</p>
+<p>590、N叉树的后序遍历（递归&#x2F;非递归版）</p>
 <p>872、叶子相似的树（非常巧妙地中序遍历输出叶子，然后对比）</p>
 <p>剑指 offer36（<strong>挖坑</strong>）</p>
 <p>原创题：二叉树的下一个节点（中序遍历；如果有右子树，就往右子树下面找，否则就往上找）</p>
@@ -825,7 +824,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="Deep into DynamicProgming">
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Deep into DynamicProgming">
                         
                         <span class="card-title">Deep into DynamicProgming</span>
                     </div>
@@ -875,7 +874,7 @@ public:
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Deep into Sort">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Deep into Sort">
                         
                         <span class="card-title">Deep into Sort</span>
                     </div>
@@ -1041,7 +1040,7 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">17.2k</span>
+            <span class="white-color">20.9k</span>
             
 
             <br>

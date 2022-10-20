@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/10/20/stl-yuan-ma-pou-xi-zhi-vector/</loc>
+    
+    <lastmod>2022-10-20T15:38:04.328Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/10/09/deep-into-sort/</loc>
     
     <lastmod>2022-10-12T04:42:34.397Z</lastmod>
@@ -44,14 +51,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/archives/index.html</loc>
+    <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
