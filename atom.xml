@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-10-20T15:38:04.328Z</updated>
+  <updated>2022-10-22T14:35:48.773Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,82 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入理解CPP之auto,decltype,move,forward</title>
+    <link href="http://example.com/2022/10/22/shen-ru-li-jie-cpp-zhi-auto-decltype-move-forward/"/>
+    <id>http://example.com/2022/10/22/shen-ru-li-jie-cpp-zhi-auto-decltype-move-forward/</id>
+    <published>2022-10-22T05:50:52.000Z</published>
+    <updated>2022-10-22T14:35:48.773Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;left-value&quot;&gt;&lt;a href=&quot;#left-value&quot; class=&quot;headerlink&quot; title=&quot;left value&quot;&gt;&lt;/a&gt;left value&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="CPP" scheme="http://example.com/tags/CPP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>STL源码剖析之map</title>
+    <link href="http://example.com/2022/10/22/stl-yuan-ma-pou-xi-zhi-map/"/>
+    <id>http://example.com/2022/10/22/stl-yuan-ma-pou-xi-zhi-map/</id>
+    <published>2022-10-22T03:28:41.000Z</published>
+    <updated>2022-10-22T14:51:56.556Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;STL中的红黑树&quot;&gt;&lt;a href=&quot;#STL中的红黑树&quot; class=&quot;headerlink&quot; title=&quot;STL中的红黑树&quot;&gt;&lt;/a&gt;STL中的红黑树&lt;/h1&gt;&lt;h2 id=&quot;特点&quot;&gt;&lt;a href=&quot;#特点&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="STL" scheme="http://example.com/tags/STL/"/>
+    
+      <category term="map" scheme="http://example.com/tags/map/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>STL源码剖析之deque</title>
+    <link href="http://example.com/2022/10/21/stl-yuan-ma-pou-xi-zhi-deque/"/>
+    <id>http://example.com/2022/10/21/stl-yuan-ma-pou-xi-zhi-deque/</id>
+    <published>2022-10-20T17:00:57.000Z</published>
+    <updated>2022-10-20T18:04:33.167Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="STL" scheme="http://example.com/tags/STL/"/>
+    
+      <category term="deque" scheme="http://example.com/tags/deque/"/>
+    
+  </entry>
   
   <entry>
     <title>STL源码剖析之vector</title>

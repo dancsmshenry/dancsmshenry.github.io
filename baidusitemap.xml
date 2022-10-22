@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/10/22/stl-yuan-ma-pou-xi-zhi-map/</loc>
+    <lastmod>2022-10-22</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/10/22/shen-ru-li-jie-cpp-zhi-auto-decltype-move-forward/</loc>
+    <lastmod>2022-10-22</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/10/21/stl-yuan-ma-pou-xi-zhi-deque/</loc>
+    <lastmod>2022-10-20</lastmod>
+  </url>  <url>
     <loc>http://example.com/2022/10/20/stl-yuan-ma-pou-xi-zhi-vector/</loc>
     <lastmod>2022-10-20</lastmod>
   </url>  <url>

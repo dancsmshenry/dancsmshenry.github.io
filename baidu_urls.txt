@@ -1,3 +1,6 @@
+http://example.com/2022/10/22/shen-ru-li-jie-cpp-zhi-auto-decltype-move-forward/
+http://example.com/2022/10/22/stl-yuan-ma-pou-xi-zhi-map/
+http://example.com/2022/10/21/stl-yuan-ma-pou-xi-zhi-deque/
 http://example.com/2022/10/20/stl-yuan-ma-pou-xi-zhi-vector/
 http://example.com/2022/10/10/deep-into-dynamicprogming/
 http://example.com/2022/10/10/deep-into-binarytree/
