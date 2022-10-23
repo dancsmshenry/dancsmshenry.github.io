@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</loc>
+    
+    <lastmod>2022-10-23T15:17:51.611Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/</loc>
+    
+    <lastmod>2022-10-23T12:24:59.115Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/10/22/stl-yuan-ma-pou-xi-zhi-map/</loc>
     
     <lastmod>2022-10-22T14:51:56.556Z</lastmod>
@@ -72,7 +86,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/about/index.html</loc>
+    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
@@ -86,7 +100,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/archives/index.html</loc>
+    <loc>http://example.com/about/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
