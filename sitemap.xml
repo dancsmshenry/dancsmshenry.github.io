@@ -86,7 +86,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/archives/index.html</loc>
+    <loc>http://example.com/about/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
@@ -100,7 +100,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/about/index.html</loc>
+    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
