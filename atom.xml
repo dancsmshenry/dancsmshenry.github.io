@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-10-23T12:24:59.115Z</updated>
+  <updated>2022-10-26T15:24:03.212Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入理解CPP之smart pointer</title>
+    <link href="http://example.com/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/"/>
+    <id>http://example.com/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/</id>
+    <published>2022-10-26T14:10:38.000Z</published>
+    <updated>2022-10-26T15:24:03.212Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;shared-ptr&quot;&gt;&lt;a href=&quot;#shared-ptr&quot; class=&quot;headerlink&quot; title=&quot;shared_ptr&quot;&gt;&lt;/a&gt;shared_ptr&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="CPP" scheme="http://example.com/tags/CPP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>The Google File System</title>
+    <link href="http://example.com/2022/10/24/the-google-file-system/"/>
+    <id>http://example.com/2022/10/24/the-google-file-system/</id>
+    <published>2022-10-24T04:21:59.000Z</published>
+    <updated>2022-10-26T14:14:53.324Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;gfs为google内部的文件系统，其开源实现为hdfs，大数据领域标准的开源实现&lt;/p&gt;
+&lt;p&gt;存储非结构化数据的存储系统，和bigtable（列存储，存储结构化数据）是相对应的&lt;/p&gt;
+&lt;p&gt;GFS只存储数据，不关心数据的结构和内容是什么&lt;/p&gt;
+&lt;p&gt;可能我们只是需要
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://example.com/tags/Paper/"/>
+    
+      <category term="Distributed" scheme="http://example.com/tags/Distributed/"/>
+    
+  </entry>
   
   <entry>
     <title>深入理解CPP之type conversion</title>

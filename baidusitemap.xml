@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/</loc>
+    <lastmod>2022-10-26</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/10/24/the-google-file-system/</loc>
+    <lastmod>2022-10-26</lastmod>
+  </url>  <url>
     <loc>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</loc>
     <lastmod>2022-10-23</lastmod>
   </url>  <url>
