@@ -1,3 +1,4 @@
+http://example.com/2022/11/07/mei-ri-yi-ti-816-mo-hu-zuo-biao/
 http://example.com/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/
 http://example.com/2022/10/24/the-google-file-system/
 http://example.com/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/
