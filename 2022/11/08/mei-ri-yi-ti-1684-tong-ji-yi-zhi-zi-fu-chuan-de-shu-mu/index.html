@@ -4,15 +4,19 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="深入理解CPP之type conversion, dancsmshenry&#39;s blog">
+    <meta name="keywords" content="每日一题——1684.统计一致字符串的数目, dancsmshenry&#39;s blog">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="backround基类对象转换为派生类对象，是不安全的
+    <meta name="description" content="题干给你一个由不同字符组成的字符串 allowed 和一个字符串数组 words 。如果一个字符串的每一个字符都在 allowed 中，就称这个字符串是一致字符串。
+请你返回 words 数组中一致字符串的数目。
+ 
 
-派生类是包含于基类的，即基类的“体积”是小于派生类的
+ 
 
-如果一个指向基类的指针强转为指向派生类的指针（该指针始终指向基类，只是指针类型变了），再通过该指针调用派生类的特有方法或者数据">
+ 
+
+思路直接">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +24,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>深入理解CPP之type conversion | dancsmshenry&#39;s blog</title>
+    <title>每日一题——1684.统计一致字符串的数目 | dancsmshenry&#39;s blog</title>
     <link rel="icon" type="image/png" href="/roses.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -305,13 +309,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        深入理解CPP之type conversion
+                        每日一题——1684.统计一致字符串的数目
                     </div>
                 </div>
             </div>
@@ -422,8 +426,8 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/CPP/" target="_blank">
-                            <span class="chip bg-color">CPP</span>
+                        <a href="/tags/LeetCode/" target="_blank">
+                            <span class="chip bg-color">LeetCode</span>
                         </a>
                         
                     </div>
@@ -437,7 +441,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-23
+                    2022-11-08
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -451,14 +455,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    265
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    1 分
                 </div>
                 
                 
@@ -469,154 +473,71 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="backround"><a href="#backround" class="headerlink" title="backround"></a>backround</h1><p><strong>基类对象转换为派生类对象，是不安全的</strong></p>
-<ul>
-<li><p>派生类是包含于基类的，即基类的“体积”是小于派生类的</p>
-</li>
-<li><p>如果一个指向基类的指针强转为指向派生类的指针（该指针始终指向基类，只是指针类型变了），再通过该指针调用派生类的特有方法或者数据</p>
-</li>
-<li><p>就会访问到未知的数据，从而导致崩溃</p>
-</li>
-<li><p>所以这种转换在<code>dynamic_cast</code>中就会报错</p>
-</li>
-</ul>
+                <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><p>给你一个由不同字符组成的字符串 <code>allowed</code> 和一个字符串数组 <code>words</code> 。如果一个字符串的每一个字符都在 <code>allowed</code> 中，就称这个字符串是<strong>一致字符串</strong>。</p>
+<p>请你返回 <code>words</code> 数组中<strong>一致字符串</strong>的数目。</p>
+ <br>
+
+ <br>
+
+ <br>
+
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>直接<code>set</code>存储字符</p>
+<p>再一一对照遍历即可</p>
 <br>
 
-<p><strong>派生类对象转换为基类对象，是安全的</strong></p>
-<ul>
-<li>理由同上，派生类是包含于基类的，因此对方法或数据的使用，不会造成越界</li>
-</ul>
+<p>不过，看到官方给的一种解法：</p>
+<p>因为这里要求的只有26个字母，所以可以用一个<code>int</code>整型的32位来标记是否有当前字母</p>
+<p>不过缺点，就是会降低一点点代码的可读性吧hhhh</p>
 <br>
 
-<p><strong>派生类指针只能指向派生类，基类指针可以指向基类或派生类</strong></p>
-<br>
+<p><strong>代码：</strong></p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//	我的解法</span>
+<span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> <span class="token function">countConsistentStrings</span><span class="token punctuation">(</span>string allowed<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span>string<span class="token operator">></span><span class="token operator">&amp;</span> words<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        unordered_set<span class="token operator">&lt;</span><span class="token keyword">char</span><span class="token operator">></span> set_<span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> a<span class="token operator">:</span> allowed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            set_<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-<p><strong>type conversion针对的是指针和引用</strong></p>
-<ul>
-<li>引用可以理解为指针的语法糖</li>
-</ul>
-<br>
+        <span class="token keyword">int</span> ans<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> word<span class="token operator">:</span> words<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> w<span class="token operator">:</span> word<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>set_<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token operator">--</span> ans<span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token operator">++</span> ans<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
 
-<br>
-
-<br>
-
-<h1 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h1><h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><ul>
-<li>等价于C里面的强制转换，可以将<code>non-const</code>对象转为<code>const</code>对象</li>
-<li>用于基本数据类型之间的转换（例如<code>int</code>转换为<code>char</code>）</li>
-<li>把空指针转换为目标类型的空指针</li>
-<li>把任何类型的表达式转换成<code>void</code>类型</li>
-<li>也可以用于类对象之间的转换（但没有动态类型检查，所以不安全）</li>
-</ul>
-<p>格式：<code>static_cast&lt;type-id&gt;(expression);</code></p>
-<br>
-
-<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>更加明显，能够一眼看出转换为什么类型</p>
-<p>更加安全</p>
-<br>
-
-<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>没有运行时类型检查来保证转换的安全性（<code>dynamic_cast</code>）</p>
-<p>不能用于在不同类型指针之间的转换</p>
-<p>不能用于整型和指针之间的的转换</p>
-<p>不能用于不同类型的引用之间的转化</p>
-<p><strong>不能去除掉已有对象的const或volatile，或者__unaligned属性</strong></p>
-<br>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以理解为C里面强制转换的平替，但又有一些局限性</p>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="dynamic-cast"><a href="#dynamic-cast" class="headerlink" title="dynamic_cast"></a>dynamic_cast</h1><h2 id="用途-1"><a href="#用途-1" class="headerlink" title="用途"></a>用途</h2><ul>
-<li>将基类的指针或引用安全地转换为派生类的指针或引用（前提：该基类指针指向的是派生类，同时<strong>基类必须有虚函数</strong>）</li>
-<li>或是将派生类的指针或引用安全地转换为基类的指针或引用（基类不需要有虚函数）</li>
-</ul>
-<p>格式：<code>dynamic_cast &lt;type-id&gt;(expression)</code>，其中<code>type-id</code>可以是类指针，类引用或<code>void*</code>，<code>expression</code>也要是对应的类型</p>
-<br>
-
-<p>若对指针进行<code>dynamic_cast</code>，失败返回<code>nullptr</code>，成功返回正常cast后的对象指针</p>
-<p>若对引用进行<code>dynamic_cast</code>，失败抛出一个<strong>异常</strong>，成功返回正常cast后的对象引用</p>
-<br>
-
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
-<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;assert.h></span></span>
-
-<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// 父类</span>
-<span class="token keyword">struct</span> Tfather <span class="token punctuation">{</span>
-    <span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"father's f()"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> ans<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// 子类</span>
-<span class="token keyword">struct</span> Tson <span class="token operator">:</span> <span class="token keyword">public</span> Tfather <span class="token punctuation">{</span>
-    <span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"son's f()"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
-    <span class="token keyword">int</span> data<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 子类独有的成员</span>
+<span class="token comment" spellcheck="true">//	官方最优解</span>
+<span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> <span class="token function">countConsistentStrings</span><span class="token punctuation">(</span>string allowed<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span>string<span class="token operator">></span><span class="token operator">&amp;</span> words<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> set_<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> a<span class="token operator">:</span> allowed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            set_ <span class="token operator">|</span><span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>a <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">int</span> ans<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> word<span class="token operator">:</span> words<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> w<span class="token operator">:</span> word<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>set_ <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>w <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                    <span class="token operator">--</span> ans<span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token operator">++</span> ans<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> ans<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    Tfather father<span class="token punctuation">;</span>
-    Tson son<span class="token punctuation">;</span>
-    son<span class="token punctuation">.</span>data <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
-
-    Tfather <span class="token operator">*</span>pf<span class="token punctuation">;</span>
-    Tson <span class="token operator">*</span>ps<span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">//	上行转换：没有问题</span>
-    ps <span class="token operator">=</span> <span class="token operator">&amp;</span>son<span class="token punctuation">;</span>
-    pf <span class="token operator">=</span> <span class="token keyword">dynamic_cast</span><span class="token operator">&lt;</span>Tfather <span class="token operator">*</span><span class="token operator">></span><span class="token punctuation">(</span>ps<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    pf<span class="token operator">-</span><span class="token operator">></span><span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token comment" spellcheck="true">//	下行转换（pf实际指向子类对象）：没有问题</span>
-    pf <span class="token operator">=</span> <span class="token operator">&amp;</span>son<span class="token punctuation">;</span>
-    ps <span class="token operator">=</span> <span class="token keyword">dynamic_cast</span><span class="token operator">&lt;</span>Tson <span class="token operator">*</span><span class="token operator">></span><span class="token punctuation">(</span>pf<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ps<span class="token operator">-</span><span class="token operator">></span><span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> ps<span class="token operator">-</span><span class="token operator">></span>data <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 访问子类独有成员有效</span>
-
-    <span class="token comment" spellcheck="true">//	下行转换（pf实际指向父类对象）：含有不安全操作，dynamic_cast则返回nullptr（而static_cast则会无视）</span>
-    pf <span class="token operator">=</span> <span class="token operator">&amp;</span>father<span class="token punctuation">;</span>
-    ps <span class="token operator">=</span> <span class="token keyword">dynamic_cast</span><span class="token operator">&lt;</span>Tson <span class="token operator">*</span><span class="token operator">></span><span class="token punctuation">(</span>pf<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">assert</span><span class="token punctuation">(</span>ps <span class="token operator">!=</span> <span class="token keyword">nullptr</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 违背断言，阻止以下不安全操作</span>
-    ps<span class="token operator">-</span><span class="token operator">></span><span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    cout <span class="token operator">&lt;&lt;</span> ps<span class="token operator">-</span><span class="token operator">></span>data <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 不安全操作，对象实例根本没有data成员</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<br>
-
-<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><p>主要用于类之间的转换</p>
-<p>上行转换（派生类转换为基类），和<code>static_cast</code>等效</p>
-<p>下行转换（基类转换为派生类），<code>dynamic_cast</code>具有类型检查功能，更加安全</p>
-<p>相比<code>static_cast</code>会更加耗时，因为<code>dynamic_cast</code>会在运行时进行类型检查来保证转换的安全性</p>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="reinterpret-cast"><a href="#reinterpret-cast" class="headerlink" title="reinterpret_cast"></a>reinterpret_cast</h1><h2 id="用途-2"><a href="#用途-2" class="headerlink" title="用途"></a>用途</h2><ul>
-<li><p>可以将整型转换为指针，也可以把指针转换为数组，或是将指针和引⽤之间进⾏转换</p>
-</li>
-<li><p>从底层对数据进⾏重新解释；依赖具体的平台，可移植性差</p>
-</li>
-<li><p>等价于C里面的强制转换</p>
-</li>
-</ul>
-<p>格式：<code>reinterpret_cast&lt;type-id&gt;(expression);</code>，<code>type-id</code>必须是一个指针、引用、算术类型、函数指针或者成员指针，用于类型之间进行强制转换</p>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h1><h2 id="用途-3"><a href="#用途-3" class="headerlink" title="用途"></a>用途</h2><ul>
-<li>给已有对象添加<code>const</code>或删除<code>const</code>，或是<code>volstile</code></li>
-<li>是唯一一个可以操作常量的转换符</li>
-<li>常量指针（或引用）被转化为非常量指针（或引用），并且仍然指向原来的对象</li>
-<li>一般用于修改底层指针，如<code>const char *p</code>形式</li>
-</ul>
-<p>格式：<code>const_cast &lt;type-id&gt; (expression);</code></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
             <hr />
@@ -654,45 +575,49 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/10/24/the-google-file-system/">
+                <a href="/2022/11/08/mei-ri-yi-ti-1684-tong-ji-yi-zhi-zi-fu-chuan-de-shu-mu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="The Google File System">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="每日一题——1684.统计一致字符串的数目">
                         
-                        <span class="card-title">The Google File System</span>
+                        <span class="card-title">每日一题——1684.统计一致字符串的数目</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            gfs为google内部的文件系统，其开源实现为hdfs，大数据领域标准的开源实现
-GFS是一个存储非结构化数据的存储系统，和bigtable（列存储，存储结构化数据，关系模型，表结构）是相对应的
-GFS只存储数据，不关心数据的结构和内容是
+                            题干给你一个由不同字符组成的字符串 allowed 和一个字符串数组 words 。如果一个字符串的每一个字符都在 allowed 中，就称这个字符串是一致字符串。
+请你返回 words 数组中一致字符串的数目。
+ 
+
+ 
+
+ 
+
+思路直接
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-08
+                            </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Paper/" target="_blank">
-                        <span class="chip bg-color">Paper</span>
-                    </a>
-                    
-                    <a href="/tags/Distributed/" target="_blank">
-                        <span class="chip bg-color">Distributed</span>
+                    <a href="/tags/LeetCode/" target="_blank">
+                        <span class="chip bg-color">LeetCode</span>
                     </a>
                     
                 </div>
@@ -706,27 +631,25 @@ GFS只存储数据，不关心数据的结构和内容是
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/">
+                <a href="/2022/11/07/mei-ri-yi-ti-816-mo-hu-zuo-biao/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="每日一题——816.模糊坐标">
                         
-                        <span class="card-title">MapReduce: Simplified Data Processing on Large Clusters</span>
+                        <span class="card-title">每日一题——816.模糊坐标</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            mapreduce的背景随着业务的增长，待处理的数据集越来越多，单机无法在规定时间内对海量数据进行处理
-因此需要同时使用多台机器对数据进行处理
-而大规模的数据处理，需要同时应对多机并行协同，网络通信，处理错误，提高执行效率等问题
-但这些问题
+                            题干我们有一些二维坐标，如 &quot;(1, 3)&quot; 或 &quot;(2, 0.5)&quot;，然后我们移除所有逗号，小数点和空格，得到一个字符串S。返回所有可能的原始字符串到一个列表中。
+原始的坐标表示法不会存在多余的零，
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-23
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-07
                             </span>
                         <span class="publish-author">
                             
@@ -736,12 +659,8 @@ GFS只存储数据，不关心数据的结构和内容是
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Paper/" target="_blank">
-                        <span class="chip bg-color">Paper</span>
-                    </a>
-                    
-                    <a href="/tags/Distributed/" target="_blank">
-                        <span class="chip bg-color">Distributed</span>
+                    <a href="/tags/LeetCode/" target="_blank">
+                        <span class="chip bg-color">LeetCode</span>
                     </a>
                     
                 </div>
