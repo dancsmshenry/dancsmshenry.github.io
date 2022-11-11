@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-09T07:31:41.894Z</updated>
+  <updated>2022-11-11T15:42:38.105Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>面试题之智力题</title>
+    <link href="http://example.com/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/"/>
+    <id>http://example.com/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/</id>
+    <published>2022-11-10T18:59:48.000Z</published>
+    <updated>2022-11-11T15:42:38.105Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;三人三鬼过桥&quot;&gt;&lt;a href=&quot;#三人三鬼过桥&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Interview Problems" scheme="http://example.com/tags/Interview-Problems/"/>
+    
+  </entry>
   
   <entry>
     <title>每日一题——764.最大加号标志</title>
