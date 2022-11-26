@@ -1,3 +1,4 @@
+http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/
 http://example.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/
 http://example.com/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/
 http://example.com/2022/11/09/mei-ri-yi-ti-764-zui-da-jia-hao-biao-zhi/

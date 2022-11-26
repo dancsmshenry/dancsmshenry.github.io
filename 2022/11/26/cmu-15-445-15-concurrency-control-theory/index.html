@@ -317,7 +317,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/28.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -467,14 +467,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.6k
+                    3.8k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    12 分
+                    13 分
                 </div>
                 
                 
@@ -701,6 +701,8 @@
 <p>主要分为：读写冲突、写读冲突和写写冲突</p>
 <br>
 
+<br>
+
 <p><strong>读写冲突</strong>（<strong>不可重复读</strong> unrepeatable read）</p>
 <img src="\medias\15-Concurrency Control Theory\read-write conflicts.png" style="zoom:150%;">
 
@@ -708,6 +710,8 @@
 <p>即对一个数据重复读，发现前后不一致</p>
 <p><strong>不可重复读</strong>侧重的是在当前事务中，对一个数据的重复读，数据发生了不同</p>
 <p>而这个不同是因为在当前事务的执行过程中，有其他的事务对数据进行了修改并<strong>提交</strong></p>
+<br>
+
 <br>
 
 <p><strong>写读冲突</strong>（<strong>读未提交</strong> reading uncommited data <strong>脏读</strong> dirty reads）</p>
@@ -718,21 +722,31 @@
 <p>读未提交（脏读）侧重的是读到的是<strong>未提交</strong>的数据，即脏读读到的数据是还没有committed的</p>
 <br>
 
+<br>
+
 <p><strong>写写冲突</strong>（overwriting uncommited data）</p>
 <img src="\medias\15-Concurrency Control Theory\write-write conflicts.png" style="zoom:150%;">
 
-<p>事务A写了数据a，事务B又写了数据a，导致事务A的操作被覆盖了</p>
-<p>导致数据的一致性遭到破坏（数据A和数据B的结果分别是两个不同的事务带来的），又叫做<strong>读偏斜</strong></p>
+<p>T1写了数据a，T2又写了数据a，导致T1的操作被覆盖了</p>
+<p>数据A和数据B的结果分别是两个不同的事务带来的，这就会造成数据的不一致</p>
 <br>
 
-<p>另一种情况也会破坏数据的一致性，即有约束A+B&lt;&#x3D;100，A&#x3D;70，B&#x3D;20</p>
+<p>其中一种情况是数据的一致性遭到了破坏，比如说X和Y的账户余额都是50，他们的总和是100</p>
+<p>T1读取X的余额是50，然后T2从X转账50到Y然后提交</p>
+<p>T1在T2提交后读Y发现余额为100，那么它们总和变成了150</p>
+<p>最终导致T1读数据的结果违反数据的一致性，又叫做<strong>读偏斜</strong>（read skew）</p>
+<img src="\medias\15-Concurrency Control Theory\write-write conflicts_01.jpg" style="zoom:150%;">
+
+<br>
+
+<p>而另一种情况也会破坏数据的一致性，即有约束A+B&lt;&#x3D;100，A&#x3D;70，B&#x3D;20</p>
 <p>此时T1、T2都读到了A&#x3D;70，B&#x3D;20</p>
 <p>然后T1改为A&#x3D;75（从T1的角度来说没问题），T2改为B&#x3D;30（单从T2的角度来说没问题）</p>
-<p>可是数据的一致性约束就被破坏了</p>
-<p>又叫做<strong>写偏斜</strong></p>
+<p>可是数据的一致性约束就被破坏了（其实是因为此前读入作为一致性保证的前提数据，被其他的事务修改了）</p>
+<p>又叫做<strong>写偏斜</strong>（write skew）</p>
 <br>
 
-<p>还有一种情况是：</p>
+<p>还有一种情况是：（不是写写冲突，但还是想提一下）</p>
 <table>
 <thead>
 <tr>
@@ -767,8 +781,8 @@
 </tbody></table>
 <p>此时的sessionB为了避免脏读，那么就会选择读原始数据</p>
 <p>可问题是如果sessionA提交了以后，sessionB发生了回滚</p>
-<p>数据就会被回滚到sessionAB之前的数据，那么sessionA的修改就被cover</p>
-<p>这种情况又叫作<strong>脏写</strong></p>
+<p>数据就会被回滚到sessionA和sessionB之前的数据，那么sessionA的修改就被cover掉</p>
+<p>即会导致前一个事务的修改失效，这种情况又叫作<strong>脏写</strong></p>
 <br>
 
 <p>写写冲突不仅会造成数据一致性的缺失，还可能会造成事务的cover</p>
@@ -884,52 +898,44 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/11/26/cmu-15-445-15-concurrency-control-theory/">
+                <a href="/2022/11/27/cmu-15-445-16-two-phase-locking/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="CMU 15-445 15-Concurrency Control Theory">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="CMU 15-445 16-Two Phase Locking">
                         
-                        <span class="card-title">CMU 15-445 15-Concurrency Control Theory</span>
+                        <span class="card-title">CMU 15-445 16-Two Phase Locking</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Motivation多个事务对于同一条数据进行修改
-
-可能会出现竞争、更新丢失的问题
-
-
-
-执行多条语句（事务）的时候机房发生断电，该如何处理
-
-持久化（durability）的问题，需要恢复（recovery）解决
+                            Backround上一章的分析都是基于事务已经发生了，然后再去判断分析是否可行
+但实际上是不可能这么顺利的，因为我们不知道整个事务是怎么运行的
+所以很自然的想到用锁实现多个事务的并发，从而实现对数据的保护
 
 
 
 
 
 
+Lock types
 
-并发控制
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-26
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-27
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -956,7 +962,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="面试题之智力题">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="面试题之智力题">
                         
                         <span class="card-title">面试题之智力题</span>
                     </div>
@@ -1121,7 +1127,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">51.6k</span>
+            <span class="white-color">54.1k</span>
             
 
             <br>

@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/</loc>
+    <loc>http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/</loc>
     
-    <lastmod>2022-11-26T15:12:14.422Z</lastmod>
+    <lastmod>2022-11-26T19:50:52.414Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://example.com/2022/10/24/the-google-file-system/</loc>
     
-    <lastmod>2022-11-16T14:12:45.544Z</lastmod>
+    <lastmod>2022-11-26T19:47:15.927Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</loc>
     
-    <lastmod>2022-11-11T18:47:18.684Z</lastmod>
+    <lastmod>2022-11-26T19:47:04.570Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/</loc>
+    
+    <lastmod>2022-11-26T19:41:22.072Z</lastmod>
     
   </url>
   
@@ -142,14 +149,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/archives/index.html</loc>
+    <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     

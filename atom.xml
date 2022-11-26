@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-26T15:12:14.422Z</updated>
+  <updated>2022-11-26T19:50:52.414Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CMU 15-445 16-Two Phase Locking</title>
+    <link href="http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/"/>
+    <id>http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/</id>
+    <published>2022-11-26T19:11:43.000Z</published>
+    <updated>2022-11-26T19:50:52.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Backround&quot;&gt;&lt;a href=&quot;#Backround&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CMU 15-445 15-Concurrency Control Theory</title>
     <link href="http://example.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/"/>
     <id>http://example.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/</id>
     <published>2022-11-26T14:42:58.000Z</published>
-    <updated>2022-11-26T15:12:14.422Z</updated>
+    <updated>2022-11-26T19:41:22.072Z</updated>
     
     <summary type="html">
     
@@ -167,7 +193,7 @@
     <link href="http://example.com/2022/10/24/the-google-file-system/"/>
     <id>http://example.com/2022/10/24/the-google-file-system/</id>
     <published>2022-10-24T04:21:59.000Z</published>
-    <updated>2022-11-16T14:12:45.544Z</updated>
+    <updated>2022-11-26T19:47:15.927Z</updated>
     
     <summary type="html">
     
@@ -219,7 +245,7 @@
     <link href="http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/"/>
     <id>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</id>
     <published>2022-10-23T02:43:04.000Z</published>
-    <updated>2022-11-11T18:47:18.684Z</updated>
+    <updated>2022-11-26T19:47:04.570Z</updated>
     
     <summary type="html">
     
