@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/</loc>
+    <lastmod>2022-11-26</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/10/24/the-google-file-system/</loc>
+    <lastmod>2022-11-16</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</loc>
+    <lastmod>2022-11-11</lastmod>
+  </url>  <url>
     <loc>http://example.com/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/</loc>
     <lastmod>2022-11-11</lastmod>
   </url>  <url>
@@ -16,14 +25,8 @@
     <loc>http://example.com/2022/10/09/deep-into-sort/</loc>
     <lastmod>2022-11-05</lastmod>
   </url>  <url>
-    <loc>http://example.com/2022/10/24/the-google-file-system/</loc>
-    <lastmod>2022-10-27</lastmod>
-  </url>  <url>
     <loc>http://example.com/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/</loc>
     <lastmod>2022-10-26</lastmod>
-  </url>  <url>
-    <loc>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</loc>
-    <lastmod>2022-10-23</lastmod>
   </url>  <url>
     <loc>http://example.com/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/</loc>
     <lastmod>2022-10-23</lastmod>

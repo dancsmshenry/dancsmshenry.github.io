@@ -4,14 +4,27 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Deep into BinaryTree, dancsmshenry&#39;s blog">
+    <meta name="keywords" content="CMU 15-445 15-Concurrency Control Theory, dancsmshenry&#39;s blog">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="二叉树的基本性质思路
-二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质
-从前，中遍历或中，后遍历能够推出二叉树
-关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 n0 &amp;#x3D; n2">
+    <meta name="description" content="Motivation多个事务对于同一条数据进行修改
+
+可能会出现竞争、更新丢失的问题
+
+
+
+执行多条语句（事务）的时候机房发生断电，该如何处理
+
+持久化（durability）的问题，需要恢复（recovery）解决
+
+
+
+
+
+
+
+并发控制">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +32,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Deep into BinaryTree | dancsmshenry&#39;s blog</title>
+    <title>CMU 15-445 15-Concurrency Control Theory | dancsmshenry&#39;s blog</title>
     <link rel="icon" type="image/png" href="/roses.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -304,13 +317,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Deep into BinaryTree
+                        CMU 15-445 15-Concurrency Control Theory
                     </div>
                 </div>
             </div>
@@ -421,12 +434,12 @@
                     
                     <div class="article-tag">
                         
-                        <a href="/tags/Algorithm/" target="_blank">
-                            <span class="chip bg-color">Algorithm</span>
+                        <a href="/tags/Database/" target="_blank">
+                            <span class="chip bg-color">Database</span>
                         </a>
                         
-                        <a href="/tags/BinaryTree/" target="_blank">
-                            <span class="chip bg-color">BinaryTree</span>
+                        <a href="/tags/CMU-15-445/" target="_blank">
+                            <span class="chip bg-color">CMU 15-445</span>
                         </a>
                         
                     </div>
@@ -440,7 +453,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-10-10
+                    2022-11-26
                 </div>
 
                 <div class="post-author info-break-policy">
@@ -454,14 +467,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.2k
+                    3.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    12 分
                 </div>
                 
                 
@@ -472,313 +485,368 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="二叉树的基本性质"><a href="#二叉树的基本性质" class="headerlink" title="二叉树的基本性质"></a>二叉树的基本性质</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质</li>
-<li>从前，中遍历或中，后遍历能够推出二叉树</li>
-<li>关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 <strong>n0 &#x3D; n2 + 1</strong><ul>
-<li>即叶子结点比二分支结点多一个</li>
+                <h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>多个事务对于同一条数据进行修改</p>
+<ul>
+<li>可能会出现竞争、更新丢失的问题</li>
+</ul>
+<br>
+
+<p>执行多条语句（事务）的时候机房发生断电，该如何处理</p>
+<ul>
+<li>持久化（durability）的问题，需要恢复（recovery）解决</li>
+</ul>
+<br>
+
+<img src="\medias\15-Concurrency Control Theory\concurrencycontrol_motivation.png" style="zoom:150%;">
+
+<br>
+
+<p><strong>并发控制（concurrency control）</strong>和<strong>恢复（recovery）</strong>是基于ACID的非常重要的功能</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h1><p>定义：<strong>事务</strong>是执行一系列操作（SQL语句），以达到一个高级的功能（比如说通过SQL语句对账户的余额增减，以实现转账的功能）</p>
+<img src="\medias\15-Concurrency Control Theory\transactions.png" style="zoom:150%;">
+
+<br>
+
+<p>比如说转账：</p>
+<ul>
+<li>先检查A账户有没有100块钱</li>
+<li>如果有的话，就减去100块钱；否则就报错</li>
+<li>然后给B账户加100块钱</li>
+</ul>
+<br>
+
+<p>PS：如果没有显式的说明事务的话，那么一条SQL语句就会被认为是一个事务</p>
+<br>
+
+<p>一些想当然的想法：</p>
+<ul>
+<li>事务串行化执行（能够保证事务的正确性，但是串行化执行效率低下）</li>
+<li>或者事务执行的时候，把整个数据库备份一个出来（能提高并发度，但问题是内存会因为数据库的不断备份导致内存不够，并且磁盘大小也会受限）<ul>
+<li>如果语句执行成功了，就把新的数据覆盖到原数据中</li>
+<li>否则，就丢弃当前备份出来的数据</li>
 </ul>
 </li>
 </ul>
 <br>
 
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>100、相同的树（两边dfs）</p>
-<p>101、对称二叉树（两边dfs）</p>
-<p>104、二叉树的最大深度（dfs）</p>
-<p><strong>124</strong>、二叉树的最大路径和</p>
+<p>DBMS的需求：</p>
 <ul>
-<li>最大路径和的两种情况：<ul>
-<li>1、从当前节点出发，只走左子树或右子树</li>
-<li>2、从左子树的某一处出发，经过当前节点，然后到达右子树的某一处</li>
+<li>更高的时空利用率和并发吞吐量</li>
+<li>提高DBMS的响应时间</li>
+<li>事务能够并发的执行，并且维持ACID的性质</li>
+<li>要维护事务的正确性和公平性</li>
+<li>如果不设限的话，并发的事务会存在临时性的数据错误和永久性的数据错误</li>
+</ul>
+<br>
+
+<p>问题：</p>
+<ul>
+<li>数据库只知道数据的读写，不知道事务的逻辑，不知道事务整体是干什么的</li>
+<li>不受限的并发会导致数据的错误，所以需要一个控制协议让DBMS能够正确的执行并发</li>
+</ul>
+<br>
+
+<p>简化问题：</p>
+<ul>
+<li>研究事务不需要知道数据具体放在哪儿</li>
+<li>事务的研究本质上就是研究数据的读和写（简化模型）</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Transaction-in-SQL"><a href="#Transaction-in-SQL" class="headerlink" title="Transaction in SQL"></a>Transaction in SQL</h1><p>begin是告诉DBMS事务开始</p>
+<p>commit是告诉DBMS事务结束（或者rollback，abort回滚事务）</p>
+<ul>
+<li>abort有可能是事务本身发出的，也有可能是DBMS发出的</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h1><p><strong>atomicity</strong>（原子性）：<code>all or nothing</code></p>
+<ul>
+<li>事务要么都执行，要么都不执行</li>
+</ul>
+<p><strong>consistency</strong>（一致性）：<code>it looks correct to me</code></p>
+<ul>
+<li>比如说两个人的总账户金额为200，A给B转账100后，总金额发生了变化，那就失去了一致性</li>
+</ul>
+<p><strong>isolation</strong>（隔离性）：<code>as if alone</code></p>
+<ul>
+<li>理想的隔离性是指好像数据库中只有这一条事务在操作一样（我做的操作别人看不见，别人做的我也看不见）</li>
+<li>存在现实的妥协（不同业务场景有不同的隔离需求）</li>
+</ul>
+<p><strong>durability</strong>（持久性）：<code>survive failures</code></p>
+<ul>
+<li>事务提交后，它的更新应该是持久的，不能说一停电事务就更新失败了</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="Atomicity"><a href="#Atomicity" class="headerlink" title="Atomicity"></a>Atomicity</h2><p><code>All actions in the txn happen, or none happen</code></p>
+<p>事务只有两种结局：</p>
+<ul>
+<li>所有的SQL语句都执行完了，事务都提交了</li>
+<li>abort终止了，客户端或DBMS终止</li>
+</ul>
+<p>从业务者的角度来看：所有的SQL要么全部执行，要么一个都没有执行（DBMS对部分执行的事务进行回滚）</p>
+<p>而实现Atomicity有以下两种主流的方法：<code>shadow paging</code>和<code>logging</code></p>
+<br>
+
+<h3 id="shadow-paging"><a href="#shadow-paging" class="headerlink" title="shadow paging"></a>shadow paging</h3><p>事务需要对哪些页进行修改，就将哪些页备份出来</p>
+<p>事务如果commit的话，就将修改好的页替换</p>
+<p>如果abort的话，即需要回滚，就把一开始备份数据页替换回去</p>
+<p>PS：因为比较浪费空间，所以很少有数据库使用这种方法</p>
+<br>
+
+<h3 id="logging"><a href="#logging" class="headerlink" title="logging"></a>logging</h3><p>事务每执行一步，都需要记录将当前的操作先记录到日志上（即undo log）</p>
+<p>如果哪一步需要<strong>回滚</strong>，那就按照undo log，一步一步的将数据回滚，撤回数据</p>
+<p>日志的作用（优点）：</p>
+<ul>
+<li>维护事务的原子性（如果事务执行到一般被abort的话，就用日志来<strong>回滚</strong>当前的数据）</li>
+<li><strong>监控审计</strong>的作用，查看SQL语句到底对DB做了什么，监控的作用</li>
+<li><strong>提高运行的效率</strong>（提高性能），因为往往对数据的操作都是随机读写，如果io的性能不行的话，可以把要做的操作先写入日志，写日志是顺序写，效率高，后续在按照顺序把文件的操作一点一点的写入磁盘中，就不需要在当时让用户卡住，随机读写而造成效率低下</li>
+</ul>
+<p>PS：几乎每个DBMS都用它，是一种主流的实现方法</p>
+<br>
+
+<br>
+
+<h2 id="Consistency"><a href="#Consistency" class="headerlink" title="Consistency"></a>Consistency</h2><p><code>If each txn is consistent and the DB  starts consistent, then it ends up consistent</code></p>
+<p>逻辑上说得通的（make sense）</p>
+<p>一致性分为数据库（数据）一致性（后面发生的事务要能够看到前面发生事务的数据）和事务一致性</p>
+<ul>
+<li><strong>数据库一致性</strong>是ACID所保证的（ACID中的C是由AID共同保证的）<ul>
+<li>如果处理不当就会有写写冲突（用户的本意是好的，但在并发执行的时候不上锁，导致了错误）</li>
 </ul>
 </li>
-<li>问题就转化为如何用同一套代码能够将这两种情况都包含，或是说二者的共同点在哪儿</li>
-<li>思路：为什么会出现只走左&#x2F;右子树，是因为走左&#x2F;右子树只能得到小于等于0的结果；因此得到一个思路，在寻找最大路径和的时候，左子树给出的结果应该是<code>max(0,dfs(root -&gt; left))</code></li>
-<li>整体逻辑：设置全局变量maxn，设最开始的<code>maxn为root -&gt; val</code>（如果nullptr就返回0）</li>
-<li>分别对各个点进行左右遍历，得到<code>left = max(0, dfs(root -&gt; left))</code>和<code>right = max(0, dfs(root -&gt; right))</code></li>
-<li>然后，得到<code>max1 = left + right + root -&gt; val</code>，<code>maxn = max(max1, maxn)</code>，最后，当前函数需要返回<code>root -&gt; val + max(left, right)</code>（因为当前节点又会被上一层给调用）</li>
-<li>这种逐层递归的好处，是可以枚举每个节点遇到上述情况时候的取值，从而得到全体最大值</li>
-</ul>
-<p>236、二叉树的最近公共祖先</p>
-<ul>
-<li>先判断当前的节点是不是目标节点之一（或者是不是nullptr），如果是就直接返回</li>
-<li>否则就判断左边和右边，如果左边是空的，那就证明必然是右边，反之也是一样</li>
-<li>如果两边都不是空的话，就代表两个节点在当前节点的两侧，直接返回当前节点</li>
-</ul>
-<p>257、二叉树的所有路径（字符串+经典的dfs）</p>
-<p>572、另一棵树的子树（子树的定义）</p>
-<ul>
-<li>子树的定义：对于一个节点，二者都是null，ok；原树有、新树没有，或者原树没有，新树有，error</li>
-</ul>
-<p><strong>543</strong>、二叉树的直径</p>
-<ul>
-<li>二叉树的最长直径的两种情况<ul>
-<li>1、从当前节点出发，只走左子树或右子树</li>
-<li>2、从左子树的某一处出发，经过当前节点，然后到达右子树的某一处</li>
-</ul>
-</li>
-<li>和687，124都是一模一样的套路</li>
-</ul>
-<p>617、合并二叉树（DFS，需要注意空节点）</p>
-<p>653、两数之和 IV（输入BST）（剑指offerII 56 二叉搜索树中两个结点之和）：哈希表+前序遍历即可</p>
-<p>671、二叉树中第二小的节点（读题仔细，dfs解决，老套路了）</p>
-<p><strong>687</strong>、最长同值路径</p>
-<ul>
-<li>二叉树的最长同值路径的两种情况<ul>
-<li>第一种：从该点出发，只走左子树或右子树</li>
-<li>第二种：从左子树的某一处出发，经过该节点，然后到达右子树的某一处</li>
-</ul>
-</li>
-<li>和543，124都是一模一样的套路</li>
-<li>需要注意一点的是，要传入上一个结点的number，通过当前的root-&gt;val和number来判断要返回的是0还是其他的</li>
-</ul>
-<p>814、二叉树剪枝（自底向上的遍历，和之前一道题很像，忘了是那一道，后续看看）</p>
-<ul>
-<li>剑指offer II 047.二叉树剪枝（一模一样的）</li>
-</ul>
-<p>951、翻转等价二叉树（感觉和验证两个二叉树是否相等一样，都是比较左右节点的题目）</p>
-<p>剑指offer 26 树的子结构</p>
-<ul>
-<li>对于每个点都判断是否为目标二叉树</li>
-<li>一定要注意树的子结构和树的子树是不一样的：</li>
-<li>如果是子树，就必须要求两棵树上所有的结点都要能够对上（原树为空，目标树必须为空；原树有结点，目标树也得有结点）（目标树为空，原树必须也为空；目标书有节点，原树必须也有结点）</li>
-<li>如果是子结构，只要目标树有的原树都有，就行了（原树为空，目标树必须为空；原树有结点，目标树可以没有结点）（如果目标树为空，那么原来的树有没有结点都无所谓；如果目标树有结点，原树必须也有结点）</li>
-</ul>
-<br>
-
-<br>
-
-<br>
-
-
-<h1 id="层序遍历"><a href="#层序遍历" class="headerlink" title="层序遍历"></a>层序遍历</h1><h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>树的层序遍历，即广度优先搜索；或者在层序遍历的时候，添加一些其他的操作</li>
-</ul>
-<br>
-
-<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
-<li>建立一个queue，最开始将第一个root点放入队列，进行我们想要的操作（求最大值、平均值、最左边的数）</li>
-<li>注意此时一开始是用一个node记录此时的queue.front()，接着把这个点从队列中pop</li>
-<li>操作完后，就把该点的左右结点给放入队列中；递归循环上述操作</li>
-<li>踩坑：for循环中要用一个size记录初始队列的大小，因为随着后续的元素不断放入，size会改变的<ul>
-<li>或者从后往前遍历也是可以的</li>
-</ul>
-</li>
-</ul>
-<br>
-
-<h2 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h2><p>102、二叉树的层序遍历（层序遍历）</p>
-<p>103、二叉树的锯齿形层序遍历（层序遍历；根据深度反转数组）</p>
-<p>111、二叉树的最小深度（用层序遍历记录floor；也可以用递归求解）</p>
-<p>199、二叉树的右视图（层序遍历；每次只取最后一个数）</p>
-<p>222、完全二叉树的节点个数（层序遍历；遇到nullptr就break）</p>
-<p>429、N叉树的层序遍历（层序遍历）</p>
-<p>513、找树左下角的值（层序遍历，记录每次出现的第一个值）</p>
-<p>515、在每个树行中找最大值（层序遍历；记录行max）</p>
-<p>637、二叉树的层平均值（层序遍历；求avg）</p>
-<p>662、二叉树的最大宽度（用两个队列来实现层序遍历；或者用一个新的结构体Node，同时记录节点的val和节点的指针，放入左节点就是* 2，放入右节点就是 *2 + 1；最后注意防越界，用unsigned long long即可）</p>
-<p>958、二叉树的完全性检验（层序遍历；根据完全二叉树的性质，一旦遇到nullptr，后面就不应该有节点了，否则就不是完全二叉树；用一个flag来表示是否遇到了nullptr）</p>
-<p>1609、奇偶树（层序遍历；根据奇偶做不同的处理）</p>
-<p>面试题 04.03、 特定深度节点链表（层序遍历生成链表）</p>
-<p>剑指offer 32、从上到下打印二叉树（层序遍历）</p>
-<p>剑指offer II 044.二叉树每层的最大值</p>
-<p>剑指offer II 045.二叉树最底层最左边的值</p>
-<p>剑指offer II 046.二叉树的右侧视图</p>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="前中后序遍历"><a href="#前中后序遍历" class="headerlink" title="前中后序遍历"></a>前中后序遍历</h1><h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>需要对树进行根左右，左根右，左右根的遍历，并且在每次遍历的时候添加其他操作</li>
-</ul>
-<br>
-
-<h2 id="模板-1"><a href="#模板-1" class="headerlink" title="模板"></a>模板</h2><ul>
-<li>遍历一般有两种方式来实现，第一种是递归，第二种是用栈模拟递归（挖坑：第三种遍历mirror遍历不会）</li>
-</ul>
-<br>
-
-<h2 id="例题-2"><a href="#例题-2" class="headerlink" title="例题"></a>例题</h2><p>94、二叉树的中序遍历（递归&#x2F;非递归版）</p>
-<p>98、验证二叉搜索树</p>
-<ul>
-<li>这道题是用到了二叉搜索树的性质+中序遍历。即对于每棵树，根节点是大于左子树的节点的，右子树的节点是大于根节点的</li>
-<li>然后联想到中序遍历是左根右的，所以就一方面维护一个pre节点，另一方面左根右的遍历，走完左子树，pre就变为左子树中的最大值（即左子树的右子树其中一个值），和根节点比较；走完根节点，pre就变为根节点，和右子树的左子树的最小值（即右子树的左子树其中一个值）进行比较）</li>
-<li>这就是中序遍历的高深之处，始终维护着pre为一部分的最大值</li>
-<li>这道题的做法无非就是中序遍历的变种（第一种是每次遍历都维护前面一个节点，第二种是递归得到全部的数组，第三种是stack维护前一个节点）</li>
-</ul>
-<p>105、从前序遍历与中序遍历构造二叉树</p>
-<ul>
-<li>模板题</li>
-<li>关于右边界的问题，是否要取到右边界都是可以选择的，关键是你怎么写（我的做法中右边界是不可取值的）</li>
-</ul>
-<p>106、从中序遍历与后序遍历构造二叉树</p>
-<ul>
-<li>同105一样的思路，类似的题还有剑指 offer07</li>
-</ul>
-<p>144、二叉树的前序遍历（递归&#x2F;非递归版）</p>
-<p>145、二叉树的后序遍历（递归&#x2F;非递归版；非递归实现思路，后序遍历是左右根，那么就相当于是根右左反过来，所以只要求得根右左，反转后便是结果）</p>
-<p>589、N叉树的前序遍历（递归&#x2F;非递归版）</p>
-<p>590、N叉树的后序遍历（递归&#x2F;非递归版）</p>
-<p>872、叶子相似的树（非常巧妙地中序遍历输出叶子，然后对比）</p>
-<p>剑指 offer36（<strong>挖坑</strong>）</p>
-<p>原创题：二叉树的下一个节点（中序遍历；如果有右子树，就往右子树下面找，否则就往上找）</p>
-<br>
-
-<br>
-
-<br>
-
-
-<h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="思路-3"><a href="#思路-3" class="headerlink" title="思路"></a>思路</h2><ul>
-<li>二叉搜索树的性质：中序遍历得到的数组是依次递增的，右左根得到的数组是依次递减的，当前节点的数字是大于左边而小于右边的</li>
-</ul>
-<br>
-
-<h2 id="模板-2"><a href="#模板-2" class="headerlink" title="模板"></a>模板</h2><ul>
-<li>中序遍历或者是右左根遍历，都可以用递归或stack来实现</li>
-</ul>
-<br>
-
-<h2 id="例题-3"><a href="#例题-3" class="headerlink" title="例题"></a>例题</h2><p>95、不同的二叉搜索树 II（用递归分别求出左右两个子树，然后用两层循环嵌套生成二叉树）</p>
-<p>98、验证二叉搜索树（利用二叉搜索树的性质，中序遍历的递归和非递归版，或者把中序遍历一遍二叉树，然后逐个逐个看是否大于前一个）</p>
-<p>99、恢复二叉树（也是利用二叉树搜索树和中序遍历的性质，但是其中利用r1和r2的方法真的很绝，建议好好看看）</p>
-<p>108、将有序数组转换为二叉搜索树（经典传递数组和数组边界，然后递归）</p>
-<p>109、有序链表转换二叉搜索树（经典利用二叉搜索树的性质，取中间数作为节点，然后递归left和right）</p>
-<p>230、二叉搜索树中第k小的元素</p>
-<ul>
-<li>中序遍历，每次得到元素的时候修改k，当k为0的时候return</li>
-<li>或者dfs，本质上也是中序遍历</li>
-</ul>
-<p>235、二叉搜索树的最近公共祖先</p>
-<ul>
-<li>通过大小判断接下来遍历那一边的子树</li>
-</ul>
-<p>450、删除二叉树中的节点（非常经典的题目，既可以把左子树接到右子树的最左边的节点上，也可以把右子树接到左子树最右边的节点上）</p>
-<p>530、二叉搜索树的最小绝对差（二叉搜索树的性质，中序遍历）</p>
-<p>538、把二叉搜索树转换为累加树（1038.把二叉搜索树转换为累加树，剑指offer II 054.所有大于等于节点的值之和）</p>
-<ul>
-<li>这道题的思路很巧妙：用的是<strong>反向的中序遍历</strong>，先遍历右边，再处理root，最后遍历左边（其中还用了一个全局变量来维护右子节点的最大值）</li>
-<li>思路和实现上都比较简单，但是很难想到如此的巧妙</li>
-<li>而我的思路：<ul>
-<li>对于一个节点本身来说，右子节点是用来给自身赋值的，所以，如果能往右边走，当前的值就是右边，就继续递归下去</li>
-<li>如果不能，那就继承父类给的base（具体参考代码）</li>
-<li>而对于左节点，如果左节点不能走，那以本节点为根节点的树的最大值就是root-&gt;val</li>
-<li>如果能走，那就返回递归的左节点</li>
+<li>而<strong>事务一致性</strong>是依靠业务（SQL语句）保证的<ul>
+<li>比如说转账系统，A给B转账100，但是你的SQL写的却是给A减一百，给B加了150，事务的一致性就出问题了</li>
+<li>再比如说A+B&lt;100，那么我们的SQL处理A和B的时候，都要先读取A和B的值，然后在判断下一步如何处理数据（这些操作都是要写到SQL中的）</li>
 </ul>
 </li>
 </ul>
-<p>669、修建二叉搜索树（利用二叉搜索树的性质，如果当前的值小于low，就把左子树砍掉，返回右子树；如果当前的值大于high，就把右子树砍掉，返回左子树）</p>
-<p>701、二叉搜索树中的插入操作（二叉搜索树的性质）</p>
-<p>783、二叉搜索树节点最小距离（同上）</p>
-<p>897、递增顺序搜索树（利用二叉搜索树性质中序遍历建树）</p>
-<p>938、二叉搜索树的范围和（利用二叉搜索树性质）</p>
-<p>剑指offer 54、 二叉搜索树的第k大节点</p>
+<br>
+
+<p>如何判断数据库一致性：执行后的结果和串行化的结果是等效的</p>
+<p>正确的一致性：</p>
+<img src="\medias\15-Concurrency Control Theory\interleavint example_good.png" style="zoom:150%;">
+
+<br>
+
+<p>错误的一致性（有100块钱少算了利息）：</p>
+<img src="\medias\15-Concurrency Control Theory\interleavint example_bad.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Isolation"><a href="#Isolation" class="headerlink" title="Isolation"></a>Isolation</h2><p><code>Execution of one txn is isolated from that of other txns</code></p>
+<p>好像就只有一个人在使用数据库一样，别人提交的修改我也看不见，数据就和事务刚开始的时候一样</p>
+<p>当某个事务出现问题的时候，不能影响其他的事务（注意串行会影响性能）</p>
+<p>最理想的隔离性：别人的操作我都看不到</p>
+<p>为什么需要隔离性：</p>
 <ul>
-<li>非递归的做法（右左根依次遍历，得到便是依次递减的数列，同时更新k值，递减到0为止）</li>
-<li>递归的做法（递归实现右左根遍历）</li>
-<li>本质上就是倒过来的先序遍历</li>
+<li>写业务的时候方便（转账只考虑A和B的关系即可，不用考虑别的事情），为了能让用户更好更方便的实现它的业务</li>
+<li>即用户可不管这些其他的情况，专心于自身的业务；如果失败了，DBMS就会直接告诉你失败了，然后重新再做即可</li>
 </ul>
-<p>剑指offer 33、二叉搜索树的后序遍历</p>
+<p>所以需要设计一种协议，实际上让多个事务能够同时跑起来，但是又能够让用户感觉好像只有他自己的事务在跑一样</p>
+<p>也就是并发控制协议：决定用什么顺序让多个事务穿插的执行</p>
+<p>并发协议的两大流派：</p>
 <ul>
-<li><p>经典传递数组边界：（我的做法）</p>
+<li>pessimistic：悲观类，不让问题发生，在问题发生之前就让他停下来</li>
+<li>optimistic：乐观类，假设冲突是非常有限的，在真正出问题的地方回滚</li>
+</ul>
+<br>
+
+<p>思考：</p>
 <ul>
-<li><p>对于一个二叉搜索树的后序遍历来说，左右根，所以从最后一个结点往前会存在一部分B，使得B中所有的元素都大于根节点</p>
-<p>，剩下的部分A则存在所有的元素都小于根节点，由此可以调整数组的边界，使用递归可以实现判断</p>
+<li>从转账的例子发现有些事务的并发顺序是正确的，而有些是错误的，那DBMS如何知道事务是否正确呢？怎样给数据库设置一种算法，证明数据的正确性？</li>
+<li>解：如果一种并发执行的安排执行后是等效于串行化的话，就是正确的</li>
+</ul>
+<br>
+
+<h3 id="串行化（serial-schedule）"><a href="#串行化（serial-schedule）" class="headerlink" title="串行化（serial schedule）"></a>串行化（serial schedule）</h3><p>serial schedule（串行化执行，真串行）</p>
+<p>equivalent schedule（等效执行）</p>
+<ul>
+<li>如果两种执行的顺序的<strong>结果</strong>是等效的话，那就说明它们是等效的执行安排</li>
+</ul>
+<p>serializable schedule（可串行化，该执行顺序和真正的串行是等效执行）</p>
+<ul>
+<li>这种执行方式安排和真串行是等效的</li>
+<li>使用这种串行，既可以提高并发度，又可以给数据库的执行更多灵活性</li>
+</ul>
+<p>问题转化为如何证明某种执行顺序是可串行化的</p>
+<br>
+
+<h3 id="冲突的操作（conflicting-operations）"><a href="#冲突的操作（conflicting-operations）" class="headerlink" title="冲突的操作（conflicting operations）"></a>冲突的操作（conflicting operations）</h3><p>两个操作是冲突的意味着：</p>
+<ul>
+<li>操作是来自不同的事务</li>
+<li>两个操作都在操作同一个数据，并且其中一个操作是写</li>
+</ul>
+<br>
+
+<p>主要分为：读写冲突、写读冲突和写写冲突</p>
+<br>
+
+<p><strong>读写冲突</strong>（<strong>不可重复读</strong> unrepeatable read）</p>
+<img src="\medias\15-Concurrency Control Theory\read-write conflicts.png" style="zoom:150%;">
+
+<p>T1第一次读的数据是10，T2修改为19（事务B将数据修改后并提交了），T1第二次读的时候就变为了19，破坏了隔离性</p>
+<p>即对一个数据重复读，发现前后不一致</p>
+<p><strong>不可重复读</strong>侧重的是在当前事务中，对一个数据的重复读，数据发生了不同</p>
+<p>而这个不同是因为在当前事务的执行过程中，有其他的事务对数据进行了修改并<strong>提交</strong></p>
+<br>
+
+<p><strong>写读冲突</strong>（<strong>读未提交</strong> reading uncommited data <strong>脏读</strong> dirty reads）</p>
+<img src="\medias\15-Concurrency Control Theory\write-read conflicts.png" style="zoom:150%;">
+
+<p>T1修改了数据a（但是还没有提交事务），T2读取数据的时候读到的数据是T1修改过后的，读到了未提交的数据</p>
+<p>即读到了一个没有提交的值（如果T1发生了回滚，那么T2读到的就是一个脏数据）</p>
+<p>读未提交（脏读）侧重的是读到的是<strong>未提交</strong>的数据，即脏读读到的数据是还没有committed的</p>
+<br>
+
+<p><strong>写写冲突</strong>（overwriting uncommited data）</p>
+<img src="\medias\15-Concurrency Control Theory\write-write conflicts.png" style="zoom:150%;">
+
+<p>事务A写了数据a，事务B又写了数据a，导致事务A的操作被覆盖了</p>
+<p>导致数据的一致性遭到破坏（数据A和数据B的结果分别是两个不同的事务带来的），又叫做<strong>读偏斜</strong></p>
+<br>
+
+<p>另一种情况也会破坏数据的一致性，即有约束A+B&lt;&#x3D;100，A&#x3D;70，B&#x3D;20</p>
+<p>此时T1、T2都读到了A&#x3D;70，B&#x3D;20</p>
+<p>然后T1改为A&#x3D;75（从T1的角度来说没问题），T2改为B&#x3D;30（单从T2的角度来说没问题）</p>
+<p>可是数据的一致性约束就被破坏了</p>
+<p>又叫做<strong>写偏斜</strong></p>
+<br>
+
+<p>还有一种情况是：</p>
+<table>
+<thead>
+<tr>
+<th>sessionA</th>
+<th>sessionB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>begin  &#x2F;&#x2F;  开启事务</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>begin  &#x2F;&#x2F;  开启事务</td>
+</tr>
+<tr>
+<td>update user set username&#x3D;“张三” where id&#x3D;5;</td>
+<td></td>
+</tr>
+<tr>
+<td>commit  &#x2F;&#x2F;  提交事务</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>update user set username&#x3D;“李四” where id&#x3D;5;</td>
+</tr>
+<tr>
+<td></td>
+<td>ROllBACK;</td>
+</tr>
+</tbody></table>
+<p>此时的sessionB为了避免脏读，那么就会选择读原始数据</p>
+<p>可问题是如果sessionA提交了以后，sessionB发生了回滚</p>
+<p>数据就会被回滚到sessionAB之前的数据，那么sessionA的修改就被cover</p>
+<p>这种情况又叫作<strong>脏写</strong></p>
+<br>
+
+<p>写写冲突不仅会造成数据一致性的缺失，还可能会造成事务的cover</p>
+<p>PS：一切概念以15-445为准（比如啥写倾斜，读偏斜，都可以根据冲突进行分类）</p>
+<br>
+
+<p>串行化</p>
+<p><strong>基于冲突的串行化</strong>（conflict serializability），大多数DBMS都是基于此做的可串行化</p>
+<ul>
+<li>如果两个序列的事务是相同的，包含的事务是相同的，产生的冲突是一样的，便可认为是冲突等效</li>
+<li>还有一种等效，即移动SQL语句执行的时机，如果两个序列的结果依然等效的话</li>
+</ul>
+<p><strong>基于观察的串行化</strong>（view serializability），没有DBMS可以基于此做</p>
+<br>
+
+<p>总结：</p>
+<ul>
+<li>前面的三种冲突是不可以交换顺序的，因为交换顺序后，语义就发生了变化</li>
+<li>那就是说，除了上述的冲突外，其他的语句是可以交换顺序的，所以为了提高并发度，我们可以先给定一个串行化的操作，然后再排除掉上述的三种冲突以外的情况下，交换语句的顺序，以此获得更高的并发度</li>
+<li>所以优化的思路就是通过<strong>调整事务语句的顺序，获取串行化的同时，又能提高并发度</strong><ul>
+<li>这么说，不同的隔离级别本质上是根据场景分别解决不同的冲突问题</li>
+</ul>
 </li>
 </ul>
-</li>
-<li><p>正规的做法是：</p>
+<br>
+
+<h3 id="依赖图（dependency-graphs）"><a href="#依赖图（dependency-graphs）" class="headerlink" title="依赖图（dependency graphs）"></a>依赖图（dependency graphs）</h3><p>如果冲突之间形成的关系成环了，就不能转变为串行化，就代表当前的执行顺序不能等效为串行化执行</p>
+<p>比如事务A和事务B之间发生了写读冲突，就在事务A上画一条边到事务B上</p>
 <ul>
-<li><strong>埋坑</strong>（第二种做法确实看不懂….）</li>
+<li>这个边就是说一个操作一定要在另一个操作之前发生</li>
+<li>注意是先发生的事务指向后发生的事务</li>
 </ul>
-</li>
-</ul>
-<p>剑指offer 36、二叉搜索树与双向链表</p>
-<ul>
-<li>这道题背就完事了</li>
-<li>这道题需要好好的看一遍题解去思考消化</li>
-</ul>
-<p>面试题04.02、最小高度树（利用二叉搜索树性质，每次去数组中间的值作为节点的值）</p>
+<img src="\medias\15-Concurrency Control Theory\dependency graphs.png" style="zoom:150%;">
+
+<br>
+
+<p>如果几个事务的依赖图形成的图：</p>
+<p>出现了环，就代表永远无法通过滑动语句以实现串行化</p>
+<p>没有成环，就代表其是可串行化的，即最后的效果等价于串行化</p>
+<br>
+
+<h3 id="view-serializability"><a href="#view-serializability" class="headerlink" title="view serializability"></a>view serializability</h3><p>根据业务的需求，发现有些情况虽然是成环的，但还是可以等效串行化执行</p>
+<p>因此依赖图的做法，可能真的会误判一些隐藏的可串行化的情况</p>
+<p>所以view的可串行化范围是大于conflict的，但是编程无法实现</p>
+<p>即基于观察的串行化也是有效的，但是难以实现</p>
+<br>
+
+<p>view serializability 和 conflict serializability都没法做到完全识别出所有的可串行化，主要是因为数据库没法做到理解数据库的业务</p>
+<p>比如说下图，虽然依赖图成环了，但是数据A的结果，其实最后就是T3的结果，前面是否覆盖都不重要，所以它也是可串行化的：</p>
+<img src="\medias\15-Concurrency Control Theory\view serializability_01.png" style="zoom:150%;">
+
+<img src="\medias\15-Concurrency Control Theory\view serializability_02.png" style="zoom:150%;">
+
+<br>
+
+<p>基于conflict serializability画依赖图的做法是绝大部分的DBMS都在用的（主要是容易实现）</p>
+<p>当然也可以做一些优化，比如说都是只读的事务的话，就直接操作就好了</p>
+<br>
+
+<img src="\medias\15-Concurrency Control Theory\universe of schedules.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Durability"><a href="#Durability" class="headerlink" title="Durability"></a>Durability</h2><p><code>If a txn commits, its effects persist</code></p>
+<p>事务的持久性</p>
+<p>所有的事务的语句，都必须持久化到磁盘中，不存在事务只更新到一半的情况，也不能有部分事务数据留下来的（失败的数据）的情况</p>
+<p>主要通过logging（redo log）或shadow paging来实现的</p>
 <br>
 
 <br>
 
 <br>
 
-<h1 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h1><p>110、平衡二叉树（<strong>自底向上</strong>的思考，如果当前的树不是，那上面的树也不是了，就往上走即可）</p>
-<ul>
-<li>这里有个小trick，就是如果当前节点确定了不是平衡二叉树，那么就返回-1</li>
-</ul>
-<br>
-
-<br>
-
-<br>
-
-
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>96、不同的二叉搜索树（动态规划，每次都枚举左边可能有多少个，右边可能有多少个，然后相乘得到结果）</p>
-<p>112、路径总和（经典dfs，发现targetsum为0，并且是叶子节点，就返回）</p>
-<p>113、路径总和II（经典dfs，需要注意的就是每次放入元素后，在退出函数的时候要把元素pop_back；理解上就是，你左边走完了，当然要退回一步，然后让右边继续往下走）</p>
-<p>114、二叉树展开为链表（这里可以延伸一下变为中序遍历，变为后序遍历的时候该咋写）</p>
-<p>116、填充每个节点的下一个右侧节点指针</p>
-<ul>
-<li>对于每个点，用solve（dfs函数）不断的递归</li>
-</ul>
-<p>117、填充每个节点的下一个右侧节点指针II</p>
-<ul>
-<li>依次遍历每一层，然后记录每个点的前一个点nodepre，让nodepre的next指向自己，然后再把自己变为nodepre</li>
-</ul>
-<p>129、求根节点到叶节点数字之和（经典dfs）</p>
-<ul>
-<li>镜像：剑指offer II 049.从根节点到叶节点的路径数字之和</li>
-<li>可以选择用一个res记录总和，也可以每次都将相加后返回</li>
-</ul>
-<p>226、翻转二叉树（模拟）</p>
-<p>剑指offer27 二叉树的镜像</p>
-<ul>
-<li>可以使用一个节点来实现翻转</li>
-</ul>
-<p>404、左叶子之和</p>
-<ul>
-<li>方法一：用flag来判断是不是左节点</li>
-<li>方法二：对于每个节点，都判断他的左节点，然后相加</li>
-</ul>
-<p>543、二叉树的直径</p>
-<ul>
-<li>遍历每个节点，每次的最大值都是左值加上右值（最大值用全局变量来维护）</li>
-</ul>
-<p>863、二叉树中所有距离为 K 的结点</p>
-<ul>
-<li>用哈希表实现dfs，真的巧妙啊！！！！！</li>
-</ul>
-<p>993、二叉树的堂兄弟节点</p>
-<ul>
-<li>比较层数和父母即可</li>
-</ul>
-<p>剑指offer 34 二叉树中和为某一值得路径</p>
-<ul>
-<li>dfs+记录状态</li>
-</ul>
-<p>字节面试题：二叉树中任意两节点之间的最短路径（给定两点，求它们之间的最短路径）</p>
-<ul>
-<li>思路：先找到两个点的最近公共祖先，然后再用dfs就该祖先到两点距离，最后相加</li>
-</ul>
-<p>nowcoder经典笔试题</p>
-<ul>
-<li>找到二叉树中的最大搜索二叉子树</li>
-</ul>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>深搜 -&gt; dfs递归</li>
-<li>广搜 -&gt; 层序遍历队列</li>
-</ul>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p><strong>并发控制</strong>和<strong>恢复</strong>是数据库最重要的功能</p>
+<p>部分数据库是不支持事务，要么全部的操作全部转为可并发的，要么就是自己去判断有没有问题，要么就是在业务里面加锁</p>
+<p>谷歌著名论文设计spanner，很多新的数据库的思路，比如tidb等start up，都是出自这篇论文</p>
 
             </div>
             <hr />
@@ -816,47 +884,61 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/10/10/deep-into-dynamicprogming/">
+                <a href="/2022/11/26/cmu-15-445-15-concurrency-control-theory/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Deep into DynamicProgming">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="CMU 15-445 15-Concurrency Control Theory">
                         
-                        <span class="card-title">Deep into DynamicProgming</span>
+                        <span class="card-title">CMU 15-445 15-Concurrency Control Theory</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            路径问题（Path Problem）62、不同路径二维数组记录状态，通过滚动数组优化可以变为一维数组
-class Solution {
-public:
-    int uniquePaths(int m, int n) {
-        
+                            Motivation多个事务对于同一条数据进行修改
+
+可能会出现竞争、更新丢失的问题
+
+
+
+执行多条语句（事务）的时候机房发生断电，该如何处理
+
+持久化（durability）的问题，需要恢复（recovery）解决
+
+
+
+
+
+
+
+并发控制
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-10
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-26
+                            </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Algorithm/" target="_blank">
-                        <span class="chip bg-color">Algorithm</span>
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
                     </a>
                     
-                    <a href="/tags/DynamicProgming/" target="_blank">
-                        <span class="chip bg-color">DynamicProgming</span>
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
                     </a>
                     
                 </div>
@@ -870,25 +952,28 @@ public:
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/10/09/deep-into-sort/">
+                <a href="/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Deep into Sort">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="面试题之智力题">
                         
-                        <span class="card-title">Deep into Sort</span>
+                        <span class="card-title">面试题之智力题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            快速排序（QuickSort）代码实现递归版本（非稳定版）/*arr为需要排序的数组，left为左边界，right为右边界*/
-void quick_sort(vector&lt;int> &amp;arr, int left, int r
+                            三人三鬼过桥题目：
+有三个人跟三个鬼要过河，河上没桥，只有条小船
+船一次只能渡一个人和一个鬼，或者两个鬼，或者两个人
+无论在哪边岸上，只要是人比鬼少的情况下（比如：两鬼一人，三鬼两人，三鬼一人），人都会被鬼吃
+然而船又一定需要人或鬼操作才能
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-09
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-11
                             </span>
                         <span class="publish-author">
                             
@@ -898,12 +983,8 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Algorithm/" target="_blank">
-                        <span class="chip bg-color">Algorithm</span>
-                    </a>
-                    
-                    <a href="/tags/Sort/" target="_blank">
-                        <span class="chip bg-color">Sort</span>
+                    <a href="/tags/Interview-Problems/" target="_blank">
+                        <span class="chip bg-color">Interview Problems</span>
                     </a>
                     
                 </div>
