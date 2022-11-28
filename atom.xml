@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-26T19:50:52.414Z</updated>
+  <updated>2022-11-28T10:37:08.809Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>CMU 15-445 16-Two Phase Locking</title>
-    <link href="http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/"/>
-    <id>http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/</id>
-    <published>2022-11-26T19:11:43.000Z</published>
-    <updated>2022-11-26T19:50:52.414Z</updated>
+    <title>CMU 15-445 17-Timestamp Ordering Concurrency Control</title>
+    <link href="http://example.com/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/"/>
+    <id>http://example.com/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/</id>
+    <published>2022-11-28T10:13:25.000Z</published>
+    <updated>2022-11-28T10:37:08.809Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,33 @@
       
         
         
-          &lt;h1 id=&quot;Backround&quot;&gt;&lt;a href=&quot;#Backround&quot; class=&quot;headerlink&quot;
+          &lt;h1 id=&quot;Background&quot;&gt;&lt;a href=&quot;#Background&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CMU 15-445 16-Two Phase Locking</title>
+    <link href="http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/"/>
+    <id>http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/</id>
+    <published>2022-11-26T19:11:43.000Z</published>
+    <updated>2022-11-27T06:22:38.310Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Background&quot;&gt;&lt;a href=&quot;#Background&quot; class=&quot;headerlink&quot;
         
       
     

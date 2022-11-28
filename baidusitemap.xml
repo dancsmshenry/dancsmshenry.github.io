@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/</loc>
+    <lastmod>2022-11-28</lastmod>
+  </url>  <url>
     <loc>http://example.com/2022/11/27/cmu-15-445-16-two-phase-locking/</loc>
-    <lastmod>2022-11-26</lastmod>
+    <lastmod>2022-11-27</lastmod>
   </url>  <url>
     <loc>http://example.com/2022/10/24/the-google-file-system/</loc>
     <lastmod>2022-11-26</lastmod>
