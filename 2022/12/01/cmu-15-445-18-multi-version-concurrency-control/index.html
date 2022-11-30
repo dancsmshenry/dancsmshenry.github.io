@@ -1,0 +1,1327 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="CMU 15-445 18-Multi-Version Concurrency Control, dancsmshenry&#39;s blog">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="Multi-version concurrency control多版本并发控制协议（常常和2PL或TOO一起实现并发控制）
+对于DBMS中的每一个数据，都会去记录数据的所有版本（包括历史版本和当前版本）
+DBMS会维护当前所有数据对象的，">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMU 15-445 18-Multi-Version Concurrency Control | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/png" href="/roses.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/contact" class="waves-effect waves-light">
+            
+            <i class="fa fa-comments"></i>
+            
+            <span>留言板</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        <li>
+            <a href="/contact" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-comments"></i>
+                
+                留言板
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/dancsmshenry" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/dancsmshenry" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        CMU 15-445 18-Multi-Version Concurrency Control
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Database/" target="_blank">
+                            <span class="chip bg-color">Database</span>
+                        </a>
+                        
+                        <a href="/tags/CMU-15-445/" target="_blank">
+                            <span class="chip bg-color">CMU 15-445</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-01
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    13 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Multi-version-concurrency-control"><a href="#Multi-version-concurrency-control" class="headerlink" title="Multi-version concurrency control"></a>Multi-version concurrency control</h1><p>多版本并发控制协议（常常和2PL或TOO一起实现并发控制）</p>
+<p>对于DBMS中的每一个数据，都会去记录数据的所有版本（包括历史版本和当前版本）</p>
+<p>DBMS会维护当前所有数据对象的，所有历史版本和当前版本：</p>
+<ul>
+<li>当事务写入数据的时候，DBMS会创建该数据对象的一个新的版本</li>
+<li>当事务读入数据的时候，DBMS会读取当前事务启动时，该数据存在的最新版本</li>
+</ul>
+<br>
+
+<br>
+
+<p>为什么会有MVCC的思路？</p>
+<p>从写数据的角度考虑：</p>
+<ul>
+<li>在2PL中，写数据会加上写锁，这会导致其他的事务无法读取该数据</li>
+<li>但，有可能其他的事务只是需要<strong>读取一个历史版本的数据</strong>，那么只要给该事务提供一个原数据的副本，就可以使得两个事务并发执行</li>
+<li>从中发现，如果我们可以保留历史版本的数据，那么就可以提高并发度（因为不会阻塞读操作）</li>
+</ul>
+<br>
+
+<p>从读数据的角度考虑：</p>
+<ul>
+<li>在2PL中，读取数据会上读锁，这会导致其他的事务无法写入该数据</li>
+<li>但，其他的事务可能只是给原数据添加了一个新的版本，并没有覆盖原来的数据</li>
+<li>这样的话，读取数据的一方，可以继续读取原有版本的数据；写入数据的一方，可以继续写入新的版本的数据</li>
+</ul>
+<br>
+
+<br>
+
+<p>总结：</p>
+<p><strong>Writers do not block readers</strong>（留下当前数据的历史版本，从而事务的写操作就不会阻塞其他事务的读操作）</p>
+<p><strong>Readers do not block writers</strong>（读取数据的历史版本，写入数据变成为数据添加新的版本，从而读取数据不阻塞写入数据）</p>
+<p>Read-only txns can read a consistent <strong>snapshot</strong> without acquiring locks（只读的事务，相当于<strong>无锁</strong>的读取一个<strong>一致性</strong>的<strong>快照</strong>）</p>
+<ul>
+<li>可以理解为，当前事务对数据的读取，并不受数据库动态的影响</li>
+<li>读到的都是事务开始时的那个版本</li>
+</ul>
+<p>使用时间戳来记录当前数据的版本号</p>
+<p>同时方便DBMS的回滚（<code>time-travel</code>）</p>
+<ul>
+<li>比如说想要回滚到DBMS三分钟之前的时候的数据，直接指定版本号读取即可</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h1><p>版本链表中的begin表示该版本数据开始的时间，end表示该版本数据截止的时间（如果没有写的话，就代表是至今）</p>
+<p>同时，全局会维护一个<code>txn table</code>，用于互相查明事务的状态</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\txn status table.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Example1"><a href="#Example1" class="headerlink" title="Example1"></a>Example1</h2><p>T1读数据会检查当前的版本，发现此时版本为T0，因此就直接读取</p>
+<p>T2写数据，发现当前版本小于自身，因此在table中添加一条新的记录（该记录的begin为当前记录的版本号）</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_01.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>此后，T1又要读数据A，就得找到当前事务对应的版本（即历史版本）读取数据</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_02.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Example2"><a href="#Example2" class="headerlink" title="Example2"></a>Example2</h2><p>T1对数据A的读写、T2对数据A的写入，参考Example1（读历史版本，写入新版本）</p>
+<br>
+
+<p>T2对数据A的读取：</p>
+<p>此时T1的数据还没有提交，T2不能读取T1还未提交的数据（避免脏读）</p>
+<p>因此T2读取的是A0时刻的数据</p>
+<p>PS：可以看出来单单MVCC是无法实现可串行化的（因为可串行化中，T2读取到的应该是T1时刻修改后的数据，但MVCC读到的却是更早的数据）</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_03.png" style="zoom:150%;">
+
+<br>
+
+<p>T2对数据A的写入：</p>
+<p>此时T2要修改数据，发现T1有一个未提交的事务数据（即发现了一个未提交的新版本），所以会wait到T1结束，才能继续修改</p>
+<p>T1发生在T2之前，那么T2对数据写的版本必然是最终版本</p>
+<p>如果T2不阻塞，直接写了新版本的数据</p>
+<p>后续T1又重新写了一遍，逻辑上就会出现错误了</p>
+<p>所以T2必须要等到T1commit，才能给数据添加上新的版本</p>
+<br>
+
+<p>T1对数据A的读取：读取当前事务中上一次添加的版本A1时的数据</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_04.png" style="zoom:150%;">
+
+<br>
+
+<p>当T1事务commit以后，T2事务才可以继续往下写数据</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_05.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p><strong>Oracle的最高隔离级别快照隔离（snapshot隔离）</strong>，依靠的就是<strong>MVCC</strong></p>
+<p>只有<code>MVCC</code>的话，是无法实现可串行化的，所以一般都是结合其他方法实现并发的，比如说TO，OCC，2PL</p>
+<p>MVCC不仅仅是并发控制的手段，更是DBMS管理事务的手段</p>
+<p>几乎所有的DBMS都实现了MVCC</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_06.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Concurrenct-control-protocol"><a href="#Concurrenct-control-protocol" class="headerlink" title="Concurrenct control protocol"></a>Concurrenct control protocol</h1><p>MVCC常常和其他的并发控制协议结合在一起</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\concurrency control protocol.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+
+<h1 id="Version-storage"><a href="#Version-storage" class="headerlink" title="Version storage"></a>Version storage</h1><p>新老版本（不同版本）的数据是如何存储的</p>
+<p>DBMS会使用一个指针，接着建立一个链表记录每个版本的版本号</p>
+<br>
+
+<br>
+
+<h2 id="Append-only-storage"><a href="#Append-only-storage" class="headerlink" title="Append only storage"></a>Append only storage</h2><p>简单追加</p>
+<p>每次向DBMS中给数据追加新的版本，都相当于给数据表中追加了一条新的记录，通过指针将不同的版本记录链接起来，组成版本链</p>
+<p>所有数据的所有版本，都存放在同一个表（<code>Main Table</code>）里面</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\append-only storage.png" style="zoom:150%;">
+
+<br>
+
+<p>追加一个新的数据记录：</p>
+<p>首先要插入最新的数据记录</p>
+<p>接着找到此时除去当前记录外最新的版本，将该版本的指针指向这个新的数据记录</p>
+<br>
+
+<br>
+
+<p><code>Main table</code>中链表的两种实现思路</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\version chain ordering.png" style="zoom:150%;">
+
+<br>
+
+<p>第一种是将新的数据追加到链表后面（<code>Oldest-to-Newest</code>）</p>
+<ul>
+<li>生成新版本时，将老版本的指针指向新版本</li>
+<li>所以访问最新记录时，需要遍历老记录（造成读放大）</li>
+</ul>
+<p>第二种是将新的数据追加到链表前面（<code>Newest-to-Oldest</code>）</p>
+<ul>
+<li>生成新版本时，将新版本的指针指向老版本</li>
+<li>所以访问某个版本的记录时，需要从新记录开始遍历到指定版本</li>
+</ul>
+<img src="\medias\18-Multi-Version-Concurrency-Control\O2N and N2O.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Time-travel-storage"><a href="#Time-travel-storage" class="headerlink" title="Time-travel storage"></a>Time-travel storage</h2><img src="\medias\18-Multi-Version-Concurrency-Control\time-travel storage.png" style="zoom:150%;">
+
+<p>main table存储的是当前最新的数据，time-travel table存储的是历史的数据</p>
+<ul>
+<li>main table中的value是最新版本的数据，pointer则指向time-travel table上的历史数据，version是版本号</li>
+</ul>
+<br>
+
+<p>数据的写入：将老版本的数据复制到time-travel table中，将新版本数据写入main table中，同时调整指针指向（新版本的指针指向老版本）</p>
+<p>数据的回滚：通过main table中最新版本的指针，找到对应的历史版本</p>
+<br>
+
+<p>比如说，总共有十行记录</p>
+<p>那么main table就只有十行记录的最新版本，而time-travle table中就可能会存放很多的历史版本（这些历史版本都用链表连在一起）</p>
+<br>
+
+<p>time-travel也是append-only的存储方式，只是新老版本在不同的表空间中。这种方式有利于回收老版本记录，但同时产生了写放大</p>
+<br>
+
+<img src="\medias\18-Multi-Version-Concurrency-Control\time travel storage.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Delta-storage"><a href="#Delta-storage" class="headerlink" title="Delta storage"></a>Delta storage</h2><p>如果每次只修改了一点点数据，就要把整份数据都放到time-travel table中，那么无疑是一种浪费</p>
+<p>因此一种改进方案就是只存储增量，即存储数据的变化</p>
+<br>
+
+<p>main table存储原数据，delta storage segment存储每次修改的增量（具体修改了哪些部分）</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\delta storage.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>如果想读取历史版本，就要调用delta storage segment中的记录逐条回滚</p>
+<p>优点：可以节约历史版本大小</p>
+<p>缺点：查看历史版本（或回滚）复杂度高，即恢复（回滚）的时候需要逐步读delat storage segment（可以理解为用时间换取空间）</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\delta storage.jpg" style="zoom:150%;">
+
+<br>
+
+<p>PS：MySQL使用的就是这种方法，不过MySQL存储的是undo段</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Garbage-collection"><a href="#Garbage-collection" class="headerlink" title="Garbage collection"></a>Garbage collection</h1><p>背景：DBMS不可能无限存储历史的版本，所以要删除掉一些历史版本</p>
+<br>
+
+<p>垃圾回收的宗旨：</p>
+<ul>
+<li><p>如果任何活跃的事务都看不到这个版本（或是说不需要这个版本），那么这个版本就直接删掉了</p>
+<ul>
+<li><p>例如：有个事务的版本是1，但当前活跃事务的版本都是10以上的，那么事务1的版本就可以删除了</p>
+</li>
+<li><p>或者说，在快照隔离中，如果所有的事务都不需要它了，就要把它删掉</p>
+</li>
+</ul>
+</li>
+<li><p>如果一个事务发生了abort，就需要删除该版本</p>
+</li>
+</ul>
+<br>
+
+<p>需要考量的问题：</p>
+<ul>
+<li><p>如何发现这些版本</p>
+</li>
+<li><p>什么时候删掉历史版本</p>
+</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="Tuple-level"><a href="#Tuple-level" class="headerlink" title="Tuple level"></a>Tuple level</h2><p>以元组（行记录）为粒度（范围），清理过期记录</p>
+<p>遍历行记录，寻找哪些没有用的行记录</p>
+<br>
+
+<h3 id="background-vacuuming"><a href="#background-vacuuming" class="headerlink" title="background vacuuming"></a>background vacuuming</h3><p>开启一个后台线程对当前发生的事务和历史版本进行扫描对比，如果有数据的版本是小于当前所有的活跃事务的版本，就要清理掉</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\tuple-level gc.png" style="zoom:150%;">
+
+<br>
+
+<p>优化技巧：</p>
+<ul>
+<li>后台线程会对所有的数据进行扫描，浪费时间</li>
+<li>而如果当前的数据页被更新过了就标记一下，后续就扫描那些被标记过的数据页即可，而不是全表扫描</li>
+</ul>
+<br>
+
+<br>
+
+<h3 id="cooperative-cleaning"><a href="#cooperative-cleaning" class="headerlink" title="cooperative cleaning"></a>cooperative cleaning</h3><p>合作清理</p>
+<p>执行事务的语句在检索版本的时候</p>
+<p>同时查看一下有哪些版本是没有用的</p>
+<p>发现没有用的版本，就删除</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\tuple-level gc(cooperative cleaning).png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Transaction-level"><a href="#Transaction-level" class="headerlink" title="Transaction-level"></a>Transaction-level</h2><p>以事务为单位进行回收，清理旧事务的数据版本</p>
+<br>
+
+<img src="\medias\18-Multi-Version-Concurrency-Control\transaction-level gc.png" style="zoom:150%;">
+
+<p>每次修改数据时，同时记录修改数据之前的旧版本</p>
+<p>过一段时间后，DBMS决定多少版本号之前的事务都可以干掉了，那么就可以遍历事务，然后把数据的老版本给干掉</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Index-management"><a href="#Index-management" class="headerlink" title="Index management"></a>Index management</h1><p>研究在MVCC（多版本）下，如何对索引进行管理</p>
+<p>主键索引指向的是版本链表的第一个，并且一般是物理地址（比如说某个数据具体在哪一个page的哪一个slot）</p>
+<p>如果一个事务修改了主键的值，就要把数据先删除，后插入</p>
+<br>
+
+<p>比较麻烦的是辅助索引的处理，下图是辅助索引管理的两大流派：</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\index management.jpg" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Logical-pointers"><a href="#Logical-pointers" class="headerlink" title="Logical pointers"></a>Logical pointers</h2><p>键（<code>key</code>）存储的是被索引的那一列的数据</p>
+<p>值（<code>value</code>）记录的是逻辑地址（比如说记录的是主键的值，或者行id的值），即逻辑索引</p>
+<p>索引指向一个”中间指针”，即逻辑指针，这个中间指针再指向主表存储的元组的位置（某个页面的某个位置）</p>
+<br>
+
+<p>优点：</p>
+<ul>
+<li><p>如果数据发生了更新，那么只需要修改主键索引的地址（因为辅助索引指向的是主键索引的位置，不用批量修改辅助索引）</p>
+</li>
+<li><p>对于数据的写入比较友好：如果更新某条记录，则这条记录相关的所有索引都不需要更新，只需要更新”中间指针”指向新的元组的位置即可</p>
+</li>
+</ul>
+<br>
+
+<p>缺点：</p>
+<ul>
+<li>存在读放大问题，所有索引访问数据都需要先访问”中间指针”，再跳转到实际数据存储位置，即存在<strong>回表</strong>的过程</li>
+</ul>
+<img src="\medias\18-Multi-Version-Concurrency-Control\index pointers_02.png" style="zoom:150%;">
+
+<br>
+
+<p>PS：MySQL InnoDB就是使用逻辑指针的方式，所有索引都指向主键，通过主键再去访问真实的数据</p>
+<br>
+
+<br>
+
+<h2 id="Physical-pointers"><a href="#Physical-pointers" class="headerlink" title="Physical pointers"></a>Physical pointers</h2><p>键（<code>key</code>）存储的是被索引的那一列的数据</p>
+<p>值（<code>value</code>）记录的是物理索引（比如说某个数据具体在哪一个page的哪一个slot）</p>
+<br>
+
+<p>优点：</p>
+<ul>
+<li>对于读比较友好，索引指向元组的实际位置，直接就可以访问到元组，无需通过中间指针进行跳转（不需要回表）</li>
+</ul>
+<br>
+
+<p>缺点：</p>
+<ul>
+<li>如果辅助索引记录的是数据记录的物理地址，那么当有新的版本数据到来的时候，所有的辅助索引上数据记录都要修改（特别是在辅助索引数量很多的情况下，复杂度<code>upup</code>）</li>
+<li>因此不利于写，如果更新了某条记录的位置，则相关的索引都需要更新，造成写放大</li>
+</ul>
+<img src="\medias\18-Multi-Version-Concurrency-Control\index pointers_01.png" style="zoom:150%;">
+
+<br>
+
+<p>PS：PostgreSQL使用这种方式，所以更新记录时成本较高</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="MVCC-index"><a href="#MVCC-index" class="headerlink" title="MVCC index"></a>MVCC index</h1><p>DBMS的索引一般是不会保存数据的版本号的</p>
+<p>但MVCC有快照，因此索引需要保存冗余的数据（即冗余的键）</p>
+<p>即一个键，可能会指向多个值（多个版本）</p>
+<br>
+
+<p>为什么要存储冗余的数据？</p>
+<p>T1第一次读数据A</p>
+<p>T2修改了数据A后又删除了数据A</p>
+<p>T3在原来的位置插入了新的数据A</p>
+<p>问题是：T3插入数据的时候，形成了新的版本</p>
+<p>而因为T3认为此时没有数据，此时产生的新版本号是A1</p>
+<p>导致版本号出现了重复的情况，那么此时T1重复读取数据的时候，就会出现问题</p>
+<p>所以就需要存储冗余的键值，以此实现隔离级别（比如此时的数据A，需要维护T1指向的A1的版本和T3指向A1的版本）</p>
+<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC duplicate key problem.png" style="zoom:150%;">
+
+<br>
+
+<p>因此每个索引上需要维护多个版本的数据，更需要额外的逻辑去维护唯一约束等问题</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="MVCC-deletes"><a href="#MVCC-deletes" class="headerlink" title="MVCC deletes"></a>MVCC deletes</h1><p>DBMS一般不会在物理上将数据从数据库中删除</p>
+<p>只有当该数据的所有版本在逻辑上被删除（即逻辑上该数据的所有版本都没有用的时候），才会将数据真正删除</p>
+<p>因此，一般数据的删除都是指逻辑上的删除，而不是物理内存上的删除（需要保存历史版本，进行一些处理）</p>
+<p>所以，需要一些方法来查看数据是否在逻辑上被删除</p>
+<br>
+
+<br>
+
+<h2 id="Deleted-flag"><a href="#Deleted-flag" class="headerlink" title="Deleted flag"></a>Deleted flag</h2><p>在行记录上加上一个列，用于判断数据是否被删除</p>
+<br>
+
+<br>
+
+<h2 id="Tombstone-tuple"><a href="#Tombstone-tuple" class="headerlink" title="Tombstone tuple"></a>Tombstone tuple</h2><p>给这个行记录添加一个新的版本（是没有数据的），相当于是一个墓碑</p>
+<p>代表这个版本之前所有的版本，都是被删掉的</p>
+<p>而在这个墓碑之后新的版本，是正常添加的</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="MVCC-implementations"><a href="#MVCC-implementations" class="headerlink" title="MVCC implementations"></a>MVCC implementations</h1><img src="\medias\18-Multi-Version-Concurrency-Control\mvcc implementations.png" style="zoom:150%;">
+
+<p>比较core的部分：</p>
+<p>protocol（MVCC和什么手段结合）</p>
+<p>version storage（版本管理，版本存储的方案）</p>
+<p>garbage collection（垃圾回收）</p>
+<p>辅助索引（是logical还是physical的）</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>几乎所有的关系型数据库都实现了MVCC，但一般是搭配着其他的并发控制协议使用（比如2PL，OCC等）</p>
+<p>当然，也有部分NoSQL也在使用，比如RocksDB</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Thinking"><a href="#Thinking" class="headerlink" title="Thinking"></a>Thinking</h1><p>关于读写冲突（写读冲突，同理）</p>
+<ul>
+<li>普通2PL，因为有事务A先拿了读锁，以至于另一个事务B拿不了写锁，另一个事务B必须等到事务A放锁了以后，才能继续往下走拿到写锁</li>
+<li>而MVCC，事务A读不加锁，直接读，然后事务B写一个新的版本放入storage，接着如果事务A继续读的话，读历史版本即可</li>
+<li>由此可见2PL和MVCC都可以解决读写冲突，但MVCC没有锁，没有阻塞，提高了效率和并发度</li>
+</ul>
+<br>
+
+<p>而因为是用了类似TO的时间戳，MVCC也解决了写写冲突的问题</p>
+<br>
+
+<br>
+
+<p>现有的2PL、严格2PL + 间隙锁就可以实现很多的隔离级别，为什么还需要MVCC？</p>
+<ul>
+<li>我觉得使用MVCC可以提高并发度，一定程度的不阻塞读（依靠的是历史版本数据）</li>
+<li>2PL其实是可以实现的，但是会减损一些并发度，所以要使用MVCC（使得原本的范围变得宽松而合理一些）</li>
+<li>从另一个角度说，MVCC需要2PL，因为单靠MVCC无法实现可串行化（参考Example2）</li>
+</ul>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="CMU 15-445 18-Multi-Version Concurrency Control">
+                        
+                        <span class="card-title">CMU 15-445 18-Multi-Version Concurrency Control</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Multi-version concurrency control多版本并发控制协议（常常和2PL或TOO一起实现并发控制）
+对于DBMS中的每一个数据，都会去记录数据的所有版本（包括历史版本和当前版本）
+DBMS会维护当前所有数据对象的，
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-01
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="CMU 15-445 17-Timestamp Ordering Concurrency Control">
+                        
+                        <span class="card-title">CMU 15-445 17-Timestamp Ordering Concurrency Control</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Background并发控制的两个流派：悲观的2PL，乐观的OCC
+
+
+上一章讲到的2PL其实是一种悲观的并发控制协议
+它假设未来所有的事务都会发生竞争，所以在操作每一条SQL的时候都会提前加上锁
+即在问题发生之前解决问题，阻止问题的发生
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-11-28
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2019-2022 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">62.8k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://www.zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+
+
+
+
+<!-- 
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+    <a href="https://twitter.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

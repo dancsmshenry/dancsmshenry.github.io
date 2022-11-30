@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-28T10:37:08.809Z</updated>
+  <updated>2022-11-30T18:47:57.943Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CMU 15-445 18-Multi-Version Concurrency Control</title>
+    <link href="http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/"/>
+    <id>http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/</id>
+    <published>2022-11-30T18:38:24.000Z</published>
+    <updated>2022-11-30T18:47:57.943Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Multi-version-concurrency-control&quot;&gt;&lt;a href=&quot;#Multi-version-concurrency-control&quot; class=&quot;headerlink&quot; title=&quot;Multi-version concurrency
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
   
   <entry>
     <title>CMU 15-445 17-Timestamp Ordering Concurrency Control</title>

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/</loc>
+    
+    <lastmod>2022-11-30T18:47:57.943Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/</loc>
     
     <lastmod>2022-11-28T10:37:08.809Z</lastmod>
