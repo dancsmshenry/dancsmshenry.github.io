@@ -530,14 +530,14 @@ DBMS会维护当前所有数据对象的，">
 
 <h2 id="Example1"><a href="#Example1" class="headerlink" title="Example1"></a>Example1</h2><p>T1读数据会检查当前的版本，发现此时版本为T0，因此就直接读取</p>
 <p>T2写数据，发现当前版本小于自身，因此在table中添加一条新的记录（该记录的begin为当前记录的版本号）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_01.png" style="zoom:150%;">
+<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_01.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <p>此后，T1又要读数据A，就得找到当前事务对应的版本（即历史版本）读取数据</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_02.png" style="zoom:150%;">
+<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_02.png" style="zoom:150%;">
 
 <br>
 
@@ -550,7 +550,7 @@ DBMS会维护当前所有数据对象的，">
 <p>此时T1的数据还没有提交，T2不能读取T1还未提交的数据（避免脏读）</p>
 <p>因此T2读取的是A0时刻的数据</p>
 <p>PS：可以看出来单单MVCC是无法实现可串行化的（因为可串行化中，T2读取到的应该是T1时刻修改后的数据，但MVCC读到的却是更早的数据）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_03.png" style="zoom:150%;">
+<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_03.png" style="zoom:150%;">
 
 <br>
 
@@ -563,7 +563,7 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <p>T1对数据A的读取：读取当前事务中上一次添加的版本A1时的数据</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\MVCC-example_04.png" style="zoom:150%;">
+<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_04.png" style="zoom:150%;">
 
 <br>
 
