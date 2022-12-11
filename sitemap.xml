@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/12/12/cmu-15-445-19-database-logging/</loc>
+    
+    <lastmod>2022-12-11T17:42:50.284Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/</loc>
     
-    <lastmod>2022-11-30T18:52:53.939Z</lastmod>
+    <lastmod>2022-11-30T18:57:03.893Z</lastmod>
     
   </url>
   

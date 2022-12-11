@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-30T18:52:53.939Z</updated>
+  <updated>2022-12-11T17:42:50.284Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CMU 15-445 19-Database Logging</title>
+    <link href="http://example.com/2022/12/12/cmu-15-445-19-database-logging/"/>
+    <id>http://example.com/2022/12/12/cmu-15-445-19-database-logging/</id>
+    <published>2022-12-11T16:40:41.000Z</published>
+    <updated>2022-12-11T17:42:50.284Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Motivation&quot;&gt;&lt;a href=&quot;#Motivation&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CMU 15-445 18-Multi-Version Concurrency Control</title>
     <link href="http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/"/>
     <id>http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/</id>
     <published>2022-11-30T18:38:24.000Z</published>
-    <updated>2022-11-30T18:52:53.939Z</updated>
+    <updated>2022-11-30T18:57:03.893Z</updated>
     
     <summary type="html">
     
