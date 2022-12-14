@@ -304,7 +304,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -742,7 +742,7 @@
 
 <br>
 
-<h2 id="SQLITE-PRE-2010"><a href="#SQLITE-PRE-2010" class="headerlink" title="SQLITE(PRE-2010)"></a>SQLITE(PRE-2010)</h2><p>Sqlite就是使用shadow paging（Sqlite主要用在一些嵌入式的设备上，或是一些安卓、苹果等系统上）</p>
+<h2 id="SQLITE（PRE-2010）"><a href="#SQLITE（PRE-2010）" class="headerlink" title="SQLITE（PRE-2010）"></a>SQLITE（PRE-2010）</h2><p>Sqlite就是使用shadow paging（Sqlite主要用在一些嵌入式的设备上，或是一些安卓、苹果等系统上）</p>
 <br>
 
 <p>Sqlite的shadow paging的具体过程：</p>
@@ -966,21 +966,26 @@
 <br>
 
 <h1 id="Checkpoints"><a href="#Checkpoints" class="headerlink" title="Checkpoints"></a>Checkpoints</h1><p>背景：</p>
-<p>1、WAL如果不做一些其他的操作，日志就会无限增长，</p>
-<p>2、一旦DBMS发生崩溃，就需要逐条日志的去执行恢复，而日志太长则会耗费大量的时间</p>
+<p>1、WAL如果不做一些其他的操作，日志就会无限增长</p>
+<p>2、日志的不断增长，会导致DBMS一旦崩溃，在恢复的时候就需要读取大量的日志，极其耗费时间</p>
 <br>
 
 <br>
 
-<p>因此，DBMS会定期设置一个检查点（checkpoint），在检查点之前，将所有缓冲区的数据刷新到磁盘中</p>
-<p>即，在checkpoints之前的事务将被忽略</p>
-<p>会将checkpoint之前的日志全都给删除；崩溃恢复的时候从checkpoint的位置开始读取数据</p>
+<p>因此，DBMS会定期写下一个检查点（<strong>checkpoint</strong>）</p>
+<p>在这个检查点之前的日志和内存中的数据页，全部都会被写入磁盘</p>
+<p>那么当DBMS崩溃后，数据的恢复从checkpoint的位置开始恢复即可</p>
 <br>
 
 <br>
 
-<h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><p>当进行检查点时，我们必须暂停所有事务以确保快照的一致性（执行的所有操作都会停止；而暂停会导致吞吐下降）</p>
-<p>在恢复的时候，需要通过扫描日志，去寻找未提交的事务可能需要花费很长的时间</p>
+<h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><p>当写入检查点时，我们必须暂停所有事务以确保快照的一致性（所有的操作都会停止；而暂停会导致吞吐下降）</p>
+<br>
+
+<p>在崩溃恢复的时候，对于未提交的事务，要执行undo操作</p>
+<p>需要扫描过往日志，可能需要花费很长的时间</p>
+<br>
+
 <p>DBMS执行检查点的频率应该控制在什么范围内？（或者说数据库多长时间存档一次）</p>
 <ul>
 <li>太频繁会损耗性能</li>
@@ -1041,39 +1046,38 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/12/12/cmu-15-445-19-database-logging/">
+                <a href="/2022/12/15/cmu-15-445-20-database-recovery/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="CMU 15-445 19-Database Logging">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="CMU 15-445 20-Database Recovery">
                         
-                        <span class="card-title">CMU 15-445 19-Database Logging</span>
+                        <span class="card-title">CMU 15-445 20-Database Recovery</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Motivation从事务的角度来说，事务commit之后，使用者就会认为处理好的数据就被放到硬盘上了（并不管底层是如何实现的）
-但实际上，出于对性能的考量（硬盘和磁盘的访问速度有明显差距）
-实时修改的数据页是不会立刻写入到磁盘上的
-而是优
+                            Crash Recovery故障恢复算法是为了确保数据库一致性，事务的原子性和面对故障时数据的持久性的一种技术
+
+
+故障恢复算法主要分为两部分：
+第一部分：在正常的事务处理阶段添加一些操作，使得DBMS可以在故障发生时对数据进行恢复（防患于
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-12
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-15
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -1100,7 +1104,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="CMU 15-445 18-Multi-Version Concurrency Control">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="CMU 15-445 18-Multi-Version Concurrency Control">
                         
                         <span class="card-title">CMU 15-445 18-Multi-Version Concurrency Control</span>
                     </div>
@@ -1267,7 +1271,7 @@ DBMS会维护当前所有数据对象的，
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">67.8k</span>
+            <span class="white-color">73.4k</span>
             
 
             <br>

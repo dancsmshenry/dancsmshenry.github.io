@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-12-11T17:42:50.284Z</updated>
+  <updated>2022-12-14T18:08:23.377Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CMU 15-445 20-Database Recovery</title>
+    <link href="http://example.com/2022/12/15/cmu-15-445-20-database-recovery/"/>
+    <id>http://example.com/2022/12/15/cmu-15-445-20-database-recovery/</id>
+    <published>2022-12-14T17:56:07.000Z</published>
+    <updated>2022-12-14T18:08:23.377Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Crash-Recovery&quot;&gt;&lt;a href=&quot;#Crash-Recovery&quot; class=&quot;headerlink&quot; title=&quot;Crash Recovery&quot;&gt;&lt;/a&gt;Crash
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CMU 15-445 19-Database Logging</title>
     <link href="http://example.com/2022/12/12/cmu-15-445-19-database-logging/"/>
     <id>http://example.com/2022/12/12/cmu-15-445-19-database-logging/</id>
     <published>2022-12-11T16:40:41.000Z</published>
-    <updated>2022-12-11T17:42:50.284Z</updated>
+    <updated>2022-12-12T13:05:27.893Z</updated>
     
     <summary type="html">
     
@@ -495,32 +521,6 @@
       <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
     
       <category term="BinaryTree" scheme="http://example.com/tags/BinaryTree/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Deep into Sort</title>
-    <link href="http://example.com/2022/10/09/deep-into-sort/"/>
-    <id>http://example.com/2022/10/09/deep-into-sort/</id>
-    <published>2022-10-09T14:40:33.000Z</published>
-    <updated>2022-11-05T17:05:26.581Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;快速排序（QuickSort）&quot;&gt;&lt;a href=&quot;#快速排序（QuickSort）&quot; class=&quot;headerlink&quot; title=&quot;快速排序（QuickSort）&quot;&gt;&lt;/a&gt;快速排序（QuickSort）&lt;/h1&gt;&lt;h2 id=&quot;代码实现&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
-    
-      <category term="Sort" scheme="http://example.com/tags/Sort/"/>
     
   </entry>
   

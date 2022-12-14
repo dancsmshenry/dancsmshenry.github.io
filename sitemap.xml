@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/12/15/cmu-15-445-20-database-recovery/</loc>
+    
+    <lastmod>2022-12-14T18:08:23.377Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/12/12/cmu-15-445-19-database-logging/</loc>
     
-    <lastmod>2022-12-11T17:42:50.284Z</lastmod>
+    <lastmod>2022-12-12T13:05:27.893Z</lastmod>
     
   </url>
   
@@ -163,14 +170,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/archives/index.html</loc>
+    <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>http://example.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     
