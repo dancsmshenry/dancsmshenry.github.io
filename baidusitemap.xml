@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://example.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/</loc>
+    <lastmod>2022-12-19</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/</loc>
+    <lastmod>2022-12-19</lastmod>
+  </url>  <url>
+    <loc>http://example.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/</loc>
+    <lastmod>2022-12-19</lastmod>
+  </url>  <url>
     <loc>http://example.com/2022/12/15/cmu-15-445-20-database-recovery/</loc>
     <lastmod>2022-12-14</lastmod>
   </url>  <url>

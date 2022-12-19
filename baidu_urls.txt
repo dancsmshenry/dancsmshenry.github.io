@@ -1,3 +1,6 @@
+http://example.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/
+http://example.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/
+http://example.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/
 http://example.com/2022/12/15/cmu-15-445-20-database-recovery/
 http://example.com/2022/12/12/cmu-15-445-19-database-logging/
 http://example.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/

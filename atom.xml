@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-12-14T18:08:23.377Z</updated>
+  <updated>2022-12-19T13:30:46.079Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CMU 15-445 23-Distributed OLAP Databases</title>
+    <link href="http://example.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/"/>
+    <id>http://example.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/</id>
+    <published>2022-12-19T13:08:31.000Z</published>
+    <updated>2022-12-19T13:30:46.079Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Decision-support-systems&quot;&gt;&lt;a href=&quot;#Decision-support-systems&quot; class=&quot;headerlink&quot; title=&quot;Decision support systems&quot;&gt;&lt;/a&gt;Decision
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CMU 15-445 22-Distributed OLTP Databases</title>
+    <link href="http://example.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/"/>
+    <id>http://example.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/</id>
+    <published>2022-12-19T13:08:21.000Z</published>
+    <updated>2022-12-19T13:24:48.589Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;OLTP-vs-OLAP&quot;&gt;&lt;a href=&quot;#OLTP-vs-OLAP&quot; class=&quot;headerlink&quot; title=&quot;OLTP vs OLAP&quot;&gt;&lt;/a&gt;OLTP vs OLAP&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CMU 15-445 21-Introduction To Distributed Databases</title>
+    <link href="http://example.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/"/>
+    <id>http://example.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/</id>
+    <published>2022-12-19T13:07:48.000Z</published>
+    <updated>2022-12-19T13:17:58.480Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Parallel-vs-Distributed&quot;&gt;&lt;a href=&quot;#Parallel-vs-Distributed&quot; class=&quot;headerlink&quot; title=&quot;Parallel vs Distributed&quot;&gt;&lt;/a&gt;Parallel vs
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
   
   <entry>
     <title>CMU 15-445 20-Database Recovery</title>
@@ -443,84 +521,6 @@
       <category term="STL" scheme="http://example.com/tags/STL/"/>
     
       <category term="deque" scheme="http://example.com/tags/deque/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>STL源码剖析之vector</title>
-    <link href="http://example.com/2022/10/20/stl-yuan-ma-pou-xi-zhi-vector/"/>
-    <id>http://example.com/2022/10/20/stl-yuan-ma-pou-xi-zhi-vector/</id>
-    <published>2022-10-20T00:46:01.000Z</published>
-    <updated>2022-10-20T15:38:04.328Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;vector实现&quot;&gt;&lt;a href=&quot;#vector实现&quot; class=&quot;headerlink&quot; title=&quot;vector实现&quot;&gt;&lt;/a&gt;vector实现&lt;/h1&gt;&lt;p&gt;&lt;img
-        
-      
-    
-    </summary>
-    
-    
-      <category term="STL" scheme="http://example.com/tags/STL/"/>
-    
-      <category term="vector" scheme="http://example.com/tags/vector/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Deep into DynamicProgming</title>
-    <link href="http://example.com/2022/10/10/deep-into-dynamicprogming/"/>
-    <id>http://example.com/2022/10/10/deep-into-dynamicprogming/</id>
-    <published>2022-10-10T04:35:33.000Z</published>
-    <updated>2022-10-10T04:57:34.479Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;路径问题（Path-Problem）&quot;&gt;&lt;a href=&quot;#路径问题（Path-Problem）&quot; class=&quot;headerlink&quot; title=&quot;路径问题（Path Problem）&quot;&gt;&lt;/a&gt;路径问题（Path Problem）&lt;/h1&gt;&lt;h2
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
-    
-      <category term="DynamicProgming" scheme="http://example.com/tags/DynamicProgming/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Deep into BinaryTree</title>
-    <link href="http://example.com/2022/10/10/deep-into-binarytree/"/>
-    <id>http://example.com/2022/10/10/deep-into-binarytree/</id>
-    <published>2022-10-10T01:31:17.000Z</published>
-    <updated>2022-10-10T02:47:43.200Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;二叉树的基本性质&quot;&gt;&lt;a href=&quot;#二叉树的基本性质&quot; class=&quot;headerlink&quot; title=&quot;二叉树的基本性质&quot;&gt;&lt;/a&gt;二叉树的基本性质&lt;/h1&gt;&lt;h2 id=&quot;思路&quot;&gt;&lt;a href=&quot;#思路&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Algorithm" scheme="http://example.com/tags/Algorithm/"/>
-    
-      <category term="BinaryTree" scheme="http://example.com/tags/BinaryTree/"/>
     
   </entry>
   
