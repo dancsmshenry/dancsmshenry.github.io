@@ -1,3 +1,5 @@
+http://example.com/2022/12/26/cmu-15-445-10-join-algorithms/
+http://example.com/2022/12/26/cmu-15-445-09-sorting-aggregations/
 http://example.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/
 http://example.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/
 http://example.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/
