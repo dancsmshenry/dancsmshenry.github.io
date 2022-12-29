@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://example.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/</loc>
+    
+    <lastmod>2022-12-29T14:02:20.035Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/2022/12/29/cmu-15-445-11-query-execution-part-i/</loc>
+    
+    <lastmod>2022-12-29T13:58:57.335Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://example.com/2022/12/26/cmu-15-445-09-sorting-aggregations/</loc>
     
     <lastmod>2022-12-26T14:16:26.935Z</lastmod>
@@ -205,13 +219,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
-    
-    <lastmod>2022-10-06T16:37:29.873Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://example.com/about/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
@@ -220,6 +227,13 @@
   
   <url>
     <loc>http://example.com/archives/index.html</loc>
+    
+    <lastmod>2022-10-06T16:37:29.873Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://example.com/categories/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     

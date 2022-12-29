@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-12-26T14:14:14.244Z</updated>
+  <updated>2022-12-29T14:02:20.035Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CMU 15-445 12-Query Execution Part II</title>
+    <link href="http://example.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/"/>
+    <id>http://example.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/</id>
+    <published>2022-12-29T13:53:43.000Z</published>
+    <updated>2022-12-29T14:02:20.035Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Why-care-about-parallel-execution&quot;&gt;&lt;a href=&quot;#Why-care-about-parallel-execution&quot; class=&quot;headerlink&quot; title=&quot;Why care about parallel
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CMU 15-445 11-Query Execution Part I</title>
+    <link href="http://example.com/2022/12/29/cmu-15-445-11-query-execution-part-i/"/>
+    <id>http://example.com/2022/12/29/cmu-15-445-11-query-execution-part-i/</id>
+    <published>2022-12-29T13:53:35.000Z</published>
+    <updated>2022-12-29T13:58:57.335Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Processing-model&quot;&gt;&lt;a href=&quot;#Processing-model&quot; class=&quot;headerlink&quot; title=&quot;Processing model&quot;&gt;&lt;/a&gt;Processing
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Database" scheme="http://example.com/tags/Database/"/>
+    
+      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
+    
+  </entry>
   
   <entry>
     <title>CMU 15-445 10-Join Algorithms</title>
@@ -464,56 +516,6 @@
         
         
           &lt;h1 id=&quot;backround&quot;&gt;&lt;a href=&quot;#backround&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="CPP" scheme="http://example.com/tags/CPP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MapReduce: Simplified Data Processing on Large Clusters</title>
-    <link href="http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/"/>
-    <id>http://example.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</id>
-    <published>2022-10-23T02:43:04.000Z</published>
-    <updated>2022-11-26T19:47:04.570Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;mapreduce的背景&quot;&gt;&lt;a href=&quot;#mapreduce的背景&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Paper" scheme="http://example.com/tags/Paper/"/>
-    
-      <category term="Distributed" scheme="http://example.com/tags/Distributed/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深入理解CPP之auto,decltype,move,forward</title>
-    <link href="http://example.com/2022/10/22/shen-ru-li-jie-cpp-zhi-auto-decltype-move-forward/"/>
-    <id>http://example.com/2022/10/22/shen-ru-li-jie-cpp-zhi-auto-decltype-move-forward/</id>
-    <published>2022-10-22T05:50:52.000Z</published>
-    <updated>2022-10-22T14:35:48.773Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;left-value&quot;&gt;&lt;a href=&quot;#left-value&quot; class=&quot;headerlink&quot; title=&quot;left value&quot;&gt;&lt;/a&gt;left value&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot;
         
       
     
