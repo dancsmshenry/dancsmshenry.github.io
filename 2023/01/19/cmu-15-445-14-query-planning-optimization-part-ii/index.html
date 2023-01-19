@@ -525,13 +525,13 @@ Cost model components代价估算的三">
 
 <br>
 
-<h2 id="NR，V（A-R），SC（A-R）"><a href="#NR，V（A-R），SC（A-R）" class="headerlink" title="NR，V（A,R），SC（A,R）"></a>N<sub>R</sub>，V（A,R），SC（A,R）</h2><p>R：数据表的表名</p>
+<h2 id="NR，V（A-R），SC（A-R）"><a href="#NR，V（A-R），SC（A-R）" class="headerlink" title="NR，V（A,R），SC（A,R）"></a>NR，V（A,R），SC（A,R）</h2><p>R：数据表的表名</p>
 <p>A：数据表的某一列的列名</p>
-<p>N<sub>R</sub>：当前的数据表中有多少条数据</p>
+<p>NR：当前的数据表中有多少条数据</p>
 <p>V（A,R）：在当前数据表R的某一列A中，有多少个不同类型的值（比如性别一列，就只有男或女，这两种值）</p>
 <p>SC（A,R）（全称：selection cardinality）：对于当前的选取方式，选取的基数是多少</p>
 <ul>
-<li><p>计算公式：N<sub>R</sub>&#x2F;V（A,R）（计算的前提：是数据为平均、均匀分布的）</p>
+<li><p>计算公式：NR&#x2F;V（A,R）（计算的前提：是数据为平均、均匀分布的）</p>
 </li>
 <li><p>在当前的选取方法中，平均每次选取能够得到多少个值</p>
 </li>
@@ -578,10 +578,10 @@ Cost model components代价估算的三">
 
 <br>
 
-<h2 id="Equality-predicates"><a href="#Equality-predicates" class="headerlink" title="Equality predicates"></a>Equality predicates</h2><p>针对相等谓词，此时的计算公式是SC（P）&#x2F;N<sub>R</sub></p>
+<h2 id="Equality-predicates"><a href="#Equality-predicates" class="headerlink" title="Equality predicates"></a>Equality predicates</h2><p>针对相等谓词，此时的计算公式是SC（P）&#x2F;NR</p>
 <ul>
 <li>针对当前给定的谓词组合P，在当前数据表中平均能够找到SC（P）个</li>
-<li>而总共有N<sub>R</sub>个数据，因此相等谓词的选择率便是SC（P）&#x2F;N<sub>R</sub></li>
+<li>而总共有NR个数据，因此相等谓词的选择率便是SC（P）&#x2F;NR</li>
 </ul>
 <img src="\medias\14-Query-Planning-Optimization-Part-II\equality predicate.png" style="zoom:150%;">
 
@@ -632,9 +632,9 @@ Cost model components代价估算的三">
 
 <p>因此，为了研究这个问题，假设内表中所有的数据都能够和外表进行匹配</p>
 <p>为了两个表join后得到的数据量是多少，给出以下的计算模型：</p>
-<p>N<sub>R</sub>是指R表的数据量</p>
+<p>NR是指R表的数据量</p>
 <p>N<sub>S</sub>&#x2F;V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给出多少个数据</p>
-<p>二者相乘，就代表对于N<sub>R</sub>来说，每个数据都能在S表中匹配上，而每个匹配上的数据，在S表中有SC（A,S）条</p>
+<p>二者相乘，就代表对于NR来说，每个数据都能在S表中匹配上，而每个匹配上的数据，在S表中有SC（A,S）条</p>
 <p>二者相乘之后，得到的结果就是两表join后的总结果的数量</p>
 <br>
 
