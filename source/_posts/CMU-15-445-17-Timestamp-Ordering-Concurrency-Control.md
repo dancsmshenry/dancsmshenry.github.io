@@ -32,7 +32,7 @@ categories:
 
 而另一种**乐观**的并发控制协议，便是本章说的基于时间戳顺序的并发控制协议
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\2PL and TOO.png" style="zoom:150%;" />
+<img src="2PL and TOO.png" style="zoom:150%;" />
 
 <br/>
 
@@ -44,7 +44,7 @@ categories:
 
 如果`Ti`的时间戳小于`Tj`的时间戳，那么DBMS要保证，相当于`Ti`完全先发生，`Tj`完全后发生
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\TO_01.png" style="zoom:150%;" />
+<img src="TO_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -86,7 +86,7 @@ categories:
 
 主要的宗旨：**不能操作来自未来的数据**
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO.png" style="zoom:150%;" />
+<img src="Basic TO.png" style="zoom:150%;" />
 
 <br/>
 
@@ -104,7 +104,7 @@ categories:
 - 紧接着就是更新该数据的读时间戳（变为`max（当前事务的时间戳，当前数据的读时间戳）`）
 - 最后还需要将读到的数据，拷贝一个副本到本地（因为这个数据，后面可能会被其他的事务修改了，为了读到正确的版本，需要留一份备份；以便后续读数据的时候，读到的是本地的快照）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO READS.png" style="zoom:150%;" />
+<img src="Basic TO READS.png" style="zoom:150%;" />
 
 <br/>
 
@@ -123,7 +123,7 @@ categories:
 - 并且还要将操作后的数据备份到本地，以便后续重复读取
 - 换句话说，这个数据所有的操作都发生在过去，当前事务才可以继续操作
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO WRITES.png" style="zoom:150%;" />
+<img src="Basic TO WRITES.png" style="zoom:150%;" />
 
 <br/>
 
@@ -144,7 +144,7 @@ TO在写数据时的一个优化规则：
 - 所以可以将本次的数据写成一个副本到本地（方便当前事务中，后面的语句重复读取），而不是写到具体的数据库上
 - 然后继续往下执行（反正这里未来会被覆盖掉）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Thomas write rule.png" style="zoom:150%;" />
+<img src="Thomas write rule.png" style="zoom:150%;" />
 
 <br/>
 
@@ -152,7 +152,7 @@ TO在写数据时的一个优化规则：
 
 ## Recoverable schedules
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Recoverable Schedules_01.png" style="zoom:150%;" />
+<img src="Recoverable Schedules_01.png" style="zoom:150%;" />
 
 使用TO，存在的一个问题是：后续事务读取的数据，**默认是前面的事务已经提交了的**
 
@@ -164,7 +164,7 @@ TO在写数据时的一个优化规则：
 
 即`basic top`，是无法恢复的（比如下图）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Recoverable Schedules_02.png" style="zoom:150%;" />
+<img src="Recoverable Schedules_02.png" style="zoom:150%;" />
 
 
 
@@ -196,7 +196,7 @@ TO在写数据时的一个优化规则：
 
 造成该事务只能被迫的不断地abort（而重启后执行地代价又很大）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO_01.png" style="zoom:150%;" />
+<img src="Basic TO_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -206,7 +206,7 @@ TO在写数据时的一个优化规则：
 
 如果当前的事务比较短，事务的竞争比较少，那么无锁的方法是最好的
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\TO_Observation.png" style="zoom: 150%;" />
+<img src="TO_Observation.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -289,7 +289,7 @@ PS：**在进入校验阶段的时候，才会获取到具体的时间戳**（�
 
 因此，如果发生了冲突，这里可以灵活的选择是abort当前事务，还是哪些还在进行的事务（因为这两个事务都没有commit）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation.png" style="zoom:150%;" />
+<img src="forward validation.png" style="zoom:150%;" />
 
 <br/>
 
@@ -299,7 +299,7 @@ PS：**在进入校验阶段的时候，才会获取到具体的时间戳**（�
 
 **情况一**：两个事务的执行步骤就是串行化执行的，那么校验阶段就不存在数据可以校验
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation_step_01.png" style="zoom:150%;" />
+<img src="forward validation_step_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -315,7 +315,7 @@ PS：**在进入校验阶段的时候，才会获取到具体的时间戳**（�
 
 T1就需要被迫abort（因为这不符合串行化的规则）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation_step_02.png" style="zoom:150%;" />
+<img src="forward validation_step_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -325,7 +325,7 @@ T1就需要被迫abort（因为这不符合串行化的规则）
 
 在这种情况下，T1的validation阶段是安全的，因为它保证了T2读取的数据，要么是没被T1操作过的数据，要么是已经被T1操作完提交了的数据
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation_step_03.png" style="zoom:150%;" />
+<img src="forward validation_step_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -376,11 +376,11 @@ Abort的成本会比2PL的更大（2PL有死锁预防和检测，但是OCC是在
 
 参考全局锁到分段锁的优化，OCC也可以将数据库分为若干个不相交的子集（可以水平分区，也可以垂直分区）
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\partition-based_01.jpg" style="zoom: 67%;" />
+<img src="partition-based_01.jpg" style="zoom: 67%;" />
 
 在各个partition上执行OCC，并且不同partition上的事务之间不需要检查冲突
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\partition-based_02.jpg" style="zoom: 50%;" />
+<img src="partition-based_02.jpg" style="zoom: 50%;" />
 
 <br/>
 
@@ -448,7 +448,7 @@ DBMS会在内核维护一个缓冲区，用来记录数据的变更（以便事�
 
 可以理解为第二次读取到了，第一次读取时数据库中不存在的数据
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\the phantom problem_01.png" style="zoom:150%;" />
+<img src="the phantom problem_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -490,7 +490,7 @@ Approach 2：**predicate locking**（谓词锁）
 
 比如下图，WHERE上加了共享锁，那么后续INSERT要加独享锁就会阻塞
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\predicate locking.png" style="zoom:150%;" />
+<img src="predicate locking.png" style="zoom:150%;" />
 
 <br/>
 
@@ -558,7 +558,7 @@ MySQL将数据和数据之间的间隙也认为是数据，例如max的查询中
 
 PS：并不是只有这四种隔离级别，比如Oracle的最高隔离级别是**快照隔离**
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Isolation levels_06.png" style="zoom:150%;" />
+<img src="Isolation levels_06.png" style="zoom:150%;" />
 
 <br/>
 
@@ -566,7 +566,7 @@ PS：并不是只有这四种隔离级别，比如Oracle的最高隔离级别是
 
 **不同隔离级别的实现**
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Isolation levels_07.png" style="zoom:150%;" />
+<img src="Isolation levels_07.png" style="zoom:150%;" />
 
 <br/>
 
@@ -584,7 +584,7 @@ PS：并不是只有这四种隔离级别，比如Oracle的最高隔离级别是
 
 **不同数据库对隔离级别的支持**
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Isolation levels_08.png" style="zoom:150%;" />
+<img src="Isolation levels_08.png" style="zoom:150%;" />
 
 <br/>
 
@@ -594,7 +594,7 @@ PS：并不是只有这四种隔离级别，比如Oracle的最高隔离级别是
 
 实际工作中对隔离级别的需求：
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\database admin survey.png" style="zoom:150%;" />
+<img src="database admin survey.png" style="zoom:150%;" />
 
 <br/>
 
@@ -604,7 +604,7 @@ PS：并不是只有这四种隔离级别，比如Oracle的最高隔离级别是
 
 可以通过语句指定当前需要的隔离级别
 
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\SQL-92 access modes.png" style="zoom:150%;" />
+<img src="SQL-92 access modes.png" style="zoom:150%;" />
 
 <br/>
 

@@ -28,7 +28,7 @@ categories:
 
 4、任一节点到NULL（树尾端）的任何路径，所含的黑色节点数必须相同
 
-![](/medias/STL源码剖析之map/RB-tree.png)
+![](RB-tree.png)
 
 <br/>
 
@@ -44,7 +44,7 @@ to do part
 
 `_rb_tree_node`继承了`_rb_tree_node_base`，同时存放`value_field`节点值
 
-![](/medias/STL源码剖析之map/RB-tree的节点设计.png)
+![](RB-tree的节点设计.png)
 
 <br/>
 
@@ -54,7 +54,7 @@ to do part
 
 `_rb_tree_itreator`继承了`_rb_tree_base_itreator`，同时重载了`*，->，++，--`等运算符
 
-![](/medias/STL源码剖析之map/RB-tree的迭代器设计.png)
+![](RB-tree的迭代器设计.png)
 
 `RB-tree`的迭代器属于双向迭代器，但不具备随机定位能力
 
@@ -62,7 +62,7 @@ to do part
 
 ## RB-tree的数据结构
 
-![](/medias/STL源码剖析之map/RB-tree的数据结构.png)
+![](RB-tree的数据结构.png)
 
 <br/>
 
@@ -82,7 +82,7 @@ to do part
 
 `pair`的第一个元素被视为键值，第二元素被视为实值
 
-![](/medias/STL源码剖析之map/map中pair的设计.png)
+![](map中pair的设计.png)
 
 `map`不允许两个元素拥有相同的键值
 
@@ -102,7 +102,7 @@ map的iterators只能修改pair的实值，不能修改其键值
 
 ## 源码
 
-![](/medias/STL源码剖析之map/map的数据结构.png)
+![](map的数据结构.png)
 
 <br/>
 
@@ -227,7 +227,7 @@ hashtable的迭代器只提供前进操作，不提供后退操作
 
 什么时候扩容：当向容器添加元素的时候，会判断当前容器的元素个数，如果大于等于阈值---即当 前数组的长度乘以加载因子的值的时候，就要自动扩容啦
 
-![](/medias/STL源码剖析之map/拉链法实现hashtable.png)
+![](拉链法实现hashtable.png)
 
 unordered_map是基于**hash_table**实现，一般是由一个大vector，vector元素节点可挂接链表来解决冲突来实现。hash_table最大的优点，就是把数据的存储和查找消耗的时间大大降低，几乎可以看成是常数时间；而代价仅仅是消耗比较多的内存。然而在当前可利用内存越来越多的情况下，用空间换时间的做法是值得的
 
@@ -245,7 +245,7 @@ hash_table节点的定义
 
 ## 迭代器
 
-![](/medias/STL源码剖析之map/hashtable的迭代器.png)
+![](hashtable的迭代器.png)
 
 hashtable的迭代器没有后退操作，hashtable也没有定义所谓的逆向迭代器
 
@@ -253,9 +253,9 @@ hashtable的迭代器没有后退操作，hashtable也没有定义所谓的逆�
 
 ## 源码
 
-![](/medias/STL源码剖析之map/hashtable的数据结构.png)
+![](hashtable的数据结构.png)
 
-![](/medias/STL源码剖析之map/hashtable的节点数.png)
+![](hashtable的节点数.png)
 
 <br/>
 
@@ -319,7 +319,7 @@ int main() {
 
 # multimap
 
-<img src="/medias/STL源码剖析之map/multimap.png" style="zoom:150%;" />
+<img src="multimap.png" style="zoom:150%;" />
 
 <br/>
 

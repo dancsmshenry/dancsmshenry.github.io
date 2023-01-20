@@ -32,7 +32,7 @@ categories:
 
 <br/>
 
-<img src="\medias\15-Concurrency Control Theory\concurrencycontrol_motivation.png" style="zoom:150%;" />
+<img src="concurrencycontrol_motivation.png" style="zoom:150%;" />
 
 <br/>
 
@@ -48,7 +48,7 @@ categories:
 
 定义：**事务**是执行一系列操作（SQL语句），以达到一个高级的功能（比如说通过SQL语句对账户的余额增减，以实现转账的功能）
 
-<img src="\medias\15-Concurrency Control Theory\transactions.png" style="zoom:150%;" />
+<img src="transactions.png" style="zoom:150%;" />
 
 <br/>
 
@@ -204,13 +204,13 @@ PS：几乎每个DBMS都用它，是一种主流的实现方法
 
 正确的一致性：
 
-<img src="\medias\15-Concurrency Control Theory\interleavint example_good.png" style="zoom:150%;" />
+<img src="interleavint example_good.png" style="zoom:150%;" />
 
 <br/>
 
 错误的一致性（有100块钱少算了利息）：
 
-<img src="\medias\15-Concurrency Control Theory\interleavint example_bad.png" style="zoom:150%;" />
+<img src="interleavint example_bad.png" style="zoom:150%;" />
 
 <br/>
 
@@ -283,7 +283,7 @@ serializable schedule（可串行化，该执行顺序和真正的串行是等�
 
 **读写冲突**（**不可重复读** unrepeatable read）
 
-<img src="\medias\15-Concurrency Control Theory\read-write conflicts.png" style="zoom:150%;" />
+<img src="read-write conflicts.png" style="zoom:150%;" />
 
 T1第一次读的数据是10，T2修改为19（事务B将数据修改后并提交了），T1第二次读的时候就变为了19，破坏了隔离性
 
@@ -299,7 +299,7 @@ T1第一次读的数据是10，T2修改为19（事务B将数据修改后并提�
 
 **写读冲突**（**读未提交** reading uncommited data **脏读** dirty reads）
 
-<img src="\medias\15-Concurrency Control Theory\write-read conflicts.png" style="zoom:150%;" />
+<img src="write-read conflicts.png" style="zoom:150%;" />
 
 T1修改了数据a（但是还没有提交事务），T2读取数据的时候读到的数据是T1修改过后的，读到了未提交的数据
 
@@ -313,7 +313,7 @@ T1修改了数据a（但是还没有提交事务），T2读取数据的时候读
 
 **写写冲突**（overwriting uncommited data）
 
-<img src="\medias\15-Concurrency Control Theory\write-write conflicts.png" style="zoom:150%;" />
+<img src="write-write conflicts.png" style="zoom:150%;" />
 
 T1写了数据a，T2又写了数据a，导致T1的操作被覆盖了
 
@@ -329,7 +329,7 @@ T1在T2提交后读Y发现余额为100，那么它们总和变成了150
 
 最终导致T1读数据的结果违反数据的一致性，又叫做**读偏斜**（read skew）
 
-<img src="\medias\15-Concurrency Control Theory\write-write conflicts_01.jpg" style="zoom:150%;" />
+<img src="write-write conflicts_01.jpg" style="zoom:150%;" />
 
 <br/>
 
@@ -401,7 +401,7 @@ PS：一切概念以15-445为准（比如啥写倾斜，读偏斜，都可以根
 - 这个边就是说一个操作一定要在另一个操作之前发生
 - 注意是先发生的事务指向后发生的事务
 
-<img src="\medias\15-Concurrency Control Theory\dependency graphs.png" style="zoom:150%;" />
+<img src="dependency graphs.png" style="zoom:150%;" />
 
 <br/>
 
@@ -429,9 +429,9 @@ view serializability 和 conflict serializability都没法做到完全识别出�
 
 比如说下图，虽然依赖图成环了，但是数据A的结果，其实最后就是T3的结果，前面是否覆盖都不重要，所以它也是可串行化的：
 
-<img src="\medias\15-Concurrency Control Theory\view serializability_01.png" style="zoom:150%;" />
+<img src="view serializability_01.png" style="zoom:150%;" />
 
-<img src="\medias\15-Concurrency Control Theory\view serializability_02.png" style="zoom:150%;" />
+<img src="view serializability_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -441,7 +441,7 @@ view serializability 和 conflict serializability都没法做到完全识别出�
 
 <br/>
 
-<img src="\medias\15-Concurrency Control Theory\universe of schedules.png" style="zoom:150%;" />
+<img src="universe of schedules.png" style="zoom:150%;" />
 
 <br/>
 

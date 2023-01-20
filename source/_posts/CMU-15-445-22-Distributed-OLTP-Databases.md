@@ -52,13 +52,13 @@ categories:
 
 应用先向主节点（primary node）发送事务开始的请求（begin request）
 
-<img src="/medias/22-Distributed-OLTP-Databases\decentralized coordinator_01.png" style="zoom:150%;" />
+<img src="decentralized coordinator_01.png" style="zoom:150%;" />
 
 <br/>
 
 然后，应用可以去各个节点对数据进行查询
 
-<img src="/medias/22-Distributed-OLTP-Databases\decentralized coordinator_02.png" style="zoom:150%;" />
+<img src="decentralized coordinator_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -66,7 +66,7 @@ categories:
 
 然后主节点（primary node）需要去各个节点判断，事务是否可以在本节点上安全的提交
 
-<img src="/medias/22-Distributed-OLTP-Databases\decentralized coordinator_03.png" style="zoom:150%;" />
+<img src="decentralized coordinator_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -120,7 +120,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 因此为了实现分布式数据库中的原子提交，可以使用以下协议去实现：
 
-<img src="/medias/22-Distributed-OLTP-Databases\atomic commit protocol.png" style="zoom:150%;" />
+<img src="atomic commit protocol.png" style="zoom:150%;" />
 
 <br/>
 
@@ -144,7 +144,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 如果是，就会回复ok
 
-<img src="/medias/22-Distributed-OLTP-Databases\2PC_01.png" style="zoom:150%;" />
+<img src="2PC_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -152,7 +152,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 但如果不是，那么参与者（participant）就会回复abort，并进入abort阶段
 
-<img src="/medias/22-Distributed-OLTP-Databases\2PC_04.png" style="zoom:150%;" />
+<img src="2PC_04.png" style="zoom:150%;" />
 
 <br/>
 
@@ -168,7 +168,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 提交成功后会回复ok
 
-<img src="/medias/22-Distributed-OLTP-Databases\2PC_02.png" style="zoom:150%;" />
+<img src="2PC_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -176,7 +176,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 此时，事务提交成功，并会给应用层返回信息
 
-![](/medias/22-Distributed-OLTP-Databases\2PC_03.png)
+<img src="2PC_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -190,7 +190,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 参与者回复ok之后，协调者就会给应用层返回abort请求
 
-![](/medias/22-Distributed-OLTP-Databases\2PC_05.png)
+<img src="2PC_05.png" style="zoom:150%;" />
 
 <br/>
 
@@ -216,7 +216,7 @@ PS：类似区块链这种场景，可以理解为是一个分布式数据库
 
 而不是等到commit阶段结束后再告诉用户（有点像异步IO）
 
-<img src="/medias/22-Distributed-OLTP-Databases\early acknowledgement.png" style="zoom:150%;" />
+<img src="early acknowledgement.png" style="zoom:150%;" />
 
 但是这种方法也有缺点，比如说返回成功以后集群断电了，就可能造成数据的丢失
 
@@ -266,7 +266,7 @@ proposer会提出提案，即要将当前的事务提交
 
 acceptor就会评估proposer给出的提案是否可以提交，如果能够提交，就会回复一个agree
 
-<img src="/medias/22-Distributed-OLTP-Databases\Paxos_01.png" style="zoom:150%;" />
+<img src="Paxos_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -280,7 +280,7 @@ proposer会发指令让所有的acceptor都同意这个提案
 
 最后，acceptor执行完之后，会再给proposer发送一个accept
 
-<img src="/medias/22-Distributed-OLTP-Databases\Paxos_02.png" style="zoom:150%;" />
+<img src="Paxos_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -306,7 +306,7 @@ proposer会发指令让所有的acceptor都同意这个提案
 
 然后继续原来事务n+1的流程
 
-<img src="/medias/22-Distributed-OLTP-Databases\Paxos_03.png" style="zoom:150%;" />
+<img src="Paxos_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -376,7 +376,7 @@ proposer会发指令让所有的acceptor都同意这个提案
 
 比如说一些小公司，对于数据的分析，很多都是读取备节点上的数据
 
-<img src="/medias/22-Distributed-OLTP-Databases\primary-replica.png" style="zoom:150%;" />
+<img src="primary-replica.png" style="zoom:150%;" />
 
 <br/>
 
@@ -394,7 +394,7 @@ proposer会发指令让所有的acceptor都同意这个提案
 
 <br/>
 
-<img src="/medias/22-Distributed-OLTP-Databases\multi-primary.png" style="zoom:150%;" />
+<img src="multi-primary.png" style="zoom:150%;" />
 
 <br/>
 
@@ -432,7 +432,7 @@ proposer会发指令让所有的acceptor都同意这个提案
 
 缺点：存在时延，需要多个节点一起同步
 
-<img src="/medias/22-Distributed-OLTP-Databases\synchronous.png" style="zoom:150%;" />
+<img src="synchronous.png" style="zoom:150%;" />
 
 <br/>
 
@@ -448,7 +448,7 @@ proposer会发指令让所有的acceptor都同意这个提案
 
 缺点：如果后续数据同步的过程中，DBMS宕机了，就会造成数据的丢失
 
-<img src="/medias/22-Distributed-OLTP-Databases\asynchronous.png" style="zoom:150%;" />
+<img src="asynchronous.png" style="zoom:150%;" />
 
 <br/>
 
@@ -556,7 +556,7 @@ PS：此前说的数据，都是数据未分片的例子
 
 **三者不可能同时实现，最多同时实现其中两个**
 
-<img src="/medias/22-Distributed-OLTP-Databases\CAP.png" style="zoom:150%;" />
+<img src="CAP.png" style="zoom:150%;" />
 
 <br/>
 
@@ -600,7 +600,7 @@ PS：此前说的数据，都是数据未分片的例子
 
 要么读到正确的数据，要么就返回读取错误（不存在读取错误数据的情况）
 
-<img src="/medias/22-Distributed-OLTP-Databases\consistency.png" style="zoom:150%;" />
+<img src="consistency.png" style="zoom:150%;" />
 
 <br/>
 
@@ -623,7 +623,7 @@ DBMS一定会返回数据，但不保证数据的正确性和一致性
 
 备用节点崩溃后，应用可以访问主节点，使用上不受任何影响
 
-<img src="/medias/22-Distributed-OLTP-Databases\availability.png" style="zoom:150%;" />
+<img src="availability.png" style="zoom:150%;" />
 
 <br/>
 
@@ -647,7 +647,7 @@ DBMS一定会返回数据，但不保证数据的正确性和一致性
 
 比如以下这个例子，因为网络崩溃造成了网络分区
 
-<img src="/medias/22-Distributed-OLTP-Databases\partition tolerance_01.png" style="zoom:150%;" />
+<img src="partition tolerance_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -655,7 +655,7 @@ DBMS一定会返回数据，但不保证数据的正确性和一致性
 
 因为都是主节点，所以修改是可以成功的，即可用性得到解决，但是一致性上却无法同步
 
-<img src="/medias/22-Distributed-OLTP-Databases\partition tolerance_02.png" style="zoom:150%;" />
+<img src="partition tolerance_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -707,7 +707,7 @@ DBMS一定会返回数据，但不保证数据的正确性和一致性
 
 利用Pg作为中间件（服务端），连接各个不同类型的数据库
 
-<img src="/medias/22-Distributed-OLTP-Databases\federated database example.png" style="zoom:150%;" />
+<img src="federated database example.png" style="zoom:150%;" />
 
 <br/>
 

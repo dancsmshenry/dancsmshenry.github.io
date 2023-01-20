@@ -28,7 +28,7 @@ categories:
 
 而是优先放到内存中的（至于什么时候数据才能落盘，会根据不同的置换策略对内存上的数据进行写入）
 
-<img src="\medias\19-Database-Logging\motivation_logging.png" style="zoom:150%;" />
+<img src="motivation_logging.png" style="zoom:150%;" />
 
 <br/>
 
@@ -42,7 +42,7 @@ categories:
 
 因此需要DBMS的recovery机制
 
-<img src="\medias\19-Database-Logging\motivation_logging_01.png" style="zoom:150%;" />
+<img src="motivation_logging_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -76,7 +76,7 @@ DBMS的不同组件是依赖于在不同的存储器
 
 <br/>
 
-<img src="\medias\19-Database-Logging\storage types.png" style="zoom:150%;" />
+<img src="storage types.png" style="zoom:150%;" />
 
 <br/>
 
@@ -192,7 +192,7 @@ DBMS的主要数据都存储在了非易失性存储器上
 
 ## Undo vs Redo
 
-<img src="\medias\19-Database-Logging\undo vs redo.png" style="zoom:150%;" />
+<img src="undo vs redo.png" style="zoom:150%;" />
 
 <br/>
 
@@ -244,7 +244,7 @@ DBMS的主要数据都存储在了非易失性存储器上
 - 如果只刷事务B的数据，刷盘效率过低
 - 如果是刷整个数据页，万一事务A发生了回滚，就有需要重新读取数据再修改
 
-<img src="\medias\19-Database-Logging\buffer pool 背景.png" style="zoom:150%;" />
+<img src="buffer pool 背景.png" style="zoom:150%;" />
 
 <br/>
 
@@ -276,7 +276,7 @@ DBMS是否允许未提交的事务的数据，覆盖原有的数据（即在修�
 
 ## No-steal + Force
 
-<img src="\medias\19-Database-Logging\no-steal + force.png" style="zoom:150%;" />
+<img src="no-steal + force.png" style="zoom:150%;" />
 
 <br/>
 
@@ -310,7 +310,7 @@ DBMS是否允许未提交的事务的数据，覆盖原有的数据（即在修�
 
 # Shadow paging
 
-<img src="\medias\19-Database-Logging\shadow paging.png" style="zoom:150%;" />
+<img src="shadow paging.png" style="zoom:150%;" />
 
 <br/>
 
@@ -328,7 +328,7 @@ shadow：未提交事务的一个临时数据库
 
 <br/>
 
-<img src="\medias\19-Database-Logging\shadow page example.png" style="zoom:150%;" />
+<img src="shadow page example.png" style="zoom:150%;" />
 
 <br/>
 
@@ -416,7 +416,7 @@ Sqlite的shadow paging的具体过程：
 
 回滚的方式，就是将Journal File中的文件读到内存中，然后再覆盖回原来的文件
 
-<img src="\medias\19-Database-Logging\SQLITE.png" style="zoom:150%;" />
+<img src="SQLITE.png" style="zoom:150%;" />
 
 <br/>
 
@@ -507,7 +507,7 @@ MySQL中的innodb引擎，就将日志分为的redo log和undo log两部分日�
 
 事务对数据的操作，首先是写入操作相关的日志，接着在将数据读入到内存中进行修改
 
-<img src="\medias\19-Database-Logging\wal-example_01.png" style="zoom:150%;" />
+<img src="wal-example_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -515,7 +515,7 @@ MySQL中的innodb引擎，就将日志分为的redo log和undo log两部分日�
 
 事务发出commit指令的时候，将buffer中的log写入磁盘中
 
-<img src="\medias\19-Database-Logging\wal-example_02.png" style="zoom:150%;" />
+<img src="wal-example_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -525,7 +525,7 @@ MySQL中的innodb引擎，就将日志分为的redo log和undo log两部分日�
 
 那么，在后续重启DBMS的时候，可以重新读取log，对事务的数据进行恢复
 
-<img src="\medias\19-Database-Logging\wal-example_03.png" style="zoom:150%;" />
+<img src="wal-example_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -559,7 +559,7 @@ MySQL中的innodb引擎，就将日志分为的redo log和undo log两部分日�
 
 - 此时可以将一些log的page先写入到磁盘上
 
-<img src="\medias\19-Database-Logging\WAL flush time.png" style="zoom:150%;" />
+<img src="WAL flush time.png" style="zoom:150%;" />
 
 <br/>
 
@@ -577,7 +577,7 @@ MySQL中的innodb引擎，就将日志分为的redo log和undo log两部分日�
 
 在恢复时，no-force + steal的性能是最坏的（因为是no-force，所以很多数据都没有立即刷盘，恢复时需要读取日志刷盘；而steal则可能会写入很多没有提交的数据，那么恢复的时候又要读取出来进行undo操作）
 
-<img src="\medias\19-Database-Logging\buffer pool policy.png" style="zoom:150%;" />
+<img src="buffer pool policy.png" style="zoom:150%;" />
 
 <br/>
 
@@ -659,7 +659,7 @@ WAL日志的格式
 
 相比逻辑日志，Physiological记录了数据的前后变化，恢复上不再有逻辑问题
 
-<img src="\medias\19-Database-Logging\logging schemes.png" style="zoom:150%;" />
+<img src="logging schemes.png" style="zoom:150%;" />
 
 因为记录的是数据页上某个元组数据的变化，所以允许DBMS对数据页中数据的位置进行重新组织（将空间重新分配）
 

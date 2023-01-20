@@ -129,7 +129,7 @@ categories:
 
 将表中的数据页读入到内存中，对数据页的内容进行排序，然后把排序好的结果返回给磁盘
 
-<img src="\medias\09-Sorting-Aggregations\2-way external merge sort_01.png" style="zoom: 150%;" />
+<img src="2-way external merge sort_01.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -139,7 +139,7 @@ categories:
 
 递归的将数据页成对成对合并（使用三个缓冲页，2个输入页，1个输出页）
 
-<img src="\medias\09-Sorting-Aggregations\2-way external merge sort_02.png" style="zoom:150%;" />
+<img src="2-way external merge sort_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -153,7 +153,7 @@ categories:
 
 统计总共需要多少个阶段，然后再乘以一个2N（因为每个阶段都需要读写2次数据，一次是将数据写入到内存，一次是将排序好的数据写入回内存）
 
-<img src="\medias\09-Sorting-Aggregations\2-way external merge sort_cost.png" style="zoom: 150%;" />
+<img src="2-way external merge sort_cost.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -165,7 +165,7 @@ Pass #0：读取每一个数据页，将每一个数据页内的数据进行内�
 
 Pass #1，2，3：每次将两个数据页读入到内存中，将它们归并排序
 
-<img src="\medias\09-Sorting-Aggregations\2-way external merge sort.png" style="zoom:150%;" />
+<img src="2-way external merge sort.png" style="zoom:150%;" />
 
 <br/>
 
@@ -195,7 +195,7 @@ Phase II：将内存中的一个缓冲页作为输出页，其他的B-1个缓冲
 
 PS：MySQL就是用这种方法的
 
-<img src="\medias\09-Sorting-Aggregations\general external merge sort.png" style="zoom:150%;" />
+<img src="general external merge sort.png" style="zoom:150%;" />
 
 <br/>
 
@@ -225,7 +225,7 @@ Pass #2：此时有6个整体（22/4向上取整，每个整体有20个page，�
 
 Pass #3：此时有2个整体（6/4向上取整，每个整体有80个page，最后一个整体只有28个page），那么每次就取4个整体，每个整体中取出一页，进行归并排序
 
-<img src="\medias\09-Sorting-Aggregations\general external merge sort_cost.png" style="zoom:150%;" />
+<img src="general external merge sort_cost.png" style="zoom:150%;" />
 
 <br/>
 
@@ -253,7 +253,7 @@ Pass #3：此时有2个整体（6/4向上取整，每个整体有80个page，最
 
 B+树的数据结点和文件页是一一关联的，每一个叶子结点的数据，和文件页里面的tuple是一一关联的
 
-<img src="\medias\09-Sorting-Aggregations\clustered index.png" style="zoom:150%;" />
+<img src="clustered index.png" style="zoom:150%;" />
 
 <br/>
 
@@ -267,7 +267,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 叶子结点的内容和数据页文件本身是不关联的
 
-<img src="\medias\09-Sorting-Aggregations\unclustered index.png" style="zoom:150%;" />
+<img src="unclustered index.png" style="zoom:150%;" />
 
 <br/>
 
@@ -290,7 +290,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 将数据过滤后，对数据进行排序，然后聚合去重
 
-<img src="\medias\09-Sorting-Aggregations\sorting aggregation.png" style="zoom: 150%;" />
+<img src="sorting aggregation.png" style="zoom: 150%;" />
 
 如果SQL语句不要求对原数据进行排序，那么这种方法的时间复杂度就会偏高
 
@@ -315,7 +315,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 - DISTINCT：对原数据进行**去重**
 - GROUP BY：对原数据进行**聚集**
 
-<img src="\medias\09-Sorting-Aggregations\external hashing aggregate.png" style="zoom:150%;" />
+<img src="external hashing aggregate.png" style="zoom:150%;" />
 
 <br/>
 
@@ -325,7 +325,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 利用hash函数将数据进行划分（这里假设数据量非常大，因此需要将部分数据先写入磁盘中）
 
-<img src="\medias\09-Sorting-Aggregations\hash partition.png" style="zoom:150%;" />
+<img src="hash partition.png" style="zoom:150%;" />
 
 假设总共有B个buffer page，那么就将B-1个page作为分区，1个用于输入数据的缓冲区
 
@@ -333,7 +333,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 最后将数据按照分区放到磁盘中（落盘的时候可以做一些优化，比如说把重复的数据给删除）
 
-<img src="\medias\09-Sorting-Aggregations\hash_partition.png" style="zoom: 150%;" />
+<img src="hash_partition.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -345,7 +345,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 - 为什么这里还需要rehash，因为上一个阶段的hash1可能发生哈希碰撞，因此需要rehash
 
-<img src="\medias\09-Sorting-Aggregations\hash rehash.png" style="zoom:150%;" />
+<img src="hash rehash.png" style="zoom:150%;" />
 
 把每个分区得数据都读到内存中（假设每个分区都适合内存），再进行以此rehash，就可以把第一次发生碰撞的值给找出来
 
@@ -353,7 +353,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 然后遍历该hash的bucket以匹配元组
 
-<img src="\medias\09-Sorting-Aggregations\hash_rehash.png" style="zoom: 150%;" />
+<img src="hash_rehash.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -365,7 +365,7 @@ B+树的数据结点和文件页是一一关联的，每一个叶子结点的数
 
 所以在Rehash阶段中的hash2函数（第二个hash函数），应该存入的是一个kv对
 
-<img src="\medias\09-Sorting-Aggregations\hash summarization.png" style="zoom: 150%;" />
+<img src="hash summarization.png" style="zoom: 150%;" />
 
 <br/>
 

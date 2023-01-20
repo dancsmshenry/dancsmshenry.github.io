@@ -182,7 +182,8 @@ void quick_sort(vector<int> &arr) {
 
 - 每次都能刚好二分，即确认第一个数需要遍历n个数，确认第二个数需要遍历n/2个数，确认第三个数需要遍历n/4个数字
 
-- ![](/medias/Deep-into-Sort/快排最优情况.png)
+- <img src="快排最优情况.png" style="zoom:150%;" />
+
 - 总共有log2n层
 - 假设每一层都要遍历n个数，时间复杂度便是nlog2n
 
@@ -336,7 +337,7 @@ void merge_sort(vector<int>& arr, int left, int right) {
 ## 时间复杂度分析
 
 - 假设一开始有n个数，每次对半的整理排序
-- ![](/medias/Deep-into-Sort/归并排序分析.png)
+- <img src="归并排序分析.png" style="zoom:150%;" />
 - 那每一层需要排序的时间就是n，而又已知T(1)=0，所以现在只要求解这颗二叉树的层数即可
 - 而二叉树的层数是log2n+1，去掉第一行就是log2n
 - 所以最好和最坏的时间复杂度都是O（nlogn）
@@ -808,7 +809,7 @@ public:
 
 # 八股
 
-<img src="/medias/Deep-into-Sort/排序算法的复杂度总结.png" style="zoom:150%;" />
+<img src="排序算法的复杂度总结.png" style="zoom:150%;" />
 
 - **不稳定的排序只有：希尔排序，选择排序，堆排序，快速排序**
 

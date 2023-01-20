@@ -41,7 +41,7 @@ categories:
 
 # mapreduce的定义
 
-![](/medias/MapReduce-Simplified-Data-Processing-on-Large-Clusters/map和reduce.png)
+![](map和reduce.png)
 
 最早来自于对Lisp语言中map/reduce原语的借鉴
 
@@ -87,7 +87,7 @@ categories:
 
 # mapreduce的实现
 
-![](/medias/MapReduce-Simplified-Data-Processing-on-Large-Clusters/mapreduce的实现.svg)
+![](mapreduce的实现.svg)
 
 步骤一：将用户给定的数据文件按照一定的大小切分为M块（每块的大小从16MB到64MB，用户可自定义大小）
 

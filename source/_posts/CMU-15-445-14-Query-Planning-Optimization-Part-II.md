@@ -86,7 +86,7 @@ categories:
 
 不同数据库更新其统计信息的方法，是不同的：
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\statistics.png" style="zoom:150%;" />
+<img src="statistics.png" style="zoom:150%;" />
 
 <br/>
 
@@ -126,7 +126,7 @@ SC（A,R）（全称：selection cardinality）：对于当前的选取方式，
 
 在这种情况下，选取基数（SC（A,R））要么是1（存在且只存在一个），要么是0（不存在）
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\logical costs_01.png" style="zoom:150%;" />
+<img src="logical costs_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -138,7 +138,7 @@ SC（A,R）（全称：selection cardinality）：对于当前的选取方式，
 
 由此需要引入**选择率**的新概念
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\logical costs_02.png" style="zoom:150%;" />
+<img src="logical costs_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -171,7 +171,7 @@ SC（A,R）（全称：selection cardinality）：对于当前的选取方式，
 - 针对当前给定的谓词组合P，在当前数据表中平均能够找到SC（P）个
 - 而总共有NR个数据，因此相等谓词的选择率便是SC（P）/NR
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\equality predicate.png" style="zoom:150%;" />
+<img src="equality predicate.png" style="zoom:150%;" />
 
 <br/>
 
@@ -183,7 +183,7 @@ SC（A,R）（全称：selection cardinality）：对于当前的选取方式，
 
 PS：下图中Amax是指当前列数据中的最大值，Amin是当前列数据中的最小值
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\range predicate.png" style="zoom:150%;" />
+<img src="range predicate.png" style="zoom:150%;" />
 
 <br/>
 
@@ -193,7 +193,7 @@ PS：下图中Amax是指当前列数据中的最大值，Amin是当前列数据�
 
 不等于谓词的查询
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\negation query.png" style="zoom:150%;" />
+<img src="negation query.png" style="zoom:150%;" />
 
 <br/>
 
@@ -207,7 +207,7 @@ PS：下图中Amax是指当前列数据中的最大值，Amin是当前列数据�
 
 PS：使用这种计算方法的前提：两个查询谓词之间，是互不干扰，相互独立的
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\conjunction.png" style="zoom:150%;" />
+<img src="conjunction.png" style="zoom:150%;" />
 
 <br/>
 
@@ -219,7 +219,7 @@ PS：使用这种计算方法的前提：两个查询谓词之间，是互不干
 
 PS：使用这种计算方法的前提：两个查询谓词之间，是互不干扰，相互独立的
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\disjunction.png" style="zoom:150%;" />
+<img src="disjunction.png" style="zoom:150%;" />
 
 <br/>
 
@@ -255,7 +255,7 @@ NS/V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给�
 
 往往是选择总开销较小的那个，也就是被除数较大的那个
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\result size estimation for joins.png" style="zoom:150%;" />
+<img src="result size estimation for joins.png" style="zoom:150%;" />
 
 <br/>
 
@@ -305,7 +305,7 @@ NS/V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给�
 
 <br/>
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\correlated attributes.png" style="zoom:150%;" />
+<img src="correlated attributes.png" style="zoom:150%;" />
 
 比如这里，针对makes和models两条列，希望找到make=“honda”和model=“accord”的数据
 
@@ -337,7 +337,7 @@ NS/V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给�
 
 最开始的思路，最简单粗暴的想法，在统计信息中，对于一列的数据，记录不同种类的数据的具体情况
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\non-uniform approximation.png" style="zoom:150%;" />
+<img src="non-uniform approximation.png" style="zoom:150%;" />
 
 <br/>
 
@@ -364,11 +364,11 @@ NS/V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给�
 - 也就是说，在块内的数据范围会因此被掩盖，从而造成误差
 - 因此需要引入**等高直方图**
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\equi-width histogram.png" style="zoom:150%;" />
+<img src="equi-width histogram.png" style="zoom:150%;" />
 
 <br/>
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\equi-width histogram_01.png" style="zoom:150%;" />
+<img src="equi-width histogram_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -380,13 +380,13 @@ NS/V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给�
 
 - 比如说要求每个bucket里面要有15个数据，那么第一个bucket可能包含1-5的数据，第二个bucket包含6-8的数据
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\equi-depth histogram.png" style="zoom: 150%;" />
+<img src="equi-depth histogram.png" style="zoom: 150%;" />
 
 <br/>
 
 一方面，可以节约内存；另一方面，可以解决数据缺失、数据误差的问题，从而提高精确度
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\equi-depth histogram_01.png" style="zoom:150%;" />
+<img src="equi-depth histogram_01.png" style="zoom:150%;" />
 
 
 
@@ -402,7 +402,7 @@ NS/V（A,S）其实就是SC（A,S），即针对每个取值，平均能够给�
 
 主要有以下两个方法：
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\sketches.png" style="zoom:150%;" />
+<img src="sketches.png" style="zoom:150%;" />
 
 PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的位置，通过这种方式来记录数据在数据表中有多少个）
 
@@ -420,7 +420,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 
 优点：是基于真实的数据进行估计的，不会有太大偏差
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\sampling.png" style="zoom:150%;" />
+<img src="sampling.png" style="zoom:150%;" />
 
 <br/>
 
@@ -477,7 +477,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 - 使用启发式的手段，选择一个最佳的索引就好了
 - 在join的操作过程中，往往只需要从A表中获取少量数据，然后把数据连接到B表中就可以了
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\OLTP query planning.png" style="zoom:150%;" />
+<img src="OLTP query planning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -502,7 +502,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 - A表和B表join完了以后，可以向上吐出一条数据，这条数据再和C表进行join，又可以向上吐出一条数据（而其他不是左深树的情况，则需要用额外的空间存储中间结果）
 - 也就是可以将模型做成流式模型，极大的降低结果集的大小
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\left-deepth tree.png" style="zoom:150%;" />
+<img src="left-deepth tree.png" style="zoom:150%;" />
 
 <br/>
 
@@ -518,7 +518,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 
 而，如何列举出这些方案的优劣，一般使用的是动态规划的算法来实现的
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\multi-relation query planning.png" style="zoom:150%;" />
+<img src="multi-relation query planning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -538,11 +538,11 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 
 而在每种方法内部，每次都是“贪心算法”，取最小开销的那个方法
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\dynamic programming_01.png" style="zoom:150%;" />
+<img src="dynamic programming_01.png" style="zoom:150%;" />
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\dynamic programming_02.png" style="zoom:150%;" />
+<img src="dynamic programming_02.png" style="zoom:150%;" />
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\dynamic programming_03.png" style="zoom:150%;" />
+<img src="dynamic programming_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -558,7 +558,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 
 排列组合出多个不同的左深树
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\candidate plans_01.png" style="zoom:150%;" />
+<img src="candidate plans_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -566,7 +566,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 
 列举算子join不同的实现方案
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\candidate plans_02.png" style="zoom:150%;" />
+<img src="candidate plans_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -574,7 +574,7 @@ PS：Redis使用的是hyperloglog（记录当前数据的hash值中第一个1的
 
 再列举不同的读表方式（顺序读表还是索引读表）
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\candidate plans_03.png" style="zoom:150%;" />
+<img src="candidate plans_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -604,7 +604,7 @@ PG中的遗传算法的主要思路：
 - 然后将当前最好的方案分裂（变异）出一个新的方案（繁衍）
 - 接着不断地轮询上面的两个步骤，直到轮询次数达到上限
 
-<img src="\medias\14-Query-Planning-Optimization-Part-II\postgres genetic optimizer.png" style="zoom:150%;" />
+<img src="postgres genetic optimizer.png" style="zoom:150%;" />
 
 <br/>
 

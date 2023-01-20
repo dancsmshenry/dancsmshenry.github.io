@@ -72,7 +72,7 @@ categories:
 
 ## Shared memory
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared memory.png" style="zoom:150%;" />
+<img src="shared memory.png" style="zoom:150%;" />
 
 <br/>
 
@@ -96,11 +96,11 @@ CPU之间的分布式，即CPU之间通过network进行通信
 
 ## Shared disk
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared disk.png" style="zoom:150%;" />
+<img src="shared disk.png" style="zoom:150%;" />
 
 <br/>
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared disk_02.png" style="zoom:150%;" />
+<img src="shared disk_02.png" style="zoom:150%;" />
 
 CPU和内存打包，单体之间用网络通信
 
@@ -119,7 +119,7 @@ CPU和内存打包，单体之间用网络通信
 
 运用的非常广泛（主要是现在的数据库都开始走向云化，存算分离有利于扩容）
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared disk_01.png" style="zoom:150%;" />
+<img src="shared disk_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -127,11 +127,11 @@ CPU和内存打包，单体之间用网络通信
 
 ## Shared nothing
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared nothing.png" style="zoom:150%;" />
+<img src="shared nothing.png" style="zoom:150%;" />
 
 <br/>
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared nothing_01.png" style="zoom:150%;" />
+<img src="shared nothing_01.png" style="zoom:150%;" />
 
 每一个DBMS都有自己的CPU、内存、硬盘
 
@@ -151,7 +151,7 @@ DBMS的节点之间只通过网络进行通信
 
 也有不少的平台使用这种架构
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\shared nothing_02.png" style="zoom:150%;" />
+<img src="shared nothing_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -198,7 +198,7 @@ DBMS的节点之间只通过网络进行通信
 
 当查询到Router节点的时候，Router节点会向Config Server节点获取具体数据的信息，然后再到指定的区域进行查询
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\heterogenous architecture.png" style="zoom:150%;" />
+<img src="heterogenous architecture.png" style="zoom:150%;" />
 
 <br/>
 
@@ -234,7 +234,7 @@ DBMS的节点之间只通过网络进行通信
 
 而比较理想的查询是，对数据的查询不跨节点，并且访问模式是统一的
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\naive table partitioning.png" style="zoom:150%;" />
+<img src="naive table partitioning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -254,7 +254,7 @@ DBMS的节点之间只通过网络进行通信
 
 比如说可以以某一列作为水平分区的标准（比如下图便是对某一列的值进行hash，取hash值进行分区）
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\horizontal partitioning.png" style="zoom:150%;" />
+<img src="horizontal partitioning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -283,7 +283,7 @@ DBMS的节点之间只通过网络进行通信
 
 比如说hash值在0-P1之间的数据，就会存储在P1节点，以此类推
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\consistene hashing_01.png" style="zoom:150%;" />
+<img src="consistene hashing_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -293,7 +293,7 @@ DBMS的节点之间只通过网络进行通信
 
 那么就需要将P3中，归属于P2-P4范围的数据移动到P4中（这种扩容后的代价小于此前扩容的代价）
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\consistene hashing_02.png" style="zoom:150%;" />
+<img src="consistene hashing_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -303,7 +303,7 @@ DBMS的节点之间只通过网络进行通信
 
 比如说这里执行数据的副本数量要为3，那么P1上的数据就需要复制到P6和P2上面
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\consistene hashing_03.png" style="zoom: 150%;" />
+<img src="consistene hashing_03.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -321,7 +321,7 @@ DBMS的节点之间只通过网络进行通信
 
 下面的节点处理的就是id=3和id=4的数据
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\logical partitioning.png" style="zoom:150%;" />
+<img src="logical partitioning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -333,7 +333,7 @@ DBMS的节点之间只通过网络进行通信
 
 数据的存储和计算查询都是在同一个节点上
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\physical partitioning.png" style="zoom:150%;" />
+<img src="physical partitioning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -363,13 +363,13 @@ DBMS的节点之间只通过网络进行通信
 
 这种方案用的比较少（因为它本质上还是一个单节点的DBMS，存在性能上的缺陷）
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\centralized coordinator.png" style="zoom:150%;" />
+<img src="centralized coordinator.png" style="zoom:150%;" />
 
 <br/>
 
 后续演化为了中间件模式
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\centralized coordinator_01.png" style="zoom:150%;" />
+<img src="centralized coordinator_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -381,13 +381,13 @@ DBMS的节点之间只通过网络进行通信
 
 应用会向分区中的其中某个节点发出请求，首先接收到该节点请求的节点会变为此次事务的`Master Node`
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\coordinator_01.png" style="zoom:150%;" />
+<img src="coordinator_01.png" style="zoom:150%;" />
 
 <br/>
 
 然后`Master Node`会给予应用反馈，应用就可以去其他节点的位置对数据进行操作
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\coordinator_02.png" style="zoom:150%;" />
+<img src="coordinator_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -395,7 +395,7 @@ DBMS的节点之间只通过网络进行通信
 
 Master Node会检查事务数据是否可以提交
 
-<img src="/medias/21-Introduction-To-Distributed-Databases\decentralized coordinator.png" style="zoom:150%;" />
+<img src="decentralized coordinator.png" style="zoom:150%;" />
 
 <br/>
 
@@ -433,7 +433,7 @@ Master Node会检查事务数据是否可以提交
 
 可能会导致各自一方都认为自己是正确的，但是最后数据汇总的时候又会出现问题
 
-<img src="/medias/21-Introduction-To-Distributed-Databases/distributed 2PL.png" style="zoom:150%;" />
+<img src="distributed 2PL.png" style="zoom:150%;" />
 
 
 

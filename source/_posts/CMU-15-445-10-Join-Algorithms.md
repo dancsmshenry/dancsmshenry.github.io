@@ -56,7 +56,7 @@ early materialization（提前物化）
 
 缺点：传输整条数据的开销过大
 
-<img src="\medias\10-Join-Algorithms\data.png" style="zoom:150%;" />
+<img src="data.png" style="zoom:150%;" />
 
 <br/>
 
@@ -72,7 +72,7 @@ late materialization（延迟物化）
 
 缺点：如果想要获取完整的数据记录，就需要回表查询
 
-<img src="\medias\10-Join-Algorithms\ids.png" style="zoom:150%;" />
+<img src="ids.png" style="zoom:150%;" />
 
 <br/>
 
@@ -122,7 +122,7 @@ late materialization（延迟物化）
 
 PS：此时内存最少能够存放三个数据页即可（R、S表的数据页，以及匹配结果的数据页）
 
-<img src="\medias\10-Join-Algorithms\stupid nested loop join.png" style="zoom:150%;" />
+<img src="stupid nested loop join.png" style="zoom:150%;" />
 
 <br/>
 
@@ -143,7 +143,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 
 对于R表中的每一条记录，都需要一一和S表中的数据匹配，所以是`m * N`（R表中有m条记录，每条记录都需要读取S表的N个数据页）
 
-<img src="\medias\10-Join-Algorithms\stupid nested loop join_01.png" style="zoom:150%;" />
+<img src="stupid nested loop join_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -165,7 +165,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 
 下图的block可以理解为一个页Page
 
-<img src="\medias\10-Join-Algorithms\block nested loop join_01.png" style="zoom:150%;" />
+<img src="block nested loop join_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -177,7 +177,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 
 而此时是以数据页进行匹配的，即每个数据页都匹配一遍S表，所以是`M * N`（R表中有M个页，S表有N个页）
 
-<img src="\medias\10-Join-Algorithms\block nested loop join_02.png" style="zoom:150%;" />
+<img src="block nested loop join_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -193,7 +193,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 
 此时的流程：将R表的数据读入内存后，依次从头遍历S表的每一页，将S表上的数据和R表上的数据进行匹配
 
-<img src="\medias\10-Join-Algorithms\block nested loop join_03.png" style="zoom:150%;" />
+<img src="block nested loop join_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -207,7 +207,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 - `M/(B - 2)`表示将R表中的数据全数放入大小为`B - 2`内存中，需要多少次
 - 因此如果``B - 2 > M`，那就相当于只需要`M + N`
 
-<img src="\medias\10-Join-Algorithms\block nested loop join_04.png" style="zoom:150%;" />
+<img src="block nested loop join_04.png" style="zoom:150%;" />
 
 <br/>
 
@@ -223,7 +223,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 
 算法的开销：`M + (m * C)`（C是指每次查询所有需要的页数）
 
-<img src="\medias\10-Join-Algorithms\index nested loop join.png" style="zoom:150%;" />
+<img src="index nested loop join.png" style="zoom:150%;" />
 
 <br/>
 
@@ -249,7 +249,7 @@ PS：此时内存最少能够存放三个数据页即可（R、S表的数据页�
 
 将需要进行join的数据列，先进行sort，然后再merge
 
-<img src="\medias\10-Join-Algorithms\sort merge join的伪代码.png" style="zoom: 150%;" />
+<img src="sort merge join的伪代码.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -269,7 +269,7 @@ merge时的一些细节：
 
 排序时的开销就是上一节所说的外部排序
 
-<img src="\medias\10-Join-Algorithms\sort merage join的cost_01.png" style="zoom:150%;" />
+<img src="sort merage join的cost_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -279,7 +279,7 @@ merge时的一些细节：
 
 - 比如两个表的数据都是完全一样的话，那么执行效率上就会和Simple nested loop join的双层循环一样了
 
-<img src="\medias\10-Join-Algorithms\sort-merge.png" style="zoom:150%;" />
+<img src="sort-merge.png" style="zoom:150%;" />
 
 <br/>
 
@@ -310,7 +310,7 @@ Phase I：build，扫描外表数据，构建hash表
 
 Phase II：probe，扫描内表的数据，放入hash表中查询
 
-<img src="\medias\10-Join-Algorithms\basic hash join algorithm.png" style="zoom:150%;" />
+<img src="basic hash join algorithm.png" style="zoom:150%;" />
 
 <br/>
 
@@ -324,7 +324,7 @@ hash表中的key是语句用于join的那一列数据
 
 - 提前物化（full tuple，将整个元组作为数据存储）
 - 推迟物化（tuple identifier，即是数据的行id之类的，后续回表取数据）
-- <img src="\medias\10-Join-Algorithms\hash table values.png" style="zoom:150%;" />
+- <img src="hash table values.png" style="zoom:150%;" />
 
 <br/>
 
@@ -354,7 +354,7 @@ PS：bloom filter会出现假阳性
 
 **算法开销**
 
-<img src="\medias\10-Join-Algorithms\hash join cost_01.png" style="zoom:150%;" />
+<img src="hash join cost_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -376,7 +376,7 @@ Phase II：把R表的hash表1和S表的hash表2，各取一个分区的数据，
 
 - 这里的原理就是，都是用的同一种hash算法，能够join的元素必然是在同一个分区当中的
 
-<img src="\medias\10-Join-Algorithms\grace hash join.png" style="zoom:150%;" />
+<img src="grace hash join.png" style="zoom:150%;" />
 
 <br/>
 
@@ -390,7 +390,7 @@ Phase II：把R表的hash表1和S表的hash表2，各取一个分区的数据，
 
 解决办法：对这个非常大的分区，对两边的数据表，再用一个新的hash函数进行hash，直到能够分到足够小的块
 
-<img src="\medias\10-Join-Algorithms\recursive partitioning.png" style="zoom: 150%;" />
+<img src="recursive partitioning.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -414,7 +414,7 @@ probing phase：`M + N`
 
 因此总共的开销是`3 * (M + N)`
 
-<img src="\medias\10-Join-Algorithms\grace hash join cost.png" style="zoom:150%;" />
+<img src="grace hash join cost.png" style="zoom:150%;" />
 
 <br/>
 
@@ -432,7 +432,7 @@ probing phase：`M + N`
 
 # Conclusion
 
-<img src="\medias\10-Join-Algorithms\join algorithms summary.png" style="zoom: 150%;" />
+<img src="join algorithms summary.png" style="zoom: 150%;" />
 
 如果是两个大表做join的话，最好就是做hash join（绝大部分情况下，都是选择hash join的）
 

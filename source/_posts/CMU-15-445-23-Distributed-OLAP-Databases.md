@@ -32,7 +32,7 @@ categories:
 
 数据的每一个维度都可以抽象出一张表，然后和主表的外键相连（不同维度之间没有关联）
 
-<img src="/medias/23-Distributed-OLAP-Databases\star schema.png" style="zoom:150%;" />
+<img src="star schema.png" style="zoom:150%;" />
 
 <br/>
 
@@ -62,7 +62,7 @@ categories:
 
 雪花模型是在基于星型模型之上拓展来的，每一个维度可以再扩散出更多的维度，根据维度的层级拆分成颗粒度不同的多张表
 
-<img src="/medias/23-Distributed-OLAP-Databases\snowflake schema.png" style="zoom:150%;" />
+<img src="snowflake schema.png" style="zoom:150%;" />
 
 <br/>
 
@@ -94,7 +94,7 @@ categories:
 
 比如说这里的查询，会将查询的操作传给每一个有对应数据的节点上
 
-<img src="/medias/23-Distributed-OLAP-Databases\push query to data.png" style="zoom:150%;" />
+<img src="push query to data.png" style="zoom:150%;" />
 
 <br/>
 
@@ -110,7 +110,7 @@ categories:
 
 每一个节点需要查询的范围不同，因此节点向Storage拉去的数据也都各不相同
 
-<img src="/medias/23-Distributed-OLAP-Databases\pull data to query_01.png" style="zoom:150%;" />
+<img src="pull data to query_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -142,13 +142,13 @@ categories:
 
 例如下面的查询，会将临时查询得到的数据存储在Storage中
 
-<img src="/medias/23-Distributed-OLAP-Databases\query fault tolerance_01.png" style="zoom:150%;" />
+<img src="query fault tolerance_01.png" style="zoom:150%;" />
 
 <br/>
 
 那么即使后面该节点崩溃了，其他节点也可以去Storage上读取中间结果，而不用从头再开始查一次
 
-<img src="/medias/23-Distributed-OLAP-Databases\query fault tolerance_02.png" style="zoom:150%;" />
+<img src="query fault tolerance_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -205,7 +205,7 @@ categories:
 
 基本上没有DBMS使用这种方法
 
-<img src="/medias/23-Distributed-OLAP-Databases\SQL.png" style="zoom:150%;" />
+<img src="SQL.png" style="zoom:150%;" />
 
 <br/>
 
@@ -257,7 +257,7 @@ categories:
 
 表R的数据是根据id（目标列；查询列）进行分区的，而表S的数据是每个节点都有表S中所有的数据（即每个节点都有表S的副本）
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 01_01.png" style="zoom:150%;" />
+<img src="scenario 01_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -267,7 +267,7 @@ categories:
 
 然后再将每个节点的结果汇总在一起，便是查询的最终结果
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 01_02.png" style="zoom:150%;" />
+<img src="scenario 01_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -277,13 +277,13 @@ categories:
 
 表R和表S的数据都是按照id（目标列；查询列）进行分区的，并且分区的数据范围都是相同的
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 02_01.png" style="zoom:150%;" />
+<img src="scenario 02_01.png" style="zoom:150%;" />
 
 <br/>
 
 只需要在每个节点上完成join的操作，最后汇总在一起就是最终结果
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 02_02.png" style="zoom:150%;" />
+<img src="scenario 02_02.png" style="zoom:150%;" />
 
 PS：如果每个分区的数据范围是不一致的话，对于每个节点的join
 
@@ -297,7 +297,7 @@ PS：如果每个分区的数据范围是不一致的话，对于每个节点的
 
 表R的数据是按照id（目标列；查询列）进行分区的，而表S的数据则是按照Val（非查询列）进行分区的
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 03_01.png" style="zoom:150%;" />
+<img src="scenario 03_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -305,7 +305,7 @@ PS：如果每个分区的数据范围是不一致的话，对于每个节点的
 
 然后再进行操作，最后将结果汇总
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 03_02.png" style="zoom:150%;" />
+<img src="scenario 03_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -315,7 +315,7 @@ PS：如果每个分区的数据范围是不一致的话，对于每个节点的
 
 表S和表R都不按照id（目标列；查询列）进行分区
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 04_01.png" style="zoom:150%;" />
+<img src="scenario 04_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -329,7 +329,7 @@ PS：如果每个分区的数据范围是不一致的话，对于每个节点的
 
 然后变化为Scenario 01的情况
 
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 04_02.png" style="zoom:150%;" />
+<img src="scenario 04_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -349,7 +349,7 @@ PS：如果每个分区的数据范围是不一致的话，对于每个节点的
 
 上述语句可以替换为下述查询：
 
-<img src="/medias/23-Distributed-OLAP-Databases\semi-join_02.png" style="zoom:150%;" />
+<img src="semi-join_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -357,7 +357,7 @@ PS：如果每个分区的数据范围是不一致的话，对于每个节点的
 
 只传输需要查询的那一部分数据（比如这里只传输R表的id列），而不用将整个表都传输
 
-<img src="/medias/23-Distributed-OLAP-Databases/semi-join_03.png" style="zoom:150%;" />
+<img src="semi-join_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -447,7 +447,7 @@ DBMS的设计理念上保持不变，而是让传统的DBMS在云环境上运行
 
 可以像组装玩具一样，利用不同的插件，根据需求，满足不同数据库的需求
 
-<img src="/medias/23-Distributed-OLAP-Databases/disaggregated components.png" style="zoom:150%;" />
+<img src="disaggregated components.png" style="zoom:150%;" />
 
 <br/>
 
@@ -461,7 +461,7 @@ DBMS的设计理念上保持不变，而是让传统的DBMS在云环境上运行
 
 当然，也有一些致力于解决这些问题的开源项目
 
-<img src="/medias/23-Distributed-OLAP-Databases/universal formats.png" style="zoom:150%;" />
+<img src="universal formats.png" style="zoom:150%;" />
 
 
 

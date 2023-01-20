@@ -34,7 +34,7 @@ categories:
 
 # Lock types
 
-<img src="\medias\16-Two-Phase-Locking\locks and latches.png" style="zoom:150%;" />
+<img src="locks and latches.png" style="zoom:150%;" />
 
 <br/>
 
@@ -67,7 +67,7 @@ lock的类型：
 - S-LOCK：shared lock，共享锁，读锁
 - X-LOCK：exclusive lock，排他锁，写锁
 
-<img src="\medias\16-Two-Phase-Locking\lock types.png" style="zoom:150%;" />
+<img src="lock types.png" style="zoom:150%;" />
 
 <br/>
 
@@ -98,9 +98,9 @@ PS：2PL是针对单个事务的整体拿锁释放锁来说的
 
 <br/>
 
-<img src="\medias\16-Two-Phase-Locking\two-phase locking.png" style="zoom:150%;" />
+<img src="two-phase locking.png" style="zoom:150%;" />
 
-<img src="\medias\16-Two-Phase-Locking\two-phase locking_01.png" style="zoom:150%;" />
+<img src="two-phase locking_01.png" style="zoom:150%;" />
 
 阶段一：`growing`
 
@@ -117,7 +117,7 @@ PS：2PL是针对单个事务的整体拿锁释放锁来说的
 
 2PL会出现级联终止的问题（即**脏读**）
 
-<img src="\medias\16-Two-Phase-Locking\2PL-cascading aborts.png" style="zoom:150%;" />
+<img src="2PL-cascading aborts.png" style="zoom:150%;" />
 
 - T1先做一部分，T2基于T1的数据再做一部分，结果T1要回滚了，导致T2读取了未提交事务的数据
 - 问题就在于T2是基于T1还未提交的一个版本进行的
@@ -130,7 +130,7 @@ PS：2PL是针对单个事务的整体拿锁释放锁来说的
 
 针对级联终止的问题，使用严格二阶段锁（SS2PL）可以解决
 
-<img src="\medias\16-Two-Phase-Locking\SS2PL.png" style="zoom:150%;" />
+<img src="SS2PL.png" style="zoom:150%;" />
 
 
 
@@ -146,7 +146,7 @@ PS：2PL是针对单个事务的整体拿锁释放锁来说的
 
 <br/>
 
-<img src="\medias\16-Two-Phase-Locking\universe of schedules_01.png" style="zoom:150%;" />
+<img src="universe of schedules_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -164,7 +164,7 @@ PS：2PL是针对单个事务的整体拿锁释放锁来说的
 
 无论是2PL，还是SS2PL，都可能会产生死锁饥饿的情况
 
-<img src="\medias\16-Two-Phase-Locking\shit just got read,son.png" style="zoom:150%;" />
+<img src="shit just got read,son.png" style="zoom:150%;" />
 
 <br/>
 
@@ -183,7 +183,7 @@ PS：2PL是针对单个事务的整体拿锁释放锁来说的
 
 比如说，事务A指向事务B，表示事务A在等待事务B的锁
 
-<img src="\medias\16-Two-Phase-Locking\dedalock detection_01.png" style="zoom:150%;" />
+<img src="dedalock detection_01.png" style="zoom:150%;" />
 
 DBMS会周期性的检测锁依赖图，检查是否出现成环的情况
 
@@ -218,7 +218,7 @@ DBMS会周期性的检测锁依赖图，检查是否出现成环的情况
 
 根据时间戳给事务优先级，越早开始的事务有高优先级（older time stamp = higher priority）
 
-<img src="\medias\16-Two-Phase-Locking\deadlock prevention.png" style="zoom:150%;" />
+<img src="deadlock prevention.png" style="zoom:150%;" />
 
 <br/>
 
@@ -307,7 +307,7 @@ DBMS会周期性的检测锁依赖图，检查是否出现成环的情况
 - shared + intention -  exclusive （**SIX**）
   - 部分行被加了排他锁（X lock），整个表又被加了共享锁（IS）
 
-<img src="\medias\16-Two-Phase-Locking\compatibility matrix_01.png" style="zoom:150%;" />
+<img src="compatibility matrix_01.png" style="zoom:150%;" />
 
 <br/>
 

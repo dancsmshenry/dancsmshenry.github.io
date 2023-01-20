@@ -11,9 +11,3 @@ layout: "friends"
 * **地址：**你的博客地址
 * **简介：**一句话简介
 * **头像：**你的头像地址
-
-例如我的博客友链，大家可以加到自己博客里哦：
-* **名称：**godweiyang
-* **地址：**https://godweiyang.com
-* **简介：**公众号【算法码上来】，分享深度学习与NLP算法
-* **头像：**https://godweiyang.com/medias/avatars/avatar.jpg

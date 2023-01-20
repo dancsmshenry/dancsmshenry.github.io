@@ -58,7 +58,7 @@ checkpoint会将内存中的数据（脏页）和日志全部都写入磁盘
 
 ## Example
 
-<img src="\medias\20-Database-Recovery\checkpoint_example.png" style="zoom:150%;" />
+<img src="checkpoint_example.png" style="zoom:150%;" />
 
 <br/>
 
@@ -102,7 +102,7 @@ checkpoint之下的日志和数据页，还在内存中
 
 **Logging Changes During Undo**：日志中虽然记录了一些操作，但是直到DBMS崩溃的时候该事务还没有提交，那么这些执行了一半的事务，操作过的数据都需要撤销回滚
 
-<img src="\medias\20-Database-Recovery\ARIES.png" style="zoom:150%;" />
+<img src="ARIES.png" style="zoom:150%;" />
 
 <br/>
 
@@ -118,7 +118,7 @@ checkpoint之下的日志和数据页，还在内存中
 
 序列号的作用是表明系统当前运行的状态
 
-<img src="\medias\20-Database-Recovery\LSN_01.png" style="zoom:150%;" />
+<img src="LSN_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -260,7 +260,7 @@ commit时需要执行的操作：
 
 PS：当内存中的日志被flush到了磁盘中时，在内存中的日志就可以被删除了
 
-<img src="\medias\20-Database-Recovery\transaction commit.png" style="zoom:150%;" />
+<img src="transaction commit.png" style="zoom:150%;" />
 
 <br/>
 
@@ -281,7 +281,7 @@ PS：当内存中的日志被flush到了磁盘中时，在内存中的日志就�
 - 这样在abort的时候就可以像一个链表一样将数据进行回滚
 - PS：事务开始的日志（即begin）的prevLSN是nil
 
-<img src="\medias\20-Database-Recovery\transaction abort.png" style="zoom:150%;" />
+<img src="transaction abort.png" style="zoom:150%;" />
 
 <br/>
 
@@ -303,7 +303,7 @@ CLR日志也是被写入到日志文件中，但并不会被要求强制刷盘�
 
 ### Example
 
-<img src="\medias\20-Database-Recovery\transaction abort_example.png" style="zoom:150%;" />
+<img src="transaction abort_example.png" style="zoom:150%;" />
 
 此时需要回滚T1事务，那么就要添加一条新的日志，即CLR-00x，00x表示需要撤销的操作的LSN（例子中需要回滚LSN为002的数据，因此这里是CLR-002）
 
@@ -317,7 +317,7 @@ UndoNext就被设为001，因为此时回滚完002号日志后，就需要回滚
 
 PS：因此，TXN-END既可以表示事务正常运行的结束；也可以表示事务回滚过程后，事务的结束（即commit和abort）
 
-<img src="\medias\20-Database-Recovery\transaction abort_example_01.png" style="zoom:150%;" />
+<img src="transaction abort_example_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -407,7 +407,7 @@ Dirty page table（DPT，脏页表，记录当前系统中有哪些脏页）
 
 只有当事务结束了（写入TXN-END）的时候，才可以把事务从当前的表中移除
 
-<img src="\medias\20-Database-Recovery\active transaction table.png" style="zoom:150%;" />
+<img src="active transaction table.png" style="zoom:150%;" />
 
 <br/>
 
@@ -427,7 +427,7 @@ Dirty page table（DPT，脏页表，记录当前系统中有哪些脏页）
 
 ### Example
 
-<img src="\medias\20-Database-Recovery\slightly better checkpoints.png" style="zoom:150%;" />
+<img src="slightly better checkpoints.png" style="zoom:150%;" />
 
 对于slightly better checkpoints来说，
 
@@ -513,7 +513,7 @@ slightly better checkpoint的优点是不需要等到所有的事务全部做完
 
 把应该回滚，但是还没有回滚的数据进行回滚
 
-<img src="\medias\20-Database-Recovery\ARIES - Recovery phases.png" style="zoom:150%;" />
+<img src="ARIES - Recovery phases.png" style="zoom:150%;" />
 
 <br/>
 
@@ -533,7 +533,7 @@ slightly better checkpoint的优点是不需要等到所有的事务全部做完
 
 - 从DBMS崩溃时的位置往前进行分析，分析有哪些事务到最后依然是活跃的，那么这些事务的操作就需要回滚
 
-<img src="\medias\20-Database-Recovery\ARIES overview.png" style="zoom:150%;" />
+<img src="ARIES overview.png" style="zoom:150%;" />
 
 <br/>
 
@@ -568,7 +568,7 @@ slightly better checkpoint的优点是不需要等到所有的事务全部做完
 
 ### Example
 
-<img src="\medias\20-Database-Recovery\analysis phase example.png" style="zoom:150%;" />
+<img src="analysis phase example.png" style="zoom:150%;" />
 
 当DBMS发生了崩溃之后，就需要找到最近的checkpoint-begin点，分析从这个点到Crash的时候，中间的日志：
 
@@ -651,13 +651,13 @@ PS：在Undo阶段，需要为每一个Undo操作的日志写入CLR（清理日�
 
 举个例子，利用ARIES算法对DBMS的崩溃进行一次分析：
 
-<img src="\medias\20-Database-Recovery\full example_01.png" style="zoom:150%;" />
+<img src="full example_01.png" style="zoom:150%;" />
 
 <br/>
 
 首先是**Analysis**阶段，从Log中分析出此时的ATT和DPT
 
-<img src="\medias\20-Database-Recovery\full example_02.png" style="zoom:150%;" />
+<img src="full example_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -667,7 +667,7 @@ PS：在Undo阶段，需要为每一个Undo操作的日志写入CLR（清理日�
 
 PS：此时的Redo操作是没有日志的
 
-<img src="\medias\20-Database-Recovery\full example_02.png" style="zoom:150%;" />
+<img src="full example_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -677,19 +677,19 @@ PS：此时的Redo操作是没有日志的
 
 比如这里需要回滚事务T2，那么就需要lastLSN对事务的操作进行回滚，同时UndoNext就会记录下一条需要回滚的日志操作
 
-<img src="\medias\20-Database-Recovery\full example_03.png" style="zoom:150%;" />
+<img src="full example_03.png" style="zoom:150%;" />
 
 <br/>
 
 再比如说这里回滚事务T3，而T3只有一条语句，那么这里UndoNext就为空，并且在该事务回滚完毕后（即所有的与该事务的脏页都被写入了磁盘中），会再添加一条`TXN-END`的log
 
-<img src="\medias\20-Database-Recovery\full example_04.png" style="zoom:150%;" />
+<img src="full example_04.png" style="zoom:150%;" />
 
 <br/>
 
 一个小插曲：如果在崩溃后的恢复过程中，又发生了一次崩溃，那么此时的恢复也是和之前是一样的（再次恢复的时候，重复ARIES的几个步骤即可）
 
-<img src="\medias\20-Database-Recovery\full example_05.png" style="zoom:150%;" />
+<img src="full example_05.png" style="zoom:150%;" />
 
 <br/>
 

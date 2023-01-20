@@ -15,7 +15,7 @@ categories:
 
 # vector实现
 
-![](/medias/STL源码剖析之vector/vector示意图.png)
+![](vector示意图.png)
 
 vector中有**三个指针**：指向使用空间的头（`start`）和尾（`finish`），以及可用空间的尾（`end_of_storage`）
 
@@ -29,7 +29,7 @@ vector中有**三个指针**：指向使用空间的头（`start`）和尾（`fi
 
 vector的数据（三个迭代器）是存储在栈上的，迭代器指向的数组是存放在堆上的
 
-![](/medias/STL源码剖析之vector/vector的定义.png)
+![](vector的定义.png)
 
 为什么不能把数据放到栈上
 
@@ -203,7 +203,7 @@ int *p = f.data();
 
 首先检查是否有备用空间，如果有就直接在备用空间上构造元素，并调整迭代器finish
 
-![push_back](/medias/STL源码剖析之vector/push_back.png)
+![push_back](push_back.png)
 
 PS：**为什么还要独立开一个insert_aux函数**：因为可能其他的函数（insert）也会用到插入元素的功能，所以进行抽象封装
 
@@ -211,7 +211,7 @@ PS：**为什么还要独立开一个insert_aux函数**：因为可能其他的�
 
 如果没有可用空间，就扩大原有的vector（重新配置、移动数据、释放原空间）
 
-![insert_aux](/medias/STL源码剖析之vector/insert_aux.png)
+![insert_aux](insert_aux.png)
 
 PS：**一旦空间重新分配，指向原vector的所有的迭代器都会失效**
 
@@ -341,8 +341,8 @@ int main() {
 - 再看看有关vector的构造，它没有写explicit，所以{1,2}可以隐式转换为vector<int>
 - 而对于emplace_back，它的源代码是一个模板函数，造成的结果就是所提供的参数{1,2}会做模板参数类型匹配，不会主动强转std::initializer_list<int>，需要你显式构造，或者用auto先推导一遍
 - 但是这里模板推到不出来类型，所以就会报错
-- ![](/medias/STL源码剖析之vector/push和emplace_back_01.png)
-- ![](/medias/STL源码剖析之vector/push和emplace_back_02.png)
+- ![](push和emplace_back_01.png)
+- ![](push和emplace_back_02.png)
 - 这里的value_type是typeof，即为T，可以理解为已经固定了的类型
 
 - 参考：https://www.zhihu.com/question/438004429

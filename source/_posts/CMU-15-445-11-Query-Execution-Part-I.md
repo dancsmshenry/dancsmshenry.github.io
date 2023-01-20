@@ -42,7 +42,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 
 需要多少条数据，就会有多少次这样的链式的函数调用
 
-<img src="\medias\11-Query-Execution-Part-I\iterator model_01.png" style="zoom: 150%;" />
+<img src="iterator model_01.png" style="zoom: 150%;" />
 
 <br/>
 
@@ -56,7 +56,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 
 `left.next()`算子，即3号算子，则需要一行一行的向上返回数据；4、5号算子同理
 
-<img src="\medias\11-Query-Execution-Part-I\iterator model_02.png" style="zoom:150%;" />
+<img src="iterator model_02.png" style="zoom:150%;" />
 
 而在执行2、3、4、5号算子的过程中，1号算子会因为2号算子没有返回数据而阻塞（因为只有下面的算子返回了数据，上面的算子才能继续运行）
 
@@ -85,7 +85,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 
 - 每一条数据的输出都是依靠函数调用，可能出现函数栈溢出
 
-<img src="\medias\11-Query-Execution-Part-I\iterator model_03.png" style="zoom:150%;" />
+<img src="iterator model_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -105,7 +105,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 
 模型中所有的算子都只会被调用一次
 
-<img src="\medias\11-Query-Execution-Part-I\materialization model_01.png" style="zoom:150%;" />
+<img src="materialization model_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -116,7 +116,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 
 因此这种做法并不适用于OLAP的数据库，因为中间结果太大，容易爆内存
 
-<img src="\medias\11-Query-Execution-Part-I\materialization model_02.png" style="zoom:150%;" />
+<img src="materialization model_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -131,7 +131,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 
 也和`materialization model`一样有`out`数组，但返回的不是全部数据，而是部分数据
 
-<img src="\medias\11-Query-Execution-Part-I\vectorization model_01.png" style="zoom:150%;" />
+<img src="vectorization model_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -147,7 +147,7 @@ DBMS的执行模型规定了系统是如何执行查询计划的
 - 这种模型的底层就可以利用这种批处理的指令，实现一次性处理多条数据
 - 也叫做向量执行模型
 
-<img src="\medias\11-Query-Execution-Part-I\vectorization model_02.png" style="zoom:150%;" />
+<img src="vectorization model_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -185,7 +185,7 @@ PS：数据流动的方向一直是从下往上的
 
 主要就是研究如何读表中的数据
 
-<img src="\medias\11-Query-Execution-Part-I\access methods.png" style="zoom:150%;" />
+<img src="access methods.png" style="zoom:150%;" />
 
 <br/>
 
@@ -238,7 +238,7 @@ for page in table.pages:	#	外层循环遍历数据页
 
 所以希望用一个map，用来**记录关于这个页**的相关信息（比如说max，min，avg，sum等），以便DBMS筛选掉某些页，从而优化全表扫描的速度
 
-<img src="\medias\11-Query-Execution-Part-I\zone maps.png" style="zoom:150%;" />
+<img src="zone maps.png" style="zoom:150%;" />
 
 缺点：
 
@@ -273,7 +273,7 @@ for page in table.pages:	#	外层循环遍历数据页
 
 假如有两个索引，应该选择哪一个索引效果更好？
 
-<img src="\medias\11-Query-Execution-Part-I\index scan.png" style="zoom:150%;" />
+<img src="index scan.png" style="zoom:150%;" />
 
 选择该索引后，剩下的数据，即需要再排查的数据越少，就选那一个
 
@@ -287,7 +287,7 @@ for page in table.pages:	#	外层循环遍历数据页
 
 比如上面的问题，多索引的思路是用一个索引筛出数据A，用另一个索引筛出数据B，然后对这两个数据进行取交集
 
-<img src="\medias\11-Query-Execution-Part-I\multi-index scan.png" style="zoom:150%;" />
+<img src="multi-index scan.png" style="zoom:150%;" />
 
 在PG中，multi-index scan的底层就是用bitmap实现的
 
@@ -353,7 +353,7 @@ update的操作流程是，按照索引的顺序，每读一个数据就把该�
 
 谓词表达式的一些计算（谓词表达式本质上就是一个计算式，涉及到不同的符号，比如等于不等于等符号）
 
-<img src="\medias\11-Query-Execution-Part-I\expression evaluation.png" style="zoom:150%;" />
+<img src="expression evaluation.png" style="zoom:150%;" />
 
 <br/>
 
@@ -363,7 +363,7 @@ update的操作流程是，按照索引的顺序，每读一个数据就把该�
 
 将谓词表达式拆分为一个树状的流程图，即分为几个不同的算子
 
-<img src="\medias\11-Query-Execution-Part-I\expression evaluation_01.png" style="zoom:150%;" />
+<img src="expression evaluation_01.png" style="zoom:150%;" />
 
 
 
@@ -373,7 +373,7 @@ update的操作流程是，按照索引的顺序，每读一个数据就把该�
 
 不过这种流程存在一些优化的方向：
 
-<img src="\medias\11-Query-Execution-Part-I\expression evaluation_02.png" style="zoom:150%;" />
+<img src="expression evaluation_02.png" style="zoom:150%;" />
 
 <br/>
 

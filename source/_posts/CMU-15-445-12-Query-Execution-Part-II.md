@@ -91,7 +91,7 @@ categories:
 
 当SQL语句到来的时候，会被dispatcher分配worker去执行语句，worker执行完后就将数据返还给DBMS
 
-<img src="\medias\12-Query-Execution-Part-II\process per DBMS Worker.png" style="zoom:150%;" />
+<img src="process per DBMS Worker.png" style="zoom:150%;" />
 
 <br/>
 
@@ -105,7 +105,7 @@ categories:
 
 应用：DB2，postgresql
 
-<img src="\medias\12-Query-Execution-Part-II\process pool.png" style="zoom:150%;" />
+<img src="process pool.png" style="zoom:150%;" />
 
 <br/>
 
@@ -129,7 +129,7 @@ dispatcher的数量不定，一个或者多个
 
 应用：DB2，Oracle，SQL Server，MySQL
 
-<img src="\medias\12-Query-Execution-Part-II\thread per worker.png" style="zoom:150%;" />
+<img src="thread per worker.png" style="zoom:150%;" />
 
 <br/>
 
@@ -198,7 +198,7 @@ SQL执行间的并发机制
 - 可以并发的多个线程去处理每个桶之间的数据，即对每个桶进行并发的join
 - 也可以用单个线程实现hash join
 
-<img src="\medias\12-Query-Execution-Part-II\hash join.png" style="zoom:150%;" />
+<img src="hash join.png" style="zoom:150%;" />
 
 <br/>
 
@@ -227,7 +227,7 @@ SQL执行间的并发机制
 
 最后把得到的结果汇总给上面的算子
 
-<img src="\medias\12-Query-Execution-Part-II\intra-operator parallelism_01.png" style="zoom:150%;" />
+<img src="intra-operator parallelism_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -241,7 +241,7 @@ SQL执行间的并发机制
 - distribute：将数据分发给不同的算子去执行，分配的算子
 - repartition：重分配的算子，即把三个算子的结果分配给两个算子去执行
 
-<img src="\medias\12-Query-Execution-Part-II\exchange operator.png" style="zoom:150%;" />
+<img src="exchange operator.png" style="zoom:150%;" />
 
 <br/>
 
@@ -259,7 +259,7 @@ SQL执行间的并发机制
 
 每个算子都由一个线程负责，数据就在线程之间进行传递
 
-<img src="\medias\12-Query-Execution-Part-II\inter-operator parallelism_01.png" style="zoom:150%;" />
+<img src="inter-operator parallelism_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -273,7 +273,7 @@ SQL执行间的并发机制
 
 是上述两种执行方法的融合版本，既有水平切分，也有垂直切分
 
-<img src="\medias\12-Query-Execution-Part-II\bushy parallelism.png" style="zoom:150%;" />
+<img src="bushy parallelism.png" style="zoom:150%;" />
 
 <br/>
 
@@ -337,7 +337,7 @@ SQL执行间的并发机制
 
 主要是操作系统和硬件共同控制；从文件系统上看就只有一个盘，但是底层是将数据切分为不同的部分存储到不同的硬盘的
 
-<img src="\medias\12-Query-Execution-Part-II\RAID 0.png" style="zoom:150%;" />
+<img src="RAID 0.png" style="zoom:150%;" />
 
 <br/>
 
@@ -359,7 +359,7 @@ SQL执行间的并发机制
 
 同一个数据页存到不同的磁盘中，相当于数据备份在不同的磁盘上
 
-<img src="\medias\12-Query-Execution-Part-II\RAID 1.png" style="zoom:150%;" />
+<img src="RAID 1.png" style="zoom:150%;" />
 
 优点：可靠性高，多备份（其中一个数据盘坏了也不受影响）；可以并行读（并发写的话需要同步机制）
 
@@ -383,7 +383,7 @@ SQL执行间的并发机制
 
 当然还可以备份异或得到的结果，由此衍生不同的变种
 
-<img src="\medias\12-Query-Execution-Part-II\RAID 0.png" style="zoom:150%;" />
+<img src="RAID 0.png" style="zoom:150%;" />
 
 <br/>
 
@@ -418,7 +418,7 @@ SQL执行间的并发机制
 
 比如下图就是将attr1、attr2、attr3和attr4进行了分区处理
 
-<img src="\medias\12-Query-Execution-Part-II\vertical partitioning.png" style="zoom:150%;" />
+<img src="vertical partitioning.png" style="zoom:150%;" />
 
 <br/>
 
@@ -437,7 +437,7 @@ SQL执行间的并发机制
 
 对于数据分割的方法有很多，比如常见的hash分区、范围分区、再或者谓词分区
 
-<img src="\medias\12-Query-Execution-Part-II\horizontal partitioning_01.png" style="zoom:150%;" />
+<img src="horizontal partitioning_01.png" style="zoom:150%;" />
 
 一些分库分表的中间件也可以做水平分区
 

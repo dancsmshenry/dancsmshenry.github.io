@@ -80,8 +80,8 @@ recommend:
 
 # Configure website favicon and LOGO
 # 配置网站favicon和网站LOGO
-favicon: /favicon.png
-logo: /medias/logo.png
+favicon: /roses.jpg
+logo: /medias/roses.png
 
 # The configuration of the second button in the home banner,
 # including the display name of the button, the font awesome icon, and the hyperlink to the button.
@@ -90,17 +90,17 @@ indexbtn:
   enable: true
   name: Github
   icon: fa-github-alt
-  url: https://github.com/godweiyang
+  url: https://github.com/dancsmshenry
 
 # The configurations of the second line of home banner
 # icon/button will not show up if you leave the corresponding socialLink empty
 # 首页 banner 中的第二行个人信息配置，留空即不启用
 socialLink:
-  qq: 792321264
+  # qq: 792321264
   github: godweiyang
-  weibo: godweiyang
-  email: godweiyang@gmail.com
-  zhihu: godweiyang
+  # weibo: godweiyang
+  email: dancsmshenry@163.com
+  zhihu: ai-ni-de-dian-zhen-shi-tai-hao-la
 
 # Whether to activate the Post TOC, and Configure which title types are supported by TOC support.
 # You can add `toc: false` to the Front-matter of a post to turn off the TOC.
@@ -118,7 +118,7 @@ code:
 
 # 是否激活文章末尾的打赏功能，默认激活（你替换为的你自己的微信、支付宝二维码图片、或者使用网络图片也可以）.
 reward:
-  enable: true
+  enable: false
   title: 写作不易，客官能否打赏一杯奶茶？
   wechat: /medias/reward/wechat.png
   alipay: /medias/reward/alipay.jpg
@@ -127,7 +127,7 @@ reward:
 # minCharNumber: Approve copyright information by copying at least how many characters.
 # 是否激活复制文章时追加博客和作者的版权信息.
 copyright:
-  enable: true
+  enable: false
   minCharNumber: 120 # 至少复制多少个字符就追加版权信息.
   description: 本文章著作权归作者所有，任何形式的转载都请注明出处。
 
@@ -154,7 +154,7 @@ wordCount:
 # Whether to activate the 'love' effect of clicking on the page.
 # 是否激活点击页面的'爱心'效果，默认激活.
 clicklove:
-  enable: true
+  enable: false
 explosion:
   enable: false
 firework:
@@ -165,9 +165,9 @@ text:
 # profile in about page, including avatars, career, and personal introductions.
 # 在”关于”页面中配置个人信息，包括头像、职业和个人介绍.
 profile:
-  avatar: /medias/avatars/avatar.jpg
-  career: 华东师范大学 | 计算机科学与技术 | AntNLP
-  introduction: 我是华东师范大学计算机科学与技术专业2018级硕士研究生。直研进入本校计算机系攻读硕士，研究方向是深度学习与自然语言处理。我们实验室是AntNLP，欢迎大家报考！欢迎关注我的微信公众号「算法码上来」，干货每天不错过！
+  avatar: /medias/avatars/roses.png
+  career: nullptr
+  introduction: a nullptr
 
 # config my projects informations in about page.
 # If you don't want to display this `My Projects` content, you can deactivate or delete this configuration.
@@ -199,28 +199,28 @@ mySkills:
   data:
     Algorithm:
       background: 'linear-gradient(to right, #FF0066 0%, #FF00CC 100%)'
-      percent: 90%
-    C++:
+      percent: 60%
+    Database:
       background: 'linear-gradient(to right, #9900FF 0%, #CC66FF 100%)'
-      percent: 80%
-    Python:
+      percent: 60%
+    C++:
       background: 'linear-gradient(to right, #2196F3 0%, #42A5F5 100%)'
-      percent: 80%
-    Pytorch:
-      background: 'linear-gradient(to right, #951213 0%, #961117 100%)'
-      percent: 75%
-    Dynet:
-      background: 'linear-gradient(to right, #F12F12 0%, #F6464F 100%)'
-      percent: 75%
-    Java:
-      background: 'linear-gradient(to right, #00BCD4 0%, #80DEEA 100%)'
-      percent: 50%
-    SQL:
-      background: 'linear-gradient(to right, #4CAF50 0%, #81C784 100%)'
-      percent: 50%
-    HTML:
-      background: 'linear-gradient(to right, #FFEB3B 0%, #FFF176 100%)'
       percent: 45%
+    Operating System:
+      background: 'linear-gradient(to right, #951213 0%, #961117 100%)'
+      percent: 55%
+    NetWork:
+      background: 'linear-gradient(to right, #F12F12 0%, #F6464F 100%)'
+      percent: 55%
+    # Java:
+    #   background: 'linear-gradient(to right, #00BCD4 0%, #80DEEA 100%)'
+    #   percent: 50%
+    # SQL:
+    #   background: 'linear-gradient(to right, #4CAF50 0%, #81C784 100%)'
+    #   percent: 50%
+    # HTML:
+    #   background: 'linear-gradient(to right, #FFEB3B 0%, #FFF176 100%)'
+    #   percent: 45%
 
 # config gallery of my photos in about page.
 # If you don't want to display this `Gallery` content, you can deactivate or delete this configuration.
@@ -239,13 +239,13 @@ postCalendar: true
 # the Gitalk config，default disabled
 # Gitalk 评论模块的配置，默认为不激活
 gitalk:
-  enable: true
-  owner: godweiyang
-  repo: godweiyang.github.io
+  enable: false
+  owner: dancsmshenry
+  repo: dancsmshenry.github.io
   oauth:
     clientId: 查教程获取
     clientSecret: 查教程获取
-  admin: godweiyang
+  admin: dancsmshenry
 
 # the Gitment config，default disabled
 # Gitment 评论模块的配置，默认为不激活
@@ -273,7 +273,7 @@ livere:
 # To use it, activate the configuration item and set appId and appKey.
 # Valine 评论模块的配置，默认为不激活，如要使用，就请激活该配置项，并设置 appId 和 appKey.
 valine:
-  enable: true
+  enable: false
   appId: 查教程获取
   appKey: 查教程获取
   notify: false
@@ -286,7 +286,7 @@ valine:
 # Whether to display fork me on github icon and link, default true, You can change it to your repo address
 # 配置是否在 header 中显示 fork me on github 的图标，默认为true，你可以修改为你的仓库地址.
 githubLink:
-  enable: true
+  enable: false
   url: https://github.com/godweiyang/hexo-matery-modified
   title: Fork Me
 
@@ -297,21 +297,21 @@ githubLink:
 # 阅读文章的密码验证功能，如要使用此功能请激活该配置项，并在对应文章的Front-matter中写上'password'的键和加密后的密文即可.
 # 请注意：为了保证密码原文不会被泄露到网页中，文章的密码必须是通过'SHA256'加密的，这样就不会被破解.
 verifyPassword:
-  enable: true
+  enable: false
   promptMessage: 请输入访问本文章的密码
   errorMessage: 密码错误，将返回主页！
 
 # busuanzi(http://busuanzi.ibruce.info/) website statistics
 # 不蒜子(http://busuanzi.ibruce.info/) 网站统计
 busuanziStatistics:
-  enable: true
-  totalTraffic: true # 总访问量
-  totalNumberOfvisitors: true # 总人次
+  enable: false
+  totalTraffic: false # 总访问量
+  totalNumberOfvisitors: false # 总人次
 
 # Add google analytics configuration
 # 添加 Google Analytics 配置
 googleAnalytics:
-  enable: true
+  enable: false
   id: 查教程获取
 
 # The used front-end library can be replaced with the corresponding CDN address as needed,
@@ -403,7 +403,7 @@ featureImages:
   # noreprint（不允许转载 not allowed to reprint）
   # pay（付费转载 pay for reprinting）
 reprint:
-  enable: true # whether enable reprint section 是否启用“转载规则限定模块”
+  enable: false # whether enable reprint section 是否启用“转载规则限定模块”
   default: cc_by
 
 

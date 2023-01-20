@@ -92,7 +92,7 @@ categories:
 
 # Architecture
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\architecture overview.png" style="zoom:150%;" />
+<img src="architecture overview.png" style="zoom:150%;" />
 
 <br/>
 
@@ -213,7 +213,7 @@ DBMS可以利用关系代数，从逻辑上判断两个执行计划是否是等�
 
 通过逻辑谓词的下推，实现了两个关系表达式的等效
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\predicate pushdown.png" style="zoom:150%;" />
+<img src="predicate pushdown.png" style="zoom:150%;" />
 
 <br/>
 
@@ -221,7 +221,7 @@ DBMS可以利用关系代数，从逻辑上判断两个执行计划是否是等�
 
 将谓词进行分割
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\relational algebra equivalences.png" style="zoom:150%;" />
+<img src="relational algebra equivalences.png" style="zoom:150%;" />
 
 <br/>
 
@@ -231,7 +231,7 @@ join的交换律
 
 如果有n个表进行join，那么就有4^n种执行方法
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\join的交换律.png" style="zoom:150%;" />
+<img src="join的交换律.png" style="zoom:150%;" />
 
 <br/>
 
@@ -273,7 +273,7 @@ join的交换律
 
 比如下图，将语句中用and连接的一串谓词分开
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\split conjunctive predicates.png" style="zoom:150%;" />
+<img src="split conjunctive predicates.png" style="zoom:150%;" />
 
 <br/>
 
@@ -283,7 +283,7 @@ join的交换律
 
 谓词下推，谓词的执行越接近读表越好（可以提前过滤掉大量的无用数据）
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\predicate pushdown_01.png" style="zoom:150%;" />
+<img src="predicate pushdown_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -295,7 +295,7 @@ join的交换律
 
 两个表连表后（即笛卡尔积）再用条件判断，就相当于一个join了，所以就可以把笛卡尔积变为join
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\replace cartesian products with joins.png" style="zoom:150%;" />
+<img src="replace cartesian products with joins.png" style="zoom:150%;" />
 
 <br/>
 
@@ -305,7 +305,7 @@ join的交换律
 
 投影下推，发现很多时候我们只需要部分列的数据，整行的记录没必要全部往上传，所以就只传递部分数据即可
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\projection pushdown.png" style="zoom:150%;" />
+<img src="projection pushdown.png" style="zoom:150%;" />
 
 <br/>
 
@@ -330,7 +330,7 @@ join的交换律
 
 比如下图，将两条查询SQL，优化为一条查询SQL
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\rewrite.png" style="zoom:150%;" />
+<img src="rewrite.png" style="zoom:150%;" />
 
 <br/>
 
@@ -350,7 +350,7 @@ join的交换律
 
 <br/>
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\decompose.png" style="zoom:150%;" />
+<img src="decompose.png" style="zoom:150%;" />
 
 比如上面的SQL，发现`SELECT MAX(S2.rating) FROM sailors S2`的结果是一个不变的量
 
@@ -358,7 +358,7 @@ join的交换律
 
 而不是每次读取到这条语句的时候，都重复执行
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\decomposing queries.png" style="zoom:150%;" />
+<img src="decomposing queries.png" style="zoom:150%;" />
 
 <br/>
 
@@ -382,7 +382,7 @@ join的交换律
 
 比如下图，1必然是不等于0的，所以这里可以直接优化为false，输出空结果即可
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\impossible predicates.png" style="zoom:150%;" />
+<img src="impossible predicates.png" style="zoom:150%;" />
 
 <br/>
 
@@ -396,7 +396,7 @@ join的交换律
 
 因此可以修改为为`SELECT * FROM A;`
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\join elimination.png" style="zoom:150%;" />
+<img src="join elimination.png" style="zoom:150%;" />
 
 <br/>
 
@@ -406,13 +406,13 @@ join的交换律
 
 发现当前查询以及子查询在联表查询时，连接的都是同一张表
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\join elimination with sub-query_01.png" style="zoom:150%;" />
+<img src="join elimination with sub-query_01.png" style="zoom:150%;" />
 
 <br/>
 
 那么就可以改写为以下SQL
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\join elimination with sub-query_02.png" style="zoom:150%;" />
+<img src="join elimination with sub-query_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -422,11 +422,11 @@ join的交换律
 
 将谓词进行合并
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\merge predicate_01.png" style="zoom:150%;" />
+<img src="merge predicate_01.png" style="zoom:150%;" />
 
 可以将谓词里面的数据范围进行合并
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\merge predicate_02.png" style="zoom:150%;" />
+<img src="merge predicate_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -457,7 +457,7 @@ join的交换律
 
 PS：估算SQL执行的开销，和计划列举的步骤是分开的
 
-<img src="\medias\13-Query-Planning-Optimization-Part-I\query optimization.png" style="zoom: 150%;" />
+<img src="query optimization.png" style="zoom: 150%;" />
 
 <br/>
 

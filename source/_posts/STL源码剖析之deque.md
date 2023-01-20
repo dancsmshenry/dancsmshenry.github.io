@@ -45,7 +45,7 @@ deque的最大任务，便是在这些分段的定量连续空间上，维护其
 
 **在64位机器、g++10.3下，deque::iterator的大小为32**
 
-![](/medias/STL源码剖析之deque/deque迭代器示意图.png)
+![](deque迭代器示意图.png)
 
 deque的迭代器总共有四个指针：
 
@@ -57,7 +57,7 @@ deque的迭代器总共有四个指针：
 
 - `node`（指向当前的缓冲区对应的迭代器在中控器上的位置）
 
-![](/medias/STL源码剖析之deque/deque迭代器源码.png)
+![](deque迭代器源码.png)
 
 <br/>
 
@@ -71,7 +71,7 @@ deque采用一块所谓的map（不是map容器）作为**主控**
 
 缓冲区才是deque的储存空间主体，SGI STL 允许我们指定缓冲区大小，默认值0表示将使用512bytes缓冲区
 
-![](/medias/STL源码剖析之deque/deque中中控器、缓冲区、迭代器的相互关系.png)
+![](deque中中控器、缓冲区、迭代器的相互关系.png)
 
 deque主要由四个部分组成：
 
@@ -87,7 +87,7 @@ deque主要由四个部分组成：
 
 ## 源码
 
-![](/medias/STL源码剖析之deque/deque数据结构.png)
+![](deque数据结构.png)
 
 <br/>
 
@@ -179,9 +179,9 @@ words.insert(words.begin() + 3, 5, "IS");	//	位置，重复次数，重复的�
 
 所以在插入时首先进行判断插入位置距离首位哪边比较短，移动距离较短的一边，最大化的减少开销
 
-![](/medias/STL源码剖析之deque/deque的insert_01.png)
+![](deque的insert_01.png)
 
-![](/medias/STL源码剖析之deque/deque的insert_02.png)
+![](deque的insert_02.png)
 
 <br/>
 

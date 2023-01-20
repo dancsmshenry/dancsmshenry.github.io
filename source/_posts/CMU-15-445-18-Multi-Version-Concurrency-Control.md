@@ -84,7 +84,7 @@ Read-only txns can read a consistent **snapshot** without acquiring locks（只�
 
 同时，全局会维护一个`txn table`，用于互相查明事务的状态
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\txn status table.png" style="zoom:150%;" />
+<img src="txn status table.png" style="zoom:150%;" />
 
 <br/>
 
@@ -96,7 +96,7 @@ T1读数据会检查当前的版本，发现此时版本为T0，因此就直接�
 
 T2写数据，发现当前版本小于自身，因此在table中添加一条新的记录（该记录的begin为当前记录的版本号）
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_01.png" style="zoom:150%;" />
+<img src="mvcc-example_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -104,7 +104,7 @@ T2写数据，发现当前版本小于自身，因此在table中添加一条新�
 
 此后，T1又要读数据A，就得找到当前事务对应的版本（即历史版本）读取数据
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_02.png" style="zoom:150%;" />
+<img src="mvcc-example_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -124,7 +124,7 @@ T2对数据A的读取：
 
 PS：可以看出来单单MVCC是无法实现可串行化的（因为可串行化中，T2读取到的应该是T1时刻修改后的数据，但MVCC读到的却是更早的数据）
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_03.png" style="zoom:150%;" />
+<img src="mvcc-example_03.png" style="zoom:150%;" />
 
 <br/>
 
@@ -144,13 +144,13 @@ T1发生在T2之前，那么T2对数据写的版本必然是最终版本
 
 T1对数据A的读取：读取当前事务中上一次添加的版本A1时的数据
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_04.png" style="zoom:150%;" />
+<img src="mvcc-example_04.png" style="zoom:150%;" />
 
 <br/>
 
 当T1事务commit以后，T2事务才可以继续往下写数据
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_05.png" style="zoom:150%;" />
+<img src="mvcc-example_05.png" style="zoom:150%;" />
 
 <br/>
 
@@ -164,7 +164,7 @@ MVCC不仅仅是并发控制的手段，更是DBMS管理事务的手段
 
 几乎所有的DBMS都实现了MVCC
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_06.png" style="zoom:150%;" />
+<img src="mvcc-example_06.png" style="zoom:150%;" />
 
 <br/>
 
@@ -176,7 +176,7 @@ MVCC不仅仅是并发控制的手段，更是DBMS管理事务的手段
 
 MVCC常常和其他的并发控制协议结合在一起
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\concurrency control protocol.png" style="zoom:150%;" />
+<img src="concurrency control protocol.png" style="zoom:150%;" />
 
 <br/>
 
@@ -203,7 +203,7 @@ DBMS会使用一个指针，接着建立一个链表记录每个版本的版本�
 
 所有数据的所有版本，都存放在同一个表（`Main Table`）里面
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\append-only storage.png" style="zoom:150%;" />
+<img src="append-only storage.png" style="zoom:150%;" />
 
 <br/>
 
@@ -219,7 +219,7 @@ DBMS会使用一个指针，接着建立一个链表记录每个版本的版本�
 
 `Main table`中链表的两种实现思路
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\version chain ordering.png" style="zoom:150%;" />
+<img src="version chain ordering.png" style="zoom:150%;" />
 
 <br/>
 
@@ -233,7 +233,7 @@ DBMS会使用一个指针，接着建立一个链表记录每个版本的版本�
 - 生成新版本时，将新版本的指针指向老版本
 - 所以访问某个版本的记录时，需要从新记录开始遍历到指定版本
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\O2N and N2O.png" style="zoom:150%;" />
+<img src="O2N and N2O.png" style="zoom:150%;" />
 
 <br/>
 
@@ -241,7 +241,7 @@ DBMS会使用一个指针，接着建立一个链表记录每个版本的版本�
 
 ## Time-travel storage
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\time-travel storage.png" style="zoom:150%;" />
+<img src="time-travel storage.png" style="zoom:150%;" />
 
 main table存储的是当前最新的数据，time-travel table存储的是历史的数据
 
@@ -265,7 +265,7 @@ time-travel也是append-only的存储方式，只是新老版本在不同的表�
 
 <br/>
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\time travel storage.png" style="zoom:150%;" />
+<img src="time travel storage.png" style="zoom:150%;" />
 
 <br/>
 
@@ -281,7 +281,7 @@ time-travel也是append-only的存储方式，只是新老版本在不同的表�
 
 main table存储原数据，delta storage segment存储每次修改的增量（具体修改了哪些部分）
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\delta storage.png" style="zoom:150%;" />
+<img src="delta storage.png" style="zoom:150%;" />
 
 <br/>
 
@@ -293,7 +293,7 @@ main table存储原数据，delta storage segment存储每次修改的增量（�
 
 缺点：查看历史版本（或回滚）复杂度高，即恢复（回滚）的时候需要逐步读delat storage segment（可以理解为用时间换取空间）
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\delta storage.jpg" style="zoom:150%;" />
+<img src="delta storage.jpg" style="zoom:150%;" />
 
 <br/>
 
@@ -345,7 +345,7 @@ PS：MySQL使用的就是这种方法，不过MySQL存储的是undo段
 
 开启一个后台线程对当前发生的事务和历史版本进行扫描对比，如果有数据的版本是小于当前所有的活跃事务的版本，就要清理掉
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\tuple-level gc.png" style="zoom:150%;" />
+<img src="tuple-level gc.png" style="zoom:150%;" />
 
 <br/>
 
@@ -368,7 +368,7 @@ PS：MySQL使用的就是这种方法，不过MySQL存储的是undo段
 
 发现没有用的版本，就删除
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\tuple-level gc(cooperative cleaning).png" style="zoom:150%;" />
+<img src="tuple-level gc(cooperative cleaning).png" style="zoom:150%;" />
 
 <br/>
 
@@ -380,7 +380,7 @@ PS：MySQL使用的就是这种方法，不过MySQL存储的是undo段
 
 <br/>
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\transaction-level gc.png" style="zoom:150%;" />
+<img src="transaction-level gc.png" style="zoom:150%;" />
 
 每次修改数据时，同时记录修改数据之前的旧版本
 
@@ -404,7 +404,7 @@ PS：MySQL使用的就是这种方法，不过MySQL存储的是undo段
 
 比较麻烦的是辅助索引的处理，下图是辅助索引管理的两大流派：
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\index management.jpg" style="zoom:150%;" />
+<img src="index management.jpg" style="zoom:150%;" />
 
 <br/>
 
@@ -432,7 +432,7 @@ PS：MySQL使用的就是这种方法，不过MySQL存储的是undo段
 
 - 存在读放大问题，所有索引访问数据都需要先访问"中间指针"，再跳转到实际数据存储位置，即存在**回表**的过程
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\index pointers_02.png" style="zoom:150%;" />
+<img src="index pointers_02.png" style="zoom:150%;" />
 
 <br/>
 
@@ -461,7 +461,7 @@ PS：MySQL InnoDB就是使用逻辑指针的方式，所有索引都指向主键
 - 如果辅助索引记录的是数据记录的物理地址，那么当有新的版本数据到来的时候，所有的辅助索引上数据记录都要修改（特别是在辅助索引数量很多的情况下，复杂度`upup`）
 - 因此不利于写，如果更新了某条记录的位置，则相关的索引都需要更新，造成写放大
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\index pointers_01.png" style="zoom:150%;" />
+<img src="index pointers_01.png" style="zoom:150%;" />
 
 <br/>
 
@@ -499,7 +499,7 @@ T3在原来的位置插入了新的数据A
 
 所以就需要存储冗余的键值，以此实现隔离级别（比如此时的数据A，需要维护T1指向的A1的版本和T3指向A1的版本）
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc duplicate key problem.png" style="zoom:150%;" />
+<img src="mvcc duplicate key problem.png" style="zoom:150%;" />
 
 <br/>
 
@@ -549,7 +549,7 @@ DBMS一般不会在物理上将数据从数据库中删除
 
 # MVCC implementations
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc implementations.png" style="zoom:150%;" />
+<img src="mvcc implementations.png" style="zoom:150%;" />
 
 比较core的部分：
 
