@@ -1,0 +1,464 @@
+---
+title: CMU 15-445 12-Query Execution Part II
+top: false
+cover: false
+toc: true
+mathjax: true
+date: 2022-12-29 21:53:43
+password:
+summary:
+tags:
+- Database
+- CMU 15-445
+categories:
+---
+
+
+
+
+
+
+
+# Why care about parallel execution
+
+上节课讨论的都是单个SQL语句是如何执行的，但是实际上我们很多时候都是多线程执行SQL语句
+
+<br/>
+
+为什么要多线程并发执行
+
+- 从单条语句看，能够提高响应时间（单独运行的情况下需要运行5s，而多线程的情况下只需要运行0.5s）
+- 从多条语句看，能够提高吞吐量（单位时间能够处理多少条语句）
+
+- 能够提高应用的响应性和可用性（底层运行的越快，越能提高上层的可用性）
+- 降低开销（提高效率，能够使用更少的时间、更少的电费去实现功能）
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Parallel vs Distributed
+
+并行数据库
+
+- 所有的资源、线程都是在同一个机器上
+- 并行数据库资源之间的通信是高速的（比如说通过共享内存）
+- 并行数据库之间线程的通信都是简易和可靠的
+
+<br/>
+
+分布式数据库
+
+- 节点之间的物理距离可能非常遥远
+- 分布式数据库的通信是非常慢的（需要互联网）
+- 分布式数据库之间的通信以及相关问题是无法被忽略的
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Process models
+
+研究多个用户的SQL是如何并发执行的，即研究线程模型
+
+可以将SQL中的操作拆解为不同的算子，每个算子则可以抽象为worker，分配给不同的对象执行
+
+<br/>
+
+<br/>
+
+## Process per DBMS Worker
+
+每一个worker分配一个进程去做（进程的调度是依赖于操作系统的）
+
+<br/>
+
+进程间使用shared memory通信
+
+<br/>
+
+优点：一个进程的崩溃不会影响其他的进程
+
+缺点：如果并发量非常大的话，创建过多的进程会极度的浪费资源
+
+应用：DB2，Oracle，Postgresql
+
+<br/>
+
+当SQL语句到来的时候，会被dispatcher分配worker去执行语句，worker执行完后就将数据返还给DBMS
+
+<img src="\medias\12-Query-Execution-Part-II\process per DBMS Worker.png" style="zoom:150%;" />
+
+<br/>
+
+<br/>
+
+## Process pool
+
+背景：因为多进程会浪费资源，所以想到了复用进程，进而提出进程池
+
+其中dispatcher不再是直接创造出进程，而是从进程池里面找到可用的进程给SQL去执行，用完后再返回进程池
+
+应用：DB2，postgresql
+
+<img src="\medias\12-Query-Execution-Part-II\process pool.png" style="zoom:150%;" />
+
+<br/>
+
+<br/>
+
+## Thread per DBMS Worker
+
+背景：由于进程的切换代价高，进程本身占用过多资源，因此引入pthread线程（并且pthread天生就能够相互通信）
+
+每个worker都分配一个线程
+
+线程之间的调度是由DBMS调度（有点类似用户态线程）
+
+dispatcher的数量不定，一个或者多个
+
+<br/>
+
+优点：线程的切换代价上是小于进程的切换的；线程天生支持共享内存通信
+
+缺点：一个线程的崩溃会导致整个进程崩溃（稳定性差）
+
+应用：DB2，Oracle，SQL Server，MySQL
+
+<img src="\medias\12-Query-Execution-Part-II\thread per worker.png" style="zoom:150%;" />
+
+<br/>
+
+很多DBMS都用了多线程的技术
+
+- 这里的多线程其实是指一个SQL语句由一个worker去跑，多线程是指可以同时跑多个SQL语句
+- 而将一条SQL开多线程跑是另一种技术
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Execution parallelism
+
+SQL执行间的并发机制
+
+针对每一个执行计划，DBMS都要决定在哪儿执行，什么时候执行以及如何去执行
+
+- 比如说将执行计划切分为多少个任务（如何将每条SQL语句分为多个worker去执行）
+- 每个任务需要占有多少的CPU资源
+- 哪些CPU资源需要执行哪些任务
+- 单个小任务的数据应该如何汇集在一起
+
+<br/>
+
+尽量让DBMS本身来控制这些行为，而不是OS
+
+<br/>
+
+<br/>
+
+## Inter query parallelism
+
+**查询之间**如何并发的执行
+
+优点：不同的查询并发的去执行，可以降低延迟，提高吞吐量
+
+<br/>
+
+如果查询是只读的话，那么多个查询之间的冲突就会很小，就没有并发问题
+
+但是如果查询有读有写，那么就会有并发问题（需要后续的并发控制协议）
+
+<br/>
+
+<br/>
+
+## Intra query parallelism
+
+**查询内部**的算子进行并发处理，即将一个一个执行计划切分为不同的线程去做，可以减少延迟（减少等待）
+
+优点：将一个查询计划拆分为不同的算子，并分给好几个线程同时执行，从而提高单个查询的性能和效率
+
+<br/>
+
+思想上有点像生产者消费者的模型（前面的算子生产出了数据，后续的算子消费数据）
+
+<br/>
+
+成熟DBMS的每一个算子都有并发的版本
+
+例子：比如说之前的grace hash join
+
+- 可以并发的多个线程去处理每个桶之间的数据，即对每个桶进行并发的join
+- 也可以用单个线程实现hash join
+
+<img src="\medias\12-Query-Execution-Part-II\hash join.png" style="zoom:150%;" />
+
+<br/>
+
+并发算子实现的两大思路
+
+- 多个线程都去操作集中的总数据
+- 或者将数据分隔开，让多个线程在本地就能处理不同部分的数据
+
+<br/>
+
+<br/>
+
+### Intra-operator(horizontal)
+
+水平切分；将需要处理的数据切分为多份，然后分发给多个线程执行
+
+即每个线程执行的逻辑是相同的，但是负责的数据部分不同
+
+最后插入exchange算子（用于数据的拆分聚集的）
+
+<br/>
+
+下面的算子调用一次exchange算子
+
+然后exchange算子并发的开启多个线程A1A2A3去执行
+
+最后把得到的结果汇总给上面的算子
+
+<img src="\medias\12-Query-Execution-Part-II\intra-operator parallelism_01.png" style="zoom:150%;" />
+
+<br/>
+
+<br/>
+
+#### Exchange operator
+
+有三种类型的exchange算子：
+
+- gather：将下面并发执行的结果收集好分配给上面
+- distribute：将数据分发给不同的算子去执行，分配的算子
+- repartition：重分配的算子，即把三个算子的结果分配给两个算子去执行
+
+<img src="\medias\12-Query-Execution-Part-II\exchange operator.png" style="zoom:150%;" />
+
+<br/>
+
+<br/>
+
+### Inter-operator(vertical)
+
+垂直切分；一个SQL语句是由很多个算子组成的
+
+那么就可以分配多个线程，分别取执行不同阶段的算子，以此实现并发
+
+<br/>
+
+比如说线程1在下面执行hash join，而线程2在执行上面的算子
+
+每个算子都由一个线程负责，数据就在线程之间进行传递
+
+<img src="\medias\12-Query-Execution-Part-II\inter-operator parallelism_01.png" style="zoom:150%;" />
+
+<br/>
+
+缺点：参考流式模型的缺点（如果某个算子的执行效率过低，那么就会影响后续算子的运行）
+
+<br/>
+
+<br/>
+
+### Bushy parallelism
+
+是上述两种执行方法的融合版本，既有水平切分，也有垂直切分
+
+<img src="\medias\12-Query-Execution-Part-II\bushy parallelism.png" style="zoom:150%;" />
+
+<br/>
+
+<br/>
+
+## Observation
+
+其实DBMS真正的瓶颈是数据的IO，上面无论做再多的优化，如果磁盘的IO还是很慢的话，这些优化都不值一提
+
+磁盘是瓶颈，但是我们还让不同的线程去读磁盘不同的部分，即随机IO
+
+那么就会加剧这种瓶颈，所以要想到如何优化硬盘IO的性能
+
+<br/>
+
+<br/>
+
+<br/>
+
+# I/O parallelism
+
+磁盘IO的并发优化
+
+最简单的思路：希望将数据库分为不同的部分，存储到不同的磁盘上，提高并发的性能
+
+- 比如说将A库存在一块磁盘上，将B库存在另一块磁盘上，这样在读取两个数据库的数据时是可以做到并发的
+
+常见的操作有：
+
+- 将同一个数据库存储在不同的硬盘上
+- 一个数据库存放在一个硬盘上
+- 一个数据表存放到一个硬盘上
+
+- 把同一个数据表分割为不同的部分，存储在硬盘上
+
+<br/>
+
+这种做法还是在数据库层面，需要修改数据库的元数据配置
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Multi-disk parallelism
+
+从物理硬件（操作系统）层面，提高IO并发的效率（在数据库层面是无感知的，即DBMS像往常一样存取数据即可）
+
+<br/>
+
+磁盘阵列（RAID），有多个磁盘，但是通过一些配置，使得看起来只有一个磁盘一样（使得DBMS感觉只有一个磁盘一样）
+
+并且这种底层的磁盘配置对于DBMS来说是透明的（DBMS会认为此时只有一个磁盘，而实际上数据是存储在多个磁盘）
+
+<br/>
+
+**RAID 0**
+
+把page1和page4放到第一个盘，page2和page5放到第二个盘，page3和page6放到第三个盘
+
+主要是操作系统和硬件共同控制；从文件系统上看就只有一个盘，但是底层是将数据切分为不同的部分存储到不同的硬盘的
+
+<img src="\medias\12-Query-Execution-Part-II\RAID 0.png" style="zoom:150%;" />
+
+<br/>
+
+优点：
+
+- 能够提高并行的读写（可以同时读写page1和page2）
+- 拓展性高，可以横向添加多个硬盘
+
+缺点：
+
+- 如果一块硬盘坏了，其他盘中的文件碎片也会失效（因为这种方法是将文件的多个页面进行拆分的，如果一个文件其中某一页出现了问题，那么整个文件页就会失效）
+- 因此需要备份的手段
+
+<br/>
+
+<br/>
+
+**RAID 1**
+
+同一个数据页存到不同的磁盘中，相当于数据备份在不同的磁盘上
+
+<img src="\medias\12-Query-Execution-Part-II\RAID 1.png" style="zoom:150%;" />
+
+优点：可靠性高，多备份（其中一个数据盘坏了也不受影响）；可以并行读（并发写的话需要同步机制）
+
+缺点：利用率低（3个1T的硬盘只能存1T的数据）
+
+<br/>
+
+<br/>
+
+**RAID 5**
+
+拿RAID 0举例：
+
+把page1和page4放到第一个盘，page2和page5放到第二个盘
+
+而第三个盘存储的是第一个盘和第二个盘中的数据，**异或**以后的结果
+
+如果第三个盘挂了，那么重新将第一个盘和第二个盘异或即可
+
+如果第二/一个盘挂了，那么可以利用第三个盘将挂了的盘进行恢复
+
+当然还可以备份异或得到的结果，由此衍生不同的变种
+
+<img src="\medias\12-Query-Execution-Part-II\RAID 0.png" style="zoom:150%;" />
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Database partitioning
+
+从数据库的表本身将数据切分开
+
+<br/>
+
+对于数据分库，大部分的DBMS都支持将数据切分到不同的磁盘上
+
+- 主要因为DBMS是保存在不同的文件系统的不同的文件夹上
+- PS：DBMS用于recovery的log就需要在多个库之间共享
+
+<br/>
+
+而对于数据分区，可以在物理上将一个数据表分为多个不同的数据表
+
+但是客户端（使用者）对此是无感知的，全部由DBMS控制数据的分表
+
+表数据分区的两种思路：垂直分表、水平分表
+
+<br/>
+
+## Vertical partitioning
+
+垂直分表，将不同列的数据存放到不同的磁盘（目录或者文件系统）中（使用的时候配置一下DBMS即可）
+
+比如下图就是将attr1、attr2、attr3和attr4进行了分区处理
+
+<img src="\medias\12-Query-Execution-Part-II\vertical partitioning.png" style="zoom:150%;" />
+
+<br/>
+
+优点：
+
+- 针对同一条数据的IO，可以实现并发的读写数据
+- 将冷热数据分离，提高读写效率（将一些不常用的数据和热点数据分表存储）
+
+<br/>
+
+<br/>
+
+## Horizontal partitioning
+
+水平分表，按照某一列的值将一个数据表分割为多个数据表
+
+对于数据分割的方法有很多，比如常见的hash分区、范围分区、再或者谓词分区
+
+<img src="\medias\12-Query-Execution-Part-II\horizontal partitioning_01.png" style="zoom:150%;" />
+
+一些分库分表的中间件也可以做水平分区
+
+就像是一个网关，将客户端的数据分成不同的部分，然后再存储到不同的数据库（节点）上
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Conclusion
+
+并发执行、并行是非常重要的（能够降本增效），因此几乎所有的DBMS都实现了并发执行
+
+- 主要指的是SQL语句之间的并发
+
+<br/>
+
+模型看着简单，但是coding却非常的麻烦
+
+- worker的调度、协调
+- worker的并发（数据的加锁解锁）
+- worker资源上的冲突（比如说多个worker都需要相同的资源，那么磁盘的资源如何协调）
