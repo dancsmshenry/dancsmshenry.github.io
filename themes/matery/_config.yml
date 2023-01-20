@@ -97,7 +97,7 @@ indexbtn:
 # 首页 banner 中的第二行个人信息配置，留空即不启用
 socialLink:
   # qq: 792321264
-  github: godweiyang
+  github: dancsmshenry
   # weibo: godweiyang
   email: dancsmshenry@163.com
   zhihu: ai-ni-de-dian-zhen-shi-tai-hao-la
@@ -167,13 +167,13 @@ text:
 profile:
   avatar: /medias/avatars/roses.png
   career: nullptr
-  introduction: a nullptr
+  introduction: 入门CPPer
 
 # config my projects informations in about page.
 # If you don't want to display this `My Projects` content, you can deactivate or delete this configuration.
 # 在“关于”页面配置"我的项目"信息，如果你不需要这些信息则可以将其设置为不激活或者将其删除.
 myProjects:
-  enable: true
+  enable: false
   data:
     hexo-matery-modified:
       icon: fa-meetup
@@ -411,4 +411,4 @@ reprint:
 snow:
   enable: false
 
-baidu_push: true
+baidu_push: false
