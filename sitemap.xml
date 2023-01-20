@@ -2,20 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/</loc>
-    
-    <lastmod>2023-01-19T16:53:12.394Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://example.com/2023/01/19/cmu-15-445-13-query-planning-optimization-part-i/</loc>
-    
-    <lastmod>2023-01-19T15:23:42.419Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://example.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/</loc>
     
     <lastmod>2022-12-29T14:02:20.035Z</lastmod>

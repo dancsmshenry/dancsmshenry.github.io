@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-01-19T16:53:12.394Z</updated>
+  <updated>2022-12-29T14:02:20.035Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,58 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>CMU 15-445 14-Query Planning Optimization Part II</title>
-    <link href="http://example.com/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/"/>
-    <id>http://example.com/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/</id>
-    <published>2023-01-19T15:15:59.000Z</published>
-    <updated>2023-01-19T16:53:12.394Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Backround&quot;&gt;&lt;a href=&quot;#Backround&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Database" scheme="http://example.com/tags/Database/"/>
-    
-      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CMU 15-445 13-Query Planning Optimization Part I</title>
-    <link href="http://example.com/2023/01/19/cmu-15-445-13-query-planning-optimization-part-i/"/>
-    <id>http://example.com/2023/01/19/cmu-15-445-13-query-planning-optimization-part-i/</id>
-    <published>2023-01-19T15:15:28.000Z</published>
-    <updated>2023-01-19T15:23:42.419Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Query-optimization&quot;&gt;&lt;a href=&quot;#Query-optimization&quot; class=&quot;headerlink&quot; title=&quot;Query optimization&quot;&gt;&lt;/a&gt;Query
-        
-      
-    
-    </summary>
-    
-    
-      <category term="Database" scheme="http://example.com/tags/Database/"/>
-    
-      <category term="CMU 15-445" scheme="http://example.com/tags/CMU-15-445/"/>
-    
-  </entry>
   
   <entry>
     <title>CMU 15-445 12-Query Execution Part II</title>
@@ -516,6 +464,58 @@
         
         
           &lt;h1 id=&quot;shared-ptr&quot;&gt;&lt;a href=&quot;#shared-ptr&quot; class=&quot;headerlink&quot; title=&quot;shared_ptr&quot;&gt;&lt;/a&gt;shared_ptr&lt;/h1&gt;&lt;h2 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="CPP" scheme="http://example.com/tags/CPP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>The Google File System</title>
+    <link href="http://example.com/2022/10/24/the-google-file-system/"/>
+    <id>http://example.com/2022/10/24/the-google-file-system/</id>
+    <published>2022-10-24T04:21:59.000Z</published>
+    <updated>2022-11-26T19:47:15.927Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;gfs为google内部的文件系统，其开源实现为hdfs，大数据领域标准的开源实现&lt;/p&gt;
+&lt;p&gt;GFS是一个存储非结构化数据的存储系统，和bigtable（列存储，存储结构化数据，关系模型，表结构）是相对应的&lt;/p&gt;
+&lt;p&gt;GFS只存储数据，不关心数据的结构和内容是什么；
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Paper" scheme="http://example.com/tags/Paper/"/>
+    
+      <category term="Distributed" scheme="http://example.com/tags/Distributed/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入理解CPP之type conversion</title>
+    <link href="http://example.com/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/"/>
+    <id>http://example.com/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/</id>
+    <published>2022-10-23T09:03:40.000Z</published>
+    <updated>2022-10-23T12:24:59.115Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;backround&quot;&gt;&lt;a href=&quot;#backround&quot; class=&quot;headerlink&quot;
         
       
     

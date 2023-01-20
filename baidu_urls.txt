@@ -1,5 +1,3 @@
-http://example.com/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/
-http://example.com/2023/01/19/cmu-15-445-13-query-planning-optimization-part-i/
 http://example.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/
 http://example.com/2022/12/29/cmu-15-445-11-query-execution-part-i/
 http://example.com/2022/12/26/cmu-15-445-10-join-algorithms/
