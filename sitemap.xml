@@ -2,16 +2,100 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://dancsmshenry.com/friends/index.html</loc>
+    <loc>https://dancsmshenry.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/</loc>
     
-    <lastmod>2023-01-19T17:10:22.328Z</lastmod>
+    <lastmod>2023-01-20T13:58:31.164Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://dancsmshenry.com/2020/01/14/5w2h-godweiyang/</loc>
+    <loc>https://dancsmshenry.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/</loc>
     
-    <lastmod>2023-01-19T17:10:22.252Z</lastmod>
+    <lastmod>2023-01-20T13:57:41.014Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/</loc>
+    
+    <lastmod>2023-01-20T13:56:49.988Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/15/cmu-15-445-20-database-recovery/</loc>
+    
+    <lastmod>2023-01-20T13:55:58.330Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/12/cmu-15-445-19-database-logging/</loc>
+    
+    <lastmod>2023-01-20T13:55:46.663Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/</loc>
+    
+    <lastmod>2023-01-20T13:55:36.580Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/</loc>
+    
+    <lastmod>2023-01-20T13:55:26.167Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/11/27/cmu-15-445-16-two-phase-locking/</loc>
+    
+    <lastmod>2023-01-20T13:55:17.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/</loc>
+    
+    <lastmod>2023-01-20T13:55:08.098Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/</loc>
+    
+    <lastmod>2023-01-20T13:54:56.528Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/29/cmu-15-445-11-query-execution-part-i/</loc>
+    
+    <lastmod>2023-01-20T13:53:46.335Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/26/cmu-15-445-10-join-algorithms/</loc>
+    
+    <lastmod>2023-01-20T13:53:34.808Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/2022/12/26/cmu-15-445-09-sorting-aggregations/</loc>
+    
+    <lastmod>2023-01-20T13:53:18.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/friends/index.html</loc>
+    
+    <lastmod>2023-01-19T17:10:22.328Z</lastmod>
     
   </url>
   
@@ -37,90 +121,6 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.com/2022/12/29/cmu-15-445-12-query-execution-part-ii/</loc>
-    
-    <lastmod>2022-12-29T14:02:20.035Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/29/cmu-15-445-11-query-execution-part-i/</loc>
-    
-    <lastmod>2022-12-29T13:58:57.335Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/26/cmu-15-445-09-sorting-aggregations/</loc>
-    
-    <lastmod>2022-12-26T14:16:26.935Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/26/cmu-15-445-10-join-algorithms/</loc>
-    
-    <lastmod>2022-12-26T14:14:14.244Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/15/cmu-15-445-20-database-recovery/</loc>
-    
-    <lastmod>2022-12-19T16:21:07.648Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/19/cmu-15-445-23-distributed-olap-databases/</loc>
-    
-    <lastmod>2022-12-19T13:30:46.079Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/19/cmu-15-445-22-distributed-oltp-databases/</loc>
-    
-    <lastmod>2022-12-19T13:24:48.589Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/</loc>
-    
-    <lastmod>2022-12-19T13:17:58.480Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/12/cmu-15-445-19-database-logging/</loc>
-    
-    <lastmod>2022-12-12T13:05:27.893Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/</loc>
-    
-    <lastmod>2022-11-30T18:57:03.893Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/11/28/cmu-15-445-17-timestamp-ordering-concurrency-control/</loc>
-    
-    <lastmod>2022-11-28T10:37:08.809Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/11/27/cmu-15-445-16-two-phase-locking/</loc>
-    
-    <lastmod>2022-11-27T06:22:38.310Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://dancsmshenry.com/2022/10/24/the-google-file-system/</loc>
     
     <lastmod>2022-11-26T19:47:15.927Z</lastmod>
@@ -131,13 +131,6 @@
     <loc>https://dancsmshenry.com/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/</loc>
     
     <lastmod>2022-11-26T19:47:04.570Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.com/2022/11/26/cmu-15-445-15-concurrency-control-theory/</loc>
-    
-    <lastmod>2022-11-26T19:41:22.072Z</lastmod>
     
   </url>
   
@@ -240,13 +233,6 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.com/about/index.html</loc>
-    
-    <lastmod>2022-10-06T16:37:29.873Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://dancsmshenry.com/archives/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
@@ -255,6 +241,13 @@
   
   <url>
     <loc>https://dancsmshenry.com/categories/index.html</loc>
+    
+    <lastmod>2022-10-06T16:37:29.873Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.com/about/index.html</loc>
     
     <lastmod>2022-10-06T16:37:29.873Z</lastmod>
     

@@ -428,7 +428,7 @@
 <p>但实际上，出于对性能的考量（硬盘和磁盘的访问速度有明显差距）</p>
 <p>实时修改的数据页是不会立刻写入到磁盘上的</p>
 <p>而是优先放到内存中的（至于什么时候数据才能落盘，会根据不同的置换策略对内存上的数据进行写入）</p>
-<img src="\medias\19-Database-Logging\motivation_logging.png" style="zoom:150%;">
+<img src="motivation_logging.png" style="zoom:150%;">
 
 <br>
 
@@ -438,7 +438,7 @@
 <p>那么当内存遭到破坏时（比如说断电、希特勒打仗等突发情况）</p>
 <p>就会造成事务数据的丢失</p>
 <p>因此需要DBMS的recovery机制</p>
-<img src="\medias\19-Database-Logging\motivation_logging_01.png" style="zoom:150%;">
+<img src="motivation_logging_01.png" style="zoom:150%;">
 
 <br>
 
@@ -462,7 +462,7 @@
 <p>因此，DBMS需要对不同类型的故障进行分类，从而针对不同故障给出应对处理</p>
 <br>
 
-<img src="\medias\19-Database-Logging\storage types.png" style="zoom:150%;">
+<img src="storage types.png" style="zoom:150%;">
 
 <br>
 
@@ -552,7 +552,7 @@
 
 <br>
 
-<h2 id="Undo-vs-Redo"><a href="#Undo-vs-Redo" class="headerlink" title="Undo vs Redo"></a>Undo vs Redo</h2><img src="\medias\19-Database-Logging\undo vs redo.png" style="zoom:150%;">
+<h2 id="Undo-vs-Redo"><a href="#Undo-vs-Redo" class="headerlink" title="Undo vs Redo"></a>Undo vs Redo</h2><img src="undo vs redo.png" style="zoom:150%;">
 
 <br>
 
@@ -590,7 +590,7 @@
 <li>如果只刷事务B的数据，刷盘效率过低</li>
 <li>如果是刷整个数据页，万一事务A发生了回滚，就有需要重新读取数据再修改</li>
 </ul>
-<img src="\medias\19-Database-Logging\buffer pool 背景.png" style="zoom:150%;">
+<img src="buffer pool 背景.png" style="zoom:150%;">
 
 <br>
 
@@ -610,7 +610,7 @@
 
 <br>
 
-<h2 id="No-steal-Force"><a href="#No-steal-Force" class="headerlink" title="No-steal + Force"></a>No-steal + Force</h2><img src="\medias\19-Database-Logging\no-steal + force.png" style="zoom:150%;">
+<h2 id="No-steal-Force"><a href="#No-steal-Force" class="headerlink" title="No-steal + Force"></a>No-steal + Force</h2><img src="no-steal + force.png" style="zoom:150%;">
 
 <br>
 
@@ -633,7 +633,7 @@
 
 <br>
 
-<h1 id="Shadow-paging"><a href="#Shadow-paging" class="headerlink" title="Shadow paging"></a>Shadow paging</h1><img src="\medias\19-Database-Logging\shadow paging.png" style="zoom:150%;">
+<h1 id="Shadow-paging"><a href="#Shadow-paging" class="headerlink" title="Shadow paging"></a>Shadow paging</h1><img src="shadow paging.png" style="zoom:150%;">
 
 <br>
 
@@ -645,7 +645,7 @@
 <p>shadow：未提交事务的一个临时数据库</p>
 <br>
 
-<img src="\medias\19-Database-Logging\shadow page example.png" style="zoom:150%;">
+<img src="shadow page example.png" style="zoom:150%;">
 
 <br>
 
@@ -706,7 +706,7 @@
 
 <p>如果刷盘的过程中发生了故障，那么就需要对事务进行回滚</p>
 <p>回滚的方式，就是将Journal File中的文件读到内存中，然后再覆盖回原来的文件</p>
-<img src="\medias\19-Database-Logging\SQLITE.png" style="zoom:150%;">
+<img src="SQLITE.png" style="zoom:150%;">
 
 <br>
 
@@ -781,14 +781,14 @@
 <br>
 
 <h2 id="WAL-example"><a href="#WAL-example" class="headerlink" title="WAL-example"></a>WAL-example</h2><p>事务对数据的操作，首先是写入操作相关的日志，接着在将数据读入到内存中进行修改</p>
-<img src="\medias\19-Database-Logging\wal-example_01.png" style="zoom:150%;">
+<img src="wal-example_01.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <p>事务发出commit指令的时候，将buffer中的log写入磁盘中</p>
-<img src="\medias\19-Database-Logging\wal-example_02.png" style="zoom:150%;">
+<img src="wal-example_02.png" style="zoom:150%;">
 
 <br>
 
@@ -796,7 +796,7 @@
 
 <p>如果事务提交后，修改的数据页仍在内存中，但是因为断电导致内存中的数据消失了</p>
 <p>那么，在后续重启DBMS的时候，可以重新读取log，对事务的数据进行恢复</p>
-<img src="\medias\19-Database-Logging\wal-example_03.png" style="zoom:150%;">
+<img src="wal-example_03.png" style="zoom:150%;">
 
 <br>
 
@@ -822,7 +822,7 @@
 <ul>
 <li>此时可以将一些log的page先写入到磁盘上</li>
 </ul>
-<img src="\medias\19-Database-Logging\WAL flush time.png" style="zoom:150%;">
+<img src="WAL flush time.png" style="zoom:150%;">
 
 <br>
 
@@ -836,7 +836,7 @@
 
 <p>在运行时，no-force + steal的性能是最好的（因为steal可以将全部数据刷盘，no-force可以减少刷盘次数）</p>
 <p>在恢复时，no-force + steal的性能是最坏的（因为是no-force，所以很多数据都没有立即刷盘，恢复时需要读取日志刷盘；而steal则可能会写入很多没有提交的数据，那么恢复的时候又要读取出来进行undo操作）</p>
-<img src="\medias\19-Database-Logging\buffer pool policy.png" style="zoom:150%;">
+<img src="buffer pool policy.png" style="zoom:150%;">
 
 <br>
 
@@ -892,7 +892,7 @@
 <h2 id="Physiological-logging"><a href="#Physiological-logging" class="headerlink" title="Physiological logging"></a>Physiological logging</h2><p>物理日志和逻辑日志的结合，记录的是数据页中，某个元组的数据前后变化</p>
 <p>相比物理日志，Physiological记录了元组数据的具体位置，而不是偏移量</p>
 <p>相比逻辑日志，Physiological记录了数据的前后变化，恢复上不再有逻辑问题</p>
-<img src="\medias\19-Database-Logging\logging schemes.png" style="zoom:150%;">
+<img src="logging schemes.png" style="zoom:150%;">
 
 <p>因为记录的是数据页上某个元组数据的变化，所以允许DBMS对数据页中数据的位置进行重新组织（将空间重新分配）</p>
 <br>
@@ -1423,7 +1423,7 @@ DBMS会维护当前所有数据对象的，
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

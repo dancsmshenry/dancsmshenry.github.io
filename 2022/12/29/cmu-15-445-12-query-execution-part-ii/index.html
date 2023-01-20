@@ -484,7 +484,7 @@
 <br>
 
 <p>当SQL语句到来的时候，会被dispatcher分配worker去执行语句，worker执行完后就将数据返还给DBMS</p>
-<img src="\medias\12-Query-Execution-Part-II\process per DBMS Worker.png" style="zoom:150%;">
+<img src="process per DBMS Worker.png" style="zoom:150%;">
 
 <br>
 
@@ -493,7 +493,7 @@
 <h2 id="Process-pool"><a href="#Process-pool" class="headerlink" title="Process pool"></a>Process pool</h2><p>背景：因为多进程会浪费资源，所以想到了复用进程，进而提出进程池</p>
 <p>其中dispatcher不再是直接创造出进程，而是从进程池里面找到可用的进程给SQL去执行，用完后再返回进程池</p>
 <p>应用：DB2，postgresql</p>
-<img src="\medias\12-Query-Execution-Part-II\process pool.png" style="zoom:150%;">
+<img src="process pool.png" style="zoom:150%;">
 
 <br>
 
@@ -508,7 +508,7 @@
 <p>优点：线程的切换代价上是小于进程的切换的；线程天生支持共享内存通信</p>
 <p>缺点：一个线程的崩溃会导致整个进程崩溃（稳定性差）</p>
 <p>应用：DB2，Oracle，SQL Server，MySQL</p>
-<img src="\medias\12-Query-Execution-Part-II\thread per worker.png" style="zoom:150%;">
+<img src="thread per worker.png" style="zoom:150%;">
 
 <br>
 
@@ -561,7 +561,7 @@
 <li>可以并发的多个线程去处理每个桶之间的数据，即对每个桶进行并发的join</li>
 <li>也可以用单个线程实现hash join</li>
 </ul>
-<img src="\medias\12-Query-Execution-Part-II\hash join.png" style="zoom:150%;">
+<img src="hash join.png" style="zoom:150%;">
 
 <br>
 
@@ -582,7 +582,7 @@
 <p>下面的算子调用一次exchange算子</p>
 <p>然后exchange算子并发的开启多个线程A1A2A3去执行</p>
 <p>最后把得到的结果汇总给上面的算子</p>
-<img src="\medias\12-Query-Execution-Part-II\intra-operator parallelism_01.png" style="zoom:150%;">
+<img src="intra-operator parallelism_01.png" style="zoom:150%;">
 
 <br>
 
@@ -594,7 +594,7 @@
 <li>distribute：将数据分发给不同的算子去执行，分配的算子</li>
 <li>repartition：重分配的算子，即把三个算子的结果分配给两个算子去执行</li>
 </ul>
-<img src="\medias\12-Query-Execution-Part-II\exchange operator.png" style="zoom:150%;">
+<img src="exchange operator.png" style="zoom:150%;">
 
 <br>
 
@@ -606,7 +606,7 @@
 
 <p>比如说线程1在下面执行hash join，而线程2在执行上面的算子</p>
 <p>每个算子都由一个线程负责，数据就在线程之间进行传递</p>
-<img src="\medias\12-Query-Execution-Part-II\inter-operator parallelism_01.png" style="zoom:150%;">
+<img src="inter-operator parallelism_01.png" style="zoom:150%;">
 
 <br>
 
@@ -616,7 +616,7 @@
 <br>
 
 <h3 id="Bushy-parallelism"><a href="#Bushy-parallelism" class="headerlink" title="Bushy parallelism"></a>Bushy parallelism</h3><p>是上述两种执行方法的融合版本，既有水平切分，也有垂直切分</p>
-<img src="\medias\12-Query-Execution-Part-II\bushy parallelism.png" style="zoom:150%;">
+<img src="bushy parallelism.png" style="zoom:150%;">
 
 <br>
 
@@ -666,7 +666,7 @@
 <p><strong>RAID 0</strong></p>
 <p>把page1和page4放到第一个盘，page2和page5放到第二个盘，page3和page6放到第三个盘</p>
 <p>主要是操作系统和硬件共同控制；从文件系统上看就只有一个盘，但是底层是将数据切分为不同的部分存储到不同的硬盘的</p>
-<img src="\medias\12-Query-Execution-Part-II\RAID 0.png" style="zoom:150%;">
+<img src="RAID 0.png" style="zoom:150%;">
 
 <br>
 
@@ -686,7 +686,7 @@
 
 <p><strong>RAID 1</strong></p>
 <p>同一个数据页存到不同的磁盘中，相当于数据备份在不同的磁盘上</p>
-<img src="\medias\12-Query-Execution-Part-II\RAID 1.png" style="zoom:150%;">
+<img src="RAID 1.png" style="zoom:150%;">
 
 <p>优点：可靠性高，多备份（其中一个数据盘坏了也不受影响）；可以并行读（并发写的话需要同步机制）</p>
 <p>缺点：利用率低（3个1T的硬盘只能存1T的数据）</p>
@@ -701,7 +701,7 @@
 <p>如果第三个盘挂了，那么重新将第一个盘和第二个盘异或即可</p>
 <p>如果第二/一个盘挂了，那么可以利用第三个盘将挂了的盘进行恢复</p>
 <p>当然还可以备份异或得到的结果，由此衍生不同的变种</p>
-<img src="\medias\12-Query-Execution-Part-II\RAID 0.png" style="zoom:150%;">
+<img src="RAID 0.png" style="zoom:150%;">
 
 <br>
 
@@ -726,7 +726,7 @@
 
 <h2 id="Vertical-partitioning"><a href="#Vertical-partitioning" class="headerlink" title="Vertical partitioning"></a>Vertical partitioning</h2><p>垂直分表，将不同列的数据存放到不同的磁盘（目录或者文件系统）中（使用的时候配置一下DBMS即可）</p>
 <p>比如下图就是将attr1、attr2、attr3和attr4进行了分区处理</p>
-<img src="\medias\12-Query-Execution-Part-II\vertical partitioning.png" style="zoom:150%;">
+<img src="vertical partitioning.png" style="zoom:150%;">
 
 <br>
 
@@ -741,7 +741,7 @@
 
 <h2 id="Horizontal-partitioning"><a href="#Horizontal-partitioning" class="headerlink" title="Horizontal partitioning"></a>Horizontal partitioning</h2><p>水平分表，按照某一列的值将一个数据表分割为多个数据表</p>
 <p>对于数据分割的方法有很多，比如常见的hash分区、范围分区、再或者谓词分区</p>
-<img src="\medias\12-Query-Execution-Part-II\horizontal partitioning_01.png" style="zoom:150%;">
+<img src="horizontal partitioning_01.png" style="zoom:150%;">
 
 <p>一些分库分表的中间件也可以做水平分区</p>
 <p>就像是一个网关，将客户端的数据分成不同的部分，然后再存储到不同的数据库（节点）上</p>
@@ -1232,7 +1232,7 @@ Approach 1 iterator mod
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

@@ -445,7 +445,7 @@
 <p>向上输出的是两个表连接后得到的数据，即把整条数据记录都往上传</p>
 <p>优点：算子得到的结果不需要回表查询</p>
 <p>缺点：传输整条数据的开销过大</p>
-<img src="\medias\10-Join-Algorithms\data.png" style="zoom:150%;">
+<img src="data.png" style="zoom:150%;">
 
 <br>
 
@@ -455,7 +455,7 @@
 <p>向上输出的是数据记录的id号</p>
 <p>优点：数据在算子间的传输开销较小</p>
 <p>缺点：如果想要获取完整的数据记录，就需要回表查询</p>
-<img src="\medias\10-Join-Algorithms\ids.png" style="zoom:150%;">
+<img src="ids.png" style="zoom:150%;">
 
 <br>
 
@@ -489,7 +489,7 @@
 
 <p>具体的操作就是读取外表（R表）的每一条记录，然后从头开始遍历一遍S表，看看是否能够匹配上</p>
 <p>PS：此时内存最少能够存放三个数据页即可（R、S表的数据页，以及匹配结果的数据页）</p>
-<img src="\medias\10-Join-Algorithms\stupid nested loop join.png" style="zoom:150%;">
+<img src="stupid nested loop join.png" style="zoom:150%;">
 
 <br>
 
@@ -507,7 +507,7 @@
 <p><strong>算法开销</strong></p>
 <p>要读取整个R表，所以是<code>M</code>（总共有M个数据页）</p>
 <p>对于R表中的每一条记录，都需要一一和S表中的数据匹配，所以是<code>m * N</code>（R表中有m条记录，每条记录都需要读取S表的N个数据页）</p>
-<img src="\medias\10-Join-Algorithms\stupid nested loop join_01.png" style="zoom:150%;">
+<img src="stupid nested loop join_01.png" style="zoom:150%;">
 
 <br>
 
@@ -521,7 +521,7 @@
 <p>接着再读取R表的下一个数据页B，一次类推</p>
 <p>PS：此时内存最少能够存放三个数据页即可（R、S表的数据页，以及匹配结果的数据页）</p>
 <p>下图的block可以理解为一个页Page</p>
-<img src="\medias\10-Join-Algorithms\block nested loop join_01.png" style="zoom:150%;">
+<img src="block nested loop join_01.png" style="zoom:150%;">
 
 <br>
 
@@ -530,7 +530,7 @@
 <p><strong>算法开销</strong></p>
 <p>要读取整个R表，所以是<code>M</code>（R表中有M个页）</p>
 <p>而此时是以数据页进行匹配的，即每个数据页都匹配一遍S表，所以是<code>M * N</code>（R表中有M个页，S表有N个页）</p>
-<img src="\medias\10-Join-Algorithms\block nested loop join_02.png" style="zoom:150%;">
+<img src="block nested loop join_02.png" style="zoom:150%;">
 
 <br>
 
@@ -541,7 +541,7 @@
 <p>选取其中一个页作为输出缓存，一个页作为内表（S表）的缓存</p>
 <p>剩下的B-2个页作为外表（R表）的缓存</p>
 <p>此时的流程：将R表的数据读入内存后，依次从头遍历S表的每一页，将S表上的数据和R表上的数据进行匹配</p>
-<img src="\medias\10-Join-Algorithms\block nested loop join_03.png" style="zoom:150%;">
+<img src="block nested loop join_03.png" style="zoom:150%;">
 
 <br>
 
@@ -554,7 +554,7 @@
 <li><code>M/(B - 2)</code>表示将R表中的数据全数放入大小为<code>B - 2</code>内存中，需要多少次</li>
 <li>因此如果``B - 2 &gt; M<code>，那就相当于只需要</code>M + N`</li>
 </ul>
-<img src="\medias\10-Join-Algorithms\block nested loop join_04.png" style="zoom:150%;">
+<img src="block nested loop join_04.png" style="zoom:150%;">
 
 <br>
 
@@ -565,7 +565,7 @@
 <br>
 
 <p>算法的开销：<code>M + (m * C)</code>（C是指每次查询所有需要的页数）</p>
-<img src="\medias\10-Join-Algorithms\index nested loop join.png" style="zoom:150%;">
+<img src="index nested loop join.png" style="zoom:150%;">
 
 <br>
 
@@ -590,7 +590,7 @@
 <br>
 
 <h1 id="Sort-merge-join"><a href="#Sort-merge-join" class="headerlink" title="Sort-merge join"></a>Sort-merge join</h1><p>将需要进行join的数据列，先进行sort，然后再merge</p>
-<img src="\medias\10-Join-Algorithms\sort merge join的伪代码.png" style="zoom: 150%;">
+<img src="sort merge join的伪代码.png" style="zoom: 150%;">
 
 <br>
 
@@ -611,7 +611,7 @@
 
 <p><strong>算法开销</strong></p>
 <p>排序时的开销就是上一节所说的外部排序</p>
-<img src="\medias\10-Join-Algorithms\sort merage join的cost_01.png" style="zoom:150%;">
+<img src="sort merage join的cost_01.png" style="zoom:150%;">
 
 <br>
 
@@ -621,7 +621,7 @@
 <ul>
 <li>比如两个表的数据都是完全一样的话，那么执行效率上就会和Simple nested loop join的双层循环一样了</li>
 </ul>
-<img src="\medias\10-Join-Algorithms\sort-merge.png" style="zoom:150%;">
+<img src="sort-merge.png" style="zoom:150%;">
 
 <br>
 
@@ -644,7 +644,7 @@
 
 <h2 id="Basic-hash-join-algoritham"><a href="#Basic-hash-join-algoritham" class="headerlink" title="Basic hash join algoritham"></a>Basic hash join algoritham</h2><p>Phase I：build，扫描外表数据，构建hash表</p>
 <p>Phase II：probe，扫描内表的数据，放入hash表中查询</p>
-<img src="\medias\10-Join-Algorithms\basic hash join algorithm.png" style="zoom:150%;">
+<img src="basic hash join algorithm.png" style="zoom:150%;">
 
 <br>
 
@@ -655,7 +655,7 @@
 <ul>
 <li>提前物化（full tuple，将整个元组作为数据存储）</li>
 <li>推迟物化（tuple identifier，即是数据的行id之类的，后续回表取数据）</li>
-<li><img src="\medias\10-Join-Algorithms\hash table values.png" style="zoom:150%;">
+<li><img src="hash table values.png" style="zoom:150%;">
 
 </li>
 </ul>
@@ -678,7 +678,7 @@
 <br>
 
 <p><strong>算法开销</strong></p>
-<img src="\medias\10-Join-Algorithms\hash join cost_01.png" style="zoom:150%;">
+<img src="hash join cost_01.png" style="zoom:150%;">
 
 <br>
 
@@ -696,7 +696,7 @@
 <ul>
 <li>这里的原理就是，都是用的同一种hash算法，能够join的元素必然是在同一个分区当中的</li>
 </ul>
-<img src="\medias\10-Join-Algorithms\grace hash join.png" style="zoom:150%;">
+<img src="grace hash join.png" style="zoom:150%;">
 
 <br>
 
@@ -705,7 +705,7 @@
 <h3 id="Recursive-partitioning"><a href="#Recursive-partitioning" class="headerlink" title="Recursive partitioning"></a>Recursive partitioning</h3><p>背景：上述的假设中，每个单独的bucket（即分区）是可以放入到内存中的</p>
 <p>但，如果一个分区的元素都非常多，都放不到内存中，该如何处理？</p>
 <p>解决办法：对这个非常大的分区，对两边的数据表，再用一个新的hash函数进行hash，直到能够分到足够小的块</p>
-<img src="\medias\10-Join-Algorithms\recursive partitioning.png" style="zoom: 150%;">
+<img src="recursive partitioning.png" style="zoom: 150%;">
 
 <br>
 
@@ -727,7 +727,7 @@
 <br>
 
 <p>因此总共的开销是<code>3 * (M + N)</code></p>
-<img src="\medias\10-Join-Algorithms\grace hash join cost.png" style="zoom:150%;">
+<img src="grace hash join cost.png" style="zoom:150%;">
 
 <br>
 
@@ -740,7 +740,7 @@
 
 <br>
 
-<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><img src="\medias\10-Join-Algorithms\join algorithms summary.png" style="zoom: 150%;">
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><img src="join algorithms summary.png" style="zoom: 150%;">
 
 <p>如果是两个大表做join的话，最好就是做hash join（绝大部分情况下，都是选择hash join的）</p>
 <p>但，如果需要数据是倾斜的，即发生hash冲突的概率较大（会导致算法退化），那么最好还是选择sort-merge</p>
@@ -1212,7 +1212,7 @@ Query Processing Models（用什么方案执行查询，比如火山模型）
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

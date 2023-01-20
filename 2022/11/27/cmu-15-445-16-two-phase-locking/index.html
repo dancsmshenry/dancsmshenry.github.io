@@ -439,7 +439,7 @@ Lock types">
 
 <br>
 
-<h1 id="Lock-types"><a href="#Lock-types" class="headerlink" title="Lock types"></a>Lock types</h1><img src="\medias\16-Two-Phase-Locking\locks and latches.png" style="zoom:150%;">
+<h1 id="Lock-types"><a href="#Lock-types" class="headerlink" title="Lock types"></a>Lock types</h1><img src="locks and latches.png" style="zoom:150%;">
 
 <br>
 
@@ -462,7 +462,7 @@ Lock types">
 <li>S-LOCK：shared lock，共享锁，读锁</li>
 <li>X-LOCK：exclusive lock，排他锁，写锁</li>
 </ul>
-<img src="\medias\16-Two-Phase-Locking\lock types.png" style="zoom:150%;">
+<img src="lock types.png" style="zoom:150%;">
 
 <br>
 
@@ -485,9 +485,9 @@ Lock types">
 <p>用二阶段锁的事务执行顺序，用依赖图表示是没有环的</p>
 <br>
 
-<img src="\medias\16-Two-Phase-Locking\two-phase locking.png" style="zoom:150%;">
+<img src="two-phase locking.png" style="zoom:150%;">
 
-<img src="\medias\16-Two-Phase-Locking\two-phase locking_01.png" style="zoom:150%;">
+<img src="two-phase locking_01.png" style="zoom:150%;">
 
 <p>阶段一：<code>growing</code></p>
 <ul>
@@ -503,7 +503,7 @@ Lock types">
 <br>
 
 <p>2PL会出现级联终止的问题（即<strong>脏读</strong>）</p>
-<img src="\medias\16-Two-Phase-Locking\2PL-cascading aborts.png" style="zoom:150%;">
+<img src="2PL-cascading aborts.png" style="zoom:150%;">
 
 <ul>
 <li>T1先做一部分，T2基于T1的数据再做一部分，结果T1要回滚了，导致T2读取了未提交事务的数据</li>
@@ -514,7 +514,7 @@ Lock types">
 <br>
 
 <h2 id="Strong-Strict-2PL"><a href="#Strong-Strict-2PL" class="headerlink" title="Strong Strict 2PL"></a>Strong Strict 2PL</h2><p>针对级联终止的问题，使用严格二阶段锁（SS2PL）可以解决</p>
-<img src="\medias\16-Two-Phase-Locking\SS2PL.png" style="zoom:150%;">
+<img src="SS2PL.png" style="zoom:150%;">
 
 
 
@@ -526,7 +526,7 @@ Lock types">
 <p><strong>优点</strong>：不会出现级联回滚；事务中间可能对数据又多次操作，但是不用管，直接回滚到事务之前的版本即可；被abort的txn可以通过恢复到原始数据来消除影响</p>
 <br>
 
-<img src="\medias\16-Two-Phase-Locking\universe of schedules_01.png" style="zoom:150%;">
+<img src="universe of schedules_01.png" style="zoom:150%;">
 
 <br>
 
@@ -539,7 +539,7 @@ Lock types">
 <br>
 
 <h1 id="Deadlocking-detection-prevention"><a href="#Deadlocking-detection-prevention" class="headerlink" title="Deadlocking detection + prevention"></a>Deadlocking detection + prevention</h1><p>无论是2PL，还是SS2PL，都可能会产生死锁饥饿的情况</p>
-<img src="\medias\16-Two-Phase-Locking\shit just got read,son.png" style="zoom:150%;">
+<img src="shit just got read,son.png" style="zoom:150%;">
 
 <br>
 
@@ -554,7 +554,7 @@ Lock types">
 
 <h2 id="Deadlock-detection"><a href="#Deadlock-detection" class="headerlink" title="Deadlock detection"></a>Deadlock detection</h2><p>死锁检测：DBMS在内部会维护一个<strong>锁依赖图</strong>，记录了当前并发的事务谁在等待谁的锁，图的每个结点都是一个事务</p>
 <p>比如说，事务A指向事务B，表示事务A在等待事务B的锁</p>
-<img src="\medias\16-Two-Phase-Locking\dedalock detection_01.png" style="zoom:150%;">
+<img src="dedalock detection_01.png" style="zoom:150%;">
 
 <p>DBMS会周期性的检测锁依赖图，检查是否出现成环的情况</p>
 <p>如果发现了环，就会选择其中某个事务进行回滚，以此来解开环，使得事务继续进行下去</p>
@@ -582,7 +582,7 @@ Lock types">
 
 <h2 id="Deadlock-prevention"><a href="#Deadlock-prevention" class="headerlink" title="Deadlock prevention"></a>Deadlock prevention</h2><p>死锁预防：当T1想要的lock被T2拿到的时候，那么DBMS就会挑选其中一个kill</p>
 <p>根据时间戳给事务优先级，越早开始的事务有高优先级（older time stamp = higher priority）</p>
-<img src="\medias\16-Two-Phase-Locking\deadlock prevention.png" style="zoom:150%;">
+<img src="deadlock prevention.png" style="zoom:150%;">
 
 <br>
 
@@ -660,7 +660,7 @@ Lock types">
 </ul>
 </li>
 </ul>
-<img src="\medias\16-Two-Phase-Locking\compatibility matrix_01.png" style="zoom:150%;">
+<img src="compatibility matrix_01.png" style="zoom:150%;">
 
 <br>
 
@@ -1194,7 +1194,7 @@ Lock types">
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

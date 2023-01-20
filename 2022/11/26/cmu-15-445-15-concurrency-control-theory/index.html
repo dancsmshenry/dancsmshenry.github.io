@@ -449,7 +449,7 @@
 </ul>
 <br>
 
-<img src="\medias\15-Concurrency Control Theory\concurrencycontrol_motivation.png" style="zoom:150%;">
+<img src="concurrencycontrol_motivation.png" style="zoom:150%;">
 
 <br>
 
@@ -461,7 +461,7 @@
 <br>
 
 <h1 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h1><p>定义：<strong>事务</strong>是执行一系列操作（SQL语句），以达到一个高级的功能（比如说通过SQL语句对账户的余额增减，以实现转账的功能）</p>
-<img src="\medias\15-Concurrency Control Theory\transactions.png" style="zoom:150%;">
+<img src="transactions.png" style="zoom:150%;">
 
 <br>
 
@@ -594,12 +594,12 @@
 
 <p>如何判断数据库一致性：执行后的结果和串行化的结果是等效的</p>
 <p>正确的一致性：</p>
-<img src="\medias\15-Concurrency Control Theory\interleavint example_good.png" style="zoom:150%;">
+<img src="interleavint example_good.png" style="zoom:150%;">
 
 <br>
 
 <p>错误的一致性（有100块钱少算了利息）：</p>
-<img src="\medias\15-Concurrency Control Theory\interleavint example_bad.png" style="zoom:150%;">
+<img src="interleavint example_bad.png" style="zoom:150%;">
 
 <br>
 
@@ -656,7 +656,7 @@
 <br>
 
 <p><strong>读写冲突</strong>（<strong>不可重复读</strong> unrepeatable read）</p>
-<img src="\medias\15-Concurrency Control Theory\read-write conflicts.png" style="zoom:150%;">
+<img src="read-write conflicts.png" style="zoom:150%;">
 
 <p>T1第一次读的数据是10，T2修改为19（事务B将数据修改后并提交了），T1第二次读的时候就变为了19，破坏了隔离性</p>
 <p>即对一个数据重复读，发现前后不一致</p>
@@ -667,7 +667,7 @@
 <br>
 
 <p><strong>写读冲突</strong>（<strong>读未提交</strong> reading uncommited data <strong>脏读</strong> dirty reads）</p>
-<img src="\medias\15-Concurrency Control Theory\write-read conflicts.png" style="zoom:150%;">
+<img src="write-read conflicts.png" style="zoom:150%;">
 
 <p>T1修改了数据a（但是还没有提交事务），T2读取数据的时候读到的数据是T1修改过后的，读到了未提交的数据</p>
 <p>即读到了一个没有提交的值（如果T1发生了回滚，那么T2读到的就是一个脏数据）</p>
@@ -677,7 +677,7 @@
 <br>
 
 <p><strong>写写冲突</strong>（overwriting uncommited data）</p>
-<img src="\medias\15-Concurrency Control Theory\write-write conflicts.png" style="zoom:150%;">
+<img src="write-write conflicts.png" style="zoom:150%;">
 
 <p>T1写了数据a，T2又写了数据a，导致T1的操作被覆盖了</p>
 <p>数据A和数据B的结果分别是两个不同的事务带来的，这就会造成数据的不一致</p>
@@ -687,7 +687,7 @@
 <p>T1读取X的余额是50，然后T2从X转账50到Y然后提交</p>
 <p>T1在T2提交后读Y发现余额为100，那么它们总和变成了150</p>
 <p>最终导致T1读数据的结果违反数据的一致性，又叫做<strong>读偏斜</strong>（read skew）</p>
-<img src="\medias\15-Concurrency Control Theory\write-write conflicts_01.jpg" style="zoom:150%;">
+<img src="write-write conflicts_01.jpg" style="zoom:150%;">
 
 <br>
 
@@ -767,7 +767,7 @@
 <li>这个边就是说一个操作一定要在另一个操作之前发生</li>
 <li>注意是先发生的事务指向后发生的事务</li>
 </ul>
-<img src="\medias\15-Concurrency Control Theory\dependency graphs.png" style="zoom:150%;">
+<img src="dependency graphs.png" style="zoom:150%;">
 
 <br>
 
@@ -784,9 +784,9 @@
 
 <p>view serializability 和 conflict serializability都没法做到完全识别出所有的可串行化，主要是因为数据库没法做到理解数据库的业务</p>
 <p>比如说下图，虽然依赖图成环了，但是数据A的结果，其实最后就是T3的结果，前面是否覆盖都不重要，所以它也是可串行化的：</p>
-<img src="\medias\15-Concurrency Control Theory\view serializability_01.png" style="zoom:150%;">
+<img src="view serializability_01.png" style="zoom:150%;">
 
-<img src="\medias\15-Concurrency Control Theory\view serializability_02.png" style="zoom:150%;">
+<img src="view serializability_02.png" style="zoom:150%;">
 
 <br>
 
@@ -794,7 +794,7 @@
 <p>当然也可以做一些优化，比如说都是只读的事务的话，就直接操作就好了</p>
 <br>
 
-<img src="\medias\15-Concurrency Control Theory\universe of schedules.png" style="zoom:150%;">
+<img src="universe of schedules.png" style="zoom:150%;">
 
 <br>
 
@@ -1278,7 +1278,7 @@ Lock types
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

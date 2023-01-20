@@ -430,7 +430,7 @@
 
 <h2 id="Star-schema"><a href="#Star-schema" class="headerlink" title="Star schema"></a>Star schema</h2><p>星型结构，一张主表被若干张维度表包围</p>
 <p>数据的每一个维度都可以抽象出一张表，然后和主表的外键相连（不同维度之间没有关联）</p>
-<img src="/medias/23-Distributed-OLAP-Databases\star schema.png" style="zoom:150%;">
+<img src="star schema.png" style="zoom:150%;">
 
 <br>
 
@@ -454,7 +454,7 @@
 <br>
 
 <h2 id="Snowflake-schema"><a href="#Snowflake-schema" class="headerlink" title="Snowflake schema"></a>Snowflake schema</h2><p>雪花模型是在基于星型模型之上拓展来的，每一个维度可以再扩散出更多的维度，根据维度的层级拆分成颗粒度不同的多张表</p>
-<img src="/medias/23-Distributed-OLAP-Databases\snowflake schema.png" style="zoom:150%;">
+<img src="snowflake schema.png" style="zoom:150%;">
 
 <br>
 
@@ -476,7 +476,7 @@
 <br>
 
 <p>比如说这里的查询，会将查询的操作传给每一个有对应数据的节点上</p>
-<img src="/medias/23-Distributed-OLAP-Databases\push query to data.png" style="zoom:150%;">
+<img src="push query to data.png" style="zoom:150%;">
 
 <br>
 
@@ -487,7 +487,7 @@
 <br>
 
 <p>每一个节点需要查询的范围不同，因此节点向Storage拉去的数据也都各不相同</p>
-<img src="/medias/23-Distributed-OLAP-Databases\pull data to query_01.png" style="zoom:150%;">
+<img src="pull data to query_01.png" style="zoom:150%;">
 
 <br>
 
@@ -510,12 +510,12 @@
 <br>
 
 <p>例如下面的查询，会将临时查询得到的数据存储在Storage中</p>
-<img src="/medias/23-Distributed-OLAP-Databases\query fault tolerance_01.png" style="zoom:150%;">
+<img src="query fault tolerance_01.png" style="zoom:150%;">
 
 <br>
 
 <p>那么即使后面该节点崩溃了，其他节点也可以去Storage上读取中间结果，而不用从头再开始查一次</p>
-<img src="/medias/23-Distributed-OLAP-Databases\query fault tolerance_02.png" style="zoom:150%;">
+<img src="query fault tolerance_02.png" style="zoom:150%;">
 
 <br>
 
@@ -556,7 +556,7 @@
 <h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><p>将SQL语句，从字符串的角度切分为不同的节点</p>
 <p>然后让不同的节点去执行（不同的节点对SQL语句进行解析和优化）</p>
 <p>基本上没有DBMS使用这种方法</p>
-<img src="/medias/23-Distributed-OLAP-Databases\SQL.png" style="zoom:150%;">
+<img src="SQL.png" style="zoom:150%;">
 
 <br>
 
@@ -590,26 +590,26 @@
 <br>
 
 <h2 id="Scenario-01"><a href="#Scenario-01" class="headerlink" title="Scenario 01"></a>Scenario 01</h2><p>表R的数据是根据id（目标列；查询列）进行分区的，而表S的数据是每个节点都有表S中所有的数据（即每个节点都有表S的副本）</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 01_01.png" style="zoom:150%;">
+<img src="scenario 01_01.png" style="zoom:150%;">
 
 <br>
 
 <p>这种情况下的join是比较简单的，因为只需要在每个节点中</p>
 <p>将每个节点所持有的R表的数据和S表的数据进行join，得到结果</p>
 <p>然后再将每个节点的结果汇总在一起，便是查询的最终结果</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 01_02.png" style="zoom:150%;">
+<img src="scenario 01_02.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <h2 id="Scenario-02"><a href="#Scenario-02" class="headerlink" title="Scenario 02"></a>Scenario 02</h2><p>表R和表S的数据都是按照id（目标列；查询列）进行分区的，并且分区的数据范围都是相同的</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 02_01.png" style="zoom:150%;">
+<img src="scenario 02_01.png" style="zoom:150%;">
 
 <br>
 
 <p>只需要在每个节点上完成join的操作，最后汇总在一起就是最终结果</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 02_02.png" style="zoom:150%;">
+<img src="scenario 02_02.png" style="zoom:150%;">
 
 <p>PS：如果每个分区的数据范围是不一致的话，对于每个节点的join</p>
 <p>就需要强制将对应范围内的数据预先复制一份到本地，然后再进行操作</p>
@@ -618,20 +618,20 @@
 <br>
 
 <h2 id="Scenario-03"><a href="#Scenario-03" class="headerlink" title="Scenario 03"></a>Scenario 03</h2><p>表R的数据是按照id（目标列；查询列）进行分区的，而表S的数据则是按照Val（非查询列）进行分区的</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 03_01.png" style="zoom:150%;">
+<img src="scenario 03_01.png" style="zoom:150%;">
 
 <br>
 
 <p>此时对于每个节点的join操作，都需要从其他节点的位置，获取整个表S的副本</p>
 <p>然后再进行操作，最后将结果汇总</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 03_02.png" style="zoom:150%;">
+<img src="scenario 03_02.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <h2 id="Scenario-04"><a href="#Scenario-04" class="headerlink" title="Scenario 04"></a>Scenario 04</h2><p>表S和表R都不按照id（目标列；查询列）进行分区</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 04_01.png" style="zoom:150%;">
+<img src="scenario 04_01.png" style="zoom:150%;">
 
 <br>
 
@@ -640,7 +640,7 @@
 <p>比如节点1需要处理id在1-100范围内的数据，节点2需要处理id在101-200范围内的数据</p>
 <p>然后将划分好范围内的数据，迁移到指定的节点上</p>
 <p>然后变化为Scenario 01的情况</p>
-<img src="/medias/23-Distributed-OLAP-Databases\scenario 04_02.png" style="zoom:150%;">
+<img src="scenario 04_02.png" style="zoom:150%;">
 
 <br>
 
@@ -653,13 +653,13 @@
 
 <p>有些DBMS是支持<code>SEMI JOIN</code>的语法的，如果不支持的话可以换为<code>EXISTS</code></p>
 <p>上述语句可以替换为下述查询：</p>
-<img src="/medias/23-Distributed-OLAP-Databases\semi-join_02.png" style="zoom:150%;">
+<img src="semi-join_02.png" style="zoom:150%;">
 
 <br>
 
 <p>针对上述这种朴素的思想，可以进一步的优化：</p>
 <p>只传输需要查询的那一部分数据（比如这里只传输R表的id列），而不用将整个表都传输</p>
-<img src="/medias/23-Distributed-OLAP-Databases/semi-join_03.png" style="zoom:150%;">
+<img src="semi-join_03.png" style="zoom:150%;">
 
 <br>
 
@@ -715,7 +715,7 @@
 <br>
 
 <h2 id="Disaggregated-componsents"><a href="#Disaggregated-componsents" class="headerlink" title="Disaggregated componsents"></a>Disaggregated componsents</h2><p>可以像组装玩具一样，利用不同的插件，根据需求，满足不同数据库的需求</p>
-<img src="/medias/23-Distributed-OLAP-Databases/disaggregated components.png" style="zoom:150%;">
+<img src="disaggregated components.png" style="zoom:150%;">
 
 <br>
 
@@ -724,7 +724,7 @@
 <h2 id="Universal-formats"><a href="#Universal-formats" class="headerlink" title="Universal formats"></a>Universal formats</h2><p>很多数据库之间的互通，一个比较难处理的事情就是数据页格式的不同</p>
 <p>而不同系统之间，数据的传输，很多都是依赖于CSV，JSON，XML等文件格式</p>
 <p>当然，也有一些致力于解决这些问题的开源项目</p>
-<img src="/medias/23-Distributed-OLAP-Databases/universal formats.png" style="zoom:150%;">
+<img src="universal formats.png" style="zoom:150%;">
 
 
 
@@ -1194,7 +1194,7 @@ Query Processing Models（用什么方案执行查询，比如火山模型）
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

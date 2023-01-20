@@ -435,7 +435,7 @@
 <p>即在问题发生之前解决问题，阻止问题的发生</p>
 <p>这种悲观的并发控制协议的缺点，主要是会降低并发度，降低性能</p>
 <p>而另一种<strong>乐观</strong>的并发控制协议，便是本章说的基于时间戳顺序的并发控制协议</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\2PL and TOO.png" style="zoom:150%;">
+<img src="2PL and TOO.png" style="zoom:150%;">
 
 <br>
 
@@ -443,7 +443,7 @@
 
 <h2 id="T-O-Concurrency-Control"><a href="#T-O-Concurrency-Control" class="headerlink" title="T/O Concurrency Control"></a>T/O Concurrency Control</h2><p>针对每个事务，给它赋予时间戳，根据事务的时间戳决定它的执行顺序</p>
 <p>如果<code>Ti</code>的时间戳小于<code>Tj</code>的时间戳，那么DBMS要保证，相当于<code>Ti</code>完全先发生，<code>Tj</code>完全后发生</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\TO_01.png" style="zoom:150%;">
+<img src="TO_01.png" style="zoom:150%;">
 
 <br>
 
@@ -481,7 +481,7 @@
 </ul>
 <p>每一次操作数据的时候，都要检查<strong>当前事务的时间戳</strong>和<strong>上一次操作该数据事务的时间戳</strong>，将二者进行比较</p>
 <p>主要的宗旨：<strong>不能操作来自未来的数据</strong></p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO.png" style="zoom:150%;">
+<img src="Basic TO.png" style="zoom:150%;">
 
 <br>
 
@@ -497,7 +497,7 @@
 <li>紧接着就是更新该数据的读时间戳（变为<code>max（当前事务的时间戳，当前数据的读时间戳）</code>）</li>
 <li>最后还需要将读到的数据，拷贝一个副本到本地（因为这个数据，后面可能会被其他的事务修改了，为了读到正确的版本，需要留一份备份；以便后续读数据的时候，读到的是本地的快照）</li>
 </ul>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO READS.png" style="zoom:150%;">
+<img src="Basic TO READS.png" style="zoom:150%;">
 
 <br>
 
@@ -514,7 +514,7 @@
 <li>并且还要将操作后的数据备份到本地，以便后续重复读取</li>
 <li>换句话说，这个数据所有的操作都发生在过去，当前事务才可以继续操作</li>
 </ul>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO WRITES.png" style="zoom:150%;">
+<img src="Basic TO WRITES.png" style="zoom:150%;">
 
 <br>
 
@@ -532,20 +532,20 @@
 <li>所以可以将本次的数据写成一个副本到本地（方便当前事务中，后面的语句重复读取），而不是写到具体的数据库上</li>
 <li>然后继续往下执行（反正这里未来会被覆盖掉）</li>
 </ul>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Thomas write rule.png" style="zoom:150%;">
+<img src="Thomas write rule.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
-<h2 id="Recoverable-schedules"><a href="#Recoverable-schedules" class="headerlink" title="Recoverable schedules"></a>Recoverable schedules</h2><img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Recoverable Schedules_01.png" style="zoom:150%;">
+<h2 id="Recoverable-schedules"><a href="#Recoverable-schedules" class="headerlink" title="Recoverable schedules"></a>Recoverable schedules</h2><img src="Recoverable Schedules_01.png" style="zoom:150%;">
 
 <p>使用TO，存在的一个问题是：后续事务读取的数据，<strong>默认是前面的事务已经提交了的</strong></p>
 <p>可是，如果前面的事务发生了回滚，那么后续的事务读取的数据便是脏读了</p>
 <p>因为事务的回滚恢复是按照顺序恢复的，即要先恢复前面的事务再恢复后面的事务</p>
 <p>但是你前面的事务都回滚了，后面的事务又是基于前面的事务的，那后面的事务就无法回滚了（亦或是说回滚的到的是脏数据）</p>
 <p>即<code>basic top</code>，是无法恢复的（比如下图）</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Recoverable Schedules_02.png" style="zoom:150%;">
+<img src="Recoverable Schedules_02.png" style="zoom:150%;">
 
 
 
@@ -566,14 +566,14 @@
 <p>比如说有个非常早就开始的事务，它需要读取的内容非常的多</p>
 <p>但是它可能会发现需要操作的数据都被未来的事务修改</p>
 <p>造成该事务只能被迫的不断地abort（而重启后执行地代价又很大）</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Basic TO_01.png" style="zoom:150%;">
+<img src="Basic TO_01.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <h2 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h2><p>如果当前的事务比较短，事务的竞争比较少，那么无锁的方法是最好的</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\TO_Observation.png" style="zoom: 150%;">
+<img src="TO_Observation.png" style="zoom: 150%;">
 
 <br>
 
@@ -629,7 +629,7 @@
 <h3 id="Forward-validation"><a href="#Forward-validation" class="headerlink" title="Forward validation"></a>Forward validation</h3><p>检验未来事务的数据，向后校验（问题是未来的事务还有一部分没有做，不知道未来会发生什么）</p>
 <p>所以这里是校验未来事务和当前事务交叠的部分，还没发生的部分无法校验</p>
 <p>因此，如果发生了冲突，这里可以灵活的选择是abort当前事务，还是哪些还在进行的事务（因为这两个事务都没有commit）</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation.png" style="zoom:150%;">
+<img src="forward validation.png" style="zoom:150%;">
 
 <br>
 
@@ -637,7 +637,7 @@
 <br>
 
 <p><strong>情况一</strong>：两个事务的执行步骤就是串行化执行的，那么校验阶段就不存在数据可以校验</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation_step_01.png" style="zoom:150%;">
+<img src="forward validation_step_01.png" style="zoom:150%;">
 
 <br>
 
@@ -648,7 +648,7 @@
 <p>那么此时T2读取到的数据就是还没有被T1修改过的数据</p>
 <p>因此T1在validation phase的时候，就会发现来自未来的事务（即T2）的Read phase在此之前执行了</p>
 <p>T1就需要被迫abort（因为这不符合串行化的规则）</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation_step_02.png" style="zoom:150%;">
+<img src="forward validation_step_02.png" style="zoom:150%;">
 
 <br>
 
@@ -656,7 +656,7 @@
 
 <p><strong>情况三</strong>：T1的完成READ阶段的时机早于T2的完成READ阶段的时机，同时在此刻，T1已经读取和写入的数据都和T2已经读取和写入的数据没有交集</p>
 <p>在这种情况下，T1的validation阶段是安全的，因为它保证了T2读取的数据，要么是没被T1操作过的数据，要么是已经被T1操作完提交了的数据</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\forward validation_step_03.png" style="zoom:150%;">
+<img src="forward validation_step_03.png" style="zoom:150%;">
 
 <br>
 
@@ -690,10 +690,10 @@
 <br>
 
 <h1 id="Partition-based-T-O"><a href="#Partition-based-T-O" class="headerlink" title="Partition-based T/O"></a>Partition-based T/O</h1><p>参考全局锁到分段锁的优化，OCC也可以将数据库分为若干个不相交的子集（可以水平分区，也可以垂直分区）</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\partition-based_01.jpg" style="zoom: 67%;">
+<img src="partition-based_01.jpg" style="zoom: 67%;">
 
 <p>在各个partition上执行OCC，并且不同partition上的事务之间不需要检查冲突</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\partition-based_02.jpg" style="zoom: 50%;">
+<img src="partition-based_02.jpg" style="zoom: 50%;">
 
 <br>
 
@@ -744,7 +744,7 @@
 <p>执行两条SQL，前后读出的内容不一致，好像出现了幻觉</p>
 <p>原因是在这期间发生了有新数据insert</p>
 <p>可以理解为第二次读取到了，第一次读取时数据库中不存在的数据</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\the phantom problem_01.png" style="zoom:150%;">
+<img src="the phantom problem_01.png" style="zoom:150%;">
 
 <br>
 
@@ -771,7 +771,7 @@
 <p>给SQL的WHERE谓词加共享锁</p>
 <p>给UPDATE、INSERT、DELETE上加独占锁</p>
 <p>比如下图，WHERE上加了共享锁，那么后续INSERT要加独享锁就会阻塞</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\predicate locking.png" style="zoom:150%;">
+<img src="predicate locking.png" style="zoom:150%;">
 
 <br>
 
@@ -819,14 +819,14 @@
 
 <p><strong>隔离级别</strong></p>
 <p>PS：并不是只有这四种隔离级别，比如Oracle的最高隔离级别是<strong>快照隔离</strong></p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Isolation levels_06.png" style="zoom:150%;">
+<img src="Isolation levels_06.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <p><strong>不同隔离级别的实现</strong></p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Isolation levels_07.png" style="zoom:150%;">
+<img src="Isolation levels_07.png" style="zoom:150%;">
 
 <br>
 
@@ -839,21 +839,21 @@
 <br>
 
 <p><strong>不同数据库对隔离级别的支持</strong></p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\Isolation levels_08.png" style="zoom:150%;">
+<img src="Isolation levels_08.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <h2 id="Database-admin-survey"><a href="#Database-admin-survey" class="headerlink" title="Database admin survey"></a>Database admin survey</h2><p>实际工作中对隔离级别的需求：</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\database admin survey.png" style="zoom:150%;">
+<img src="database admin survey.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <h2 id="SQL-92-access-modes"><a href="#SQL-92-access-modes" class="headerlink" title="SQL-92 access modes"></a>SQL-92 access modes</h2><p>可以通过语句指定当前需要的隔离级别</p>
-<img src="\medias\17-Timestamp-Ordering-Concurrency-Control\SQL-92 access modes.png" style="zoom:150%;">
+<img src="SQL-92 access modes.png" style="zoom:150%;">
 
 <br>
 
@@ -1330,7 +1330,7 @@ Lock types
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>

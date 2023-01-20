@@ -474,7 +474,7 @@ DBMS会维护当前所有数据对象的，">
 
 <h1 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h1><p>版本链表中的begin表示该版本数据开始的时间，end表示该版本数据截止的时间（如果没有写的话，就代表是至今）</p>
 <p>同时，全局会维护一个<code>txn table</code>，用于互相查明事务的状态</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\txn status table.png" style="zoom:150%;">
+<img src="txn status table.png" style="zoom:150%;">
 
 <br>
 
@@ -482,14 +482,14 @@ DBMS会维护当前所有数据对象的，">
 
 <h2 id="Example1"><a href="#Example1" class="headerlink" title="Example1"></a>Example1</h2><p>T1读数据会检查当前的版本，发现此时版本为T0，因此就直接读取</p>
 <p>T2写数据，发现当前版本小于自身，因此在table中添加一条新的记录（该记录的begin为当前记录的版本号）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_01.png" style="zoom:150%;">
+<img src="mvcc-example_01.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
 <p>此后，T1又要读数据A，就得找到当前事务对应的版本（即历史版本）读取数据</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_02.png" style="zoom:150%;">
+<img src="mvcc-example_02.png" style="zoom:150%;">
 
 <br>
 
@@ -502,7 +502,7 @@ DBMS会维护当前所有数据对象的，">
 <p>此时T1的数据还没有提交，T2不能读取T1还未提交的数据（避免脏读）</p>
 <p>因此T2读取的是A0时刻的数据</p>
 <p>PS：可以看出来单单MVCC是无法实现可串行化的（因为可串行化中，T2读取到的应该是T1时刻修改后的数据，但MVCC读到的却是更早的数据）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_03.png" style="zoom:150%;">
+<img src="mvcc-example_03.png" style="zoom:150%;">
 
 <br>
 
@@ -515,12 +515,12 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <p>T1对数据A的读取：读取当前事务中上一次添加的版本A1时的数据</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_04.png" style="zoom:150%;">
+<img src="mvcc-example_04.png" style="zoom:150%;">
 
 <br>
 
 <p>当T1事务commit以后，T2事务才可以继续往下写数据</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_05.png" style="zoom:150%;">
+<img src="mvcc-example_05.png" style="zoom:150%;">
 
 <br>
 
@@ -530,7 +530,7 @@ DBMS会维护当前所有数据对象的，">
 <p>只有<code>MVCC</code>的话，是无法实现可串行化的，所以一般都是结合其他方法实现并发的，比如说TO，OCC，2PL</p>
 <p>MVCC不仅仅是并发控制的手段，更是DBMS管理事务的手段</p>
 <p>几乎所有的DBMS都实现了MVCC</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc-example_06.png" style="zoom:150%;">
+<img src="mvcc-example_06.png" style="zoom:150%;">
 
 <br>
 
@@ -539,7 +539,7 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <h1 id="Concurrenct-control-protocol"><a href="#Concurrenct-control-protocol" class="headerlink" title="Concurrenct control protocol"></a>Concurrenct control protocol</h1><p>MVCC常常和其他的并发控制协议结合在一起</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\concurrency control protocol.png" style="zoom:150%;">
+<img src="concurrency control protocol.png" style="zoom:150%;">
 
 <br>
 
@@ -557,7 +557,7 @@ DBMS会维护当前所有数据对象的，">
 <h2 id="Append-only-storage"><a href="#Append-only-storage" class="headerlink" title="Append only storage"></a>Append only storage</h2><p>简单追加</p>
 <p>每次向DBMS中给数据追加新的版本，都相当于给数据表中追加了一条新的记录，通过指针将不同的版本记录链接起来，组成版本链</p>
 <p>所有数据的所有版本，都存放在同一个表（<code>Main Table</code>）里面</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\append-only storage.png" style="zoom:150%;">
+<img src="append-only storage.png" style="zoom:150%;">
 
 <br>
 
@@ -569,7 +569,7 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <p><code>Main table</code>中链表的两种实现思路</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\version chain ordering.png" style="zoom:150%;">
+<img src="version chain ordering.png" style="zoom:150%;">
 
 <br>
 
@@ -583,13 +583,13 @@ DBMS会维护当前所有数据对象的，">
 <li>生成新版本时，将新版本的指针指向老版本</li>
 <li>所以访问某个版本的记录时，需要从新记录开始遍历到指定版本</li>
 </ul>
-<img src="\medias\18-Multi-Version-Concurrency-Control\O2N and N2O.png" style="zoom:150%;">
+<img src="O2N and N2O.png" style="zoom:150%;">
 
 <br>
 
 <br>
 
-<h2 id="Time-travel-storage"><a href="#Time-travel-storage" class="headerlink" title="Time-travel storage"></a>Time-travel storage</h2><img src="\medias\18-Multi-Version-Concurrency-Control\time-travel storage.png" style="zoom:150%;">
+<h2 id="Time-travel-storage"><a href="#Time-travel-storage" class="headerlink" title="Time-travel storage"></a>Time-travel storage</h2><img src="time-travel storage.png" style="zoom:150%;">
 
 <p>main table存储的是当前最新的数据，time-travel table存储的是历史的数据</p>
 <ul>
@@ -608,7 +608,7 @@ DBMS会维护当前所有数据对象的，">
 <p>time-travel也是append-only的存储方式，只是新老版本在不同的表空间中。这种方式有利于回收老版本记录，但同时产生了写放大</p>
 <br>
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\time travel storage.png" style="zoom:150%;">
+<img src="time travel storage.png" style="zoom:150%;">
 
 <br>
 
@@ -619,7 +619,7 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <p>main table存储原数据，delta storage segment存储每次修改的增量（具体修改了哪些部分）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\delta storage.png" style="zoom:150%;">
+<img src="delta storage.png" style="zoom:150%;">
 
 <br>
 
@@ -628,7 +628,7 @@ DBMS会维护当前所有数据对象的，">
 <p>如果想读取历史版本，就要调用delta storage segment中的记录逐条回滚</p>
 <p>优点：可以节约历史版本大小</p>
 <p>缺点：查看历史版本（或回滚）复杂度高，即恢复（回滚）的时候需要逐步读delat storage segment（可以理解为用时间换取空间）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\delta storage.jpg" style="zoom:150%;">
+<img src="delta storage.jpg" style="zoom:150%;">
 
 <br>
 
@@ -673,7 +673,7 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <h3 id="background-vacuuming"><a href="#background-vacuuming" class="headerlink" title="background vacuuming"></a>background vacuuming</h3><p>开启一个后台线程对当前发生的事务和历史版本进行扫描对比，如果有数据的版本是小于当前所有的活跃事务的版本，就要清理掉</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\tuple-level gc.png" style="zoom:150%;">
+<img src="tuple-level gc.png" style="zoom:150%;">
 
 <br>
 
@@ -690,7 +690,7 @@ DBMS会维护当前所有数据对象的，">
 <p>执行事务的语句在检索版本的时候</p>
 <p>同时查看一下有哪些版本是没有用的</p>
 <p>发现没有用的版本，就删除</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\tuple-level gc(cooperative cleaning).png" style="zoom:150%;">
+<img src="tuple-level gc(cooperative cleaning).png" style="zoom:150%;">
 
 <br>
 
@@ -699,7 +699,7 @@ DBMS会维护当前所有数据对象的，">
 <h2 id="Transaction-level"><a href="#Transaction-level" class="headerlink" title="Transaction-level"></a>Transaction-level</h2><p>以事务为单位进行回收，清理旧事务的数据版本</p>
 <br>
 
-<img src="\medias\18-Multi-Version-Concurrency-Control\transaction-level gc.png" style="zoom:150%;">
+<img src="transaction-level gc.png" style="zoom:150%;">
 
 <p>每次修改数据时，同时记录修改数据之前的旧版本</p>
 <p>过一段时间后，DBMS决定多少版本号之前的事务都可以干掉了，那么就可以遍历事务，然后把数据的老版本给干掉</p>
@@ -715,7 +715,7 @@ DBMS会维护当前所有数据对象的，">
 <br>
 
 <p>比较麻烦的是辅助索引的处理，下图是辅助索引管理的两大流派：</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\index management.jpg" style="zoom:150%;">
+<img src="index management.jpg" style="zoom:150%;">
 
 <br>
 
@@ -739,7 +739,7 @@ DBMS会维护当前所有数据对象的，">
 <ul>
 <li>存在读放大问题，所有索引访问数据都需要先访问”中间指针”，再跳转到实际数据存储位置，即存在<strong>回表</strong>的过程</li>
 </ul>
-<img src="\medias\18-Multi-Version-Concurrency-Control\index pointers_02.png" style="zoom:150%;">
+<img src="index pointers_02.png" style="zoom:150%;">
 
 <br>
 
@@ -763,7 +763,7 @@ DBMS会维护当前所有数据对象的，">
 <li>如果辅助索引记录的是数据记录的物理地址，那么当有新的版本数据到来的时候，所有的辅助索引上数据记录都要修改（特别是在辅助索引数量很多的情况下，复杂度<code>upup</code>）</li>
 <li>因此不利于写，如果更新了某条记录的位置，则相关的索引都需要更新，造成写放大</li>
 </ul>
-<img src="\medias\18-Multi-Version-Concurrency-Control\index pointers_01.png" style="zoom:150%;">
+<img src="index pointers_01.png" style="zoom:150%;">
 
 <br>
 
@@ -787,7 +787,7 @@ DBMS会维护当前所有数据对象的，">
 <p>而因为T3认为此时没有数据，此时产生的新版本号是A1</p>
 <p>导致版本号出现了重复的情况，那么此时T1重复读取数据的时候，就会出现问题</p>
 <p>所以就需要存储冗余的键值，以此实现隔离级别（比如此时的数据A，需要维护T1指向的A1的版本和T3指向A1的版本）</p>
-<img src="\medias\18-Multi-Version-Concurrency-Control\mvcc duplicate key problem.png" style="zoom:150%;">
+<img src="mvcc duplicate key problem.png" style="zoom:150%;">
 
 <br>
 
@@ -820,7 +820,7 @@ DBMS会维护当前所有数据对象的，">
 
 <br>
 
-<h1 id="MVCC-implementations"><a href="#MVCC-implementations" class="headerlink" title="MVCC implementations"></a>MVCC implementations</h1><img src="\medias\18-Multi-Version-Concurrency-Control\mvcc implementations.png" style="zoom:150%;">
+<h1 id="MVCC-implementations"><a href="#MVCC-implementations" class="headerlink" title="MVCC implementations"></a>MVCC implementations</h1><img src="mvcc implementations.png" style="zoom:150%;">
 
 <p>比较core的部分：</p>
 <p>protocol（MVCC和什么手段结合）</p>
@@ -1325,7 +1325,7 @@ DBMS会维护当前所有数据对象的，">
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">104.4k</span>
+            <span class="white-color">100.7k</span>
             
 
             <br>
