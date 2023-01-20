@@ -18,7 +18,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Deep into Sort | dancsmshenry&#39;s blog</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
@@ -78,7 +78,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/roses.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">dancsmshenry's blog</span>
                 </a>
@@ -162,7 +162,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/roses.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">dancsmshenry's blog</div>
         <div class="logo-desc">
@@ -567,7 +567,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <h2 id="时间复杂度分析"><a href="#时间复杂度分析" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><h3 id="最优的情况"><a href="#最优的情况" class="headerlink" title="最优的情况"></a>最优的情况</h3><ul>
 <li><p>每次都能刚好二分，即确认第一个数需要遍历n个数，确认第二个数需要遍历n/2个数，确认第三个数需要遍历n/4个数字</p>
 </li>
-<li><p><img src="/medias/Deep-into-Sort/%E5%BF%AB%E6%8E%92%E6%9C%80%E4%BC%98%E6%83%85%E5%86%B5.png" alt></p>
+<li><img src="快排最优情况.png" style="zoom:150%;">
 </li>
 <li><p>总共有log2n层</p>
 </li>
@@ -695,7 +695,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
 <h2 id="时间复杂度分析-2"><a href="#时间复杂度分析-2" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><ul>
 <li>假设一开始有n个数，每次对半的整理排序</li>
-<li><img src="/medias/Deep-into-Sort/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%88%86%E6%9E%90.png" alt></li>
+<li><img src="归并排序分析.png" style="zoom:150%;"></li>
 <li>那每一层需要排序的时间就是n，而又已知T(1)=0，所以现在只要求解这颗二叉树的层数即可</li>
 <li>而二叉树的层数是log2n+1，去掉第一行就是log2n</li>
 <li>所以最好和最坏的时间复杂度都是O（nlogn）</li>
@@ -1091,7 +1091,7 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 
 <br>
 
-<h1 id="八股"><a href="#八股" class="headerlink" title="八股"></a>八股</h1><img src="/medias/Deep-into-Sort/排序算法的复杂度总结.png" style="zoom:150%;">
+<h1 id="八股"><a href="#八股" class="headerlink" title="八股"></a>八股</h1><img src="排序算法的复杂度总结.png" style="zoom:150%;">
 
 <ul>
 <li><strong>不稳定的排序只有：希尔排序，选择排序，堆排序，快速排序</strong></li>
@@ -1132,130 +1132,6 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
             <hr />
 
             
-            <style>
-    #reward {
-        margin: 40px 0;
-        text-align: center;
-    }
-
-    #reward .reward-link {
-        font-size: 1.88rem;
-    }
-
-    #reward .btn-floating:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    #rewardModal {
-        width: 320px;
-        height: 350px;
-    }
-
-    #rewardModal .reward-title {
-        margin: 15px auto;
-        padding-bottom: 5px;
-    }
-
-    #rewardModal .modal-content {
-        padding: 10px;
-    }
-
-    #rewardModal .close {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-        color: rgba(0, 0, 0, 0.5);
-        font-size: 1.3rem;
-        line-height: 20px;
-        cursor: pointer;
-    }
-
-    #rewardModal .close:hover {
-        color: #ef5350;
-        transform: scale(1.3);
-        -moz-transform:scale(1.3);
-        -webkit-transform:scale(1.3);
-        -o-transform:scale(1.3);
-    }
-
-    #rewardModal .reward-tabs {
-        margin: 0 auto;
-        width: 210px;
-    }
-
-    .reward-tabs .tabs {
-        height: 38px;
-        margin: 10px auto;
-        padding-left: 0;
-    }
-
-    .reward-content ul {
-        padding-left: 0 !important;
-    }
-
-    .reward-tabs .tabs .tab {
-        height: 38px;
-        line-height: 38px;
-    }
-
-    .reward-tabs .tab a {
-        color: #fff;
-        background-color: #ccc;
-    }
-
-    .reward-tabs .tab a:hover {
-        background-color: #ccc;
-        color: #fff;
-    }
-
-    .reward-tabs .wechat-tab .active {
-        color: #fff !important;
-        background-color: #22AB38 !important;
-    }
-
-    .reward-tabs .alipay-tab .active {
-        color: #fff !important;
-        background-color: #019FE8 !important;
-    }
-
-    .reward-tabs .reward-img {
-        width: 210px;
-        height: 210px;
-    }
-</style>
-
-<div id="reward">
-    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
-
-    <!-- Modal Structure -->
-    <div id="rewardModal" class="modal">
-        <div class="modal-content">
-            <a class="close modal-close"><i class="fa fa-close"></i></a>
-            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
-            <div class="reward-content">
-                <div class="reward-tabs">
-                    <ul class="tabs row">
-                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
-                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
-                    </ul>
-                    <div id="alipay">
-                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
-                    </div>
-                    <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    $(function () {
-        $('.tabs').tabs();
-    });
-</script>
-            
 
             <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 
@@ -1268,45 +1144,6 @@ void quick_sort(vector&amp;lt;int&gt; &amp;amp;arr, int left, int r">
 <script src="/libs/share/js/social-share.min.js"></script>
 
             
-
-    <div class="reprint" id="reprint-statement">
-        <p class="reprint-tip">
-            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
-            <span>转载规则</span>
-        </p>
-        
-            <div class="center-align">
-                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
-                    <img alt=""
-                         style="border-width:0"
-                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
-                </a>
-            </div>
-            <br/>
-            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
-                  property="dct:title" rel="dct:type">
-                    《Deep into Sort》
-                </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2022/10/09/deep-into-sort/" property="cc:attributionName"
-               rel="cc:attributionURL">
-                dancsmshenry
-            </a> 采用
-            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
-                知识共享署名 4.0 国际许可协议
-            </a>进行许可。
-        
-    </div>
-
-    <script async defer>
-      document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
-        M.toast({html: toastHTML})
-      });
-
-      function navToReprintStatement() {
-        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
-      }
-    </script>
 
 
         </div>
@@ -1427,43 +1264,6 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
 </article>
 </div>
 
-
-<script>
-    $('#articleContent').on('copy', function (e) {
-        // IE8 or earlier browser is 'undefined'
-        if (typeof window.getSelection === 'undefined') return;
-
-        var selection = window.getSelection();
-        // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('120')) {
-            return;
-        }
-
-        // create a div outside of the visible area and fill it with the selected text.
-        var bodyElement = document.getElementsByTagName('body')[0];
-        var newdiv = document.createElement('div');
-        newdiv.style.position = 'absolute';
-        newdiv.style.left = '-99999px';
-        bodyElement.appendChild(newdiv);
-        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
-
-        // we need a <pre> tag workaround.
-        // otherwise the text inside "pre" loses all the line breaks!
-        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
-            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
-        }
-
-        var url = document.location.href;
-        newdiv.innerHTML += '<br />'
-            + '来源: dancsmshenry's blog<br />'
-            + '作者: dancsmshenry<br />'
-            + '链接: <a href="' + url + '">' + url + '</a><br />'
-            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
-
-        selection.selectAllChildren(newdiv);
-        window.setTimeout(function () { bodyElement.removeChild(newdiv); }, 200);
-    });
-</script>
 
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
@@ -1605,34 +1405,26 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
 
 
 
-    <a href="mailto:godweiyang@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
         <i class="fa fa-envelope-open"></i>
     </a>
 
 
 
-    <a href="https://zhihu.com/people/godweiyang" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
         <i class="fa fa-inverse">知</i>
     </a>
 
 
+<!-- 
 
-    <a href="http://wpa.qq.com/msgrd?v=3&uin=792321264&site=qq&menu=yes" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
-        <i class="fa fa-qq"></i>
-    </a>
-
-
-
-    <a href="https://weibo.com/godweiyang" class="tooltipped" target="_blank" data-tooltip="关注我的微博" data-position="top" data-delay="50">
-        <i class="fa fa-weibo"></i>
-    </a>
 
 
 
     <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
         <i class="fa fa-rss"></i>
     </a>
-</div>
+ --></div>
     </div>
 </footer>
 
@@ -1659,7 +1451,7 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
     });
 </script>
 
-<script language=javascript>
+<!-- <script language=javascript>
     function siteTime() {
         window.setTimeout("siteTime()", 1000);
         var seconds = 1000;
@@ -1693,7 +1485,7 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
         document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
     }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
     siteTime();
-</script>
+</script> -->
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">
@@ -1735,8 +1527,6 @@ $(function () {
 
 
 
-    
-    <script src="/libs/others/clicklove.js"></script>
     
 
     

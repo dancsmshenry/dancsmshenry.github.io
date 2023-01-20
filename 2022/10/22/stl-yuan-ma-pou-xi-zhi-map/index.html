@@ -25,7 +25,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>STL源码剖析之map | dancsmshenry&#39;s blog</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
@@ -85,7 +85,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="/medias/roses.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">dancsmshenry's blog</span>
                 </a>
@@ -169,7 +169,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="/medias/roses.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">dancsmshenry's blog</div>
         <div class="logo-desc">
@@ -434,7 +434,7 @@
 <p>2、根节点是黑色</p>
 <p>3、如果节点为红，其子节点必须为黑</p>
 <p>4、任一节点到NULL（树尾端）的任何路径，所含的黑色节点数必须相同</p>
-<p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/RB-tree.png" alt></p>
+<p><img src="RB-tree.png" alt></p>
 <br>
 
 <h2 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h2><p>to do part</p>
@@ -442,16 +442,16 @@
 
 <h2 id="RB-tree的节点设计"><a href="#RB-tree的节点设计" class="headerlink" title="RB-tree的节点设计"></a>RB-tree的节点设计</h2><p><code>_rb_tree_node_base</code>存放<code>color</code>，<code>parent</code>，<code>left</code>，<code>right</code>等数据，同时实现了<code>minimum</code>和<code>maxinum</code>函数</p>
 <p><code>_rb_tree_node</code>继承了<code>_rb_tree_node_base</code>，同时存放<code>value_field</code>节点值</p>
-<p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/RB-tree%E7%9A%84%E8%8A%82%E7%82%B9%E8%AE%BE%E8%AE%A1.png" alt></p>
+<p><img src="RB-tree%E7%9A%84%E8%8A%82%E7%82%B9%E8%AE%BE%E8%AE%A1.png" alt></p>
 <br>
 
 <h2 id="RB-tree的迭代器设计"><a href="#RB-tree的迭代器设计" class="headerlink" title="RB-tree的迭代器设计"></a>RB-tree的迭代器设计</h2><p><code>_rb_tree_base_itreator</code>存放<code>_rb_tree_node</code>，同时实现了<code>increment</code>和<code>decrement</code>函数</p>
 <p><code>_rb_tree_itreator</code>继承了<code>_rb_tree_base_itreator</code>，同时重载了<code>*，-&gt;，++，--</code>等运算符</p>
-<p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/RB-tree%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8%E8%AE%BE%E8%AE%A1.png" alt></p>
+<p><img src="RB-tree%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8%E8%AE%BE%E8%AE%A1.png" alt></p>
 <p><code>RB-tree</code>的迭代器属于双向迭代器，但不具备随机定位能力</p>
 <br>
 
-<h2 id="RB-tree的数据结构"><a href="#RB-tree的数据结构" class="headerlink" title="RB-tree的数据结构"></a>RB-tree的数据结构</h2><p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/RB-tree%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
+<h2 id="RB-tree的数据结构"><a href="#RB-tree的数据结构" class="headerlink" title="RB-tree的数据结构"></a>RB-tree的数据结构</h2><p><img src="RB-tree%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
 <br>
 
 <h2 id="RB-tree的元素操作"><a href="#RB-tree的元素操作" class="headerlink" title="RB-tree的元素操作"></a>RB-tree的元素操作</h2><br>
@@ -462,7 +462,7 @@
 
 <h1 id="map"><a href="#map" class="headerlink" title="map"></a>map</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><code>map</code>的特性是，所有元素都会根据元素的键值自动被排序，<code>map</code>的所有元素都是<code>pair</code>，同时拥有实值（<code>value</code>）和键值（<code>key</code>）</p>
 <p><code>pair</code>的第一个元素被视为键值，第二元素被视为实值</p>
-<p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/map%E4%B8%ADpair%E7%9A%84%E8%AE%BE%E8%AE%A1.png" alt></p>
+<p><img src="map%E4%B8%ADpair%E7%9A%84%E8%AE%BE%E8%AE%A1.png" alt></p>
 <p><code>map</code>不允许两个元素拥有相同的键值</p>
 <p>底层是<code>RB-tree</code>实现的，所以插入删除查找都是$O(logn)$</p>
 <br>
@@ -474,7 +474,7 @@
 </ul>
 <br>
 
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/map%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="map%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
 <br>
 
 <h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;map></span></span>
@@ -579,7 +579,7 @@
 <p>hashtable的迭代器只提供前进操作，不提供后退操作</p>
 <p>在hashtable设计bucket的数量上，其内置了28个质数[53, 97, 193,…,429496729]，在创建hashtable时，会根据存入的元素个数选择大于等于元素个数的质数作为hashtable的容量（vector的长度），其中每个bucket 所维护的linked-list长度也等于hashtable的容量。如果插入hashtable的元素个数超过了bucket的容量，就要进行重建table操作，即找出下一个质数，创建新的buckets vector，重新计算元素在新hashtable的位置</p>
 <p>什么时候扩容：当向容器添加元素的时候，会判断当前容器的元素个数，如果大于等于阈值—即当 前数组的长度乘以加载因子的值的时候，就要自动扩容啦</p>
-<p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/%E6%8B%89%E9%93%BE%E6%B3%95%E5%AE%9E%E7%8E%B0hashtable.png" alt></p>
+<p><img src="%E6%8B%89%E9%93%BE%E6%B3%95%E5%AE%9E%E7%8E%B0hashtable.png" alt></p>
 <p>unordered_map是基于<strong>hash_table</strong>实现，一般是由一个大vector，vector元素节点可挂接链表来解决冲突来实现。hash_table最大的优点，就是把数据的存储和查找消耗的时间大大降低，几乎可以看成是常数时间；而代价仅仅是消耗比较多的内存。然而在当前可利用内存越来越多的情况下，用空间换时间的做法是值得的</p>
 <p>hash_table节点的定义</p>
 <ul>
@@ -592,12 +592,12 @@
 </ul>
 <br>
 
-<h2 id="迭代器-1"><a href="#迭代器-1" class="headerlink" title="迭代器"></a>迭代器</h2><p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/hashtable%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8.png" alt></p>
+<h2 id="迭代器-1"><a href="#迭代器-1" class="headerlink" title="迭代器"></a>迭代器</h2><p><img src="hashtable%E7%9A%84%E8%BF%AD%E4%BB%A3%E5%99%A8.png" alt></p>
 <p>hashtable的迭代器没有后退操作，hashtable也没有定义所谓的逆向迭代器</p>
 <br>
 
-<h2 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h2><p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/hashtable%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
-<p><img src="/medias/STL%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90%E4%B9%8Bmap/hashtable%E7%9A%84%E8%8A%82%E7%82%B9%E6%95%B0.png" alt></p>
+<h2 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h2><p><img src="hashtable%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt></p>
+<p><img src="hashtable%E7%9A%84%E8%8A%82%E7%82%B9%E6%95%B0.png" alt></p>
 <br>
 
 <h2 id="基本用法-1"><a href="#基本用法-1" class="headerlink" title="基本用法"></a>基本用法</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    自定义类型放入unordered_map中</span>
@@ -644,7 +644,7 @@
 
 <br>
 
-<h1 id="multimap"><a href="#multimap" class="headerlink" title="multimap"></a>multimap</h1><img src="/medias/STL源码剖析之map/multimap.png" style="zoom:150%;">
+<h1 id="multimap"><a href="#multimap" class="headerlink" title="multimap"></a>multimap</h1><img src="multimap.png" style="zoom:150%;">
 
 <br>
 
@@ -695,130 +695,6 @@
             <hr />
 
             
-            <style>
-    #reward {
-        margin: 40px 0;
-        text-align: center;
-    }
-
-    #reward .reward-link {
-        font-size: 1.88rem;
-    }
-
-    #reward .btn-floating:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    #rewardModal {
-        width: 320px;
-        height: 350px;
-    }
-
-    #rewardModal .reward-title {
-        margin: 15px auto;
-        padding-bottom: 5px;
-    }
-
-    #rewardModal .modal-content {
-        padding: 10px;
-    }
-
-    #rewardModal .close {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-        color: rgba(0, 0, 0, 0.5);
-        font-size: 1.3rem;
-        line-height: 20px;
-        cursor: pointer;
-    }
-
-    #rewardModal .close:hover {
-        color: #ef5350;
-        transform: scale(1.3);
-        -moz-transform:scale(1.3);
-        -webkit-transform:scale(1.3);
-        -o-transform:scale(1.3);
-    }
-
-    #rewardModal .reward-tabs {
-        margin: 0 auto;
-        width: 210px;
-    }
-
-    .reward-tabs .tabs {
-        height: 38px;
-        margin: 10px auto;
-        padding-left: 0;
-    }
-
-    .reward-content ul {
-        padding-left: 0 !important;
-    }
-
-    .reward-tabs .tabs .tab {
-        height: 38px;
-        line-height: 38px;
-    }
-
-    .reward-tabs .tab a {
-        color: #fff;
-        background-color: #ccc;
-    }
-
-    .reward-tabs .tab a:hover {
-        background-color: #ccc;
-        color: #fff;
-    }
-
-    .reward-tabs .wechat-tab .active {
-        color: #fff !important;
-        background-color: #22AB38 !important;
-    }
-
-    .reward-tabs .alipay-tab .active {
-        color: #fff !important;
-        background-color: #019FE8 !important;
-    }
-
-    .reward-tabs .reward-img {
-        width: 210px;
-        height: 210px;
-    }
-</style>
-
-<div id="reward">
-    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
-
-    <!-- Modal Structure -->
-    <div id="rewardModal" class="modal">
-        <div class="modal-content">
-            <a class="close modal-close"><i class="fa fa-close"></i></a>
-            <h4 class="reward-title">写作不易，客官能否打赏一杯奶茶？</h4>
-            <div class="reward-content">
-                <div class="reward-tabs">
-                    <ul class="tabs row">
-                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
-                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
-                    </ul>
-                    <div id="alipay">
-                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
-                    </div>
-                    <div id="wechat">
-                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    $(function () {
-        $('.tabs').tabs();
-    });
-</script>
-            
 
             <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
 
@@ -831,45 +707,6 @@
 <script src="/libs/share/js/social-share.min.js"></script>
 
             
-
-    <div class="reprint" id="reprint-statement">
-        <p class="reprint-tip">
-            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
-            <span>转载规则</span>
-        </p>
-        
-            <div class="center-align">
-                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
-                    <img alt=""
-                         style="border-width:0"
-                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
-                </a>
-            </div>
-            <br/>
-            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
-                  property="dct:title" rel="dct:type">
-                    《STL源码剖析之map》
-                </span> 由
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2022/10/22/stl-yuan-ma-pou-xi-zhi-map/" property="cc:attributionName"
-               rel="cc:attributionURL">
-                dancsmshenry
-            </a> 采用
-            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
-                知识共享署名 4.0 国际许可协议
-            </a>进行许可。
-        
-    </div>
-
-    <script async defer>
-      document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
-        M.toast({html: toastHTML})
-      });
-
-      function navToReprintStatement() {
-        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
-      }
-    </script>
 
 
         </div>
@@ -988,43 +825,6 @@ int a = 3;    //
 </article>
 </div>
 
-
-<script>
-    $('#articleContent').on('copy', function (e) {
-        // IE8 or earlier browser is 'undefined'
-        if (typeof window.getSelection === 'undefined') return;
-
-        var selection = window.getSelection();
-        // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('120')) {
-            return;
-        }
-
-        // create a div outside of the visible area and fill it with the selected text.
-        var bodyElement = document.getElementsByTagName('body')[0];
-        var newdiv = document.createElement('div');
-        newdiv.style.position = 'absolute';
-        newdiv.style.left = '-99999px';
-        bodyElement.appendChild(newdiv);
-        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
-
-        // we need a <pre> tag workaround.
-        // otherwise the text inside "pre" loses all the line breaks!
-        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
-            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
-        }
-
-        var url = document.location.href;
-        newdiv.innerHTML += '<br />'
-            + '来源: dancsmshenry's blog<br />'
-            + '作者: dancsmshenry<br />'
-            + '链接: <a href="' + url + '">' + url + '</a><br />'
-            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
-
-        selection.selectAllChildren(newdiv);
-        window.setTimeout(function () { bodyElement.removeChild(newdiv); }, 200);
-    });
-</script>
 
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
@@ -1166,34 +966,26 @@ int a = 3;    //
 
 
 
-    <a href="mailto:godweiyang@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
         <i class="fa fa-envelope-open"></i>
     </a>
 
 
 
-    <a href="https://zhihu.com/people/godweiyang" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
         <i class="fa fa-inverse">知</i>
     </a>
 
 
+<!-- 
 
-    <a href="http://wpa.qq.com/msgrd?v=3&uin=792321264&site=qq&menu=yes" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
-        <i class="fa fa-qq"></i>
-    </a>
-
-
-
-    <a href="https://weibo.com/godweiyang" class="tooltipped" target="_blank" data-tooltip="关注我的微博" data-position="top" data-delay="50">
-        <i class="fa fa-weibo"></i>
-    </a>
 
 
 
     <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
         <i class="fa fa-rss"></i>
     </a>
-</div>
+ --></div>
     </div>
 </footer>
 
@@ -1220,7 +1012,7 @@ int a = 3;    //
     });
 </script>
 
-<script language=javascript>
+<!-- <script language=javascript>
     function siteTime() {
         window.setTimeout("siteTime()", 1000);
         var seconds = 1000;
@@ -1254,7 +1046,7 @@ int a = 3;    //
         document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
     }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
     siteTime();
-</script>
+</script> -->
 
     <!-- 搜索遮罩框 -->
 <div id="searchModal" class="modal">
@@ -1296,8 +1088,6 @@ $(function () {
 
 
 
-    
-    <script src="/libs/others/clicklove.js"></script>
     
 
     
