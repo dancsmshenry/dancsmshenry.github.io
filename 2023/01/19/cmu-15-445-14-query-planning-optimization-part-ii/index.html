@@ -247,7 +247,7 @@ Cost model components代价估算的三">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -903,45 +903,39 @@ Cost model components代价估算的三">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/">
+                <a href="/2023/02/12/cmu-15-445-08-index-concurrency/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="CMU 15-445 14-Query Planning Optimization Part II">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="CMU 15-445 08-Index Concurrency">
                         
-                        <span class="card-title">CMU 15-445 14-Query Planning Optimization Part II</span>
+                        <span class="card-title">CMU 15-445 08-Index Concurrency</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Backround上节课说的是基于规则的优化器，而本节课要说的就是基于代价模型的优化器
-基于代价模型，估计每个计划的好坏
-然后从众多执行计划中，选取一个性价比最高的执行计划
+                            Observation前面的操作中，都假设只有一个线程去操作数据结构，但实际操作中是有多个线程同时操作数据库的
+因此需要研究多线程如何安全的执行查询
+并且在实现线程安全的同时，也要注意如何优化磁盘IO
 
 
-
-
-
-
-Cost model components代价估算的三
+存在一些只支持单线程的数据库（比如
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2023-01-19
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2023-02-12
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -968,7 +962,7 @@ Cost model components代价估算的三
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="CMU 15-445 13-Query Planning Optimization Part I">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="CMU 15-445 13-Query Planning Optimization Part I">
                         
                         <span class="card-title">CMU 15-445 13-Query Planning Optimization Part I</span>
                     </div>
@@ -1139,7 +1133,7 @@ SQL是声明式的，它只说明了需要的数据（答案）是什么，但�
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">100.7k</span>
+            <span class="white-color">103.7k</span>
             
 
             <br>
