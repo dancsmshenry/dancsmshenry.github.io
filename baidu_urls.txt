@@ -1,4 +1,3 @@
-https://dancsmshenry.github.io/2023/11/21/kai-fa-gong-ju-shi-yong-zhi-cmake/
 https://dancsmshenry.github.io/2023/02/12/cmu-15-445-08-index-concurrency/
 https://dancsmshenry.github.io/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/
 https://dancsmshenry.github.io/2023/01/19/cmu-15-445-13-query-planning-optimization-part-i/
