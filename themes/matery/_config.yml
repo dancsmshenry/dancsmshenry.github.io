@@ -16,12 +16,12 @@ menu:
   About:
     url: /about
     icon: fa-user-circle-o
-  Friends:
-    url: /friends
-    icon: fa-address-book
-  Contact:
-    url: /contact
-    icon: fa-comments
+  # Friends:
+  #   url: /friends
+  #   icon: fa-address-book
+  # Contact:
+  #   url: /contact
+  #   icon: fa-comments
 
 # Index cover carousel configuration.
 # 首页封面轮播图的相关配置.
@@ -81,7 +81,7 @@ recommend:
 # Configure website favicon and LOGO
 # 配置网站favicon和网站LOGO
 favicon: /roses.jpg
-logo: /medias/roses.png
+logo: /roses.jpg
 
 # The configuration of the second button in the home banner,
 # including the display name of the button, the font awesome icon, and the hyperlink to the button.
@@ -352,7 +352,7 @@ libs:
 
 # The post featured images that needs to be displayed when there is no image.
 # 无文章特色图片时需要显示的文章特色图片.
-featureImages: 
+featureImages:
 - /medias/featureimages/0.jpg
 - /medias/featureimages/1.jpg
 - /medias/featureimages/2.jpg
