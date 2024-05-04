@@ -241,11 +241,145 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             
             <div class="article col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
+                    <a href="/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/" target="_blank">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="深入理解CPP之smart pointer">
+                            
+                            <span class="card-title">深入理解CPP之smart pointer</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                            shared_ptr定义遵循共享所有权的概念，即不同的 shared_ptr 对象可以与相同的指针相关联
+如果指向的资源没有任何一方需要的话，就会析构并释放资源
+
+
+实现每个shared_ptr对象在会在栈上设立两个指针，分别指向堆上的两个
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-26
+                            </span>
+                            <span class="publish-author">
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/CPP/" target="_blank">
+                            <span class="chip bg-color">CPP</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/10/24/the-google-file-system/" target="_blank">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="The Google File System">
+                            
+                            <span class="card-title">The Google File System</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                            gfs为google内部的文件系统，其开源实现为hdfs，大数据领域标准的开源实现
+GFS是一个存储非结构化数据的存储系统，和bigtable（列存储，存储结构化数据，关系模型，表结构）是相对应的
+GFS只存储数据，不关心数据的结构和内容是
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-24
+                            </span>
+                            <span class="publish-author">
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/Paper/" target="_blank">
+                            <span class="chip bg-color">Paper</span>
+                        </a>
+                        
+                        <a href="/tags/Distributed/" target="_blank">
+                            <span class="chip bg-color">Distributed</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/" target="_blank">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="深入理解CPP之type conversion">
+                            
+                            <span class="card-title">深入理解CPP之type conversion</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                            backround基类对象转换为派生类对象，是不安全的
+
+派生类是包含于基类的，即基类的“体积”是小于派生类的
+
+如果一个指向基类的指针强转为指向派生类的指针（该指针始终指向基类，只是指针类型变了），再通过该指针调用派生类的特有方法或者数据
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-23
+                            </span>
+                            <span class="publish-author">
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/CPP/" target="_blank">
+                            <span class="chip bg-color">CPP</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
                     <a href="/2022/10/23/mapreduce-simplified-data-processing-on-large-clusters/" target="_blank">
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
                             
                             <span class="card-title">MapReduce: Simplified Data Processing on Large Clusters</span>
                         </div>
@@ -292,7 +426,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="深入理解CPP之auto,decltype,move,forward">
+                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="深入理解CPP之auto,decltype,move,forward">
                             
                             <span class="card-title">深入理解CPP之auto,decltype,move,forward</span>
                         </div>
@@ -334,7 +468,7 @@ int a = 3;    //
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="STL源码剖析之map">
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="STL源码剖析之map">
                             
                             <span class="card-title">STL源码剖析之map</span>
                         </div>
@@ -386,7 +520,7 @@ int a = 3;    //
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="STL源码剖析之deque">
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="STL源码剖析之deque">
                             
                             <span class="card-title">STL源码剖析之deque</span>
                         </div>
@@ -436,7 +570,7 @@ int a = 3;    //
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="STL源码剖析之vector">
+                            <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="STL源码剖析之vector">
                             
                             <span class="card-title">STL源码剖析之vector</span>
                         </div>
@@ -482,7 +616,7 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="Deep into DynamicProgming">
+                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Deep into DynamicProgming">
                             
                             <span class="card-title">Deep into DynamicProgming</span>
                         </div>
@@ -530,7 +664,7 @@ public:
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Deep into BinaryTree">
+                            <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Deep into BinaryTree">
                             
                             <span class="card-title">Deep into BinaryTree</span>
                         </div>
@@ -578,7 +712,7 @@ public:
                         <div class="card-image">
                             
                             
-                            <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Deep into Sort">
+                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Deep into Sort">
                             
                             <span class="card-title">Deep into Sort</span>
                         </div>
@@ -654,7 +788,7 @@ void quick_sort(vector&lt;int> &amp;arr, int left, int r
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">108k</span>
+            <span class="white-color">111k</span>
             
 
             <br>
