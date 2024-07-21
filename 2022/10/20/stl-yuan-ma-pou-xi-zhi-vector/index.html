@@ -4,13 +4,13 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="STL源码剖析之vector, C++">
+    <meta name="keywords" content="STL 源码剖析之 vector, C++">
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="vector实现
-vector中有三个指针：指向使用空间的头（start）和尾（finish），以及可用空间的尾（end_of_storage）
-可用空间：为了降低空间配置的速度成本，vector实际配置的大小可能比客户端需求量大一些（即c">
+    <meta name="description" content="实现
+vector 中有三个指针：指向使用空间的头（start）和尾（finish），以及可用空间的尾（end_of_storage）
+可用空间：为了降低空间配置的速度成本，vector 实际配置的大小可能比客户需求的大一些（即capaci">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>STL源码剖析之vector | dancsmshenry&#39;s blog</title>
+    <title>STL 源码剖析之 vector | dancsmshenry&#39;s blog</title>
     <link rel="icon" type="image/jpeg" href="/roses.jpg">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -204,13 +204,13 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        STL源码剖析之vector
+                        STL 源码剖析之 vector
                     </div>
                 </div>
             </div>
@@ -325,10 +325,6 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
                             <span class="chip bg-color">STL</span>
                         </a>
                         
-                        <a href="/tags/vector/" target="_blank">
-                            <span class="chip bg-color">vector</span>
-                        </a>
-                        
                     </div>
                     
                 </div>
@@ -372,28 +368,32 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="vector实现"><a href="#vector实现" class="headerlink" title="vector实现"></a>vector实现</h1><p><img src="vector%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt></p>
-<p>vector中有<strong>三个指针</strong>：指向使用空间的头（<code>start</code>）和尾（<code>finish</code>），以及可用空间的尾（<code>end_of_storage</code>）</p>
-<p>可用空间：为了降低空间配置的速度成本，vector实际配置的大小可能比客户端需求量大一些（即<code>capacity &gt;= size</code>）</p>
+                <h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p><img src="vector%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt></p>
+<p>vector 中有<strong>三个指针</strong>：指向使用空间的头（<code>start</code>）和尾（<code>finish</code>），以及可用空间的尾（<code>end_of_storage</code>）</p>
+<p>可用空间：为了降低空间配置的速度成本，vector 实际配置的大小可能比客户需求的大一些（即<code>capacity &gt;= size</code>）</p>
 <p>默认的空间分配器是<code>alloc</code></p>
 <br>
 
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>vector的数据（三个迭代器）是存储在栈上的，迭代器指向的数组是存放在堆上的</p>
-<p><img src="vector%E7%9A%84%E5%AE%9A%E4%B9%89.png" alt></p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><img src="vector%E7%9A%84%E5%AE%9A%E4%B9%89.png" alt></p>
+<p>vector 的数据（三个迭代器）是存储在栈上的，迭代器指向的数组是存放在堆上的</p>
+<br>
+
 <p>为什么不能把数据放到栈上</p>
 <ul>
-<li>栈上是不能动态扩容的，要实现动态扩容只能是堆</li>
-<li>同时栈的空间宝贵且有限，不能无限存放元素</li>
+<li>栈的空间宝贵且有限，不能无限存放元素</li>
+<li>栈中数据的生命周期和函数挂钩</li>
 </ul>
-<p>为什么end要在最后一个元素再后面的一个位置</p>
+<br>
+
+<p>为什么 end 要在最后一个元素再后面的一个位置</p>
 <ul>
-<li>当没有元素的时候，begin和end指向一起，方便判空</li>
+<li>当没有元素的时候，begin 和 end 指向一起，方便判空</li>
 </ul>
 <br>
 
-<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>vector的<strong>迭代器本质上就是一个指针，指向元素T</strong></p>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>vector 的<strong>迭代器本质上就是一个指针，指向元素T</strong></p>
 <ul>
-<li>迭代器也可以用[]运算符进行访问：b[i]等价于<code>*(b + i)</code></li>
+<li>迭代器也可以用 [] 运算符进行访问：b[i] 等价于<code>*(b + i)</code></li>
 </ul>
 <br>
 
@@ -401,7 +401,7 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
 
 <br>
 
-<h1 id="vector扩容"><a href="#vector扩容" class="headerlink" title="vector扩容"></a>vector扩容</h1><h2 id="为什么是成倍扩容"><a href="#为什么是成倍扩容" class="headerlink" title="为什么是成倍扩容"></a>为什么是成倍扩容</h2><p>如果是等差扩容</p>
+<h1 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h1><h2 id="为什么是成倍扩容"><a href="#为什么是成倍扩容" class="headerlink" title="为什么是成倍扩容"></a>为什么是成倍扩容</h2><p>如果是等差扩容</p>
 <p>假定每次扩容<code>m</code>个元素，总的元素个数是<code>n</code>，则需要扩容<code>n/m</code>次<br>$$<br>\sum^{n/m}_{i = 1}m*i=\frac{ (n+m) * n } { 2 * m}\<br>$$</p>
 <p>扩容的时间复杂度平均到每个元素上就是<code>O(n)</code></p>
 <br>
@@ -411,21 +411,23 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
 <p>那么完成这 <code>n</code> 个元素进行<code>push_back</code>操作，需要重新分配内存的次数大约为<code>logm(n)</code></p>
 <p>第<code>i</code>次重新分配将会导致复制<code>m^i</code>（也就是当前的<code>vector</code>大小）个旧空间中元素</p>
 <p>因此<code>n</code>次 <code>push_back</code>操作所花费的总时间约为 <code>n*m/(m - 1)</code><br>$$<br>\sum^{log_{m}{n}}_{i = 1}m^i=\frac{n*m}{m-1}\<br>$$</p>
-<p>扩容的时间复杂度平均到每个元素上就是<code>O(1)</code>（发现m为2时，时间复杂度最小，所以一般是2倍扩容）</p>
+<p>扩容的时间复杂度平均到每个元素上就是<code>O(1)</code>（发现 m 为 2 时，时间复杂度最小，所以一般是 2 倍扩容）</p>
 <br>
 
 <br>
 
-<h2 id="为什么是2倍（gcc）或者1-5倍（msvc）扩容"><a href="#为什么是2倍（gcc）或者1-5倍（msvc）扩容" class="headerlink" title="为什么是2倍（gcc）或者1.5倍（msvc）扩容"></a>为什么是2倍（gcc）或者1.5倍（msvc）扩容</h2><p>理想的分配方案：是在第n次扩容时能复用之前n-1次释放的空间</p>
+<h2 id="为什么是2倍（gcc）或者1-5倍（msvc）扩容"><a href="#为什么是2倍（gcc）或者1-5倍（msvc）扩容" class="headerlink" title="为什么是2倍（gcc）或者1.5倍（msvc）扩容"></a>为什么是2倍（gcc）或者1.5倍（msvc）扩容</h2><p>理想的分配方案：是在第 n 次扩容时能复用之前 n-1 次释放的空间</p>
 <ul>
-<li>而当m=2的时候每次扩容的大小都会大于前面释放掉的所有的空间</li>
-<li>按照小于2倍方式扩容，多次扩容之后就可以复用之前释放的空间了</li>
-<li>而超过2倍，就会导致空间的浪费，并且无法完美的使用到前面已经释放掉的内存</li>
+<li>而当 m=2 的时候每次扩容的大小都会大于前面释放掉的所有的空间</li>
+<li>按照小于 2 倍方式扩容，多次扩容之后就可以复用之前释放的空间了</li>
+<li>而超过 2 倍，就会导致空间的浪费，并且无法完美的使用到前面已经释放掉的内存</li>
 </ul>
+<br>
+
 <p>总结</p>
 <ul>
-<li>使用2倍扩容时，每次扩容后的新内存大小必定大于前面的总和</li>
-<li>使用1.5倍扩容时，在数次扩容后，就可以重用之前的内存空间</li>
+<li>使用 2 倍扩容时，每次扩容后的新内存大小必定大于前面的总和</li>
+<li>使用 1.5 倍扩容时，在数次扩容后，就可以重用之前的内存空间</li>
 </ul>
 <br>
 
@@ -433,23 +435,28 @@ vector中有三个指针：指向使用空间的头（start）和尾（finish）
 
 <br>
 
-<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="vector的构造"><a href="#vector的构造" class="headerlink" title="vector的构造"></a>vector的构造</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    vector的四种构造方式</span>
-vector<span class="token operator">&lt;</span>string<span class="token operator">></span> <span class="token function">i1</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"hi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span>string<span class="token operator">></span> i2<span class="token punctuation">{</span><span class="token string">"why"</span><span class="token punctuation">,</span> <span class="token string">"always"</span><span class="token punctuation">,</span> <span class="token string">"me"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span>string<span class="token operator">></span> <span class="token function">i3</span><span class="token punctuation">(</span>i2<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i3<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span>stirng<span class="token operator">></span> <span class="token function">i4</span><span class="token punctuation">(</span>i3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    四种构造方式</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>std<span class="token operator">::</span>string<span class="token operator">></span> <span class="token function">i1</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"hi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>std<span class="token operator">::</span>string<span class="token operator">></span> i2<span class="token punctuation">{</span><span class="token string">"why"</span><span class="token punctuation">,</span> <span class="token string">"always"</span><span class="token punctuation">,</span> <span class="token string">"me"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>std<span class="token operator">::</span>string<span class="token operator">></span> <span class="token function">i3</span><span class="token punctuation">(</span>i2<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i3<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>std<span class="token operator">::</span>stirng<span class="token operator">></span> <span class="token function">i4</span><span class="token punctuation">(</span>i3<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 保证得到的元素都是0</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 二者等价</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// 保证得到的元素都是0</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// 二者等价</span>
 
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> i5<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> i6 <span class="token operator">=</span> i5<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// operator= 赋值运算符</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="vector的迭代器"><a href="#vector的迭代器" class="headerlink" title="vector的迭代器"></a>vector的迭代器</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// begin返回指向容器的第一个元素的迭代器，end返回指向容器尾端的迭代器</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> i5<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> i6 <span class="token operator">=</span> i5<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// operator= 赋值运算符</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<h2 id="迭代器-1"><a href="#迭代器-1" class="headerlink" title="迭代器"></a>迭代器</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// begin 返回指向容器的第一个元素的迭代器，end 返回指向容器尾端的迭代器</span>
 <span class="token keyword">for</span> <span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>reverse_iterator it <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> v<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span> it<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">// rbegin返回一个指向容器最后一个元素的反向迭代器，rend返回一个指向容器前端的反向迭代器（反向迭代器+1会往前面移动）</span>
-<span class="token keyword">for</span> <span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>reverse_iterator it <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">rbegin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> v<span class="token punctuation">.</span><span class="token function">rend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span> it<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="vector的常用函数"><a href="#vector的常用函数" class="headerlink" title="vector的常用函数"></a>vector的常用函数</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    容器第一个元素</span>
+<span class="token comment" spellcheck="true">// rbegin 返回一个指向容器最后一个元素的反向迭代器</span>
+<span class="token comment" spellcheck="true">// rend 返回一个指向容器前端的反向迭代器（反向迭代器 +1 会往前面移动）</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">::</span>reverse_iterator it <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">rbegin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> v<span class="token punctuation">.</span><span class="token function">rend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span> it<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    容器第一个元素</span>
 std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> i6<span class="token punctuation">.</span><span class="token function">front</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
 
 <span class="token comment" spellcheck="true">//    容器最后一个元素</span>
@@ -468,11 +475,7 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
 std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> i6<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
-<br>
-
-<br>
-
-<h1 id="API的使用"><a href="#API的使用" class="headerlink" title="API的使用"></a>API的使用</h1><h2 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h2><p>作用：将容器的size修改为size1</p>
+<h2 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h2><p>作用：将容器的size修改为size1</p>
 <ul>
 <li>如果size1比当前的size大，那么size就会变为size1（如果capacity比size1小，capacity也会变为size1；否则capacity不变）<ul>
 <li>扩容多出的部分值为0</li>
@@ -481,11 +484,13 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
 <li>如果size1比当前的size小，那么size就会变为size1（capacity不变）</li>
 </ul>
 <p>总结：capacity只会变大或不变，不会变小</p>
-<p><br><br></p>
+<br>
+
 <h2 id="data"><a href="#data" class="headerlink" title="data"></a>data</h2><p>作用：返回数据数组的指针</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> <span class="token operator">*</span>p <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><br><br></p>
+<br>
+
 <h2 id="push-back"><a href="#push-back" class="headerlink" title="push_back"></a>push_back</h2><p>作用：将对象放到vector中</p>
 <p>时间复杂度分析（参考扩容，时间复杂度为<code>O(n)</code>）</p>
 <br>
@@ -500,7 +505,8 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
 <p><img src="insert_aux.png" alt="insert_aux"></p>
 <p>PS：<strong>一旦空间重新分配，指向原vector的所有的迭代器都会失效</strong></p>
 <p>所以最好以数组下标作为记录，而不是迭代器作为记录</p>
-<p><br><br></p>
+<br>
+
 <h2 id="emplace-back"><a href="#emplace-back" class="headerlink" title="emplace_back"></a>emplace_back</h2><p>作用：将对象放到vector中，在容器末尾就地构造元素（在末尾添加元素）</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
 <span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector></span></span>
@@ -627,8 +633,6 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
 </ul>
 <br>
 
-<br>
-
 <h2 id="shrink-to-fit"><a href="#shrink-to-fit" class="headerlink" title="shrink_to_fit"></a>shrink_to_fit</h2><p>作用：把capacity减小到size；可能使得现有的迭代器失效</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -637,7 +641,8 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
     f<span class="token punctuation">.</span><span class="token function">shrink_to_fit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> f<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    11</span>
 <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><br><br></p>
+<br>
+
 <h2 id="erase"><a href="#erase" class="headerlink" title="erase"></a>erase</h2><p>作用：删除内容，不改变容量大小（即size会发生变化，capacity不变）</p>
 <br>
 
@@ -667,8 +672,6 @@ vector<span class="token operator">&lt;</span><span class="token keyword">int</s
 <p>看了一下源码实现，如果是删除最后一个元素的话，就只会移动最后一个迭代器（end）</p>
 <br>
 
-<br>
-
 
 <h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><p>作用：清空容器中所有的元素（只改变size，不改变capacity）；所以clear是不会释放容器的内存</p>
 <br>
@@ -689,11 +692,7 @@ vector<span class="token operator">&lt;</span><span class="token keyword">int</s
 </ul>
 <br>
 
-<br>
-
 <h2 id="pop-back"><a href="#pop-back" class="headerlink" title="pop_back"></a>pop_back</h2><p>作用：删除最后一个元素（size发生变化，capacity不变）</p>
-<br>
-
 <br>
 
 <h2 id="at和"><a href="#at和" class="headerlink" title="at和[]"></a>at和[]</h2><p>作用：二者是等价的，即也可以用at对对应下标的数值赋值</p>
@@ -827,9 +826,9 @@ v1<span class="token punctuation">.</span><span class="token function">erase</sp
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="STL源码剖析之deque">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="STL 源码剖析之 deque">
                         
-                        <span class="card-title">STL源码剖析之deque</span>
+                        <span class="card-title">STL 源码剖析之 deque</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -879,7 +878,7 @@ v1<span class="token punctuation">.</span><span class="token function">erase</sp
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Deep into DynamicProgming">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="Deep into DynamicProgming">
                         
                         <span class="card-title">Deep into DynamicProgming</span>
                     </div>
@@ -1048,7 +1047,7 @@ public:
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">111k</span>
+            <span class="white-color">117.7k</span>
             
 
             <br>

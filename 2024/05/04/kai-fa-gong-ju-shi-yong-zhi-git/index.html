@@ -212,7 +212,7 @@ git branch branch_n">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/26.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -328,7 +328,11 @@ git branch branch_n">
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        <span class="chip bg-color">无标签</span>
+                        
+                        <a href="/tags/Tool/" target="_blank">
+                            <span class="chip bg-color">Tool</span>
+                        </a>
+                        
                     </div>
                     
                 </div>
@@ -354,14 +358,14 @@ git branch branch_n">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2k
+                    2.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    7 分
+                    9 分
                 </div>
                 
                 
@@ -458,6 +462,7 @@ git commit --amend
 
 # 在不增加一个新 commit 的情况下将新修改的代码追加到前一次的 commit 中（不需要再修改 message 信息）
 git commit --amend --no-edit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>-s</code> 后，在 commit message 里面会多一行 <code>Signed-off-by: xxx</code> 的内容</p>
 <br>
 
 <br>
@@ -476,6 +481,7 @@ git merge --abort
 
 # 继续 merge 过程
 git merge --continue<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>个人感觉 merge 有些不好用，因为它会导致提交链上会存在多条的分支，并且会将其他提交链的多次 commit 合并为一条 merge branch “backup00” into backup01 的 commit，导致提交链不清晰（虽然 rebase 会导致时间上错乱，但是至少提交顺序上是清晰的）</p>
 <br>
 
 <br>
@@ -513,6 +519,25 @@ git rebase --continue<span aria-hidden="true" class="line-numbers-rows"><span></
 <p>进入界面后，将前四次的 commit 前的字母单词全部改为 squash ，然后保存，ctrl + x 退出</p>
 <p>接着再进入界面修改 commit message，保存，ctrl + x 退出</p>
 <p>最后 git push origin master</p>
+<br>
+
+<p>squash 会将当前提交和上一次提交合在一起，然后会把 commit message 合在一起（当然也可以直接在页面上把这个 message 给删掉）</p>
+<p>fixup 和 squash 一样，但是不会保留 commit message</p>
+<p>drop 直接删除某次提交（如果有依赖，就需要解决冲突）</p>
+<br>
+
+<p>假设当前在 feature 分支上，git rebase master 本质上其实是将当前的 feature 和 master 上的内容，共用同一个基点。</p>
+<p>什么意思呢？</p>
+<p>就是说，如果 master 没有动，没有修改，然后 feature 在 master 的基础上修改了很多的内容</p>
+<p>然后再进行上面的操作的话，在 git 的眼里，master 和 feature 是共用同一个基点的，而 master 上面后续又没有提交，所以 git 是不会把提交摘到 master 上面的（这种情况下就需要用 cherry-pick）</p>
+<br>
+
+<p>而，如果 master 上面还有提交，那么这个时候，rebase 才会将提交给移过去</p>
+<br>
+
+<p>注：在 git rebase master 之后，master 分支的指针还是会指向原来的位置，而 feature 分支的指针会指向最新合并后得到的 commit 上</p>
+<p>例如说，在上述 git rebase 起了冲突之后，首先会将 feature 分支上的提交显示出来，然后通过 git add + git rebase –continue 的操作，进行合并（cherry-pick 也是一样，如果摘过去后出现了冲突，那么就会解决冲突，然后 <code>git cherry-pick continue</code>）</p>
+<p>存疑：这个指令 <code>git cherry-pick continue</code> 是不是在某个 git 的版本之后才有的？</p>
 <br>
 
 <br>
@@ -661,7 +686,7 @@ git show branch_name<span aria-hidden="true" class="line-numbers-rows"><span></s
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -683,6 +708,14 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
                     </div>
                 </div>
                 
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Tool/" target="_blank">
+                        <span class="chip bg-color">Tool</span>
+                    </a>
+                    
+                </div>
+                
             </div>
         </div>
         
@@ -696,7 +729,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="一些 cpp 的编码规范">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="一些 cpp 的编码规范">
                         
                         <span class="card-title">一些 cpp 的编码规范</span>
                     </div>
@@ -704,9 +737,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            什么时候使用前置声明
-为了防止循环引用的情况发生
-
+                            什么时候使用前置声明为了防止循环引用的情况发生
 避免头文件的使用者引入过多的无用的头文件（希望屏蔽底层的实现细节）
 
 
@@ -714,10 +745,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
 
 
-
-
-是否需要有 assert
-assert只在 debug 的模式下才会生效，而 debug 模式并不会是生
+是否需要有 assertassert 只在 debug 的模式下才会生效，而 debug 模式并不会是生产模式下
                         
                     </div>
                     <div class="publish-info">
@@ -728,6 +756,14 @@ assert只在 debug 的模式下才会生效，而 debug 模式并不会是生
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CPP/" target="_blank">
+                        <span class="chip bg-color">CPP</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -862,7 +898,7 @@ assert只在 debug 的模式下才会生效，而 debug 模式并不会是生
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">111k</span>
+            <span class="white-color">117.7k</span>
             
 
             <br>
