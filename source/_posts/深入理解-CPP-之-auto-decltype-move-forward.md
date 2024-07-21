@@ -1,5 +1,5 @@
 ---
-title: '深入理解CPP之auto,decltype,move,forward'
+title: '深入理解 CPP 之 auto,decltype,move,forward'
 top: false
 cover: false
 toc: true

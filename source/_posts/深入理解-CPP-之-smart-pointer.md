@@ -1,5 +1,5 @@
 ---
-title: 深入理解CPP之smart pointer
+title: 深入理解 CPP 之 smart pointer
 top: false
 cover: false
 toc: true

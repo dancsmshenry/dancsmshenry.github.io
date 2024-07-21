@@ -8,9 +8,13 @@ date: 2024-05-04 13:51:54
 password:
 summary:
 tags:
+- Tool
 categories:
-
 ---
+
+
+
+
 
 # Git 常用指令
 
@@ -137,6 +141,8 @@ git commit --amend
 git commit --amend --no-edit
 ```
 
+`-s` 后，在 commit message 里面会多一行 `Signed-off-by: xxx` 的内容
+
 <br/>
 
 <br/>
@@ -164,6 +170,8 @@ git merge --abort
 # 继续 merge 过程
 git merge --continue
 ```
+
+个人感觉 merge 有些不好用，因为它会导致提交链上会存在多条的分支，并且会将其他提交链的多次 commit 合并为一条 merge branch "backup00" into backup01 的 commit，导致提交链不清晰（虽然 rebase 会导致时间上错乱，但是至少提交顺序上是清晰的）
 
 <br/>
 
@@ -222,6 +230,36 @@ rebase 合并此前的 n 次提交：
 接着再进入界面修改 commit message，保存，ctrl + x 退出
 
 最后 git push origin master
+
+<br/>
+
+squash 会将当前提交和上一次提交合在一起，然后会把 commit message 合在一起（当然也可以直接在页面上把这个 message 给删掉）
+
+fixup 和 squash 一样，但是不会保留 commit message
+
+drop 直接删除某次提交（如果有依赖，就需要解决冲突）
+
+<br/>
+
+假设当前在 feature 分支上，git rebase master 本质上其实是将当前的 feature 和 master 上的内容，共用同一个基点。
+
+什么意思呢？
+
+就是说，如果 master 没有动，没有修改，然后 feature 在 master 的基础上修改了很多的内容
+
+然后再进行上面的操作的话，在 git 的眼里，master 和 feature 是共用同一个基点的，而 master 上面后续又没有提交，所以 git 是不会把提交摘到 master 上面的（这种情况下就需要用 cherry-pick）
+
+<br/>
+
+而，如果 master 上面还有提交，那么这个时候，rebase 才会将提交给移过去
+
+<br/>
+
+注：在 git rebase master 之后，master 分支的指针还是会指向原来的位置，而 feature 分支的指针会指向最新合并后得到的 commit 上
+
+例如说，在上述 git rebase 起了冲突之后，首先会将 feature 分支上的提交显示出来，然后通过 git add + git rebase --continue 的操作，进行合并（cherry-pick 也是一样，如果摘过去后出现了冲突，那么就会解决冲突，然后 `git cherry-pick continue`）
+
+存疑：这个指令 `git cherry-pick continue` 是不是在某个 git 的版本之后才有的？
 
 <br/>
 

@@ -1,5 +1,5 @@
 ---
-title: STL源码剖析之vector
+title: STL 源码剖析之 vector
 top: false
 cover: false
 toc: true
@@ -9,17 +9,20 @@ password:
 summary:
 tags:
 - STL
-- vector
 categories:
 ---
 
-# vector实现
+
+
+
+
+# 实现
 
 ![](vector示意图.png)
 
-vector中有**三个指针**：指向使用空间的头（`start`）和尾（`finish`），以及可用空间的尾（`end_of_storage`）
+vector 中有**三个指针**：指向使用空间的头（`start`）和尾（`finish`），以及可用空间的尾（`end_of_storage`）
 
-可用空间：为了降低空间配置的速度成本，vector实际配置的大小可能比客户端需求量大一些（即`capacity >= size`）
+可用空间：为了降低空间配置的速度成本，vector 实际配置的大小可能比客户需求的大一些（即`capacity >= size`）
 
 默认的空间分配器是`alloc`
 
@@ -27,25 +30,29 @@ vector中有**三个指针**：指向使用空间的头（`start`）和尾（`fi
 
 ## 源码
 
-vector的数据（三个迭代器）是存储在栈上的，迭代器指向的数组是存放在堆上的
-
 ![](vector的定义.png)
+
+vector 的数据（三个迭代器）是存储在栈上的，迭代器指向的数组是存放在堆上的
+
+<br/>
 
 为什么不能把数据放到栈上
 
-- 栈上是不能动态扩容的，要实现动态扩容只能是堆
-- 同时栈的空间宝贵且有限，不能无限存放元素
+- 栈的空间宝贵且有限，不能无限存放元素
+- 栈中数据的生命周期和函数挂钩
 
-为什么end要在最后一个元素再后面的一个位置
+<br/>
 
-- 当没有元素的时候，begin和end指向一起，方便判空
+为什么 end 要在最后一个元素再后面的一个位置
+
+- 当没有元素的时候，begin 和 end 指向一起，方便判空
 
 <br/>
 
 ## 迭代器
 
-vector的**迭代器本质上就是一个指针，指向元素T**
-- 迭代器也可以用[]运算符进行访问：b[i]等价于`*(b + i)`
+vector 的**迭代器本质上就是一个指针，指向元素T**
+- 迭代器也可以用 [] 运算符进行访问：b[i] 等价于`*(b + i)`
 
 <br/>
 
@@ -53,7 +60,7 @@ vector的**迭代器本质上就是一个指针，指向元素T**
 
 <br/>
 
-# vector扩容
+# 扩容
 
 ## 为什么是成倍扩容
 
@@ -81,7 +88,7 @@ $$
 \sum^{log_{m}{n}}_{i = 1}m^i=\frac{n*m}{m-1}\\
 $$
 
-扩容的时间复杂度平均到每个元素上就是`O(1)`（发现m为2时，时间复杂度最小，所以一般是2倍扩容）
+扩容的时间复杂度平均到每个元素上就是`O(1)`（发现 m 为 2 时，时间复杂度最小，所以一般是 2 倍扩容）
 
 <br/>
 
@@ -89,17 +96,17 @@ $$
 
 ## 为什么是2倍（gcc）或者1.5倍（msvc）扩容
 
-理想的分配方案：是在第n次扩容时能复用之前n-1次释放的空间
-- 而当m=2的时候每次扩容的大小都会大于前面释放掉的所有的空间
-- 按照小于2倍方式扩容，多次扩容之后就可以复用之前释放的空间了
-- 而超过2倍，就会导致空间的浪费，并且无法完美的使用到前面已经释放掉的内存
+理想的分配方案：是在第 n 次扩容时能复用之前 n-1 次释放的空间
+- 而当 m=2 的时候每次扩容的大小都会大于前面释放掉的所有的空间
+- 按照小于 2 倍方式扩容，多次扩容之后就可以复用之前释放的空间了
+- 而超过 2 倍，就会导致空间的浪费，并且无法完美的使用到前面已经释放掉的内存
 
-
+<br/>
 
 总结
 
-- 使用2倍扩容时，每次扩容后的新内存大小必定大于前面的总和
-- 使用1.5倍扩容时，在数次扩容后，就可以重用之前的内存空间
+- 使用 2 倍扩容时，每次扩容后的新内存大小必定大于前面的总和
+- 使用 1.5 倍扩容时，在数次扩容后，就可以重用之前的内存空间
 
 <br/>
 
@@ -109,37 +116,38 @@ $$
 
 # 基本用法
 
-## vector的构造
+## 构造函数
 
 ```cpp
-//	vector的四种构造方式
-vector<string> i1(2, "hi");
-vector<string> i2{"why", "always", "me"};
-vector<string> i3(i2.begin(), i3.end());
-vector<stirng> i4(i3);
+//	四种构造方式
+std::vector<std::string> i1(2, "hi");
+std::vector<std::string> i2{"why", "always", "me"};
+std::vector<std::string> i3(i2.begin(), i3.end());
+std::vector<std::stirng> i4(i3);
 
-vector<int> f1(4); // 保证得到的元素都是0
-vector<int> f2(4, 0); // 二者等价
+std::vector<int> f1(4); 	// 保证得到的元素都是0
+std::vector<int> f2(4, 0);  // 二者等价
 
-vector<int> i5{1};
-vector<int> i6 = i5;	// operator= 赋值运算符
+std::vector<int> i5{1};
+std::vector<int> i6 = i5;	// operator= 赋值运算符
 ```
 
+<br/>
 
-
-## vector的迭代器
+## 迭代器
 
 ```cpp
-// begin返回指向容器的第一个元素的迭代器，end返回指向容器尾端的迭代器
+// begin 返回指向容器的第一个元素的迭代器，end 返回指向容器尾端的迭代器
 for (vector<int>::reverse_iterator it = v.begin(); it != v.end(); ++ it) {}
 
-// rbegin返回一个指向容器最后一个元素的反向迭代器，rend返回一个指向容器前端的反向迭代器（反向迭代器+1会往前面移动）
+// rbegin 返回一个指向容器最后一个元素的反向迭代器
+// rend 返回一个指向容器前端的反向迭代器（反向迭代器 +1 会往前面移动）
 for (vector<int>::reverse_iterator it = v.rbegin(); it != v.rend(); ++ it) {}
 ```
 
+<br/>
 
-
-## vector的常用函数
+## 常用函数
 
 ```cpp
 //	容器第一个元素
@@ -163,12 +171,6 @@ std::cout << i6.capacity() << std::endl;
 
 <br/>
 
-<br/>
-
-<br/>
-
-# API的使用
-
 ## resize
 
 作用：将容器的size修改为size1
@@ -178,7 +180,7 @@ std::cout << i6.capacity() << std::endl;
 
 总结：capacity只会变大或不变，不会变小
 
-<br/><br/>
+<br/>
 
 ## data
 
@@ -189,7 +191,7 @@ vector<int> f(10, 20);
 int *p = f.data();
 ```
 
-<br/><br/>
+<br/>
 
 ## push_back
 
@@ -217,7 +219,7 @@ PS：**一旦空间重新分配，指向原vector的所有的迭代器都会失�
 
 所以最好以数组下标作为记录，而不是迭代器作为记录
 
-<br/><br/>
+<br/>
 
 ## emplace_back
 
@@ -349,8 +351,6 @@ int main() {
 
 <br/>
 
-<br/>
-
 ## shrink_to_fit
 
 作用：把capacity减小到size；可能使得现有的迭代器失效
@@ -365,7 +365,7 @@ int main() {
 }
 ```
 
-<br/><br/>
+<br/>
 
 ## erase
 
@@ -410,8 +410,6 @@ erase实质是将迭代器后面的元素全部复制一遍，接着往前移动
 
 <br/>
 
-<br/>
-
 
 ## clear
 
@@ -436,13 +434,9 @@ erase实质是将迭代器后面的元素全部复制一遍，接着往前移动
 
 <br/>
 
-<br/>
-
 ## pop_back
 
 作用：删除最后一个元素（size发生变化，capacity不变）
-
-<br/>
 
 <br/>
 
