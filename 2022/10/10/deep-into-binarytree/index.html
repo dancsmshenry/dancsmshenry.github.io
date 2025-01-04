@@ -1,0 +1,1093 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Deep into BinaryTree, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="二叉树的基本性质思路
+二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质
+从前，中遍历或中，后遍历能够推出二叉树
+关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 n0 = n2 + 1
+">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Deep into BinaryTree | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/26.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Deep into BinaryTree
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Algorithm/" target="_blank">
+                            <span class="chip bg-color">Algorithm</span>
+                        </a>
+                        
+                        <a href="/tags/BinaryTree/" target="_blank">
+                            <span class="chip bg-color">BinaryTree</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-10-10
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.2k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    14 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="二叉树的基本性质"><a href="#二叉树的基本性质" class="headerlink" title="二叉树的基本性质"></a>二叉树的基本性质</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>二叉搜索树的基本性质，二叉树前中后序遍历的特性，完全二叉树的性质</li>
+<li>从前，中遍历或中，后遍历能够推出二叉树</li>
+<li>关于节点数量的规律：设非空二叉树中度为0、1和2的结点个数分别为n0、n1和n2，则有 <strong>n0 = n2 + 1</strong><ul>
+<li>即叶子结点比二分支结点多一个</li>
+</ul>
+</li>
+</ul>
+<br>
+
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>100、相同的树（两边dfs）</p>
+<p>101、对称二叉树（两边dfs）</p>
+<p>104、二叉树的最大深度（dfs）</p>
+<p><strong>124</strong>、二叉树的最大路径和</p>
+<ul>
+<li>最大路径和的两种情况：<ul>
+<li>1、从当前节点出发，只走左子树或右子树</li>
+<li>2、从左子树的某一处出发，经过当前节点，然后到达右子树的某一处</li>
+</ul>
+</li>
+<li>问题就转化为如何用同一套代码能够将这两种情况都包含，或是说二者的共同点在哪儿</li>
+<li>思路：为什么会出现只走左/右子树，是因为走左/右子树只能得到小于等于0的结果；因此得到一个思路，在寻找最大路径和的时候，左子树给出的结果应该是<code>max(0,dfs(root -&gt; left))</code></li>
+<li>整体逻辑：设置全局变量maxn，设最开始的<code>maxn为root -&gt; val</code>（如果nullptr就返回0）</li>
+<li>分别对各个点进行左右遍历，得到<code>left = max(0, dfs(root -&gt; left))</code>和<code>right = max(0, dfs(root -&gt; right))</code></li>
+<li>然后，得到<code>max1 = left + right + root -&gt; val</code>，<code>maxn = max(max1, maxn)</code>，最后，当前函数需要返回<code>root -&gt; val + max(left, right)</code>（因为当前节点又会被上一层给调用）</li>
+<li>这种逐层递归的好处，是可以枚举每个节点遇到上述情况时候的取值，从而得到全体最大值</li>
+</ul>
+<p>236、二叉树的最近公共祖先</p>
+<ul>
+<li>先判断当前的节点是不是目标节点之一（或者是不是nullptr），如果是就直接返回</li>
+<li>否则就判断左边和右边，如果左边是空的，那就证明必然是右边，反之也是一样</li>
+<li>如果两边都不是空的话，就代表两个节点在当前节点的两侧，直接返回当前节点</li>
+</ul>
+<p>257、二叉树的所有路径（字符串+经典的dfs）</p>
+<p>572、另一棵树的子树（子树的定义）</p>
+<ul>
+<li>子树的定义：对于一个节点，二者都是null，ok；原树有、新树没有，或者原树没有，新树有，error</li>
+</ul>
+<p><strong>543</strong>、二叉树的直径</p>
+<ul>
+<li>二叉树的最长直径的两种情况<ul>
+<li>1、从当前节点出发，只走左子树或右子树</li>
+<li>2、从左子树的某一处出发，经过当前节点，然后到达右子树的某一处</li>
+</ul>
+</li>
+<li>和687，124都是一模一样的套路</li>
+</ul>
+<p>617、合并二叉树（DFS，需要注意空节点）</p>
+<p>653、两数之和 IV（输入BST）（剑指offerII 56 二叉搜索树中两个结点之和）：哈希表+前序遍历即可</p>
+<p>671、二叉树中第二小的节点（读题仔细，dfs解决，老套路了）</p>
+<p><strong>687</strong>、最长同值路径</p>
+<ul>
+<li>二叉树的最长同值路径的两种情况<ul>
+<li>第一种：从该点出发，只走左子树或右子树</li>
+<li>第二种：从左子树的某一处出发，经过该节点，然后到达右子树的某一处</li>
+</ul>
+</li>
+<li>和543，124都是一模一样的套路</li>
+<li>需要注意一点的是，要传入上一个结点的number，通过当前的root-&gt;val和number来判断要返回的是0还是其他的</li>
+</ul>
+<p>814、二叉树剪枝（自底向上的遍历，和之前一道题很像，忘了是那一道，后续看看）</p>
+<ul>
+<li>剑指offer II 047.二叉树剪枝（一模一样的）</li>
+</ul>
+<p>951、翻转等价二叉树（感觉和验证两个二叉树是否相等一样，都是比较左右节点的题目）</p>
+<p>剑指offer 26 树的子结构</p>
+<ul>
+<li>对于每个点都判断是否为目标二叉树</li>
+<li>一定要注意树的子结构和树的子树是不一样的：</li>
+<li>如果是子树，就必须要求两棵树上所有的结点都要能够对上（原树为空，目标树必须为空；原树有结点，目标树也得有结点）（目标树为空，原树必须也为空；目标书有节点，原树必须也有结点）</li>
+<li>如果是子结构，只要目标树有的原树都有，就行了（原树为空，目标树必须为空；原树有结点，目标树可以没有结点）（如果目标树为空，那么原来的树有没有结点都无所谓；如果目标树有结点，原树必须也有结点）</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+
+<h1 id="层序遍历"><a href="#层序遍历" class="headerlink" title="层序遍历"></a>层序遍历</h1><h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>树的层序遍历，即广度优先搜索；或者在层序遍历的时候，添加一些其他的操作</li>
+</ul>
+<br>
+
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>建立一个queue，最开始将第一个root点放入队列，进行我们想要的操作（求最大值、平均值、最左边的数）</li>
+<li>注意此时一开始是用一个node记录此时的queue.front()，接着把这个点从队列中pop</li>
+<li>操作完后，就把该点的左右结点给放入队列中；递归循环上述操作</li>
+<li>踩坑：for循环中要用一个size记录初始队列的大小，因为随着后续的元素不断放入，size会改变的<ul>
+<li>或者从后往前遍历也是可以的</li>
+</ul>
+</li>
+</ul>
+<br>
+
+<h2 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h2><p>102、二叉树的层序遍历（层序遍历）</p>
+<p>103、二叉树的锯齿形层序遍历（层序遍历；根据深度反转数组）</p>
+<p>111、二叉树的最小深度（用层序遍历记录floor；也可以用递归求解）</p>
+<p>199、二叉树的右视图（层序遍历；每次只取最后一个数）</p>
+<p>222、完全二叉树的节点个数（层序遍历；遇到nullptr就break）</p>
+<p>429、N叉树的层序遍历（层序遍历）</p>
+<p>513、找树左下角的值（层序遍历，记录每次出现的第一个值）</p>
+<p>515、在每个树行中找最大值（层序遍历；记录行max）</p>
+<p>637、二叉树的层平均值（层序遍历；求avg）</p>
+<p>662、二叉树的最大宽度（用两个队列来实现层序遍历；或者用一个新的结构体Node，同时记录节点的val和节点的指针，放入左节点就是* 2，放入右节点就是 *2 + 1；最后注意防越界，用unsigned long long即可）</p>
+<p>958、二叉树的完全性检验（层序遍历；根据完全二叉树的性质，一旦遇到nullptr，后面就不应该有节点了，否则就不是完全二叉树；用一个flag来表示是否遇到了nullptr）</p>
+<p>1609、奇偶树（层序遍历；根据奇偶做不同的处理）</p>
+<p>面试题 04.03、 特定深度节点链表（层序遍历生成链表）</p>
+<p>剑指offer 32、从上到下打印二叉树（层序遍历）</p>
+<p>剑指offer II 044.二叉树每层的最大值</p>
+<p>剑指offer II 045.二叉树最底层最左边的值</p>
+<p>剑指offer II 046.二叉树的右侧视图</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="前中后序遍历"><a href="#前中后序遍历" class="headerlink" title="前中后序遍历"></a>前中后序遍历</h1><h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>需要对树进行根左右，左根右，左右根的遍历，并且在每次遍历的时候添加其他操作</li>
+</ul>
+<br>
+
+<h2 id="模板-1"><a href="#模板-1" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>遍历一般有两种方式来实现，第一种是递归，第二种是用栈模拟递归（挖坑：第三种遍历mirror遍历不会）</li>
+</ul>
+<br>
+
+<h2 id="例题-2"><a href="#例题-2" class="headerlink" title="例题"></a>例题</h2><p>94、二叉树的中序遍历（递归/非递归版）</p>
+<p>98、验证二叉搜索树</p>
+<ul>
+<li>这道题是用到了二叉搜索树的性质+中序遍历。即对于每棵树，根节点是大于左子树的节点的，右子树的节点是大于根节点的</li>
+<li>然后联想到中序遍历是左根右的，所以就一方面维护一个pre节点，另一方面左根右的遍历，走完左子树，pre就变为左子树中的最大值（即左子树的右子树其中一个值），和根节点比较；走完根节点，pre就变为根节点，和右子树的左子树的最小值（即右子树的左子树其中一个值）进行比较）</li>
+<li>这就是中序遍历的高深之处，始终维护着pre为一部分的最大值</li>
+<li>这道题的做法无非就是中序遍历的变种（第一种是每次遍历都维护前面一个节点，第二种是递归得到全部的数组，第三种是stack维护前一个节点）</li>
+</ul>
+<p>105、从前序遍历与中序遍历构造二叉树</p>
+<ul>
+<li>模板题</li>
+<li>关于右边界的问题，是否要取到右边界都是可以选择的，关键是你怎么写（我的做法中右边界是不可取值的）</li>
+</ul>
+<p>106、从中序遍历与后序遍历构造二叉树</p>
+<ul>
+<li>同105一样的思路，类似的题还有剑指 offer07</li>
+</ul>
+<p>144、二叉树的前序遍历（递归/非递归版）</p>
+<p>145、二叉树的后序遍历（递归/非递归版；非递归实现思路，后序遍历是左右根，那么就相当于是根右左反过来，所以只要求得根右左，反转后便是结果）</p>
+<p>589、N叉树的前序遍历（递归/非递归版）</p>
+<p>590、N叉树的后序遍历（递归/非递归版）</p>
+<p>872、叶子相似的树（非常巧妙地中序遍历输出叶子，然后对比）</p>
+<p>剑指 offer36（<strong>挖坑</strong>）</p>
+<p>原创题：二叉树的下一个节点（中序遍历；如果有右子树，就往右子树下面找，否则就往上找）</p>
+<br>
+
+<br>
+
+<br>
+
+
+<h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="思路-3"><a href="#思路-3" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>二叉搜索树的性质：中序遍历得到的数组是依次递增的，右左根得到的数组是依次递减的，当前节点的数字是大于左边而小于右边的</li>
+</ul>
+<br>
+
+<h2 id="模板-2"><a href="#模板-2" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>中序遍历或者是右左根遍历，都可以用递归或stack来实现</li>
+</ul>
+<br>
+
+<h2 id="例题-3"><a href="#例题-3" class="headerlink" title="例题"></a>例题</h2><p>95、不同的二叉搜索树 II（用递归分别求出左右两个子树，然后用两层循环嵌套生成二叉树）</p>
+<p>98、验证二叉搜索树（利用二叉搜索树的性质，中序遍历的递归和非递归版，或者把中序遍历一遍二叉树，然后逐个逐个看是否大于前一个）</p>
+<p>99、恢复二叉树（也是利用二叉树搜索树和中序遍历的性质，但是其中利用r1和r2的方法真的很绝，建议好好看看）</p>
+<p>108、将有序数组转换为二叉搜索树（经典传递数组和数组边界，然后递归）</p>
+<p>109、有序链表转换二叉搜索树（经典利用二叉搜索树的性质，取中间数作为节点，然后递归left和right）</p>
+<p>230、二叉搜索树中第k小的元素</p>
+<ul>
+<li>中序遍历，每次得到元素的时候修改k，当k为0的时候return</li>
+<li>或者dfs，本质上也是中序遍历</li>
+</ul>
+<p>235、二叉搜索树的最近公共祖先</p>
+<ul>
+<li>通过大小判断接下来遍历那一边的子树</li>
+</ul>
+<p>450、删除二叉树中的节点（非常经典的题目，既可以把左子树接到右子树的最左边的节点上，也可以把右子树接到左子树最右边的节点上）</p>
+<p>530、二叉搜索树的最小绝对差（二叉搜索树的性质，中序遍历）</p>
+<p>538、把二叉搜索树转换为累加树（1038.把二叉搜索树转换为累加树，剑指offer II 054.所有大于等于节点的值之和）</p>
+<ul>
+<li>这道题的思路很巧妙：用的是<strong>反向的中序遍历</strong>，先遍历右边，再处理root，最后遍历左边（其中还用了一个全局变量来维护右子节点的最大值）</li>
+<li>思路和实现上都比较简单，但是很难想到如此的巧妙</li>
+<li>而我的思路：<ul>
+<li>对于一个节点本身来说，右子节点是用来给自身赋值的，所以，如果能往右边走，当前的值就是右边，就继续递归下去</li>
+<li>如果不能，那就继承父类给的base（具体参考代码）</li>
+<li>而对于左节点，如果左节点不能走，那以本节点为根节点的树的最大值就是root-&gt;val</li>
+<li>如果能走，那就返回递归的左节点</li>
+</ul>
+</li>
+</ul>
+<p>669、修建二叉搜索树（利用二叉搜索树的性质，如果当前的值小于low，就把左子树砍掉，返回右子树；如果当前的值大于high，就把右子树砍掉，返回左子树）</p>
+<p>701、二叉搜索树中的插入操作（二叉搜索树的性质）</p>
+<p>783、二叉搜索树节点最小距离（同上）</p>
+<p>897、递增顺序搜索树（利用二叉搜索树性质中序遍历建树）</p>
+<p>938、二叉搜索树的范围和（利用二叉搜索树性质）</p>
+<p>剑指offer 54、 二叉搜索树的第k大节点</p>
+<ul>
+<li>非递归的做法（右左根依次遍历，得到便是依次递减的数列，同时更新k值，递减到0为止）</li>
+<li>递归的做法（递归实现右左根遍历）</li>
+<li>本质上就是倒过来的先序遍历</li>
+</ul>
+<p>剑指offer 33、二叉搜索树的后序遍历</p>
+<ul>
+<li><p>经典传递数组边界：（我的做法）</p>
+<ul>
+<li><p>对于一个二叉搜索树的后序遍历来说，左右根，所以从最后一个结点往前会存在一部分B，使得B中所有的元素都大于根节点</p>
+<p>，剩下的部分A则存在所有的元素都小于根节点，由此可以调整数组的边界，使用递归可以实现判断</p>
+</li>
+</ul>
+</li>
+<li><p>正规的做法是：</p>
+<ul>
+<li><strong>埋坑</strong>（第二种做法确实看不懂….）</li>
+</ul>
+</li>
+</ul>
+<p>剑指offer 36、二叉搜索树与双向链表</p>
+<ul>
+<li>这道题背就完事了</li>
+<li>这道题需要好好的看一遍题解去思考消化</li>
+</ul>
+<p>面试题04.02、最小高度树（利用二叉搜索树性质，每次去数组中间的值作为节点的值）</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="平衡二叉树"><a href="#平衡二叉树" class="headerlink" title="平衡二叉树"></a>平衡二叉树</h1><p>110、平衡二叉树（<strong>自底向上</strong>的思考，如果当前的树不是，那上面的树也不是了，就往上走即可）</p>
+<ul>
+<li>这里有个小trick，就是如果当前节点确定了不是平衡二叉树，那么就返回-1</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>96、不同的二叉搜索树（动态规划，每次都枚举左边可能有多少个，右边可能有多少个，然后相乘得到结果）</p>
+<p>112、路径总和（经典dfs，发现targetsum为0，并且是叶子节点，就返回）</p>
+<p>113、路径总和II（经典dfs，需要注意的就是每次放入元素后，在退出函数的时候要把元素pop_back；理解上就是，你左边走完了，当然要退回一步，然后让右边继续往下走）</p>
+<p>114、二叉树展开为链表（这里可以延伸一下变为中序遍历，变为后序遍历的时候该咋写）</p>
+<p>116、填充每个节点的下一个右侧节点指针</p>
+<ul>
+<li>对于每个点，用solve（dfs函数）不断的递归</li>
+</ul>
+<p>117、填充每个节点的下一个右侧节点指针II</p>
+<ul>
+<li>依次遍历每一层，然后记录每个点的前一个点nodepre，让nodepre的next指向自己，然后再把自己变为nodepre</li>
+</ul>
+<p>129、求根节点到叶节点数字之和（经典dfs）</p>
+<ul>
+<li>镜像：剑指offer II 049.从根节点到叶节点的路径数字之和</li>
+<li>可以选择用一个res记录总和，也可以每次都将相加后返回</li>
+</ul>
+<p>226、翻转二叉树（模拟）</p>
+<p>剑指offer27 二叉树的镜像</p>
+<ul>
+<li>可以使用一个节点来实现翻转</li>
+</ul>
+<p>404、左叶子之和</p>
+<ul>
+<li>方法一：用flag来判断是不是左节点</li>
+<li>方法二：对于每个节点，都判断他的左节点，然后相加</li>
+</ul>
+<p>543、二叉树的直径</p>
+<ul>
+<li>遍历每个节点，每次的最大值都是左值加上右值（最大值用全局变量来维护）</li>
+</ul>
+<p>863、二叉树中所有距离为 K 的结点</p>
+<ul>
+<li>用哈希表实现dfs，真的巧妙啊！！！！！</li>
+</ul>
+<p>993、二叉树的堂兄弟节点</p>
+<ul>
+<li>比较层数和父母即可</li>
+</ul>
+<p>剑指offer 34 二叉树中和为某一值得路径</p>
+<ul>
+<li>dfs+记录状态</li>
+</ul>
+<p>字节面试题：二叉树中任意两节点之间的最短路径（给定两点，求它们之间的最短路径）</p>
+<ul>
+<li>思路：先找到两个点的最近公共祖先，然后再用dfs就该祖先到两点距离，最后相加</li>
+</ul>
+<p>nowcoder经典笔试题</p>
+<ul>
+<li>找到二叉树中的最大搜索二叉子树</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>深搜 -&gt; dfs递归</li>
+<li>广搜 -&gt; 层序遍历队列</li>
+</ul>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/10/deep-into-dynamicprogming/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="Deep into DynamicProgming">
+                        
+                        <span class="card-title">Deep into DynamicProgming</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            路径问题（Path Problem）62、不同路径二维数组记录状态，通过滚动数组优化可以变为一维数组
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-10
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Algorithm/" target="_blank">
+                        <span class="chip bg-color">Algorithm</span>
+                    </a>
+                    
+                    <a href="/tags/DynamicProgming/" target="_blank">
+                        <span class="chip bg-color">DynamicProgming</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/09/deep-into-sort/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Deep into Sort">
+                        
+                        <span class="card-title">Deep into Sort</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            快速排序（QuickSort）代码实现递归版本（非稳定版）/*arr为需要排序的数组，left为左边界，right为右边界*/
+void quick_sort(vector&lt;int> &amp;arr, int left, int r
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-09
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Algorithm/" target="_blank">
+                        <span class="chip bg-color">Algorithm</span>
+                    </a>
+                    
+                    <a href="/tags/Sort/" target="_blank">
+                        <span class="chip bg-color">Sort</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

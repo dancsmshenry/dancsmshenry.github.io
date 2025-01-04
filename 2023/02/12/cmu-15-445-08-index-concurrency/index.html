@@ -1,0 +1,1112 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="CMU 15-445 08-Index Concurrency, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="Observation前面的操作中，都假设只有一个线程去操作数据结构，但实际操作中是有多个线程同时操作数据库的
+因此需要研究多线程如何安全的执行查询
+并且在实现线程安全的同时，也要注意如何优化磁盘IO
+
+
+存在一些只支持单线程的数据库（比如">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMU 15-445 08-Index Concurrency | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/28.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        CMU 15-445 08-Index Concurrency
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Database/" target="_blank">
+                            <span class="chip bg-color">Database</span>
+                        </a>
+                        
+                        <a href="/tags/CMU-15-445/" target="_blank">
+                            <span class="chip bg-color">CMU 15-445</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-02-12
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    10 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h1><p>前面的操作中，都假设只有一个线程去操作数据结构，但实际操作中是有多个线程同时操作数据库的</p>
+<p>因此需要研究多线程如何安全的执行查询</p>
+<p>并且在实现线程安全的同时，也要注意如何优化磁盘IO</p>
+<br>
+
+<p>存在一些只支持单线程的数据库（比如redis，只支持单线程去操作，一个用户操作完，别的用户才能进去）</p>
+<ul>
+<li>但redis还是比较高效的，有一部分是因为不需要考虑多线程并发的问题</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Concurrency-control"><a href="#Concurrency-control" class="headerlink" title="Concurrency control"></a>Concurrency control</h1><p>并发控制协议需要保证对数据的操作后，得到的是正确的结果</p>
+<br>
+
+<p>并发控制分为两种：</p>
+<ul>
+<li>logical correctness：一个线程能够看到它应该看到的数据（事务并发设计的概念）</li>
+<li>physical correctness：物理上的，数据的内部表示是否正确稳定的（本节课的重点）</li>
+</ul>
+<br>
+
+<p>事务中的锁，是基于不同的数据结构的上锁流程的</p>
+<ul>
+<li>比如说在B+tree的结构中，从事务的角度来看，好像只是拿了当前数据位置的锁</li>
+<li>而实际上，B+tree的并发协议会要求它不仅要拿当前数据位置的锁，上一层数据的锁也有可能要拿到</li>
+<li>所以，我理解的是事务级别的锁实际上是将底层的锁进行了封装</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Latches-overview"><a href="#Latches-overview" class="headerlink" title="Latches overview"></a>Latches overview</h1><img src="locks vs latches.png" style="zoom:150%;">
+
+<br>
+
+<h2 id="Locks"><a href="#Locks" class="headerlink" title="Locks"></a>Locks</h2><p>指代逻辑上（宏观上）的锁，保护的是数据库中某个具体的数据（逻辑上的数据）</p>
+<p>一般是被事务持有（事务上说的拿锁、释放锁都是指这个）</p>
+<p>被修改的数据可以被回滚</p>
+<p>同时，针对死锁有检测和预防</p>
+<br>
+
+<br>
+
+<h2 id="Latches"><a href="#Latches" class="headerlink" title="Latches"></a>Latches</h2><p>指代数据结构上（微观上）的锁，保护的是数据库中某个具体的数据结构</p>
+<ul>
+<li><p>比如说上面说要锁一行数据，那么就会在那个数据结点上给一个latch</p>
+</li>
+<li><p>再或者说在B+树插入或删除数据的过程中，沿途也会加上很多的锁</p>
+</li>
+</ul>
+<p>数据不需要回滚</p>
+<p>是被某个操作过程所持有的</p>
+<p>对于死锁，没有具体的解决方案</p>
+<br>
+
+<br>
+
+<h2 id="Latch-modes"><a href="#Latch-modes" class="headerlink" title="Latch modes"></a>Latch modes</h2><p>锁的两种形式：读锁和写锁</p>
+<img src="latch modes.png" style="zoom: 150%;">
+
+<br>
+
+<h3 id="Read-mode"><a href="#Read-mode" class="headerlink" title="Read mode"></a>Read mode</h3><p>读锁（共享锁，S锁）；可以多个线程持有读锁</p>
+<br>
+
+<br>
+
+<h3 id="Write-mode"><a href="#Write-mode" class="headerlink" title="Write mode"></a>Write mode</h3><p>写锁（独占锁，X锁）；只能一个线程持有写锁</p>
+<br>
+
+<br>
+
+<h2 id="Latch-implementations"><a href="#Latch-implementations" class="headerlink" title="Latch implementations"></a>Latch implementations</h2><p>锁（latch，也就是mutex）的实现方式</p>
+<br>
+
+<h3 id="Blocking-OS-Mutex"><a href="#Blocking-OS-Mutex" class="headerlink" title="Blocking OS Mutex"></a>Blocking OS Mutex</h3><p>优点：简单方便（操作系统原生支持）</p>
+<p>缺点：不能用于大规模竞争并发的场面（拓展性低）</p>
+<p>比如cpp中的<code>std::mutex</code></p>
+<pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>mutex m<span class="token punctuation">;</span><span class="token comment" spellcheck="true">// 底层实现是pthread_mutex_t</span>
+m<span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+m<span class="token punctuation">.</span><span class="token function">unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<p><code>pthread_mutex_t</code>的实现：</p>
+<p>Linux接口中的pthread_mutex_t，底层实现是<strong>futex</strong></p>
+<p>在用户态有一个flag，如果能够拿锁，就标记这个变量flag</p>
+<p>如果此时有新的线程来拿锁，发现变量被标记了，线程就直接陷入内核态（类似让线程sleep，可以有效的降低锁的竞争，减少系统资源的消耗）</p>
+<p>如果上面的线程又把锁释放了，那么OS就会唤醒上面进入内核态的线程</p>
+<img src="futex.png" style="zoom:150%;">
+
+<p>缺点：把线程睡眠又唤醒，这种开销是比较大的</p>
+<br>
+
+<br>
+
+<h3 id="Test-and-set-spin-latch"><a href="#Test-and-set-spin-latch" class="headerlink" title="Test and set spin latch"></a>Test and set spin latch</h3><p>自旋锁（Spin lock）</p>
+<p>优点：非常高效（单个硬件指令就可以支持加解锁）</p>
+<p>缺点：没办法应用于大规模的竞争，对缓存和OS不友好</p>
+<img src="tas.png" style="zoom:150%;">
+
+<br>
+
+<p>自旋锁的实现：<strong>TAS</strong></p>
+<p>标志位latch，锁上的时候设置为1，解锁的时候设置为0</p>
+<p>上锁的过程，是调用test_and_set函数</p>
+<p>并用while检测函数返回的结果，在用户态不断地循环</p>
+<br>
+
+<p>因此这里对数据的操作都是原子操作（操作系统底层支持原子操作，即修改数据的过程中，别的线程是不能参与的）</p>
+<p>而这里spin latch的实现方式<strong>test and set</strong>，是由硬件指令支持的原子操作，执行期间不会被打断</p>
+<ul>
+<li>包含了两个步骤：把给定的内存地址设置为1，然后返回之前的旧值</li>
+<li>如果执行成功就会返回1，否则返回0</li>
+</ul>
+<br>
+
+<p>建议：不要在用户态使用自旋锁，除非你真的知道它的实现</p>
+<ul>
+<li>因为其他的线程如果一直不释放锁，就会导致竞争的线程极度的浪费资源（多个线程会不断的检测这个锁有没有被解开）</li>
+</ul>
+<br>
+
+<p>java给的一个思路就是：锁先疯狂的自旋，如果超过一定的时间，才会陷入内核态</p>
+<br>
+
+<br>
+
+<h3 id="Read-write-latches"><a href="#Read-write-latches" class="headerlink" title="Read-write latches"></a>Read-write latches</h3><p>读写锁，但是不能作为锁的一种实现</p>
+<ul>
+<li>读写锁只是类型不同，但是锁的实现方式还是只有上面两种</li>
+</ul>
+<p>比如说此时有两个人加了读锁，那么后面第三个人如果想要加写锁，就要等前面两个人放掉读锁后才能继续写锁</p>
+<p>再比如说如果此时还有人想加读锁，就不能加了，因为这里的加锁是要讲究<strong>顺序</strong>的，必须等上面的人把写锁加了，才能继续加读锁</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Hash-table-latching"><a href="#Hash-table-latching" class="headerlink" title="Hash table latching"></a>Hash table latching</h1><p>hash table是比较好加锁的</p>
+<p>比如说开放地址hash，如果找不到slot就会往下找，因为查找的方向永远是从上往下的，不会有死锁（B+树可能会死锁）</p>
+<p>当需要扩容的时候，就要加一个全局的写锁（global lock），因为扩容后数据结构会全部改变（不在扩容阶段，可以加局部锁）</p>
+<br>
+
+<br>
+
+<h2 id="Page-latches"><a href="#Page-latches" class="headerlink" title="Page latches"></a>Page latches</h2><p><strong>以page为单位</strong>加读写锁</p>
+<p>比如说要查找一个数据D，那么就要给slot所在的page加上一个读锁，如果当前page没有，就往下一个page去找，同时也要释放当前页面的latch</p>
+<br>
+
+<p>java里面的<code>ConcurrentHashMap</code>底层就是分段hash，并发控制用的就是page latches</p>
+<p>锁的粒度不细（不需要维护太多的锁），也保证了一定的并发性</p>
+<br>
+
+<br>
+
+<h2 id="Slot-latches"><a href="#Slot-latches" class="headerlink" title="Slot latches"></a>Slot latches</h2><p><strong>以slot（槽）为单位</strong>加读写锁</p>
+<p>粒度变得更加的细致了，更加能够避免并发冲突</p>
+<p>缺点：要维护的latch数量太多，大多数的场景是无法承受的</p>
+<br>
+
+<p>go里面的map是不支持并发的，但sync.map才是支持并发的</p>
+<p>读写分离，主的hashtable是只读的，副的hashtable是用来写的</p>
+<p>数据写完后定期将副hashtable的数据写到主hashtable中</p>
+<p>优点：读的时候是无锁的</p>
+<br>
+
+<br>
+
+<h2 id="Compare-and-swap"><a href="#Compare-and-swap" class="headerlink" title="Compare and swap"></a>Compare and swap</h2><p>构造无锁的hashtable的一种方法（实现无锁的一种解决方案）</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token function">__sync_bool_compare_and_swap</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>M<span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//    M是操作的变量的地址，20是原来这个变量上的值，30是我想要改为后得到的值</span>
+<span class="token comment" spellcheck="true">//    语义就是把M变量的值改为30</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<p>实现：</p>
+<ul>
+<li>先让OS看看当前的M是不是20，如果是20的话就要把它锁住，然后把它改为30</li>
+<li>通过先比较、再交换数据，借此解决并发问题</li>
+<li>由OS保证它是原子操作</li>
+<li>给定原值就保证了线程之间是没有冲突的</li>
+<li>返回的是true或false</li>
+</ul>
+<p>CAS也是原子指令，由硬件支持的，和TAS相比，TAS是在单个内存word（或字节）上实现的</p>
+<img src="compare and swap.png" style="zoom:150%;">
+
+<p>缺点：只会告诉你是否失败，但如果失败了的话就要继续自旋操作</p>
+<p>hashtable插入值的时候可以这样做</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="B-tree-latching"><a href="#B-tree-latching" class="headerlink" title="B+tree latching"></a>B+tree latching</h1><p>为何要研究b+ tree的并发：实现多线程的读写B+树</p>
+<p>需求：</p>
+<ul>
+<li>要保护结点内部的数据，不能让多线程同时的修改数据</li>
+<li>结点和结点之间会有合并的操作，page之间的合并，也不能让多线程同时去操作</li>
+</ul>
+<br>
+
+<p>比如说要删除数据44，此时发现数据删除后需要合并页</p>
+<p>而如果有人要查询41，去到原本41的位置的时候，发现没有（因为此时页数发生了合并，数据跑到另一页了）</p>
+<p>这就造成了并发上的错乱</p>
+<br>
+
+<br>
+
+<h2 id="Latch-crabbing-coupling"><a href="#Latch-crabbing-coupling" class="headerlink" title="Latch crabbing/coupling"></a>Latch crabbing/coupling</h2><p>螃蟹协议</p>
+<br>
+
+<p>具体步骤：</p>
+<ul>
+<li>先获取根节点的锁，如果发现数据在左子树，再把左子树结点的数据上锁</li>
+<li>然后判断锁上了左子树后，根节点能不能解锁，如果能解锁就解锁</li>
+<li>然后再从左子树找它的子树，依次循环这个流程</li>
+</ul>
+<br>
+
+<p>能解锁的条件（safe node）</p>
+<ul>
+<li>当发生数据更新（或插入删除）的时候，不会造成节点的split（分裂）或merge（合并）</li>
+</ul>
+<br>
+
+<p>find/insert/delete</p>
+<ul>
+<li><p>从根节点开始往下找，获取根结点的锁</p>
+</li>
+<li><p>再获取孩子结点的锁</p>
+</li>
+<li><p>然后判断孩子结点是不是一个安全的结点，如果不安全就不能放锁；安全的话就可以解锁</p>
+</li>
+</ul>
+<br>
+
+<p>思考：发现每次操作都要先锁根节点，导致根节点就变为了瓶颈</p>
+<ul>
+<li>这是一种悲观的思路</li>
+<li>而绝大部分的操作其实是不会引起根节点的变化，所以不一定一上来就加锁</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="better-latching-algorithm"><a href="#better-latching-algorithm" class="headerlink" title="better latching algorithm"></a>better latching algorithm</h2><p>发现此前的的加锁方式，都是预先假设后续的操作会修改当前节点的数据，因此需要给数据加写锁</p>
+<p>而这种思路是一种悲观的想法，这里提供一种乐观加锁的方式</p>
+<ul>
+<li><p>search过程不变，加的依然是读锁</p>
+</li>
+<li><p>insert/delete的时候，加的却是读锁（如果这里加了写锁，其他线程读写数据的时候就会阻塞）</p>
+</li>
+<li><p>一路读锁，发现子节点 not safe的时候，释放所有的锁，然后再从头给每一步加写锁</p>
+</li>
+</ul>
+<br>
+
+<p>不过这种方法也有缺点：比如说children结点会导致parent结点发生了修改，那么只能推导重来，从根节点重新给它加写锁</p>
+<p>这种方案，本质上是认为绝大部分的操作是不会对上层的索引有修改</p>
+<ul>
+<li><p>即大部分的操作只会修改叶子结点，不会修改上层的结点</p>
+</li>
+<li><p>一旦发生了修改上层结点，就回滚</p>
+</li>
+</ul>
+<br>
+
+<br>
+
+<p>不管悲观还是乐观的加锁方式，锁都是从头往尾加的</p>
+<ul>
+<li>所以说，如果你加锁的过程中，给children加锁的时候发现加不了锁，就只能等待锁被其他事务操作释放</li>
+</ul>
+<br>
+
+<p>而B+树更加优秀的一方面，是它不仅可以支持从上往下的加锁，还支持横向的遍历加锁</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Leaf-node-scans"><a href="#Leaf-node-scans" class="headerlink" title="Leaf node scans"></a>Leaf node scans</h1><p>因为B+树是可以支持范围搜索的，那么在多线程加锁的过程中，就有可能造成死锁的情况</p>
+<br>
+
+<p>比如说有两个事务，事务一find keys &lt; 4，事务二find keys &gt; 1</p>
+<img src="leaf node scan example.png" style="zoom:150%;">
+
+<p>那么事务一就直接找到4的位置，然后用下面的链表从右往左开始遍历，一边遍历一遍加读锁</p>
+<p>而事务二就找到1的位置，然后从左往右的开始遍历，加读锁</p>
+<p>这样就可能造成死锁的情况</p>
+<br>
+
+<br>
+
+<p>再比如说有一个update keys &lt; 10，那么就可能会先锁住key为9的数据</p>
+<p>那么就会出现，find keys &gt; 4 拿着key为5的锁，要争夺key为9的锁</p>
+<p>update keys &lt; 10拿着key为9的锁，要争夺key为5的锁</p>
+<p>由此引发死锁</p>
+<br>
+
+<p>B+树的latch天生不支持死锁检测</p>
+<p>一个解决办法：<strong>只允许往一个方向操作</strong>，比如说只允许find keys &gt; 4这个方向（从左往右加锁），不能反方向查询</p>
+<ul>
+<li>类似哈希表一样，只能往同一个方向加锁</li>
+</ul>
+<p>但如果又想要倒序的遍历，一个解决办法就是倒序索引，就反方向的构建一遍索引</p>
+<p>所以对于B+树的索引，要添加一些规则进去</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>让一个数据结构实现线程安全，是<strong>非常困难</strong>的</p>
+<p>在B+树上用的技巧，也可以用在其他的数据结构上的，例如skip list</p>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/11/21/kai-fa-gong-ju-shi-yong-zhi-cmake/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="开发工具使用之 Cmake">
+                        
+                        <span class="card-title">开发工具使用之 Cmake</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            0、通用的 CMakeLists 模板目前在 linux 下使用的 cmake 版本为 3.16，而在 windows 下使用的版本为 3.20
+# 指定 cmake 所需的最小版本
+cmake_minimum_required(VERSI
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2023-11-21
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Tool/" target="_blank">
+                        <span class="chip bg-color">Tool</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/19/cmu-15-445-14-query-planning-optimization-part-ii/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="CMU 15-445 14-Query Planning Optimization Part II">
+                        
+                        <span class="card-title">CMU 15-445 14-Query Planning Optimization Part II</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Backround上节课说的是基于规则的优化器，而本节课要说的就是基于代价模型的优化器
+基于代价模型，估计每个计划的好坏
+然后从众多执行计划中，选取一个性价比最高的执行计划
+
+
+
+
+
+
+Cost model components代价估算的三
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2023-01-19
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

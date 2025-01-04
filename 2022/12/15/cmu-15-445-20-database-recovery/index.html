@@ -1,0 +1,1338 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="CMU 15-445 20-Database Recovery, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="Crash Recovery故障恢复算法是为了确保数据库一致性，事务的原子性和面对故障时数据的持久性的一种技术
+
+
+故障恢复算法主要分为两部分：
+第一部分：在正常的事务处理阶段添加一些操作，使得DBMS可以在故障发生时对数据进行恢复（防患于">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMU 15-445 20-Database Recovery | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        CMU 15-445 20-Database Recovery
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Database/" target="_blank">
+                            <span class="chip bg-color">Database</span>
+                        </a>
+                        
+                        <a href="/tags/CMU-15-445/" target="_blank">
+                            <span class="chip bg-color">CMU 15-445</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-15
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.6k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    19 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Crash-Recovery"><a href="#Crash-Recovery" class="headerlink" title="Crash Recovery"></a>Crash Recovery</h1><p>故障恢复算法是为了确保<strong>数据库一致性</strong>，<strong>事务的原子性</strong>和面对故障时<strong>数据的持久性</strong>的一种技术</p>
+<br>
+
+<p>故障恢复算法主要分为两部分：</p>
+<p>第一部分：在正常的事务处理阶段添加一些操作，使得DBMS可以在故障发生时对数据进行恢复（防患于未然）</p>
+<ul>
+<li>通过上一章的学习，发现添加的操作主要就是WAL</li>
+</ul>
+<p>第二部分：在数据库故障发生时执行一些操作，以此维护数据库的原子性、一致性和持久性（利用上一个部分所添加的操作，维护DBMS的ACID特性；<strong>本章的重点</strong>）</p>
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Checkpoints"><a href="#Checkpoints" class="headerlink" title="Checkpoints"></a>Checkpoints</h1><p>崩溃恢复时，可以直接从checkpoint的位置开始读取数据，而不用将所有的log都读取一遍</p>
+<p>checkpoint会周期性执行</p>
+<br>
+
+<br>
+
+<p>checkpoint会将内存中的数据（脏页）和日志全部都写入磁盘</p>
+<p>然后，会在日志中会写入一个checkpoint的标志</p>
+<br>
+
+<br>
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><img src="checkpoint_example.png" style="zoom:150%;">
+
+<br>
+
+<p>checkpoint之上的日志和数据页，都已经被写入磁盘中了</p>
+<p>checkpoint之下的日志和数据页，还在内存中</p>
+<p>此时发生了crash，便有如下分析过程：</p>
+<p><strong>事务T1</strong>的开始和结束都是在checkpoint之上的（表示其中的数据都写入了磁盘中），因此DBMS不需要对其进行恢复</p>
+<p><strong>事务T2</strong>的开始是在checkpoint之前，结束是在checkpoint之后（但是T2的commit的日志已经在磁盘上了，表明该事务已经提交了），因此，T2需要进行redo操作，将checkpoint到T2 commit之间的，属于T2的操作全部重现一次，从而实现事务的原子性</p>
+<p><strong>事务T3</strong>的开始是在checkpoint之前，但在磁盘上的log中没有发现T3 commit的日志，因此需要undo操作，将此前T3的相关操作全部都给回滚</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="ARIES"><a href="#ARIES" class="headerlink" title="ARIES"></a>ARIES</h1><p>全称是<strong>Algorithms for Recovery and Isolation Exploiting Semantics</strong></p>
+<p>从字面的意思理解就是数据库恢复原型算法</p>
+<p>这种算法的理念各大厂商都有去实现和遵守</p>
+<p>但是工程细节上面又会有所不同，并且不同厂商也会有所创新</p>
+<br>
+
+<br>
+
+<h2 id="Main-ideas"><a href="#Main-ideas" class="headerlink" title="Main ideas"></a>Main ideas</h2><p><strong>WAL</strong>：使用的是<code>steal + no-force</code>策略，数据页可以不立刻写入磁盘，但是日志页必须立即写入磁盘</p>
+<p><strong>Repeating History During Redo</strong>：在DBMS崩溃的时候，要使用WAL的日志对数据进行恢复</p>
+<p><strong>Logging Changes During Undo</strong>：日志中虽然记录了一些操作，但是直到DBMS崩溃的时候该事务还没有提交，那么这些执行了一半的事务，操作过的数据都需要撤销回滚</p>
+<img src="ARIES.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Log-Sequence-Numbers"><a href="#Log-Sequence-Numbers" class="headerlink" title="Log Sequence Numbers"></a>Log Sequence Numbers</h1><p>背景：</p>
+<p>需要给每一条日志一个单调递增的，全局的序列号</p>
+<p>序列号的作用是表明系统当前运行的状态</p>
+<img src="LSN_01.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="flushedLSN"><a href="#flushedLSN" class="headerlink" title="flushedLSN"></a>flushedLSN</h2><p>该LSN是存放在内存中</p>
+<p>记录的是上一次刷到磁盘上的log的编号</p>
+<p>换言之，现在有哪些日志是已经被写入到磁盘上了的</p>
+<p>比如说，如果此时的LSN是100的话，就代表前100号日志都已经落到了磁盘上</p>
+<p>而在100之后的日志就还没有写入到磁盘中，即还在内存中</p>
+<br>
+
+<br>
+
+<h2 id="pageLSN"><a href="#pageLSN" class="headerlink" title="pageLSN"></a>pageLSN</h2><p>该LSN是存放在数据页上的，每一个数据页都有一个pageLSN</p>
+<p>记录的是最近一次，修改当前数据页的日志的编号（LSN）</p>
+<p>也可以认为是当前数据页在内存中时，最新修改该page的日志的编号</p>
+<br>
+
+<br>
+
+<h2 id="recLSN"><a href="#recLSN" class="headerlink" title="recLSN"></a>recLSN</h2><p>该LSN是存放在数据页上的，每一个数据页都有一个recLSN</p>
+<p>记录的是，当前的page在上一次写入磁盘后，第一个对该page进行修改的日志编号（LSN）</p>
+<p>可以理解为，比当前磁盘上的page还要新的第一个版本</p>
+<p>或者说，记录的是内存中当前page最早的修改（在此前，更早的修改都已经落盘了）</p>
+<p>因此，关于当前在内存中的page，recLSN到pageLSN之间的日志修改，都存储在了内存中</p>
+<p>recLSN和pageLSN在内存中，对于当前page的修改的上限和下限</p>
+<br>
+
+<br>
+
+<h2 id="lastLSN"><a href="#lastLSN" class="headerlink" title="lastLSN"></a>lastLSN</h2><p>该LSN是针对单个事务的，每个事务都有一个lastLSN</p>
+<p>记录的是，当前事务最后一条操作日志</p>
+<br>
+
+<br>
+
+<h2 id="MasterRecord"><a href="#MasterRecord" class="headerlink" title="MasterRecord"></a>MasterRecord</h2><p>该MasterRecord是针对全体存储介质的，每个存储介质（例如磁盘）都有一个MasterRecord</p>
+<p>记录的是上一次标记，带有checkpoint点的日志的LSN</p>
+<br>
+
+<br>
+
+<h2 id="Writing-log-records"><a href="#Writing-log-records" class="headerlink" title="Writing log records"></a>Writing log records</h2><p>始终遵守的一个原则：当一个脏页X被刷到磁盘的时候，必须要保证pageLSN<del>X</del>小于等于flushedLSN</p>
+<p>这就意味着，写入脏页X的前提是与脏页有关的日志及当前日志之前的所有日志都得写入磁盘中</p>
+<br>
+
+<p>所以，如果我们想要将脏页X写入到磁盘中，至少需要将脏页X的pageLSN<del>X</del>前面，已经操作过的数据写入磁盘</p>
+<p>然后才能将脏页X写入磁盘</p>
+<br>
+
+<p>每一个log都有其对应的LSN</p>
+<p>每当事务修改page上的数据的时候，都要更新pageLSN</p>
+<p>每一次将内存上的日志写入到磁盘时，都需要更新flushedLSN</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Normal-commit-amp-Abort-operations"><a href="#Normal-commit-amp-Abort-operations" class="headerlink" title="Normal commit &amp; Abort operations"></a>Normal commit &amp; Abort operations</h1><h2 id="Normal-execution"><a href="#Normal-execution" class="headerlink" title="Normal execution"></a>Normal execution</h2><p>事务的组成：对数据的读写操作、事务的开始标记、事务的commit以及abort</p>
+<p>并且，对于事务的操作简化为以下模型：</p>
+<ul>
+<li>所有的日志记录都保存在同一个page中</li>
+<li>磁盘的写入都是原子操作</li>
+<li>以SS2PL为背景，研究事务的恢复机制</li>
+<li>steal + no-force的方式管理缓冲池</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="Transaction-commit"><a href="#Transaction-commit" class="headerlink" title="Transaction commit"></a>Transaction commit</h2><p>commit时需要执行的操作：</p>
+<p>需要在log中添加commit的标记</p>
+<p>要保证在commit的时候，当前事务的所有日志都要被写入到磁盘中</p>
+<ul>
+<li>日志的写入磁盘的过程，是顺序IO、同步IO（IO线程会卡在IO的步骤，当IO完成了以后才会返回）</li>
+<li>一个日志的文件中，含有多条日志</li>
+</ul>
+<br>
+
+<p>当事务真正提交的时候，会再添加一条TXN-END的日志</p>
+<ul>
+<li>但这一条log并不需要立刻写入磁盘中</li>
+<li>这条日志表示当前事务，所修改的数据都已经写入到磁盘中了</li>
+<li>这条日志对于用户来说，是无感知的，用户是不知道这条日志的</li>
+</ul>
+<br>
+
+<p>也就是说，commit日志只代表操作的日志被写入了磁盘</p>
+<p>而TXN-END日志才代表修改的数据被写入磁盘了</p>
+<p>PS：当内存中的日志被flush到了磁盘中时，在内存中的日志就可以被删除了</p>
+<img src="transaction commit.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Transaction-abort"><a href="#Transaction-abort" class="headerlink" title="Transaction abort"></a>Transaction abort</h2><p>事务发生回滚是一种非常特殊的情况，因此ARIES算法需要进行一些额外的操作，以达到Undo的目的</p>
+<br>
+
+<p>在每一条日志的后面，加上<strong>prevLSN</strong></p>
+<ul>
+<li><p>记录在当前日志所在的事务中，上一个操作日志的LSN</p>
+</li>
+<li><p>因为LSN是所有的事务共同使用的，所以有可能当前LSN是15号，但14号LSN日志不是当前事务的日志，是其他事务的LSN</p>
+</li>
+<li><p>prevLSN是为了找到，在当前日志所在的事务中，前一条日志是多少号</p>
+</li>
+<li><p>这样在abort的时候就可以像一个链表一样将数据进行回滚</p>
+</li>
+<li><p>PS：事务开始的日志（即begin）的prevLSN是nil</p>
+</li>
+</ul>
+<img src="transaction abort.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Compensation-log-records"><a href="#Compensation-log-records" class="headerlink" title="Compensation log records"></a>Compensation log records</h2><p>背景：可以利用prevLSN对事务的操作进行回滚，但是仍然需<strong>要用日志记录当前的事务是如何回滚</strong>的，因此引入CLR</p>
+<p>定义：CLR是记录事务的数据是如何被回滚的<strong>日志</strong>（如何撤销此前更新的操作）</p>
+<p>CLR日志包含了被回滚日志操作的所有字段，同时还有undoNext指针（记录下一步要回滚的日志LSN）</p>
+<p>CLR日志也是被写入到日志文件中，但并不会被要求强制刷盘（因为本身DBMS就在回滚，所以即使此时的日志又发生了崩溃，下次恢复的时候在回滚即可）</p>
+<br>
+
+<br>
+
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h3><img src="transaction abort_example.png" style="zoom:150%;">
+
+<p>此时需要回滚T1事务，那么就要添加一条新的日志，即CLR-00x，00x表示需要撤销的操作的LSN（例子中需要回滚LSN为002的数据，因此这里是CLR-002）</p>
+<p>这条日志的prevLSN就被设为011，因为这条撤销的日志依然属于这个事务</p>
+<p>UndoNext就被设为001，因为此时回滚完002号日志后，就需要回滚002的上一条日志，即001</p>
+<br>
+
+<p>当回滚结束后，就需要添加TXN-END日志，表示该事务的回滚操作都结束了（此时的undoNext是nil）</p>
+<p>PS：因此，TXN-END既可以表示事务正常运行的结束；也可以表示事务回滚过程后，事务的结束（即commit和abort）</p>
+<img src="transaction abort_example_01.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Abort-algorithm"><a href="#Abort-algorithm" class="headerlink" title="Abort algorithm"></a>Abort algorithm</h2><p>回滚算法的具体操作：</p>
+<ul>
+<li><p>首先，在日志中写下当前事务的abort log</p>
+</li>
+<li><p>接着，需要撤销当前事务对数据的修改</p>
+<ul>
+<li><p>先加上一条清理日志（<strong>CLR</strong>）</p>
+</li>
+<li><p>然后再恢复旧版本的数据</p>
+</li>
+</ul>
+</li>
+<li><p>最后，将事务的操作全都回滚了以后，再加上一条TXN-END的日志</p>
+</li>
+</ul>
+<p>PS：清理日志（CLR）是不需要被回滚的（清理日志本身就是用来回滚其他的日志的，所以不应该被回滚）</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Fuzzy-checkpointing"><a href="#Fuzzy-checkpointing" class="headerlink" title="Fuzzy checkpointing"></a>Fuzzy checkpointing</h1><h2 id="Non-Fuzzy-Checkpoints"><a href="#Non-Fuzzy-Checkpoints" class="headerlink" title="Non-Fuzzy Checkpoints"></a>Non-Fuzzy Checkpoints</h2><p>一般的checkpoint要生成一个一致性的快照，就需要执行以下操作：</p>
+<ul>
+<li>任何新的事务都不可以开始</li>
+<li>需要把正在运行的事务全部都做完</li>
+<li>将内存上的脏页都写入磁盘</li>
+</ul>
+<br>
+
+<p>这种方式对于正在运行的DBMS不利</p>
+<ul>
+<li>因为需要停下来专门处理checkpoint</li>
+<li>并且，有些正在运行的事务可能需要非常久的时间才能做完，那么就需要非常久的等待，并且在这期间不能做其他事</li>
+</ul>
+<p>但是对DBMS的恢复有利</p>
+<br>
+
+<br>
+
+<h2 id="Slightly-Better-Checkpoints"><a href="#Slightly-Better-Checkpoints" class="headerlink" title="Slightly Better Checkpoints"></a>Slightly Better Checkpoints</h2><p>一个很自然的想法：不一定要等待所有正在执行的事务都结束后，再进行checkpoint</p>
+<p>换个角度说，只要给内存中活跃事务的脏页加锁，让checkpoint机制无法将这类脏页写入磁盘</p>
+<p>那么就不用等到所有的事务都结束后，再进行checkpoint了</p>
+<br>
+
+<p>而为了实现这种效果，需要维护以下两个表：</p>
+<p>Active transaction table（ATT，记录当前活跃事务的列表）</p>
+<p>Dirty page table（DPT，脏页表，记录当前系统中有哪些脏页）</p>
+<br>
+
+<br>
+
+<h3 id="Active-transaction-table"><a href="#Active-transaction-table" class="headerlink" title="Active transaction table"></a>Active transaction table</h3><p>活动事务表：记录的是做checkpoint时，内存中活跃的事务</p>
+<br>
+
+<p>每条事务记录的组成：</p>
+<ul>
+<li>txnID（事务ID）</li>
+<li>txn status（事务的状态）<ul>
+<li>R：running</li>
+<li>C：committing</li>
+<li>U：还没提交，可以理解为undo候选人，如果崩溃的时候，事务的状态依然是U，那么就要执行Undo操作了</li>
+</ul>
+</li>
+<li>lastLSN（事务最近的一条操作日志）</li>
+</ul>
+<br>
+
+<p>只有当事务结束了（写入TXN-END）的时候，才可以把事务从当前的表中移除</p>
+<img src="active transaction table.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h3 id="Dirty-page-table"><a href="#Dirty-page-table" class="headerlink" title="Dirty page table"></a>Dirty page table</h3><p>脏页表：记录的是内存中，还没有写入磁盘的脏页</p>
+<p>表中的每一个脏页，都会记录recLSN</p>
+<ul>
+<li>recLSN是指第一次使得当前page变为脏页的日志，也就是自上一次刷盘后开始的第一个日志</li>
+</ul>
+<br>
+
+<br>
+
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example"></a>Example</h3><img src="slightly better checkpoints.png" style="zoom:150%;">
+
+<p>对于slightly better checkpoints来说，</p>
+<p>会在每个checkpoint点的位置，额外的记录一下此时的ATT和DPT</p>
+<br>
+
+<br>
+
+<h3 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h3><p>slightly better checkpoint的做法，其实是让正在运行的事务先暂停</p>
+<p>并给这些事务的脏页上锁，以此保证checkpoint的时候不会把这些没完成的脏页写入磁盘</p>
+<br>
+
+<p>换言之，相比原来的checkpoint方法</p>
+<p>slightly better checkpoint的优点是不需要等到所有的事务全部做完</p>
+<p>允许其留下还没执行完的活跃事务及其脏页</p>
+<br>
+
+<p>但是缺点是，尽管没有清空事务，但还是暂停了事务（失去了并发性）</p>
+<br>
+
+<p>思考：之所以造成checkpoint会有性能问题，是因为我们一直要求要有一个一致性的快照</p>
+<p>要求此时（具体的某个时间点），所有的数据页都被刷入到了磁盘中</p>
+<p>由此引发的一个思路就是，由具体某个时间点的快照，变为某个时间段的快照，即fuzzy checkpoints</p>
+<br>
+
+<br>
+
+<h2 id="Fuzzy-checkpoints"><a href="#Fuzzy-checkpoints" class="headerlink" title="Fuzzy checkpoints"></a>Fuzzy checkpoints</h2><p>主要思路：</p>
+<p>将checkpoint的一致性快照，由时间点变为了时间段</p>
+<p>那些还在活跃事务下的脏页，checkpoint就不需要对其进行强制刷盘</p>
+<br>
+
+<p>将checkpoint的时间点变为时间段，即分别写入checkpoint-begin、checkpoint-end两条日志</p>
+<ul>
+<li>checkpoint-begin表示checkpoint的开始</li>
+<li>checkpoint-end表示checkpoint的结束，同时附上ATT和DPT这两个表</li>
+<li>对于ATT和DPT，这两个表都表示是在checkpoint-begin之前活跃的事务，和未刷入磁盘的脏页</li>
+<li>而checkpoint-end则表示，记录在checkpoint-begin以前提交的事务的日志及数据都已经刷盘</li>
+<li>在checkpoint-begin之后的，checkpoint-end之前的任何事务，都不会被记录到ATT中</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="ARIES-Recovery-phases"><a href="#ARIES-Recovery-phases" class="headerlink" title="ARIES - Recovery phases"></a>ARIES - Recovery phases</h1><p><strong>Phase I：Analysis</strong></p>
+<p>数据库发生崩溃后，先读入WAL文件</p>
+<p>找到MasterRecord（即上一次checkpoint的位置，如果是fuzzy checkpoint，那就是checkpoint-begin）</p>
+<p>并对其上下的日志进行分析</p>
+<br>
+
+<p><strong>Phase II：Redo</strong></p>
+<p>把应该写入到磁盘中，但是还没有写入磁盘的数据，对其进行恢复</p>
+<br>
+
+<p><strong>Phase III：Undo</strong></p>
+<p>把应该回滚，但是还没有回滚的数据进行回滚</p>
+<img src="ARIES - Recovery phases.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>当DBMS发生崩溃之后，首先要找到上一次checkpoint的位置，也就是<strong>MasterRecord</strong>，也是<strong>last checkpoint</strong></p>
+<p>接着就需要去找哪些日志的操作需要redo，也就是要找DPT（脏页表）里面最小的<strong>recLSN</strong></p>
+<ul>
+<li>为什么要去脏页表里面找，因为此时脏页表里面的数据并没有写入到磁盘里面</li>
+<li>no-fuzzy checkpoint之前所有的日志和数据都已经写入到磁盘中了，但是这里使用的是fuzzy checkpoint，那么就会导致有部分脏页数据是还没有写入磁盘的（为了性能，使用了fuzzy checkpoint）</li>
+<li>因此就要找对应脏页的recLSN，然后从这一点开始做数据的Redo操作</li>
+</ul>
+<p>最后，就是Undo操作</p>
+<ul>
+<li>从DBMS崩溃时的位置往前进行分析，分析有哪些事务到最后依然是活跃的，那么这些事务的操作就需要回滚</li>
+</ul>
+<img src="ARIES overview.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Analysis-phase"><a href="#Analysis-phase" class="headerlink" title="Analysis phase"></a>Analysis phase</h2><p>首先先找到上一次checkpoint的位置，然后从这个位置往前扫描（即往最新的方向扫描；如果是fuzzy checkpoint，那么就要从checkpoint-begin的位置开始扫描）</p>
+<p>如果发现了TXN-END的日志，就表明这个事务是已经完成了的，不需要对其进行redo或是undo的操作</p>
+<p>就可以把这个事务从ADT（活跃事务表）中移除</p>
+<br>
+
+<p>对于接下来读到的每一条日志记录：</p>
+<ul>
+<li>把当前记录的事务放到ADT中，并且标记为<strong>UNDO状态</strong></li>
+<li>如果找到了读到了某个事务的commit，就把该事务在ADT中的状态改为<strong>COMMIT状态</strong></li>
+<li>特别的，针对<strong>UPDATE</strong>的记录，就把发生了数据修改的page添加到DPT（脏页表）中，然后把该脏页的recLSN改为该日志的LSN</li>
+</ul>
+<br>
+
+<p>上述的分析阶段其实就是不断地构建ATT和DPT的过程：</p>
+<ul>
+<li>ATT记录的是在系统崩溃的时候，还有哪些事务是<strong>活跃</strong>的</li>
+<li>DPT记录的是在系统崩溃时，系统还没有写入到磁盘的<strong>脏页</strong></li>
+</ul>
+<br>
+
+<br>
+
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example"></a>Example</h3><img src="analysis phase example.png" style="zoom:150%;">
+
+<p>当DBMS发生了崩溃之后，就需要找到最近的checkpoint-begin点，分析从这个点到Crash的时候，中间的日志：</p>
+<p>020号日志：先将该日志添加到ATT和DPT中，并将该事务的状态标记为U（因为此时还没有提交）；而在DPT中，就把脏页给记录下来</p>
+<p>030号日志：发现是checkpoint-end，那么就把此时的ATT和DPT的数据覆盖到已有的ATT和DPT上</p>
+<p>040号日志：发现是事务T96的commit日志，于是就可以把事务T96在ATT中的状态修改为C（commit）</p>
+<p>050号日志：发现是事务T96的TXN-END日志，就代表与这个事务有关的操作全部都完成了，被刷入盘中，那么就可以把T96事务相关的数据和页从DPT和ATT中移除</p>
+<br>
+
+<br>
+
+<h2 id="Redo-phase"><a href="#Redo-phase" class="headerlink" title="Redo phase"></a>Redo phase</h2><p>Redo阶段的主要目的是重现DBMS在发生了崩溃时的状态</p>
+<p>因此，需要Redo已经commit的事务记录，</p>
+<p>需要Redo直到Crash时还依然没有提交的事务记录，</p>
+<p>同时还要CLR（回滚清理日志）</p>
+<br>
+
+<p>一些优化的思路：对于那些未提交事务的操作记录，是不需要回滚（因为它们属于未提交事务）</p>
+<p>但基本的ARIES是不这样做的，可能有些工程实践中有这些操作</p>
+<br>
+
+<p><strong>Redo</strong>的具体流程：</p>
+<p>针对DPT中的每一个页，都找到这个页的recLSN，然后从recLSN的日志位置开始对数据进行Redo操作，恢复至Crash发生时的状态</p>
+<p>对于其中每一条日志记录或是CLR记录，都需要进行Redo操作，<strong>除了以下两个情况</strong>（即以下两种情况不需要Redo）：</p>
+<ul>
+<li>DPT中没有当前页（比如说发现一个日志修改了某一页的数据，但是脏页表DPT中没有这一页，那么就不需要Redo这条日志）<ul>
+<li>代表这个页早已经被写入到磁盘中了</li>
+</ul>
+</li>
+<li>DPT有当前修改的页，但是当前日志的LSN小于这一页的recLSN<ul>
+<li>这代表着当前日志的修改，是在recLSN之前的，那么这个修改必然是已经被写入磁盘了的</li>
+</ul>
+</li>
+</ul>
+<br>
+
+<p><strong>Redo一条日志</strong>的具体流程：</p>
+<ul>
+<li>将数据读入内存，在内存中重新执行一遍这条语句</li>
+<li>把当前数据页的pageLSN修改为<strong>这条日志的LSN</strong></li>
+<li>在重新执行日志的操作中，是不需要额外写入日志的，也不强制将数据写入磁盘</li>
+</ul>
+<br>
+
+<p>最后，将ATT中所有的状态是C的事务，添加上TXN-END的日志，并把这个事务从ATT中移除</p>
+<br>
+
+<br>
+
+<h2 id="Undo-phase"><a href="#Undo-phase" class="headerlink" title="Undo phase"></a>Undo phase</h2><p>背景：一方面，Redo阶段可能会重做一些未提交事务的日志；另一方面，有些未提交事务的数据可能已经被写入磁盘中了</p>
+<br>
+
+<p>因此，需要在ADT中找到所有状态为U的事务（U代表事务未提交）</p>
+<p>然后根据ADT中事务的lastLSN，对事务的操作一条一条的回滚（回滚过程中利用UndoNext来记录下一条需要回滚的日志）</p>
+<br>
+
+<p>PS：在Undo阶段，需要为每一个Undo操作的日志写入CLR（清理日志）</p>
+<br>
+
+<br>
+
+<h2 id="Full-example"><a href="#Full-example" class="headerlink" title="Full example"></a>Full example</h2><p>举个例子，利用ARIES算法对DBMS的崩溃进行一次分析：</p>
+<img src="full example_01.png" style="zoom:150%;">
+
+<br>
+
+<p>首先是<strong>Analysis</strong>阶段，从Log中分析出此时的ATT和DPT</p>
+<img src="full example_02.png" style="zoom:150%;">
+
+<br>
+
+<p>接着是<strong>Redo</strong>阶段，针对DPT中的数据脏页，将数据进行刷盘</p>
+<p>比如说此时脏页有P1，那么就先将脏页P1从磁盘中读取到内存中，然后从recLSN的位置，直到Crash这个区间进行分析，将数据页按照log上的操作进行修改</p>
+<p>PS：此时的Redo操作是没有日志的</p>
+<img src="full example_02.png" style="zoom:150%;">
+
+<br>
+
+<p>最后是<strong>Undo</strong>阶段，对ATT中尚未提交的事务（状态是<strong>U</strong>的事务）操作进行回滚</p>
+<p>事务的回滚便是利用每个事务的lastLSN，逐条逐条的往上回滚（事务的语句是利用UndoNext进行连接的）</p>
+<p>比如这里需要回滚事务T2，那么就需要lastLSN对事务的操作进行回滚，同时UndoNext就会记录下一条需要回滚的日志操作</p>
+<img src="full example_03.png" style="zoom:150%;">
+
+<br>
+
+<p>再比如说这里回滚事务T3，而T3只有一条语句，那么这里UndoNext就为空，并且在该事务回滚完毕后（即所有的与该事务的脏页都被写入了磁盘中），会再添加一条<code>TXN-END</code>的log</p>
+<img src="full example_04.png" style="zoom:150%;">
+
+<br>
+
+<p>一个小插曲：如果在崩溃后的恢复过程中，又发生了一次崩溃，那么此时的恢复也是和之前是一样的（再次恢复的时候，重复ARIES的几个步骤即可）</p>
+<img src="full example_05.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Additional-crash-issues"><a href="#Additional-crash-issues" class="headerlink" title="Additional crash issues"></a>Additional crash issues</h1><p>问题一：如果DBMS在分析阶段又发生了崩溃，是否有问题？</p>
+<p>答：没问题，下次恢复的时候再分析即可</p>
+<br>
+
+<p>问题二：如果DBMS在Redo阶段又发生了崩溃，是否有问题？</p>
+<p>答：没问题，因为Redo阶段是不计入日志的，如果是在Redo的过程中崩溃了，那么此时的数据还是在内存上，并没有写入磁盘，所以没有影响；而如果说是在事务TXN-END之后发生崩溃了，也不会有问题，因为TXB-END日志写入就代表数据已经落盘了</p>
+<br>
+
+<p>问题三：在Redo阶段，有什么能够提高性能的方案？</p>
+<p>答：在Redo的时候，同时在后台将数据异步刷盘</p>
+<br>
+
+<p>问题四：在Undo阶段，有什么能够提高性能的方案？</p>
+<p>答：懒加载，即先不要立刻执行Undo操作；因为可能某个数据页一直都没有人访问，那么做不做Undo操作都不影响性能</p>
+<p>所以可以选择当有新的事务要对其进行操作的时候，再对数据页进行Undo的操作（<strong>Lazily rollback</strong>）</p>
+<p>好处就是能让DBMS快速的对外提供服务</p>
+<p>但缺点就是会间接的影响后续事务的性能</p>
+<br>
+
+<p>另一方面，从应用的使用者的角度来说，尽量不要写太长的事务（这会导致Undo阶段非常的影响性能）</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>ARIES的几个实现细节：</p>
+<ul>
+<li><p>需要使用WAL，<code>steal + no-force</code>的策略</p>
+</li>
+<li><p>需要使用<code>fuzzy checkpoints</code></p>
+</li>
+<li><p>分析阶段过后，需要先进行Redo操作，再进行Undo操作</p>
+</li>
+<li><p>在Undo的时候需要写入CLR日志</p>
+</li>
+</ul>
+<br>
+
+<p>LSN（日志序列号），在整个ARIES中都非常重要的概念</p>
+<ul>
+<li>可以用LSN实现一个链表，利用prevLSN记录一整个日志的所有日志操作</li>
+<li>也可以利用pageLSN，做数据页和日志记录的比较</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Thinking"><a href="#Thinking" class="headerlink" title="Thinking"></a>Thinking</h1><p>使用WAL的主要目的应该不是为了提高性能（虽然顺序IO是快于随机IO的，但是写了日志后，还是要执行语句，还是要随机IO）</p>
+<p>而是为了在崩溃恢复的时候，确保DBMS依旧能够保证提供ACID的特性</p>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/12/19/cmu-15-445-21-introduction-to-distributed-databases/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="CMU 15-445 21-Introduction To Distributed Databases">
+                        
+                        <span class="card-title">CMU 15-445 21-Introduction To Distributed Databases</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Parallel vs Distributed并行数据库和分布式数据库的区别
+
+
+Parallel DBMS多个节点在物理上是放在一起的（比如说是放在同一个机房中）
+物理节点之间是通过高速的局域网连接的
+节点之间的通信消耗是很小的，可以忽略
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-19
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/12/cmu-15-445-19-database-logging/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="CMU 15-445 19-Database Logging">
+                        
+                        <span class="card-title">CMU 15-445 19-Database Logging</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Motivation从事务的角度来说，事务commit之后，使用者就会认为处理好的数据就被放到硬盘上了（并不管底层是如何实现的）
+但实际上，出于对性能的考量（硬盘和磁盘的访问速度有明显差距）
+实时修改的数据页是不会立刻写入到磁盘上的
+而是优
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-12
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

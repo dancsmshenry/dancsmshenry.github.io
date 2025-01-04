@@ -1,0 +1,929 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="The Google File System, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="gfs为google内部的文件系统，其开源实现为hdfs，大数据领域标准的开源实现
+GFS是一个存储非结构化数据的存储系统，和bigtable（列存储，存储结构化数据，关系模型，表结构）是相对应的
+GFS只存储数据，不关心数据的结构和内容是">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>The Google File System | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        The Google File System
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Paper/" target="_blank">
+                            <span class="chip bg-color">Paper</span>
+                        </a>
+                        
+                        <a href="/tags/Distributed/" target="_blank">
+                            <span class="chip bg-color">Distributed</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-10-24
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>gfs为google内部的文件系统，其开源实现为hdfs，大数据领域标准的开源实现</p>
+<p>GFS是一个存储非结构化数据的存储系统，和bigtable（列存储，存储结构化数据，关系模型，表结构）是相对应的</p>
+<p>GFS只存储数据，不关心数据的结构和内容是什么；GFS里面只存储字节码，不关心具体的数据是什么 </p>
+<p>可能我们只是需要顺序的读取文件的数据，并不需要什么额外的操作</p>
+<p>某些场景下，就是不需要sql去对数据进行查看，单纯的只是想要对数据进行读取</p>
+<p>而GFS是很多组件的基础，比如说HBASE等kv数据库，它们的底层就是GFS</p>
+<p>三种结构：列存储，结构化数据，文件系统存储非结构化数据</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>大规模可拓展容错的分布式文件系统</p>
+<p>大规模：TB级的文件大小</p>
+<p>拓展：10台能够存入1TB，100台能够存入10TB，水平拓展</p>
+<p>容错：100台机器，坏了30台机器，剩下的70台照样能够提供服务，外界无感知，系统内部的错误不会被传播出去</p>
+<p>能够运行在廉价的服务器上（有磁盘有网络，就能够运行在上面；或者是虚拟机，只要有磁盘网络即可）</p>
+<p>因此这种能够运行在廉价服务器上的系统，极大的降低了研发成本</p>
+<p>任何技术的演进都需要极大的降低成本（无论时间还是金钱）研发成本，服务器的成本开销</p>
+<br>
+
+<p>google发现，很多时候业务的需求都是在文件的末尾追加数据（9成以上的需求），也有随机读写的情况，但很少</p>
+<p>极少数有删除修改的需求；大部分都是顺序的将数据写到文件中</p>
+<p>如果能够支持高性能的顺序写和顺序读的话，就可以cover掉90%的需求</p>
+<p>因此支持在文件的尾部数据进行写入（也正是这一需求，导致了api设计上的变化）</p>
+<p>而一般的随机写和随机读也是支持的，但不保证性能上的可靠，同时对于随机写也不能保证一致性</p>
+<p>而该系统是多机的，所以势必遇到分布式的一致性问题（可能会读取到脏数据，被删除的数据，也可能读到多个客户端读取写入时的脏数据，反正就是会读到不符合预期的数据）</p>
+<p>但是会保证最终的一致性，即每个数据至少会被写入到一个副本中</p>
+<p>但GFS降低了一致性的预期</p>
+<br>
+
+<br>
+
+<br>
+
+
+
+<h1 id="设计概述"><a href="#设计概述" class="headerlink" title="设计概述"></a>设计概述</h1><h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><p>运行在普通的机器上，机器的失效是常态（全失败和全正常的概率都是很低的，因此至少出现一台机器失败的概率就会很高）</p>
+<p>大文件是普遍存在的（九成九的都是大文件，十几兆的几百兆的都有；存储列表信息），小文件也是存在的（比如一些id的存储）（大文件是主导的）</p>
+<p>大规模的顺序读写是普遍存在的，但是随机读写也是存在的</p>
+<p>也存在多个生产者对同一个大文件进行顺序写的操作</p>
+<p><strong>吞吐优先于延迟</strong>：使用该系统的业务方大部分不是和在线系统相关联的，而是离线分析类型的系统，不会对计算的响应时间有所要求，而是对吞吐量有所要求：因为数据量很大，所以希望在单位时间内处理大量的数据，即把网络带宽打满</p>
+<p>而对于延迟，对单个请求的处理速度和处理时间是没有要求的，所以不是那么的在乎延迟，反而更在会一次性能处理多少的数据，即吞吐</p>
+<p>比如说有一百个任务，会强调在多少时间内完成所有任务，而不是完成单个任务需要多少时间</p>
+<p>因此针对的是离线系统，而不是在线系统</p>
+<p>更加注重一秒钟能够处理到底多少个数据，而不再会处理单个数据需要多少秒</p>
+<p>并不是说延迟不重要了，而是认为能够把网络的吞吐量给打满，每秒处理更多的数据，这是比单个延迟更加重要的事情</p>
+<br>
+
+<br>
+
+<h2 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h2><p>需要像linux系统一样，是可以分层组织目录的</p>
+<p>对文件的操作，增加数据，删除数据，打开文件，关闭文件，读写文件，顺序读，尾部追加数据（弱化了对文件api的操作）</p>
+<p>还可以获取一些文件的元数据</p>
+<p>快照：拷贝</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Master节点的操作"><a href="#Master节点的操作" class="headerlink" title="Master节点的操作"></a>Master节点的操作</h1><p>整个GFS分为组件，master和chunk等几个组件</p>
+<p>其中chunk节点主要是用来存储数据的，因此很多核心逻辑都是master节点实现的</p>
+<p>比如说master节点需要执行所有的名称空间操作，管理整个系统里所有chunk的副本</p>
+<p>能够决定chunk的存储位置，负责新的chunk和它副本</p>
+<p>协调各种各样的系统活动以保证Chunk被完全复制， 在所有的 Chunk服务器之间的进⾏负载均衡，回收不再使⽤的存储空间</p>
+<h2 id="名称空间管理和锁"><a href="#名称空间管理和锁" class="headerlink" title="名称空间管理和锁"></a>名称空间管理和锁</h2><p>类似linux下的文件目录，一个一个文件夹进行嵌套，类似数状结构；可以组成一个path</p>
+<p>需要支持并发操作，因此需要对路径节点上读锁，对文件节点上写锁</p>
+<p>文件目录被组织成一个多叉树</p>
+<p>可以创建和删除文件夹，移动文件夹</p>
+<p>用同一个map，key存放目录名，value存放子目录</p>
+<br>
+
+<br>
+
+<h2 id="副本的位置"><a href="#副本的位置" class="headerlink" title="副本的位置"></a>副本的位置</h2><p>如何规划不同副本到底应该存放在哪个机房</p>
+<p>在磁盘利用率低、最近创建次数、放置距离三者的权衡</p>
+<br>
+
+<br>
+
+<h2 id="创建，重新复制，重新负载均衡"><a href="#创建，重新复制，重新负载均衡" class="headerlink" title="创建，重新复制，重新负载均衡"></a>创建，重新复制，重新负载均衡</h2><br>
+
+<br>
+
+<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>如果一个副本写入失败了，master会继续让chunk写入副本数据</p>
+<p>但是之前写入失败了的数据，是不会被删除掉的（因为GFS为了写入性能的提高，只进行写入追加的操作，不进行删除操作）</p>
+<p>因此就会存在垃圾文件</p>
+<p>另一方面，磁盘也可能出现损坏的情况，比如说寄存器的零和一发生了跳变，导致数据丢失，造成了副本的失效</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="容错与诊断"><a href="#容错与诊断" class="headerlink" title="容错与诊断"></a>容错与诊断</h1><p>一方面是运行的时候保证可用性</p>
+<p>另一方面是如果运行的时候失效了，运维的时候进行服务诊断</p>
+<p>三个方面解释高可用：（这也是运行时的可用性）</p>
+<br>
+
+<p>方面一：快速恢复（如果集群不可用了，可以在短时间内恢复集群）</p>
+<p>其实就是检查点的快速重启</p>
+<p>一般来说很多chunkserver的状态信息都是维护在master节点上的，如果master节点挂了，就会造成系统上信息的丢失</p>
+<p>而master都是讲数据存储到内存中的</p>
+<p>为了进程崩溃或者内存失效，也会去写一个类似redolog的操作日志，到磁盘上，是以紧追加的形式写上去的</p>
+<p>比如一般信息的更新，租约的更新等等的信息，都会更新到日志上</p>
+<p>同时，不仅要把redolog写到本地磁盘，还要发送给多台其他的机器（影子机器，副本服务器）</p>
+<p>而日志会逐渐变多，导致状态恢复的时候需要大量的时间</p>
+<p>同时，你比如说在一年内做的数据日志就有100GB，难道还需要从头对这100GB的日志进行恢复操作吗，这是很浪费时间精力的</p>
+<p>因此可以参考redis的RDB机制，实现一个写时复制：fork一个新的进程，将此时的数据以一种序列化的机制写入到磁盘中，得到一种快速恢复的快照</p>
+<p>然后就可以把这个检查点之间的数据日志全部给删除了</p>
+<p>这样的话，master节点的恢复，只需要找到最近的checkpoint节点，并执行后面对应的日志，即可快速恢复</p>
+<p>因此又有了checkpoint机制</p>
+<br>
+
+<p>方面二：冗余存储（如果副本丢失了，那么可以通过多余的副本对数据进行恢复）</p>
+<p>chunk节点的复制之前说过了</p>
+<p>而master节点的复制，master之间存在主从关系</p>
+<p>比如说可能存在主master会挂掉，这个时候就需要副master升为主master节点</p>
+<p>所以副master需要同步主master节点的数据</p>
+<br>
+
+<p>方面三：数据完整性（能够侦擦到数据中字节级别上的错误；一般通过checksum进行判断）</p>
+<p>读写数据的时候都会去校验一下当前数据计算得到的校验和，与checksum是否一致</p>
+<p>大概机制：每次写入数据的时候，会将数据按照一定的大小，比如64kb或是128kb的大小，对写入的数据计算一个校验和，并存储起来</p>
+<p>而每次读取数据的时候，就会将读取到的数据先算一个校验和，再与已有的校验和进行比较，看看是否相同，</p>
+<p>如果不相同，就会给客户端报错</p>
+<p>这样做的目的就是，看看在这个存储的过程中，底层的存储介质是否会损坏具体的数据内容，从而保证GFS的可靠性</p>
+<p>另一个方面（诊断工具）：</p>
+<p>能够打印各类rpc的日志</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="结论与反思"><a href="#结论与反思" class="headerlink" title="结论与反思"></a>结论与反思</h1><p>GFS更像是一个技术文档</p>
+<p>如果我们想要在工作中推进我们的工作的话，需要做的一点就是</p>
+<p>一上来不要先看代码，而是要做数据分析，观察已有系统中是否有尚未解决的问题</p>
+<p>通过监控指标，发现已有的问题，从数据指标中发现问题</p>
+<p>把问题的痛点给列出来以后，再基于这些痛点</p>
+<p>给出一些假设（比如说GFS一上来就说组件的失效是一种常态，所以要更加注重容错）</p>
+<p>比如说我要做的事情，就是用于服务哪些场景的，说明具体的场景</p>
+<p>说明系统的定位，以及当前改进的意义</p>
+<p>紧接着是设计系统的接口，需要从用户的角度来分析如何使用这些接口以及使用场景</p>
+<p>再者就是剖析系统中的每个组件，深入解决每个组件中的问题，分析已有的问题</p>
+<p>这些事情都做好以后，就需要做数据分析，将前后的指标进行对比</p>
+<p>最后总结与回顾</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://www.bilibili.com/video/BV1rw411R7rH/" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1rw411R7rH/</a></p>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="深入理解 CPP 之 smart pointer">
+                        
+                        <span class="card-title">深入理解 CPP 之 smart pointer</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            shared_ptr定义遵循共享所有权的概念，即不同的 shared_ptr 对象可以与相同的指针相关联
+如果指向的资源没有任何一方需要的话，就会析构并释放资源
+
+
+实现每个shared_ptr对象在会在栈上设立两个指针，分别指向堆上的两个
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-26
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CPP/" target="_blank">
+                        <span class="chip bg-color">CPP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/10/23/shen-ru-li-jie-cpp-zhi-type-conversion/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="深入理解 CPP 之 type conversion">
+                        
+                        <span class="card-title">深入理解 CPP 之 type conversion</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            backround基类对象转换为派生类对象，是不安全的
+
+派生类是包含于基类的，即基类的“体积”是小于派生类的
+
+如果一个指向基类的指针强转为指向派生类的指针（该指针始终指向基类，只是指针类型变了），再通过该指针调用派生类的特有方法或者数据
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-10-23
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CPP/" target="_blank">
+                        <span class="chip bg-color">CPP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

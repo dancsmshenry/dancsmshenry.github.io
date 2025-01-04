@@ -1,0 +1,1323 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="CMU 15-445 19-Database Logging, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="Motivation从事务的角度来说，事务commit之后，使用者就会认为处理好的数据就被放到硬盘上了（并不管底层是如何实现的）
+但实际上，出于对性能的考量（硬盘和磁盘的访问速度有明显差距）
+实时修改的数据页是不会立刻写入到磁盘上的
+而是优">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMU 15-445 19-Database Logging | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        CMU 15-445 19-Database Logging
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Database/" target="_blank">
+                            <span class="chip bg-color">Database</span>
+                        </a>
+                        
+                        <a href="/tags/CMU-15-445/" target="_blank">
+                            <span class="chip bg-color">CMU 15-445</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-12
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.9k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    17 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>从事务的角度来说，事务commit之后，使用者就会认为处理好的数据就被放到硬盘上了（并不管底层是如何实现的）</p>
+<p>但实际上，出于对性能的考量（硬盘和磁盘的访问速度有明显差距）</p>
+<p>实时修改的数据页是不会立刻写入到磁盘上的</p>
+<p>而是优先放到内存中的（至于什么时候数据才能落盘，会根据不同的置换策略对内存上的数据进行写入）</p>
+<img src="motivation_logging.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>因此，如果修改好的数据只保存在了内存中，而并没有写入到磁盘上</p>
+<p>那么当内存遭到破坏时（比如说断电、希特勒打仗等突发情况）</p>
+<p>就会造成事务数据的丢失</p>
+<p>因此需要DBMS的recovery机制</p>
+<img src="motivation_logging_01.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Crash-recovery"><a href="#Crash-recovery" class="headerlink" title="Crash recovery"></a>Crash recovery</h1><p>故障恢复算法是为了确保<strong>数据库一致性</strong>，<strong>事务的原子性</strong>和面对故障时<strong>数据的持久性</strong>的一种技术</p>
+<br>
+
+<p>故障恢复算法主要分为两部分：</p>
+<p>第一部分：在正常的事务处理阶段添加一些操作，使得DBMS可以在故障发生时对数据进行恢复（防患于未然；<strong>本章的重点</strong>）</p>
+<p>第二部分：在数据库故障发生时执行一些操作，以此维护数据库的原子性、一致性和持久性（利用上一个部分所添加的操作，维护DBMS的ACID特性）</p>
+<br>
+
+<br>
+
+<p>思考：</p>
+<p>DBMS的不同组件是依赖于在不同的存储器</p>
+<p>比如说缓存是放到内存上的（易失性存储，但访问速度快），而数据一般是放在硬盘上的（非易失性存储，但能持久化数据）</p>
+<p>因此，DBMS需要对不同类型的故障进行分类，从而针对不同故障给出应对处理</p>
+<br>
+
+<img src="storage types.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Failure-classification"><a href="#Failure-classification" class="headerlink" title="Failure classification"></a>Failure classification</h1><br>
+
+<h2 id="Transaction-failure"><a href="#Transaction-failure" class="headerlink" title="Transaction failure"></a>Transaction failure</h2><p>事务级别的故障，是正常运行的过程中不可避免的</p>
+<p>是DBMS的开发者必须要考虑的</p>
+<br>
+
+<p><strong>逻辑错误</strong></p>
+<ul>
+<li><p>事务因为某些原因不能完整的执行下去</p>
+</li>
+<li><p>例如：用户发出rollback指令、事务执行的过程中违背了完整性约束、又或是说并发控制协议（比如OCC）发生了冲突，从而造成事务<strong>回滚</strong></p>
+</li>
+</ul>
+<br>
+
+<p><strong>内部状态错误</strong></p>
+<ul>
+<li>DBMS发现内部状态错误（比如事务间的<strong>死锁</strong>），必须终止某个活跃的事务</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="System-failure"><a href="#System-failure" class="headerlink" title="System failure"></a>System failure</h2><p>系统级别的故障，比如当数据还在内存的时候，就发生了硬件故障，导致内存中的数据消失了</p>
+<p>也是DBMS的开发者需要考虑的</p>
+<br>
+
+<p><strong>软件故障</strong></p>
+<ul>
+<li>OS、DBMS本身的故障（例如：DBMS未捕获的除零异常）</li>
+</ul>
+<br>
+
+<p><strong>硬件故障</strong></p>
+<ul>
+<li>存储数据库的电脑崩溃（例如：断电、CPU损坏）</li>
+<li>硬件故障的前提是：非易失性存储（硬盘）上的数据不会因为系统崩溃而损坏</li>
+<li>PS：硬盘故障属于Storage media failure</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="Storage-media-failure"><a href="#Storage-media-failure" class="headerlink" title="Storage media failure"></a>Storage media failure</h2><p>存储媒介的故障，比如说SSD、HHD等存储介质出现了问题</p>
+<p>或是说磁盘的磁头崩溃，破坏了全部或部分非易失性存储</p>
+<p>这种故障属于无法修复的硬件故障，是<strong>不可恢复</strong>的</p>
+<br>
+
+<p>但另一方面，这类故障是可以被检测出来的（例如：磁盘控制器可以使用校验和来检测故障）</p>
+<br>
+
+<p>因此这种故障在设计数据库的时候，不会考虑这类问题（当然可以在数据库运维的时候可以备份多份数据，实现容灾）</p>
+<br>
+
+<br>
+
+<h2 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h2><p>DBMS的主要数据都存储在了非易失性存储器上</p>
+<p>但是非易失性存储器（例如磁盘）的读取效率远慢于易失性存储器</p>
+<br>
+
+<p>因此，为了高效的利用易失性存储，实际的读取数据流程：</p>
+<ul>
+<li>首先将目标数据读取到内存中</li>
+<li>然后在内存中对数据进行修改</li>
+<li>最后将修改过的数据放回磁盘中</li>
+</ul>
+<br>
+
+<p>但另一方面，DBMS还需要对使用者做出如下保证：</p>
+<ul>
+<li>一旦某个事务提交了，那么对这个事务的提交便已经持久化（维护<strong>持久性</strong>）</li>
+<li>如果某个事务终止了，那么前面的部分修改是不能持久化的（维护<strong>原子性</strong>；好像这个事务没有发生一样）</li>
+</ul>
+<br>
+
+<p>其实从上述二者的论述中，发现了设计DBMS的一个<strong>矛盾</strong>：</p>
+<p>一方面，为了性能考虑，需要将数据先放到非易失性存储介质上，后续在写回磁盘</p>
+<p>而另一方面，为了ACID，需要将数据实时落盘</p>
+<br>
+
+<br>
+
+<h2 id="Undo-vs-Redo"><a href="#Undo-vs-Redo" class="headerlink" title="Undo vs Redo"></a>Undo vs Redo</h2><img src="undo vs redo.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h3 id="Undo"><a href="#Undo" class="headerlink" title="Undo"></a>Undo</h3><p>删除不完整的事务，或被终止的事务对数据的影响</p>
+<p>也就是，对那些不完整的事务（或被终止的事务）中已经完成了操作的数据进行回滚</p>
+<p>目的是为了在事务终止的时候，维护<strong>原子性</strong>（要么都执行，要么都不执行）</p>
+<br>
+
+<br>
+
+<h3 id="Redo"><a href="#Redo" class="headerlink" title="Redo"></a>Redo</h3><p>恢复已commited的事务中，已经执行了的操作，以此维护事务的<strong>持久性</strong></p>
+<p>比如操作日志已经落盘了，但是数据实际上还没有得到修改</p>
+<p>那么就要将读取并执行日志中的相关操作</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Buffer-pool-policies"><a href="#Buffer-pool-policies" class="headerlink" title="Buffer pool policies"></a>Buffer pool policies</h1><p><strong>背景：</strong></p>
+<p>假设有两个事务A、B，同时对同一个页中不同的数据进行操作</p>
+<br>
+
+<p>如果事务A要commit，那么此时是否要将数据页刷盘呢？</p>
+<ul>
+<li>如果刷盘的话，如果后续事务B又要使用该数据页，就得重新读数据了，浪费时间</li>
+<li>但如果不刷盘的话，那该数据页就会一直放在内存中，浪费内存</li>
+</ul>
+<br>
+
+<p>同时还会带来另一个问题：如果要将数据页刷盘，是只将事务B的数据刷盘，还是把整个数据页（包含事务A和事务B）刷盘？</p>
+<ul>
+<li>如果只刷事务B的数据，刷盘效率过低</li>
+<li>如果是刷整个数据页，万一事务A发生了回滚，就有需要重新读取数据再修改</li>
+</ul>
+<img src="buffer pool 背景.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Steal-policy"><a href="#Steal-policy" class="headerlink" title="Steal policy"></a>Steal policy</h2><p>DBMS是否允许未提交的事务的数据，覆盖原有的数据（即在修改数据的时候，到底应不应该覆盖原有磁盘上的数据）</p>
+<p><code>steal</code>：允许覆盖（<strong>未提交的事务数据可以覆盖原有的数据</strong>；不管脏页的数据是否提交，全部都刷盘）</p>
+<p><code>no steal</code>：不允许覆盖（<strong>未提交的事务数据不可以覆盖原有的数据</strong>；脏页上提交了的数据，才能刷盘）</p>
+<br>
+
+<br>
+
+<h2 id="Force-policy"><a href="#Force-policy" class="headerlink" title="Force policy"></a>Force policy</h2><p>当用户发出commit的时候，是否应该立刻将数据全部都更新到磁盘上</p>
+<p><code>force</code>：必须（提交的事务数据时，<strong>必须立刻刷盘</strong>）</p>
+<p><code>no force</code>：非必要（提交的事务数据时，<strong>不需要立刻刷盘</strong>）</p>
+<br>
+
+<br>
+
+<h2 id="No-steal-Force"><a href="#No-steal-Force" class="headerlink" title="No-steal + Force"></a>No-steal + Force</h2><img src="no-steal + force.png" style="zoom:150%;">
+
+<br>
+
+<p>优点：</p>
+<p>实现上简单方便</p>
+<p>不需要撤销终止（回滚）事务的数据修改，因为此时对事务的修改都没有落盘（<strong>不需要undo的操作</strong>）</p>
+<p>不需要恢复（重做）对已提交事务的数据修改，因为此时保证已提交的数据都落盘（<strong>不需要redo的操作</strong>）</p>
+<br>
+
+<br>
+
+<p>缺点：</p>
+<p>性能上不好（每个事务的提交都需要频繁的刷盘）</p>
+<p>同时还会在内存中复制出多份快照（为了不将未提交的事务数据刷盘）</p>
+<p>比如说要修改全表的数据，那么就需要将全表的数据都读到内存中（但显然内存大小是有限的）</p>
+<p>因此，这种方法是不能支持写的数据量远大于内存容量的</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Shadow-paging"><a href="#Shadow-paging" class="headerlink" title="Shadow paging"></a>Shadow paging</h1><img src="shadow paging.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>以树形结构组织数据页，其中根是单个磁盘页</p>
+<p>分别维护两个独立的数据库副本：</p>
+<p>master：只包含已提交的事务的数据（DB Root指向该版本的数据）</p>
+<p>shadow：未提交事务的一个临时数据库</p>
+<br>
+
+<img src="shadow page example.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>shadow paging的过程：</p>
+<p>先将要操作的数据页进行拷贝，即在内存上拷贝一份新的数据</p>
+<p>接着后续的写操作都是在这个备份上进行操作</p>
+<p>事务commit之后将数据刷入盘中</p>
+<p>然后调整DB root指针的指向，使其指向当前新更新的page</p>
+<p>最后清理掉原来的page</p>
+<br>
+
+<br>
+
+<h2 id="Undo-Redo"><a href="#Undo-Redo" class="headerlink" title="Undo/Redo"></a>Undo/Redo</h2><p>undo：移除shadow页</p>
+<p>redo：不需要（因为所有数据都落盘了）</p>
+<br>
+
+<br>
+
+<h2 id="Disadvantages"><a href="#Disadvantages" class="headerlink" title="Disadvantages"></a>Disadvantages</h2><p>相比一般的no-steal + force，shadow paging的优点是可以先将一部分数据刷到磁盘上（因为shadow paging是在磁盘上新建的页）</p>
+<br>
+
+<p><strong>数据页的复制</strong>是昂贵的</p>
+<p>比如说我们可能只需要修改一个page中的一条数据，但却要将整个page都复制一份（复制成本高）</p>
+<br>
+
+<p><strong>复制整个页表</strong>是非常昂贵的</p>
+<ul>
+<li><p>可以使用B+树结构对页表进行优化</p>
+</li>
+<li><p>不要复制整棵树，只需要复制树中通往需要修改的叶子节点的路径</p>
+</li>
+</ul>
+<br>
+
+<p><strong>事务的提交开销</strong>是非常的昂贵</p>
+<p>事务提交的时候需要做的事情有：将新数据刷盘，调整DB root中的指向，同时还要删除旧的page（垃圾回收）</p>
+<p>数据存在碎片化</p>
+<ul>
+<li>一开始数据是连续存储的，但是后续不断的新生成page，接着又删除原有的page，导致数据的存储实际上并不连续，即碎片化</li>
+</ul>
+<p>每次只支持一个事务的写入</p>
+<br>
+
+<br>
+
+<h2 id="SQLITE（PRE-2010）"><a href="#SQLITE（PRE-2010）" class="headerlink" title="SQLITE（PRE-2010）"></a>SQLITE（PRE-2010）</h2><p>Sqlite就是使用shadow paging（Sqlite主要用在一些嵌入式的设备上，或是一些安卓、苹果等系统上）</p>
+<br>
+
+<p>Sqlite的shadow paging的具体过程：</p>
+<p>当事务开始的时候，Sqlite会将原来的数据页在本地复制一份（放到<code>Journal File</code>区域中）</p>
+<p>然后对数据具体的修改都是在内存上进行</p>
+<p>接着，如果事务commit的话，就会将内存中的数据刷盘到磁盘上</p>
+<p>最后，在<code>Journal File</code>中将对应的page删除</p>
+<br>
+
+<p>如果刷盘的过程中发生了故障，那么就需要对事务进行回滚</p>
+<p>回滚的方式，就是将Journal File中的文件读到内存中，然后再覆盖回原来的文件</p>
+<img src="SQLITE.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Observation-1"><a href="#Observation-1" class="headerlink" title="Observation"></a>Observation</h2><p>shadowing page依然存在大量对磁盘的随机IO（性能低下）</p>
+<p>因此需要一种方法，能够将DBMS的随机IO修改为顺序IO，也就是WAL</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Write-ahead-log"><a href="#Write-ahead-log" class="headerlink" title="Write-ahead log"></a>Write-ahead log</h1><p>在磁盘中单独维护一个日志文件，与数据文件是分隔开的</p>
+<ul>
+<li><p>日志中记录的是事务对于DBMS中数据的修改操作</p>
+</li>
+<li><p>假定日志都存放在稳定的存储介质中</p>
+</li>
+<li><p>日志中有足够的信息来执行必要的redo和undo操作，以恢复数据库</p>
+</li>
+</ul>
+<br>
+
+<p>DBMS必须将对应的日志文件写入磁盘后，才能将对应的修改了的数据页写入磁盘中</p>
+<br>
+
+<p>策略：<strong>steal  + no force</strong></p>
+<br>
+
+<br>
+
+<h2 id="WAL-protocol"><a href="#WAL-protocol" class="headerlink" title="WAL-protocol"></a>WAL-protocol</h2><p>DBMS先将事务操作的所有日志保存在内存中（一般会在内存中开辟一个空间，用于专门存储日志）</p>
+<p>接着，将与更新页面相关的所有日志都保存到了非易失性存储（磁盘）后，才将数据页更新到磁盘上</p>
+<ul>
+<li>PS：这里对于数据的更新，都是先更新内存中的数据页上，后续才刷盘</li>
+</ul>
+<p>只有将事务对应的所有操作日志都写入了非易失性存储（磁盘）后，事务才会被认为是已提交了</p>
+<ul>
+<li>也就是说，当用户发送commit的时候，实际上是将日志写入到了磁盘中</li>
+<li>而用户的数据页还在内存中</li>
+<li>但只要用户的操作日志刷到了磁盘中，就可以保证事务是已提交了的</li>
+</ul>
+<br>
+
+<br>
+
+<p><strong>Log的过程</strong></p>
+<p>当事务开始时，向日志中写入<code>&lt;begin&gt;</code>记录，以标记为起点</p>
+<p>当事务结束（提交）时：</p>
+<ul>
+<li>在log中写入一条<code>&lt;commit&gt;</code>的记录</li>
+<li>在写入<code>&lt;commit&gt;</code>的时候，必须要确保所有日志记录在向应用程序返回确认之前被落盘</li>
+</ul>
+<br>
+
+<br>
+
+<p><strong>Log的内容</strong></p>
+<p>每个日志条目都包含了关于单个对象变更的信息：</p>
+<ul>
+<li>事务Id</li>
+<li>对象Id（所操作的数据对象）</li>
+<li>前值（修改之前是什么数据；UNDO，用来做undo操作）</li>
+<li>后值（修改之后是什么数据；REDO，用来做redo操作）</li>
+</ul>
+<br>
+
+<p>MySQL中的innodb引擎，就将日志分为的redo log和undo log两部分日志</p>
+<br>
+
+<br>
+
+<h2 id="WAL-example"><a href="#WAL-example" class="headerlink" title="WAL-example"></a>WAL-example</h2><p>事务对数据的操作，首先是写入操作相关的日志，接着在将数据读入到内存中进行修改</p>
+<img src="wal-example_01.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>事务发出commit指令的时候，将buffer中的log写入磁盘中</p>
+<img src="wal-example_02.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>如果事务提交后，修改的数据页仍在内存中，但是因为断电导致内存中的数据消失了</p>
+<p>那么，在后续重启DBMS的时候，可以重新读取log，对事务的数据进行恢复</p>
+<img src="wal-example_03.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="WAL-implementation"><a href="#WAL-implementation" class="headerlink" title="WAL-implementation"></a>WAL-implementation</h2><p>什么时候要将log写入磁盘？</p>
+<p>一般来说是用户发出commit指令的时候就将log写入磁盘</p>
+<p>但是这样频繁的写入磁盘会导致DBMS的运行效率低下（可用户commit的时候是必须要将log刷盘的）</p>
+<br>
+
+<p>因此给出的一个优化方法是：<strong>组提交</strong></p>
+<p>第一个事务commit的时候，不立刻返回，等累积了多个事务commit的时候，一并返回</p>
+<p>借助组提交分摊写入磁盘的开销</p>
+<br>
+
+<p>有个问题：可能会出现相互等待的情况（比如此时只有T1、T2两个事务，但WAL非得等到事务足够多的时候才将日志写入磁盘）</p>
+<ul>
+<li>一般用定时器解决：当等待超过了一定的时间后，就直接将日志写入磁盘，不再继续等待</li>
+</ul>
+<br>
+
+<p>另一个问题：log的page buffer满了该如何处理</p>
+<ul>
+<li>此时可以将一些log的page先写入到磁盘上</li>
+</ul>
+<img src="WAL flush time.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<p>什么时候将修改好了的数据写入磁盘中？</p>
+<p>每次事务数据发生修改的时候，或者当事务提交的时候</p>
+<br>
+
+<br>
+
+<p>在运行时，no-force + steal的性能是最好的（因为steal可以将全部数据刷盘，no-force可以减少刷盘次数）</p>
+<p>在恢复时，no-force + steal的性能是最坏的（因为是no-force，所以很多数据都没有立即刷盘，恢复时需要读取日志刷盘；而steal则可能会写入很多没有提交的数据，那么恢复的时候又要读取出来进行undo操作）</p>
+<img src="buffer pool policy.png" style="zoom:150%;">
+
+<br>
+
+<p>但，需要数据库恢复的情况占少数，因此<strong>大部分DBMS都选择no-force + steal</strong></p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Logging-schemes"><a href="#Logging-schemes" class="headerlink" title="Logging schemes"></a>Logging schemes</h1><p>WAL日志的格式</p>
+<h2 id="Physical-logging"><a href="#Physical-logging" class="headerlink" title="Physical logging"></a>Physical logging</h2><p>物理日志</p>
+<p>记录每个数据页上，在二进制级别上的变化（例如：偏移多少个字节后，数据从什么变为了什么，即数据的变化）</p>
+<p>比如：git diff</p>
+<br>
+
+<p>缺点：如果有个需求是让某一列的数据全部加一，那么物理日志就会变得非常的多，浪费空间（逻辑日志刚好可以解决这个问题）</p>
+<br>
+
+<br>
+
+<h2 id="logical-logging"><a href="#logical-logging" class="headerlink" title="logical logging"></a>logical logging</h2><p>逻辑日志</p>
+<p>记录每个事务执行的SQL语句</p>
+<p>比如：update，delete和insert查询</p>
+<br>
+
+<p>优点：每次写入的日志记录的大小少于物理日志记录（比如某个SQL语句修改了大面积的数据集的时候）</p>
+<br>
+
+<p>缺点：</p>
+<p>如果执行的SQL语句是记录当前的某个时间（now函数），但是redo的时候就会有问题（redo的时候重新执行一遍，那此时到底是记录原有的时间，还是现在的时间，无从下手）</p>
+<br>
+
+<p>再比如说，limit语句，这个语句是不指定到底要输出哪些数据的</p>
+<p>因此在主备数据库的时候，可能主数据库有某个索引，备数据库没有这个索引</p>
+<p>那么同样执行limit语句的时候就会导致结果不一致</p>
+<br>
+
+<p>而另一方面，如果有并发日志，很难用逻辑日志实现恢复</p>
+<ul>
+<li><p>难以确定数据库的哪些部分可能在崩溃前被查询修改过</p>
+</li>
+<li><p>redo的时候需要很长时间来恢复，因为需要执行每一个事务的SQL语句</p>
+</li>
+</ul>
+<br>
+
+<p>总的来说，就是逻辑日志在恢复的时候，即执行SQL语句的时候会有逻辑问题</p>
+<br>
+
+<br>
+
+<h2 id="Physiological-logging"><a href="#Physiological-logging" class="headerlink" title="Physiological logging"></a>Physiological logging</h2><p>物理日志和逻辑日志的结合，记录的是数据页中，某个元组的数据前后变化</p>
+<p>相比物理日志，Physiological记录了元组数据的具体位置，而不是偏移量</p>
+<p>相比逻辑日志，Physiological记录了数据的前后变化，恢复上不再有逻辑问题</p>
+<img src="logging schemes.png" style="zoom:150%;">
+
+<p>因为记录的是数据页上某个元组数据的变化，所以允许DBMS对数据页中数据的位置进行重新组织（将空间重新分配）</p>
+<br>
+
+<p>可这依然没有解决物理日志的问题（给某一列加一，日志如何记录）</p>
+<p>而Physiological logging提供了一种mix的记录方式，即可以混合记录日志（实际使用在binlog中）</p>
+<br>
+
+<p>Physiological logging是<strong>目前最流行的日志记录方法</strong></p>
+<p>PS：MySQL说自己是物理日志，但是实际上说的是Physiological logging日志</p>
+<br>
+
+<p>当然，Physiological的恢复成本是高于Physical的，因为它需要DBMS去找到对应位置的数据，而Physical不需要，它直接告诉了DBMS偏移量是多少</p>
+<br>
+
+<p>为什么MySQL要将redo log和undo log给分开，可以从MVCC的角度理解：</p>
+<p>undo log既可以实现数据事务的回滚，页可以用于实现MVCC中，对数据的上一个版本的回推（查找过往数据）</p>
+<p>MySQL的undo log和数据是放在一起的，而redo log是单独分开的</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Checkpoints"><a href="#Checkpoints" class="headerlink" title="Checkpoints"></a>Checkpoints</h1><p>背景：</p>
+<p>1、WAL如果不做一些其他的操作，日志就会无限增长</p>
+<p>2、日志的不断增长，会导致DBMS一旦崩溃，在恢复的时候就需要读取大量的日志，极其耗费时间</p>
+<br>
+
+<br>
+
+<p>因此，DBMS会定期写下一个检查点（<strong>checkpoint</strong>）</p>
+<p>在这个检查点之前的日志和内存中的数据页，全部都会被写入磁盘</p>
+<p>那么当DBMS崩溃后，数据的恢复从checkpoint的位置开始恢复即可</p>
+<br>
+
+<br>
+
+<h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><p>当写入检查点时，我们必须暂停所有事务以确保快照的一致性（所有的操作都会停止；而暂停会导致吞吐下降）</p>
+<br>
+
+<p>在崩溃恢复的时候，对于未提交的事务，要执行undo操作</p>
+<p>需要扫描过往日志，可能需要花费很长的时间</p>
+<br>
+
+<p>DBMS执行检查点的频率应该控制在什么范围内？（或者说数据库多长时间存档一次）</p>
+<ul>
+<li>太频繁会损耗性能</li>
+<li>太稀少又会导致恢复用的时间变长，同时日志太多也会浪费空间</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="Frequency"><a href="#Frequency" class="headerlink" title="Frequency"></a>Frequency</h2><p>检查点会太频繁会导致运行时性能下降（系统花费太多时间刷新缓冲区，给用户的体验就是非常的卡顿）</p>
+<p>而checkpoint时间频率低也不行（会使得恢复时间变长，同时日志浪费空间）</p>
+<br>
+
+<p>发现存档并没有一个非常确定的方案，只有和具体的工程实践相结合才有最优解</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>WAL几乎是处理易失性存储丢失的最佳办法（并且WAL是连续写，性能上优于随机写）</p>
+<p>使用带有checkpoint的增量更新（steal + no force）</p>
+<p>在恢复时：使用undo logo对未提交事务进行回滚，使用redo log对提交事务进行恢复</p>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/12/15/cmu-15-445-20-database-recovery/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="CMU 15-445 20-Database Recovery">
+                        
+                        <span class="card-title">CMU 15-445 20-Database Recovery</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Crash Recovery故障恢复算法是为了确保数据库一致性，事务的原子性和面对故障时数据的持久性的一种技术
+
+
+故障恢复算法主要分为两部分：
+第一部分：在正常的事务处理阶段添加一些操作，使得DBMS可以在故障发生时对数据进行恢复（防患于
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-15
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/01/cmu-15-445-18-multi-version-concurrency-control/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="CMU 15-445 18-Multi-Version Concurrency Control">
+                        
+                        <span class="card-title">CMU 15-445 18-Multi-Version Concurrency Control</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Multi-version concurrency control多版本并发控制协议（常常和2PL或TOO一起实现并发控制）
+对于DBMS中的每一个数据，都会去记录数据的所有版本（包括历史版本和当前版本）
+DBMS会维护当前所有数据对象的，
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-01
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

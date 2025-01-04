@@ -1,0 +1,1094 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="CMU 15-445 23-Distributed OLAP Databases, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="Decision support systems决策支持型数据库
+分析当前的数据，以便对未来公司的发展做预计，帮助公司做商业决策
+在这种AP型的数据库中，数据（表）的结构分为以下两种：star schema和snowflake schema">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CMU 15-445 23-Distributed OLAP Databases | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        CMU 15-445 23-Distributed OLAP Databases
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Database/" target="_blank">
+                            <span class="chip bg-color">Database</span>
+                        </a>
+                        
+                        <a href="/tags/CMU-15-445/" target="_blank">
+                            <span class="chip bg-color">CMU 15-445</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-12-19
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Decision-support-systems"><a href="#Decision-support-systems" class="headerlink" title="Decision support systems"></a>Decision support systems</h1><p>决策支持型数据库</p>
+<p>分析当前的数据，以便对未来公司的发展做预计，帮助公司做商业决策</p>
+<p>在这种AP型的数据库中，数据（表）的结构分为以下两种：<code>star schema</code>和<code>snowflake schema</code></p>
+<br>
+
+<h2 id="Star-schema"><a href="#Star-schema" class="headerlink" title="Star schema"></a>Star schema</h2><p>星型结构，一张主表被若干张维度表包围</p>
+<p>数据的每一个维度都可以抽象出一张表，然后和主表的外键相连（不同维度之间没有关联）</p>
+<img src="star schema.png" style="zoom:150%;">
+
+<br>
+
+<p>优点：查询时更加迅速（相比Snowflake schema，因为不会造成过多表的join）</p>
+<br>
+
+<p>缺点：造成<strong>数据的冗杂</strong></p>
+<p>可能每个同种类型的产品，都有相同的字段，如果对于每个产品都需要写入这个相同的字段，就会造成数据的冗余</p>
+<ul>
+<li>解决方案：用一个新的数据表记录每个类型的产品，然后用一个外键与其相连，以此减少数据的冗余</li>
+</ul>
+<br>
+
+<p>造成<strong>数据类型不一致</strong></p>
+<p>比如说针对产品属于哪一种类型，有些人可能会写入低端，而有些人可能会写入low，导致数据类型的不统一</p>
+<ul>
+<li>解决方案：和上面一样，用一个新的数据表记录，再用外键连接</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="Snowflake-schema"><a href="#Snowflake-schema" class="headerlink" title="Snowflake schema"></a>Snowflake schema</h2><p>雪花模型是在基于星型模型之上拓展来的，每一个维度可以再扩散出更多的维度，根据维度的层级拆分成颗粒度不同的多张表</p>
+<img src="snowflake schema.png" style="zoom:150%;">
+
+<br>
+
+<p>优点：减少维度表的数据量；占用更少的存储空间（不需要存储冗余的数据）</p>
+<br>
+
+<p>缺点：需要额外维护更多的维度表（导致join的查询上需要多表连接，查询效率低下）</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Execution-Models"><a href="#Execution-Models" class="headerlink" title="Execution Models"></a>Execution Models</h1><br>
+
+<h2 id="Push-query-to-data"><a href="#Push-query-to-data" class="headerlink" title="Push query to data"></a>Push query to data</h2><p>将查询发送给带有数据的节点（<code>shared nothing架构</code>）</p>
+<p>数据节点尽量在本地对数据进行一些过滤的操作，最后再将结果合并统一</p>
+<p>数据在哪儿，就将查询发送到对应的节点上</p>
+<br>
+
+<p>比如说这里的查询，会将查询的操作传给每一个有对应数据的节点上</p>
+<img src="push query to data.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Pull-data-to-query"><a href="#Pull-data-to-query" class="headerlink" title="Pull data to query"></a>Pull data to query</h2><p>将数据传输到需要执行查询的节点上（<code>shared disked架构</code>）</p>
+<p>节点需要什么数据，就拉取什么数据进行查询</p>
+<br>
+
+<p>每一个节点需要查询的范围不同，因此节点向Storage拉去的数据也都各不相同</p>
+<img src="pull data to query_01.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Observation"><a href="#Observation" class="headerlink" title="Observation"></a>Observation</h2><p>从其他节点获取的数据和DBMS查询的中间临时结果都存储在缓冲池中</p>
+<p>但是如果发生了崩溃，中间临时结果则会丢失</p>
+<p>那么DBMS该如何处理这种情况呢？</p>
+<br>
+
+<br>
+
+<h2 id="Query-fault-tolerance"><a href="#Query-fault-tolerance" class="headerlink" title="Query fault tolerance"></a>Query fault tolerance</h2><p>在大部分的<code>share nothing</code>架构的分布式OLAP中，都是假定执行期间事务是不会失败的</p>
+<ul>
+<li>因为一旦有一个节点失败了，那么整个查询都会失败，此时只需要重新查询即可</li>
+</ul>
+<br>
+
+<p>因此，可以让DBMS在查询执行的过程中保留中间结果的快照，以便在节点崩溃的时候进行恢复</p>
+<br>
+
+<p>例如下面的查询，会将临时查询得到的数据存储在Storage中</p>
+<img src="query fault tolerance_01.png" style="zoom:150%;">
+
+<br>
+
+<p>那么即使后面该节点崩溃了，其他节点也可以去Storage上读取中间结果，而不用从头再开始查一次</p>
+<img src="query fault tolerance_02.png" style="zoom:150%;">
+
+<br>
+
+<p>一般来说用这种方式的数据库比较少</p>
+<p>这种机制有点像Flink中的checkpoint</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Query-Planning"><a href="#Query-Planning" class="headerlink" title="Query Planning"></a>Query Planning</h1><p>在分布式OLTP的场景下，查询语句并不复杂，中间数据并不多，涉及到的数据量也不多，不需要太多的如何进行查询计划</p>
+<p>但是在分布式OLAP的场景下，长时间海量的查询，多表查询，再加上数据的不同分布，需要考虑如何进行数据的查询</p>
+<br>
+
+<p>此前在单节点的DBMS中的一些查询优化，依然适用于分布式环境：</p>
+<ul>
+<li>谓词下推</li>
+<li>数据的早物化或晚物化</li>
+<li>join顺序的排序</li>
+</ul>
+<br>
+
+<p>而分布式情况下，更加困难的是：</p>
+<ul>
+<li>数据都存放在不同的节点上</li>
+<li>同时还要考虑网络传输的成本</li>
+</ul>
+<br>
+
+<h2 id="Physical-operators"><a href="#Physical-operators" class="headerlink" title="Physical operators"></a>Physical operators</h2><p>将SQL的语句转化为物理查询计划，即若干个查询算子</p>
+<p>然后将查询算子拆分为几个小节，让不同的节点去执行</p>
+<p>是最多DBMS使用的方法</p>
+<br>
+
+<br>
+
+<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><p>将SQL语句，从字符串的角度切分为不同的节点</p>
+<p>然后让不同的节点去执行（不同的节点对SQL语句进行解析和优化）</p>
+<p>基本上没有DBMS使用这种方法</p>
+<img src="SQL.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Observation-1"><a href="#Observation-1" class="headerlink" title="Observation"></a>Observation</h2><p>其实，分布式的join查询效率高度依赖于数据表的分区情况</p>
+<p>因此，分布式OLAP的查询计划，需要根据数据的不同分区，进行不同的处理</p>
+<br>
+
+<p>最简单的方法就是将整张表的数据都放到同一个节点，然后执行join操作</p>
+<p>但，一方面这会导致分布式DBMS失去并行性</p>
+<p>而另一方面，大量数据在网络中传输，开销巨大的同时，传输效率也会降低</p>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Distributed-Join-Algorithms"><a href="#Distributed-Join-Algorithms" class="headerlink" title="Distributed Join Algorithms"></a>Distributed Join Algorithms</h1><p>分布式OLAT的join算法</p>
+<p>比如说要连接表R和表S的数据，那么DBMS需要做的</p>
+<p>是基于当前节点已有的数据，将当前节点中可以进行join的部分进行join（而不再是像此前，将所有的数据都集中进行join）</p>
+<br>
+
+<p>当相应的数据元组到达了同一个节点上，就可以使用此前单机DBMS中的join算法了</p>
+<br>
+
+<p>下面列举两个表（表R和表S）进行join的情况：</p>
+<p>需要执行的SQL：<code>SELECT *FROM R JOIN S ON R.id = S.id</code></p>
+<br>
+
+<br>
+
+<h2 id="Scenario-01"><a href="#Scenario-01" class="headerlink" title="Scenario 01"></a>Scenario 01</h2><p>表R的数据是根据id（目标列；查询列）进行分区的，而表S的数据是每个节点都有表S中所有的数据（即每个节点都有表S的副本）</p>
+<img src="scenario 01_01.png" style="zoom:150%;">
+
+<br>
+
+<p>这种情况下的join是比较简单的，因为只需要在每个节点中</p>
+<p>将每个节点所持有的R表的数据和S表的数据进行join，得到结果</p>
+<p>然后再将每个节点的结果汇总在一起，便是查询的最终结果</p>
+<img src="scenario 01_02.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Scenario-02"><a href="#Scenario-02" class="headerlink" title="Scenario 02"></a>Scenario 02</h2><p>表R和表S的数据都是按照id（目标列；查询列）进行分区的，并且分区的数据范围都是相同的</p>
+<img src="scenario 02_01.png" style="zoom:150%;">
+
+<br>
+
+<p>只需要在每个节点上完成join的操作，最后汇总在一起就是最终结果</p>
+<img src="scenario 02_02.png" style="zoom:150%;">
+
+<p>PS：如果每个分区的数据范围是不一致的话，对于每个节点的join</p>
+<p>就需要强制将对应范围内的数据预先复制一份到本地，然后再进行操作</p>
+<br>
+
+<br>
+
+<h2 id="Scenario-03"><a href="#Scenario-03" class="headerlink" title="Scenario 03"></a>Scenario 03</h2><p>表R的数据是按照id（目标列；查询列）进行分区的，而表S的数据则是按照Val（非查询列）进行分区的</p>
+<img src="scenario 03_01.png" style="zoom:150%;">
+
+<br>
+
+<p>此时对于每个节点的join操作，都需要从其他节点的位置，获取整个表S的副本</p>
+<p>然后再进行操作，最后将结果汇总</p>
+<img src="scenario 03_02.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Scenario-04"><a href="#Scenario-04" class="headerlink" title="Scenario 04"></a>Scenario 04</h2><p>表S和表R都不按照id（目标列；查询列）进行分区</p>
+<img src="scenario 04_01.png" style="zoom:150%;">
+
+<br>
+
+<p>这种情况是最麻烦的，需要转化为Scenario 01的情况</p>
+<p>对于每个节点，都需要先指定当前节点需要处理的数据</p>
+<p>比如节点1需要处理id在1-100范围内的数据，节点2需要处理id在101-200范围内的数据</p>
+<p>然后将划分好范围内的数据，迁移到指定的节点上</p>
+<p>然后变化为Scenario 01的情况</p>
+<img src="scenario 04_02.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Semi-join"><a href="#Semi-join" class="headerlink" title="Semi-join"></a>Semi-join</h2><p>半连接（查询的结果只需要左表上的数据列）</p>
+<p>很朴素的思路：检测左半边的数据是否可以和右半边的数据进行连接；如果可以，就保留左半边的数据</p>
+<p>例子：<code>SELECT R.id FROM R JOIN S ON R.id = S.id WHERE R.id IS NOT NULL</code></p>
+<br>
+
+<p>有些DBMS是支持<code>SEMI JOIN</code>的语法的，如果不支持的话可以换为<code>EXISTS</code></p>
+<p>上述语句可以替换为下述查询：</p>
+<img src="semi-join_02.png" style="zoom:150%;">
+
+<br>
+
+<p>针对上述这种朴素的思想，可以进一步的优化：</p>
+<p>只传输需要查询的那一部分数据（比如这里只传输R表的id列），而不用将整个表都传输</p>
+<img src="semi-join_03.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Cloud-Systems"><a href="#Cloud-Systems" class="headerlink" title="Cloud Systems"></a>Cloud Systems</h1><p>越来越多的数据库厂商提供数据库产品服务，即<code>DBaaS</code></p>
+<p>可以理解为，将数据库和数据库运行的具体环境（CPU、存储、硬盘等）打包</p>
+<p>然后给用户提供使用该产品的接口（比如说可能是一个ip地址）</p>
+<p>客户可以直接在这个ip地址上对DBMS进行操作</p>
+<br>
+
+<p>而另一方面，<code>shared-nothing</code>和<code>shared-disk</code>，这二者的界限也因为数据库的云化而变得逐渐模糊</p>
+<p>比如说我们买一个虚拟服务器，但这个服务器上的硬盘可能也是厂商虚拟出来的（不存在CPU、内存和硬盘在同一个物理机上的情况）</p>
+<p>而厂商的实现手段可能是<code>shared-disk</code>架构，即存算分离（虚拟出多个硬盘、CPU等资源）</p>
+<p>使得用户好像是在使用<code>shared-nothing</code>架构一样</p>
+<p>PS：现在很多厂商都在将原有的<code>shared-nothing</code>架构转向<code>shared-disk</code>架构</p>
+<br>
+
+<p>云厂商的数据库可以提供更加丰富的服务，比如说Amazon S3</p>
+<p>可以在存储层对数据进行过滤，即在云的场景下，存储层可以实现更加丰富的功能</p>
+<br>
+
+<br>
+
+<h2 id="Managed-DBMS"><a href="#Managed-DBMS" class="headerlink" title="Managed DBMS"></a>Managed DBMS</h2><p>DBMS的设计理念上保持不变，而是让传统的DBMS在云环境上运行</p>
+<p>并将DBMS和其运行的云端环境打包，以此作为软件产品，对外提供服务（比如腾讯云、阿里云等）</p>
+<p>可以理解为是将传统的DBMS是运行在云厂商的虚拟环境上</p>
+<br>
+
+<p>这种类型价格便宜，适合刚刚转向云端的厂商</p>
+<br>
+
+<br>
+
+<h2 id="Cloud-Native-DBMS"><a href="#Cloud-Native-DBMS" class="headerlink" title="Cloud-Native DBMS"></a>Cloud-Native DBMS</h2><p>这种类型的DBMS从设计之初就是为了能够运行在云环境中的</p>
+<p>首选<code>shared-disk</code>架构（主要是存算分离、方便扩容）</p>
+<p>比如SnowFlake，Google BigQuery，Amazon Redshift，Microsoft SQL Azure</p>
+<br>
+
+<br>
+
+<h2 id="Serverless-Databases"><a href="#Serverless-Databases" class="headerlink" title="Serverless Databases"></a>Serverless Databases</h2><p>在此之前，云厂商的客户都是一致使用着服务器等资源，无论此时服务器上是否有工作需要运行</p>
+<p>而serverless DBMS，会根据服务器上的工作负载，动态的调度资源</p>
+<br>
+
+<p>无服务器，可以理解为客户使用的存储资源和计算资源都不是客户单独一人占有的</p>
+<p>是从一个较大的存储缓冲池或是计算缓冲池中抽离出来的</p>
+<p>当客户不再需要的时候又会归还回去</p>
+<br>
+
+<br>
+
+<h2 id="Disaggregated-componsents"><a href="#Disaggregated-componsents" class="headerlink" title="Disaggregated componsents"></a>Disaggregated componsents</h2><p>可以像组装玩具一样，利用不同的插件，根据需求，满足不同数据库的需求</p>
+<img src="disaggregated components.png" style="zoom:150%;">
+
+<br>
+
+<br>
+
+<h2 id="Universal-formats"><a href="#Universal-formats" class="headerlink" title="Universal formats"></a>Universal formats</h2><p>很多数据库之间的互通，一个比较难处理的事情就是数据页格式的不同</p>
+<p>而不同系统之间，数据的传输，很多都是依赖于CSV，JSON，XML等文件格式</p>
+<p>当然，也有一些致力于解决这些问题的开源项目</p>
+<img src="universal formats.png" style="zoom:150%;">
+
+
+
+
+
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/12/26/cmu-15-445-09-sorting-aggregations/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="CMU 15-445 09-Sorting,Aggregations">
+                        
+                        <span class="card-title">CMU 15-445 09-Sorting,Aggregations</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Course status接下来的几节课里面，主要讲述以下内容：
+
+Operator Algorithms（具体的算子，比如join，sort是如何执行的）
+Query Processing Models（用什么方案执行查询，比如火山模型）
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-26
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/12/19/cmu-15-445-22-distributed-oltp-databases/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="CMU 15-445 22-Distributed OLTP Databases">
+                        
+                        <span class="card-title">CMU 15-445 22-Distributed OLTP Databases</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            OLTP vs OLAPOn-line transaction processing（OLTP）事务的流程较短、语句较少、涉及数据的读写操作（可能写数据的情况会多一些）
+一般来说，每个事务对整体数据的影响都很小
+存在大量重复性的小事务
+
+
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2022-12-19
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Database/" target="_blank">
+                        <span class="chip bg-color">Database</span>
+                    </a>
+                    
+                    <a href="/tags/CMU-15-445/" target="_blank">
+                        <span class="chip bg-color">CMU 15-445</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1048 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="开发工具使用之 Git, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="Git 常用指令add# 将某个文件的修改提交到暂存区
+git add filename
+
+# 将所有发生过修改的，以及新增的文件都添加到暂存区中
+git add .
+
+
+
+
+branch# 创建分支
+git branch branch_n">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>开发工具使用之 Git | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        开发工具使用之 Git
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/Tool/" target="_blank">
+                            <span class="chip bg-color">Tool</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2024-05-04
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.5k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    9 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Git-常用指令"><a href="#Git-常用指令" class="headerlink" title="Git 常用指令"></a>Git 常用指令</h1><h2 id="add"><a href="#add" class="headerlink" title="add"></a>add</h2><pre class="line-numbers language-shell"><code class="language-shell"># 将某个文件的修改提交到暂存区
+git add filename
+
+# 将所有发生过修改的，以及新增的文件都添加到暂存区中
+git add .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="branch"><a href="#branch" class="headerlink" title="branch"></a>branch</h2><pre class="line-numbers language-shell"><code class="language-shell"># 创建分支
+git branch branch_name
+
+# 删除分支
+git branch -d branch_name
+git branch -D branch_name # 强制删除该分支
+
+# 查看分支
+git branch # 查看本地所有分支（其中带有星号的是当前分支）
+git branch -a # 查看本地和远程的所有分支
+
+# 重命名分支
+git branch -m old_name new_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="checkout"><a href="#checkout" class="headerlink" title="checkout"></a>checkout</h2><pre class="line-numbers language-shell"><code class="language-shell"># 切换到指定分支
+git checkout branch_name
+
+# 创建分支并切换到该分支上
+git checkout -b branch_name
+
+# 以某次 commitid 的代码创建新的分支，并切换到该分支上
+git checkout -b branch_name commit_id
+
+# 将工作区的代码恢复至暂存区的状态
+git checkout .
+
+# 以某个 commitid 的代码创建一条临时的分支，并切换到这条临时分支上
+# 此时的 HEAD 处于游离状态，并不指向任何分支，如果切到其他的分支上，该临时分支就会消失
+git checkout commit_id
+
+# 将某个文件的内容，恢复至暂存区的状态
+git checkout file_name
+
+# 将某个文件夹的内容，恢复至暂存区的状态
+git checkout file_folder<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<p>假设当前是在分支的最新的一次提交上</p>
+<p><code>git checkout commit_id</code> 可以获取某次 commitid 时的代码，并替换至工作区</p>
+<p>如果希望回到最新的一次提交上，就 <code>git checkout master</code></p>
+<br>
+
+<p>记录一次关于 git checkout 的问题</p>
+<p>因为我最开始没有在本地创建分支（之前的开发都是在本地修改提交，所以不需要创建分支；此时的 HEAD 就是游离状态 detached）</p>
+<p>而当我使用了 <code>git checkout commit_id</code> 后，此时 HEAD 依然是游离的（HEAD detached at 09cb312）</p>
+<p>如果想要回到最开始的状态（即刚拉下代码的那个版本），使用 <code>git checkout master</code> 必然是回不去的</p>
+<p>所以此时需要先<code>git checkout origin/master</code> 同步到远程的 master 分支上</p>
+<p>（这里可以用 <code>git branch -a</code> 查看远程主机的名字，接着再 checkout）</p>
+<p>注：不能删除当前所在的分支；<code>git checkout origin/master</code> 会使得 HEAD 变为游离状态</p>
+<br>
+
+<br>
+
+<h2 id="cherry-pick"><a href="#cherry-pick" class="headerlink" title="cherry-pick"></a>cherry-pick</h2><pre class="line-numbers language-shell"><code class="language-shell"># 将某次提交的 commit 摘取到当前的分支上（可能会出现冲突）
+git cherry-pick commitId<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h2><pre class="line-numbers language-shell"><code class="language-shell"># 提交 commit，并添加 commit 信息
+git commit -m "message"
+
+# 等价于 git add -a 和 git commit -m "message"
+git commit -am "message"
+
+# 会在提交的后面加上签名
+git commit -s -m "message"
+
+# 在不增加一次新 commit 的情况下将新修改的代码追加到上一次的 commit 中（会弹出一个编辑器界面重新编辑 message 信息）
+# 一般用于代码 review 后出现问题，修改后再提交
+git commit --amend
+
+# 在不增加一个新 commit 的情况下将新修改的代码追加到前一次的 commit 中（不需要再修改 message 信息）
+git commit --amend --no-edit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>-s</code> 后，在 commit message 里面会多一行 <code>Signed-off-by: xxx</code> 的内容</p>
+<br>
+
+<br>
+
+<h2 id="log"><a href="#log" class="headerlink" title="log"></a>log</h2><pre class="line-numbers language-shell"><code class="language-shell"># 显示当前仓库的提交 commit 记录（从远到近）
+git log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><pre class="line-numbers language-shell"><code class="language-shell"># 合并分支（将指定分支合并到当前分支中），但是会多出一次合并的记录
+git merge branch_name
+
+# 退出 merge 过程
+git merge --abort
+
+# 继续 merge 过程
+git merge --continue<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>个人感觉 merge 有些不好用，因为它会导致提交链上会存在多条的分支，并且会将其他提交链的多次 commit 合并为一条 merge branch “backup00” into backup01 的 commit，导致提交链不清晰（虽然 rebase 会导致时间上错乱，但是至少提交顺序上是清晰的）</p>
+<br>
+
+<br>
+
+<h2 id="pull"><a href="#pull" class="headerlink" title="pull"></a>pull</h2><pre class="line-numbers language-shell"><code class="language-shell"># 拉取远程仓库指定分支上最新的代码
+# 等价于 fetch + merge
+git pull remote_name branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="push"><a href="#push" class="headerlink" title="push"></a>push</h2><pre class="line-numbers language-shell"><code class="language-shell"># 推送代码到远程仓库的指定分支上
+# 向远程仓库推送指定分支
+git push remote_name branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><pre class="line-numbers language-shell"><code class="language-shell"># 对过去的 n 次提交进行相应的操作，其中 reword 表示只修改 commit message；edit 表示修改内容
+git rebase -i HEAD~n
+
+# 变基某个分支，将当前分支基于相同父节点的提交，移植到某条分支上
+git rebase branch_name
+
+# 退出 rebase 过程，常在处理冲突出错时使用
+git rebase --abort
+
+# 继续 rebase 过程，常在处理完冲突时使用
+git rebase --continue<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<p>rebase 合并此前的 n 次提交：</p>
+<p>例如说要将前 4 次提交全部都合并在一起</p>
+<p><code>git rebase -i commit_id</code> 这里的 commit_id 应该是前五次的 commit_id（这里也可以 <code>git rebase -i HEAD~4</code>）</p>
+<p>进入界面后，将前四次的 commit 前的字母单词全部改为 squash ，然后保存，ctrl + x 退出</p>
+<p>接着再进入界面修改 commit message，保存，ctrl + x 退出</p>
+<p>最后 git push origin master</p>
+<br>
+
+<p>squash 会将当前提交和上一次提交合在一起，然后会把 commit message 合在一起（当然也可以直接在页面上把这个 message 给删掉）</p>
+<p>fixup 和 squash 一样，但是不会保留 commit message</p>
+<p>drop 直接删除某次提交（如果有依赖，就需要解决冲突）</p>
+<br>
+
+<p>假设当前在 feature 分支上，git rebase master 本质上其实是将当前的 feature 和 master 上的内容，共用同一个基点。</p>
+<p>什么意思呢？</p>
+<p>就是说，如果 master 没有动，没有修改，然后 feature 在 master 的基础上修改了很多的内容</p>
+<p>然后再进行上面的操作的话，在 git 的眼里，master 和 feature 是共用同一个基点的，而 master 上面后续又没有提交，所以 git 是不会把提交摘到 master 上面的（这种情况下就需要用 cherry-pick）</p>
+<br>
+
+<p>而，如果 master 上面还有提交，那么这个时候，rebase 才会将提交给移过去</p>
+<br>
+
+<p>注：在 git rebase master 之后，master 分支的指针还是会指向原来的位置，而 feature 分支的指针会指向最新合并后得到的 commit 上</p>
+<p>例如说，在上述 git rebase 起了冲突之后，首先会将 feature 分支上的提交显示出来，然后通过 git add + git rebase –continue 的操作，进行合并（cherry-pick 也是一样，如果摘过去后出现了冲突，那么就会解决冲突，然后 <code>git cherry-pick continue</code>）</p>
+<p>存疑：这个指令 <code>git cherry-pick continue</code> 是不是在某个 git 的版本之后才有的？</p>
+<br>
+
+<br>
+
+<h2 id="reset"><a href="#reset" class="headerlink" title="reset"></a>reset</h2><pre class="line-numbers language-shell"><code class="language-shell"># 常用的三个参数： --hard，--soft，--mixed，不加参数的时候默认是 --soft
+
+# 将当前仓库的版本，回退到过去某次 commit 的时候
+# 此处的 HEAD^ （回退多少个版本，就加几个^）可以换成 commitid（可以只写 id 的前几位）
+git reset --hard HEAD^ # 回退到某个版本，并将当时 commit 提交的内容以及当前工作区和暂存区的内容全部删掉
+git reset --soft HEAD^ # 回退到某个版本，并将当时 commit 提交的内容保存至暂存区，且不会破坏当前工作区和暂存区
+                       # （一般用于撤销本地仓库中未提交（到远程仓库）的 commit）
+
+# 将某个文件在暂存区的修改撤销至工作区
+git reset filename
+
+# 撤销所有暂存区的修改撤销至工作区
+git reset<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="reflog"><a href="#reflog" class="headerlink" title="reflog"></a>reflog</h2><pre class="line-numbers language-shell"><code class="language-shell"># 查看过去执行的 git 指令
+git reflog<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="status"><a href="#status" class="headerlink" title="status"></a>status</h2><pre class="line-numbers language-shell"><code class="language-shell"># 显示文件和文件夹在工作区和暂存区的状态
+git status<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="stash"><a href="#stash" class="headerlink" title="stash"></a>stash</h2><pre class="line-numbers language-shell"><code class="language-shell"># 将当前的工作进度保存到栈里面，并将工作区和暂存区恢复到本次修改之前
+# stash 命令默认不包含未跟踪的文件（新建的文件需要被 add 之后，才能被跟踪）
+git stash
+git stash -u # 可以保存未被 git 跟踪的文件，例如新创建的文件
+
+# 删除所有保存的工作进度
+git stash clear
+
+# 显示保存的工作进度列表，编号越小代表保存进度的时间越近
+git stash list
+
+# 恢复已保存的工作进度，顺序是先进后出
+git stash pop # 不带选项，则默认恢复到最近的一次工作进度中
+git stash pop stash@{0} # 带选项，则表示恢复到指定进度上
+
+# 删除已保存的工作进度
+git stash drop # 不带选项，则删除最近保存的工作进度中
+git stash drop stash@{0} # 带选项，则表示删除指定的工作进度<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<h2 id="show"><a href="#show" class="headerlink" title="show"></a>show</h2><pre class="line-numbers language-shell"><code class="language-shell"># 依次显示每次 commit 的具体提交信息和数据变更信息
+git show
+
+# 显示某次具体的 commitid 对应的提交信息和数据变更信息
+git show commit_id
+
+# 显示某条分支对应的提交信息和数据变更信息
+git show branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Git-commit-message-规范"><a href="#Git-commit-message-规范" class="headerlink" title="Git commit message 规范"></a>Git commit message 规范</h1><p>参考：<a href="https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/" target="_blank" rel="noopener">https://www.conventionalcommits.org/zh-hans/v1.0.0-beta.4/</a></p>
+<p><code>&lt;type&gt;[(&lt;scope&gt;)]: &lt;subject&gt;</code></p>
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>用于声明本次代码提交的类型（建议英文，<strong>必填项</strong>）</p>
+<p>build：编译工具的变动，更倾向于 cmakeLists 或是 maven 的配置文件等</p>
+<p>chroe：工具的变动，倾向于 .jenkins 文件等的修改</p>
+<p>doc：文档变动</p>
+<p>feat：新功能特性</p>
+<p>fix：bug 修复</p>
+<p>merge：代码分支合并</p>
+<p>perf：功能优化，包括性能优化、体验优化等</p>
+<p>refactor：代码重构（大范围的代码结构重构，不涉及代码功能）</p>
+<p>revert：代码版本回滚</p>
+<p>style：格式调整（小范围的代码格式调整，不涉及代码功能）</p>
+<p>test：测试代码变动，例如添加测试用例</p>
+<br>
+
+<br>
+
+<h2 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h2><p>用于声明本次代码提交的影响范围（建议英文，<strong>选填项</strong>）</p>
+<p>如 Model 层、Dao 层、Service 层、Controller 层、View 层等等</p>
+<p>如果涉及多个 scope，可以置空或用 * 代替</p>
+<br>
+
+<p>在目前的项目中暂时是没有用到的，当然也可能是因为我们将多个组件拆分为了不同的仓库，用 repo 对这些仓库进行管理</p>
+<br>
+
+<br>
+
+<h2 id="subject"><a href="#subject" class="headerlink" title="subject"></a>subject</h2><p>用于声明本次代码提交的描述信息（建议英文，<strong>必填项</strong>）。通常控制在 50 个字符内，且省略句末标点符号</p>
+<br>
+
+<p>着重需要注意的是 fix 的 message，需要表明当前修复了什么问题，亦或是说当前做了什么解决了什么问题</p>
+<p>然后在后面的描述中描述问题出现的场景以及修复的具体操作。</p>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2024/05/04/kai-fa-gong-ju-shi-yong-zhi-catch2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        
+                        <span class="card-title">开发工具使用之 Catch2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            介绍目前使用的测试框架，好处就是只有头文件，方便无论是新人还是老人进行开发（gtest 需要编译成 静态库，使用上有点难度）
+CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否为真，常用于校验函数的
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2024-05-04
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Tool/" target="_blank">
+                        <span class="chip bg-color">Tool</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/03/17/yi-xie-cpp-de-bian-ma-gui-fan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="一些 cpp 的编码规范">
+                        
+                        <span class="card-title">一些 cpp 的编码规范</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            什么时候使用前置声明为了防止循环引用的情况发生
+避免头文件的使用者引入过多的无用的头文件（希望屏蔽底层的实现细节）
+
+
+
+
+
+
+是否需要有 assertassert 只在 debug 的模式下才会生效，而 debug 模式并不会是生产模式下
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2024-03-17
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CPP/" target="_blank">
+                        <span class="chip bg-color">CPP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2023 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">118k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+    $(document).ready(function () {
+
+        var int = setInterval(fixCount, 50);
+        var pvcountOffset = 80000;
+        var uvcountOffset = 20000;
+
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+                clearInterval(int);
+            }
+        }
+    });
+</script>
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>
