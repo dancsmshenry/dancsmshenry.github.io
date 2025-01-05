@@ -419,7 +419,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dog)
 
 <h1 id="1、cmake-的命令行使用方法"><a href="#1、cmake-的命令行使用方法" class="headerlink" title="1、cmake 的命令行使用方法"></a>1、cmake 的命令行使用方法</h1><p>通过 -B 生成对应的 makefile 或者 ninja 文件，其中路径被设置为 build（如果不设置那么就会在当前路径生成）</p>
 <p>后续参数则是设置一些编译参数，例如 DCMAKE_EXPORT_COMPILE_COMMANDS 用于生成 json 数据库文件，方便使用插件 clangd 进行代码跳转，DCMAKE_INSTALL_PREFIX 是用于设置安装目录，DCMAKE_BUILD_TYPE 是用于设置安装的版本</p>
-<pre class="line-numbers language-shell"><code class="language-shell">cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell"><code class="language-shell">cmake -B build \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=./build/release \
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <p>编译，将编译的目录指定为 build，其中 –parallel 4 则是编译时用到的线程数</p>
@@ -459,7 +462,7 @@ cmake -G"Unix Makefiles"<span aria-hidden="true" class="line-numbers-rows"><span
 <pre class="line-numbers language-cmake"><code class="language-cmake">list(APPEND <list><element> [<element>...])
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>`` 向 list 中添加数据 element</p>
+<p>向 list 中添加数据 element</p>
 <p>PS：这里给 .cmake 模块指定了文件夹以后，后续的子模块可以直接 include 对应的 .cmake 文件并使用，而不需要重新指定路径</p>
 <br>
 
@@ -1061,7 +1064,7 @@ CMake Error at CMakeLists.txt:11 (project):
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">118k</span>
+            <span class="white-color">117.1k</span>
             
 
             <br>

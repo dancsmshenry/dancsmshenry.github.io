@@ -350,14 +350,14 @@ vector 中有三个指针：指向使用空间的头（start）和尾（finish�
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.9k
+                    3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    16 分
+                    13 分
                 </div>
                 
                 
@@ -401,7 +401,7 @@ vector 中有三个指针：指向使用空间的头（start）和尾（finish�
 
 <br>
 
-<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec0</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h1 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h1><h2 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h2><pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec0</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec1</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">333</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -457,34 +457,6 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
 
 <span class="token comment" spellcheck="true">//    返回容器首元素的数据指针</span>
 <span class="token keyword">int</span> <span class="token operator">*</span>p <span class="token operator">=</span> vec<span class="token punctuation">.</span><span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<br>
-
-<h2 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h2><p>将容器的 size 修改为指定大小（capacity 只会变大或不变，<strong>不会变小</strong>）</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token punctuation">{</span>
-  std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">//    10</span>
-  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"before vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">//    20 > capacity，因此 size 和 capacity 一起变为 20</span>
-  vec<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token comment" spellcheck="true">//    20</span>
-  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">//    20</span>
-  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec size = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token punctuation">{</span>
-  std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">//    40</span>
-  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"before vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">//    20 &lt; capacity, 因此 size 变为 20，capacity 不变</span>
-  vec<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token comment" spellcheck="true">//    40</span>
-  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">//    20</span>
-  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec size = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <h2 id="shrink-to-fit"><a href="#shrink-to-fit" class="headerlink" title="shrink_to_fit"></a>shrink_to_fit</h2><p>将 capacity 减小为指定大小（<strong>使得已有迭代器失效</strong>）</p>
@@ -565,227 +537,219 @@ std<span class="token operator">::</span>cout <span class="token operator">&lt;&
 <pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">swap</span><span class="token punctuation">(</span>vec<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment" spellcheck="true">//    vec.swap(std::vector&lt;int>{});    //    error</span>
+<span class="token comment" spellcheck="true">//    vec.swap(std::vector&lt;int>{});    //    error， do not support right value</span>
 
 <span class="token comment" spellcheck="true">//  0</span>
 std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"vec size is "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
 <span class="token comment" spellcheck="true">//  0</span>
 std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"vec capacity is "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>函数 <code>clear</code> 只会析构容器的元素，但是不会释放容器使用的空间，因此可以用函数 <code>swap</code> 和临时的空对象交换，实现内存空间的释放</p>
 <br>
 
-<h2 id="erase"><a href="#erase" class="headerlink" title="erase"></a>erase</h2><p>删除内容，不改变容量大小（即size会发生变化，capacity不变）</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    删除指定位置的元素，返回值是一个迭代器，指向删除元素的下一个元素</span>
-i6<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>i6<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h2 id="erase"><a href="#erase" class="headerlink" title="erase"></a>erase</h2><p>删除指定迭代器的内容（size 会变，capacity 不变）</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//    删除从 _First开始到 _Lsat位置的元素，返回值也是一个迭代器，指向最后一个删除元素的下一个位置</span>
-i6<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>i6<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">,</span> i6<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment" spellcheck="true">//    删除指定位置的元素</span>
+vec<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>vec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    删除从 first 开始到 last 位置的元素</span>
+vec<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>vec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">,</span> vec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
-<p>返回值：被删除元素后一个元素的迭代器（被删除元素的迭代器其实不会失效，而是指向被删除元素的下一个位置元素）</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 删除一个vector中所有等于2的数字的正确做法</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> count<span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span> iter<span class="token operator">=</span>count<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter<span class="token operator">!=</span>count<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token operator">*</span>iter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        iter <span class="token operator">=</span> count<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>iter<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-        <span class="token operator">++</span> iter<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>erase实质是将迭代器后面的元素全部复制一遍，接着往前移动一个位置</p>
-<p>因此当前位置的迭代器会指向原iter的后一位数字（所以其实是将后一部分的元素覆盖了前面部分的元素，比如说长为9的数组，删除掉前面5个数字，但当前下标为7和8位置的数据是不变的）</p>
-<p>看了一下源码实现，如果是删除最后一个元素的话，就只会移动最后一个迭代器（end）</p>
+<p>实际上，当指定位置的元素被删除了之后，会被后面的元素依次的往前挪一个位置，因此返回的迭代器还是需要被删除的迭代器，但是指向的值不一样了</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    删除 vector&lt;int> 中所有等于 2 的值</span>
+std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> vec<span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span> iter <span class="token operator">=</span> vec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iter <span class="token operator">!=</span> vec<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token operator">*</span>iter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    vec<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>iter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token operator">++</span>iter<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">//  0 1 3 4</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">auto</span> <span class="token operator">&amp;</span>iter <span class="token operator">:</span> vec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> iter <span class="token operator">&lt;&lt;</span> <span class="token string">" "</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    一种更为简单的实现</span>
+<span class="token comment" spellcheck="true">//    先将为 2 的 value 都挪到容器尾部，然后 erase</span>
+<span class="token keyword">auto</span> checkIs2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">auto</span><span class="token operator">&amp;</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> x <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span> 
+vec<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>std<span class="token operator">::</span><span class="token function">remove_if</span><span class="token punctuation">(</span>vec<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> vec<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> checkIs2<span class="token punctuation">)</span><span class="token punctuation">,</span> vec<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 
-<h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><p>清空容器中所有的元素，只改变 size，不改变 capacity</p>
-<p>所以 clear 是不会释放容器的内存</p>
+<h2 id="clear"><a href="#clear" class="headerlink" title="clear"></a>clear</h2><p>清空容器中所有的元素。只改变 size，不改变 capacity</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+vec<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    0</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    10</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
-<p>时间复杂度分析</p>
 <p>根据数据类型的不同，时间复杂度也会不同</p>
 <ul>
-<li>如果容器中是POD或基本数据，那由于该元素没有析构函数，加之vector内部连续存储的特性，编译器的实现是可以在<code>O(1)</code>完成<code>clear()</code>的</li>
-<li>而如果是自定义数据，或者list或vector等类型，就要逐个去析构，时间复杂度就会到<code>O(n)</code></li>
+<li>如果容器中是 POD 或基本数据类型，那由于该元素没有析构函数，加之 vector 内部连续存储的特性，编译器的实现是可以在 <code>O(1)</code> 完成的</li>
+<li>而如果是自定义数据，又或者 list 或 vector 等类型，就要逐个去析构，时间复杂度就会到 <code>O(n)</code></li>
 </ul>
 <br>
 
-<p>因此，clear在某些时候时间复杂度是很高的</p>
-<ul>
-<li>在工程实践中，我们要思考是否每次都需要及时的clear掉一个容器</li>
-<li>比如在后台服务中，有些容器类型的变量在符合某些条件下要进行clear()，后续逻辑中判断容器是空的，就不在用之进行某些逻辑（比如遍历它，进行某种操作）</li>
-<li>其实也可以用一个bool标记来存储后续是否需要遍历该容器，待到本次请求的响应返回给client之后，再来清理这个容器也不迟</li>
-</ul>
+<h2 id="resize-和-reserve"><a href="#resize-和-reserve" class="headerlink" title="resize 和 reserve"></a>resize 和 reserve</h2><p><code>resize</code>：将容器的 size 修改为指定大小（capacity 只会变大或不变，<strong>不会变小</strong>）</p>
+<p><code>reserve</code>：将容器的 capacity 修改为指定大小（size <strong>不变</strong>）</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token punctuation">{</span>
+  std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//    10</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"before vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//    20 > capacity，因此 size 和 capacity 一起变为 20</span>
+  vec<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">//    20</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//    20</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec size = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">{</span>
+  std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//    40</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"before vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//    20 &lt; capacity, 因此 size 变为 20，capacity 不变</span>
+  vec<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment" spellcheck="true">//    40</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec capacity = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true">//    20</span>
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"after vec size = "</span> <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">{</span>
+  std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  vec<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    yes</span>
+
+  std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">999</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    error</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
-<h2 id="push-back-和-emplace-back"><a href="#push-back-和-emplace-back" class="headerlink" title="push_back 和 emplace_back"></a>push_back 和 emplace_back</h2><p>将对象放到vector中</p>
-<p>时间复杂度分析（参考扩容，时间复杂度为<code>O(n)</code>）</p>
-<br>
-
-<p>实现原理</p>
-<p>首先检查是否有备用空间，如果有就直接在备用空间上构造元素，并调整迭代器finish</p>
-<p><img src="push_back.png" alt="push_back"></p>
-<p>PS：<strong>为什么还要独立开一个insert_aux函数</strong>：因为可能其他的函数（insert）也会用到插入元素的功能，所以进行抽象封装</p>
-<br>
-
-<p>如果没有可用空间，就扩大原有的vector（重新配置、移动数据、释放原空间）</p>
-<p><img src="insert_aux.png" alt="insert_aux"></p>
-<p>PS：<strong>一旦空间重新分配，指向原vector的所有的迭代器都会失效</strong></p>
-<p>所以最好以数组下标作为记录，而不是迭代器作为记录</p>
-<br>
-
-<p>将对象放到容器中，在容器末尾就地构造元素（在末尾添加元素）</p>
+<h2 id="push-back-和-emplace-back"><a href="#push-back-和-emplace-back" class="headerlink" title="push_back 和 emplace_back"></a>push_back 和 emplace_back</h2><p>将元素放到容器尾端</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
 <span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector></span></span>
 
-<span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+<span class="token keyword">class</span> <span class="token class-name">StructA</span> <span class="token punctuation">{</span>
 <span class="token keyword">public</span><span class="token operator">:</span>
-    <span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Test"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
-    <span class="token operator">~</span><span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"~Test"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
-    <span class="token function">Test</span><span class="token punctuation">(</span><span class="token keyword">const</span> Test <span class="token operator">&amp;</span>p<span class="token punctuation">)</span> <span class="token punctuation">{</span>std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Test copy"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
-    <span class="token function">Test</span><span class="token punctuation">(</span><span class="token keyword">const</span> Test <span class="token operator">&amp;&amp;</span>p<span class="token punctuation">)</span> <span class="token punctuation">{</span>std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Test move"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
-    <span class="token function">Test</span><span class="token punctuation">(</span><span class="token keyword">int</span> age<span class="token punctuation">)</span> <span class="token punctuation">{</span>std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Test age"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+  <span class="token function">StructA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"StructA"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+  <span class="token function">StructA</span><span class="token punctuation">(</span><span class="token keyword">const</span> StructA <span class="token operator">&amp;</span>other<span class="token punctuation">)</span> <span class="token punctuation">{</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"StructA copy"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+  <span class="token function">StructA</span><span class="token punctuation">(</span><span class="token keyword">const</span> StructA <span class="token operator">&amp;&amp;</span>other<span class="token punctuation">)</span> <span class="token punctuation">{</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"StructA move"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+  <span class="token function">StructA</span><span class="token punctuation">(</span><span class="token keyword">int</span> age<span class="token punctuation">)</span> <span class="token punctuation">{</span> std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"StructA age"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>Test<span class="token operator">></span> v<span class="token punctuation">;</span>
-    Test tt<span class="token punctuation">;</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"----------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"------- Begin push_back for left value -------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>StructA<span class="token operator">></span> vec<span class="token punctuation">;</span>
+    StructA tt<span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>tt<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  有参构造 + 拷贝构造</span>
+  <span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">/////////////////////////////////////////////////传入左值</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"------- Begin emplace_back for left value -------"</span>
+              <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>StructA<span class="token operator">></span> vec<span class="token punctuation">;</span>
+    StructA tt<span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>tt<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  有参构造 + 拷贝构造</span>
+  <span class="token punctuation">}</span>
 
-    <span class="token comment" spellcheck="true">// v.push_back(tt);    //    调用的是拷贝构造函数</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"----------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"------- Begin push_back for temp value -------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>StructA<span class="token operator">></span> vec<span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token function">StructA</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  有参构造 + 移动构造(没有移动，就会调用拷贝)</span>
+  <span class="token punctuation">}</span>
 
-    <span class="token comment" spellcheck="true">// v.emplace_back(tt);    //    调用的是拷贝构造函数</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"----------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"------- Begin emplace_back for temp value -------"</span>
+              <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>StructA<span class="token operator">></span> vec<span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token function">StructA</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  有参构造 + 移动构造(没有移动，就会调用拷贝)</span>
+  <span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">/////////////////////////////////////////////////传入右值</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"------- Begin push_back for value -------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>StructA<span class="token operator">></span> vec<span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  有参构造 + 移动构造(没有移动，就会调用拷贝)</span>
+  <span class="token punctuation">}</span>
 
-    <span class="token comment" spellcheck="true">// v.emplace_back(Test(12));</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"----------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/*
-    Test age
-    Test move（没有move构造函数，就会调用copy构造函数）
-    ~Test
-    ~Test // 程序结束的析构
-    传右值：这里调用了一次构造函数（先在外面构造一个临时对象，执行完这句话后析构），一次移动构造函数（在emplace_back里面），所以有两次析构，构造了两个对象
-    */</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"------- Begin emplace_back for value -------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>StructA<span class="token operator">></span> vec<span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//  有参构造</span>
+  <span class="token punctuation">}</span>
 
-    <span class="token comment" spellcheck="true">// v.push_back(Test(12));</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"----------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/*
-    Test age
-    Test move（没有move构造函数，就会调用copy构造函数）
-    ~Test
-    ~Test // 程序结束的析构
-    传右值：这里调用了一次构造函数（先在外面构造一个临时对象，执行完这句话后析构），一次移动构造函数（在push_back里面），所以有两次析构，构造了两个对象
-    */</span>
+  <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">>></span> vec<span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// v.emplace_back(12);</span>
-    std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"----------"</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">/*
-    Test age
-    ~Test//程序结束的析构
-    传右值：这里调用了一次含参的构造函数
-    */</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// v.push_back(12);</span>
-    <span class="token comment" spellcheck="true">/*
-    Test age
-    Test move（没有move构造函数，就会调用copy构造函数）
-    ~Test
-    ~Test//程序结束的析构
-    传右值：这里调用了一次构造函数（先在外面构造一个临时对象，执行完这句话后析构），一次移动构造函数（在push_back里面），所以有两次析构，所以有两次析构，构造了两个对象
-    */</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>std<span class="token operator">::</span>initializer_list<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>std<span class="token operator">::</span>initializer_list<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">// 结论：</span>
-    <span class="token comment" spellcheck="true">// 传左值：两者都是一样的：调用一次构造函数，再调用一次拷贝构造函数</span>
-    <span class="token comment" spellcheck="true">// 传右值：如果是已经构造好的右值，比如说Test(12)，那么二者是相同的；但是如果没构造好，比如12，需要调用有参构造函数，那么emplace_pack效率更高一些</span>
+    <span class="token keyword">auto</span> temp <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token comment" spellcheck="true">//    从另一个角度来看，说明push_back真的会构建一个临时对象（</span>
-    vector<span class="token operator">&lt;</span>pair<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">>></span> ret<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// ret.push_back(1,1)//会报错，因为没有构造一个临时对象</span>
-    ret<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>pair<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//不会报错，因为构成了一个pair对象</span>
-    ret<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//不会报错，因为直接在容器的尾部创建对象</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//    vec.emplace_back({1, 2, 3, 4, 5, 6, 7}); //  error</span>
+
+    <span class="token comment" spellcheck="true">// vec.push_back(1, 2);  //  error</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vec<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
-<p>总结</p>
-<p>push_back</p>
+<p><strong>总结</strong></p>
+<p>对于左值，都是调用拷贝构造</p>
+<p>对于右值，如果是已经构造好了的，都是调用移动或者拷贝构造（优先调用移动构造）</p>
 <ul>
-<li>对于右值，如果是已经构造好了的，就直接调用move或copy函数（优先调用move）；如果还没构造好（例如传入12，需要调用有参构造函数，隐性的转换为该类对象），那就先构造出对象，然后再调用move或copy函数（优先调用move）</li>
-<li>对于左值，拷贝构造</li>
-</ul>
-<p>emplace_back</p>
-<ul>
-<li>对于右值， 如果是已经构造好了的，就直接调用move或copy函数（优先调用move）；如果还没构造好，<strong>就直接原地调用有参构造函数</strong></li>
-<li>对于左值，拷贝构造</li>
+<li>如果是没构造好的（需要隐式转换），<code>push_back</code> 是先构造，然后再移动或者拷贝构造（优先调用移动构造）；<code>emplace_back</code> 是直接构造</li>
 </ul>
 <br>
 
-<p>emplace_back使用上的一个<strong>坑</strong></p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
-<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector></span></span>
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">>></span> a<span class="token punctuation">;</span>
-
-    a<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    a<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    a<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>std<span class="token operator">::</span>initializer_list<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">auto</span> x <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-    a<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    a<span class="token punctuation">.</span><span class="token function">emplace_back</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//    这里会报错</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>解释：</p>
+<p><code>push_back</code> 的入参是 <code>value_type</code>，即已经指明了需要接受的参数类型（并且只能有一个入参），因此即使传入的并非 <code>value_type</code> 的类型，也会做隐式转换</p>
+<p><code>emplace_back</code> 的入参是 <code>class... _Args</code>，没有指明接受的参数类型和个数，同时不会为入参做隐式转换（需要使用者指明入参的类型）</p>
 <ul>
-<li><p>因为对于push_back来说，查看源代码发现它接收的是一个具体的value_type，即是固定的类型</p>
-</li>
-<li><p>再看看有关vector的构造，它没有写explicit，所以{1,2}可以隐式转换为vector<int></int></p>
-</li>
-<li><p>而对于emplace_back，它的源代码是一个模板函数，造成的结果就是所提供的参数{1,2}会做模板参数类型匹配，不会主动强转std::initializer_list<int>，需要你显式构造，或者用auto先推导一遍</int></p>
-</li>
-<li><p>但是这里模板推到不出来类型，所以就会报错</p>
-</li>
-<li><p><img src="push%E5%92%8Cemplace_back_01.png" alt></p>
-</li>
-<li><p><img src="push%E5%92%8Cemplace_back_02.png" alt></p>
-</li>
-<li><p>这里的value_type是typeof，即为T，可以理解为已经固定了的类型</p>
-</li>
-<li><p>参考：<a href="https://www.zhihu.com/question/438004429" target="_blank" rel="noopener">https://www.zhihu.com/question/438004429</a></p>
-</li>
+<li>因此，<code>emplace_back</code> 希望接受 <code>std::initializer_list</code> 或者能够构造出 <code>std::vector</code> 的入参（因为这二者可以构成 <code>value_type</code>），而入参 <code>{1, 2, 3, 4, 5, 6, 7}</code> 希望函数的入参能隐式的把它转换为上述两种类型。结果就有点类似死锁了，编译报错</li>
+<li>特别的，当传入 <code>(1, 2)</code> 或者 <code>(1)</code>的时候，可以隐式的转换构造出 <code>std::vector</code></li>
 </ul>
 <br>
 
-<h2 id="at-和"><a href="#at-和" class="headerlink" title="at 和 []"></a>at 和 []</h2><p>二者是等价的</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// at(索引)</span>
-vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> vec<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-vec<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//    等价于i6[1]</span>
+<h2 id="at-和"><a href="#at-和" class="headerlink" title="at 和 []"></a>at 和 []</h2><p>访问容器下标的元素</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> vec<span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//    at的源码</span>
-    reference
-    <span class="token function">at</span><span class="token punctuation">(</span>size_type __n<span class="token punctuation">)</span>
-    <span class="token punctuation">{</span>
-        <span class="token function">_M_range_check</span><span class="token punctuation">(</span>__n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">[</span>__n<span class="token punctuation">]</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+vec<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span><span class="token number">11111</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// operator[]，返回第几个值</span>
-vec<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>[] 的越界访问是不会报错</p>
-<ul>
-<li>每次访问都需要判断越界，是非常损耗性能的</li>
-<li>因此越界访问到什么数据都是未知的</li>
-</ul>
+<span class="token comment" spellcheck="true">//    11111</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    3</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    error</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">//    yes</span>
+std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
-<p>而at的越界访问是会报错的</p>
-<ul>
-<li>at 会检查是否越界</li>
-<li>同时，at 的入参是 std::size_t，放入负数的话会被转为整数</li>
-</ul>
+<p>[] 的越界访问是不会报错（每次访问都需要判断越界，对性能损耗大）</p>
+<p>at 的越界访问是会报错的（会检查越界，以 size 为准，而不是 capacity）</p>
 <br>
 
 <br>
@@ -794,14 +758,7 @@ vec<span class="token punctuation">[</span><span class="token number">1</span><s
 
 <h1 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h1><h2 id="为什么不是等差扩容"><a href="#为什么不是等差扩容" class="headerlink" title="为什么不是等差扩容"></a>为什么不是等差扩容</h2><p>如果是等差扩容</p>
 <p>假定每次扩容 <code>m</code> 个元素，总的元素个数是 <code>n</code>，则需要扩容 <code>n/m</code> 次</p>
-<!-- $$
-\sum^{n/m}_{i = 1}m*i=\frac{ (n+m) * n } { 2 * m}\\
-$$ -->
-
-<!-- $y = f(x)$ -->
-
-
-
+<pre class="line-numbers language-latex"><code class="language-latex"><span class="token function selector">\sum</span>^<span class="token punctuation">{</span>n/m<span class="token punctuation">}</span>_<span class="token punctuation">{</span>i = 1<span class="token punctuation">}</span>m*i=<span class="token function selector">\frac</span><span class="token punctuation">{</span> (n+m) * n <span class="token punctuation">}</span> <span class="token punctuation">{</span> 2 * m<span class="token punctuation">}</span><span class="token function selector">\\</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>扩容的时间复杂度平均到每个元素上就是 <code>O(n)</code></p>
 <br>
 
@@ -828,32 +785,6 @@ $$ -->
 <li>使用 2 倍扩容时，每次扩容后的新内存大小必定大于前面的总和</li>
 <li>使用 1.5 倍扩容时，在数次扩容后，就可以重用之前的内存空间</li>
 </ul>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h1><h2 id="删除首个元素"><a href="#删除首个元素" class="headerlink" title="删除首个元素"></a>删除首个元素</h2><pre class="line-numbers language-cpp"><code class="language-cpp">vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">v1</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-v1<span class="token punctuation">.</span><span class="token function">erase</span><span class="token punctuation">(</span>v1<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<br>
-
-<br>
-
-<h2 id="释放空间"><a href="#释放空间" class="headerlink" title="释放空间"></a>释放空间</h2><p>背景：一般情况下 vector 的内存占用空间只增不减</p>
-<p>比如一开始分配了 10000 个字节，然后 erase 掉后面 9999 个，留下一个有效元素</p>
-<p>但是内存占用仍为 10000 个（并且所有内存空间是在 vector 析构时候才能被系统回收）</p>
-<p>clear 可以清空所有元素，但 vector 所占用的内存空间不变，无法保证内存的回收</p>
-<p>所以如果想要清空 vector 所占用的内存，可以用 swap</p>
-<pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">vec</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">{</span>
-    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> temp<span class="token punctuation">;</span>
-    vec<span class="token punctuation">.</span><span class="token function">swap</span><span class="token punctuation">(</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token comment" spellcheck="true">//    vector&lt;int>().swap(vec);    //    或者这样</span>
-<span class="token comment" spellcheck="true">//    vec.swap(vector&lt;int>());    //    error，swap 的入参是 T&amp;</span>
-
-std<span class="token operator">::</span>cout <span class="token operator">&lt;&lt;</span> vec<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> std<span class="token operator">::</span>endl<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
             <hr />
@@ -1121,7 +1052,7 @@ public:
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">118k</span>
+            <span class="white-color">117.1k</span>
             
 
             <br>

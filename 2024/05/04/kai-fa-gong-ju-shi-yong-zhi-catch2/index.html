@@ -349,7 +349,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    415
+                    421
                 </div>
                 
 
@@ -369,84 +369,84 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
             <div id="articleContent">
                 <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>目前使用的测试框架，好处就是只有头文件，方便无论是新人还是老人进行开发（gtest 需要编译成 静态库，使用上有点难度）</p>
 <h1 id="CHECK-和-REQUIRE"><a href="#CHECK-和-REQUIRE" class="headerlink" title="CHECK 和 REQUIRE"></a>CHECK 和 REQUIRE</h1><p><code>CHECK</code> 和 <code>REQUIRE</code> 用于检测当前括号中的表达式是否为真，常用于校验函数的结果是否符合预期，从而达到测试函数逻辑的目的</p>
-<pre class="line-numbers language-c++"><code class="language-c++">TEST_CASE("TEST", "[test1]") {
-    CHECK(1 == 1);    //    CHECK 在检查项错误的时候，不会导致程序停下来
-    REQUIRE(1 == 1); //    REQUIRE 在检查项错误的时候，会停下程序
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token function">TEST_CASE</span><span class="token punctuation">(</span><span class="token string">"TEST"</span><span class="token punctuation">,</span> <span class="token string">"[test1]"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">CHECK</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    CHECK 在检查项错误的时候，不会导致程序停下来</span>
+    <span class="token function">REQUIRE</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//    REQUIRE 在检查项错误的时候，会停下程序</span>
 
-    CHECK_FALSE(1 == 0);    //    等价于 CHECK(1 != 0);
-    REQUIRE_FALSE(1 == 0);    //  等价于 REQUIRE(1 != 0);
+    <span class="token function">CHECK_FALSE</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    等价于 CHECK(1 != 0);</span>
+    <span class="token function">REQUIRE_FALSE</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//  等价于 REQUIRE(1 != 0);</span>
 
-    // 检测当前表达式中是否没有异常
-    REQUIRE_NOTHROW(expression);
-    CHECK_NOTHROW(expression);
+    <span class="token comment" spellcheck="true">// 检测当前表达式中是否没有异常</span>
+    <span class="token function">REQUIRE_NOTHROW</span><span class="token punctuation">(</span>expression<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">CHECK_NOTHROW</span><span class="token punctuation">(</span>expression<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    //    检测当前表达式是否有异常
-    REQUIRE_THROWS(expression);
-    CHECK_THROWS(expression);
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token comment" spellcheck="true">//    检测当前表达式是否有异常</span>
+    <span class="token function">REQUIRE_THROWS</span><span class="token punctuation">(</span>expression<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">CHECK_THROWS</span><span class="token punctuation">(</span>expression<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <p>但是 CHECK 这种，在宏展开的时候会有些问题：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">//    error
-CHECK(a == 1 && b == 2);
-CHECK(a == 2 || b == 1);
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    error</span>
+<span class="token function">CHECK</span><span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> b <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">CHECK</span><span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">2</span> <span class="token operator">||</span> b <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-//    right
-CHECK((a == 1 && b == 2));
-CHECK((a == 2 || b == 1));<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment" spellcheck="true">//    right</span>
+<span class="token function">CHECK</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> b <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">CHECK</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a <span class="token operator">==</span> <span class="token number">2</span> <span class="token operator">||</span> b <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <br>
 
 <h1 id="SECTION"><a href="#SECTION" class="headerlink" title="SECTION"></a>SECTION</h1><p><code>SECTION</code> 主要用于测试某个类的多个函数。</p>
-<pre class="line-numbers language-C++"><code class="language-C++">TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
-    std::vector<int> v( 5 );
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token function">TEST_CASE</span><span class="token punctuation">(</span> <span class="token string">"vectors can be sized and resized"</span><span class="token punctuation">,</span> <span class="token string">"[vector]"</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> <span class="token function">v</span><span class="token punctuation">(</span> <span class="token number">5</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    REQUIRE( v.size() == 5 );
-    REQUIRE( v.capacity() >= 5 );
+    <span class="token function">REQUIRE</span><span class="token punctuation">(</span> v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">5</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">REQUIRE</span><span class="token punctuation">(</span> v<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">5</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    SECTION( "resizing bigger changes size and capacity" ) {
-        v.resize( 10 );
-        REQUIRE( v.size() == 10 );
-        REQUIRE( v.capacity() >= 10 );
-    }
+    <span class="token function">SECTION</span><span class="token punctuation">(</span> <span class="token string">"resizing bigger changes size and capacity"</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        v<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span> <span class="token number">10</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">REQUIRE</span><span class="token punctuation">(</span> v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">10</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">REQUIRE</span><span class="token punctuation">(</span> v<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">10</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
-    SECTION( "resizing smaller changes size but not capacity" ) {
-        v.resize( 0 );
-        REQUIRE( v.size() == 0 );
-        REQUIRE( v.capacity() >= 5 );
-    }
-}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token function">SECTION</span><span class="token punctuation">(</span> <span class="token string">"resizing smaller changes size but not capacity"</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        v<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">REQUIRE</span><span class="token punctuation">(</span> v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">REQUIRE</span><span class="token punctuation">(</span> v<span class="token punctuation">.</span><span class="token function">capacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">5</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <br>
 
 <h1 id="Matchers"><a href="#Matchers" class="headerlink" title="Matchers"></a>Matchers</h1><p>当前的表达式在 matcher 中是否成立</p>
-<pre class="line-numbers language-c++"><code class="language-c++">REQUIRE_THAT(expression, matchers);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token function">REQUIRE_THAT</span><span class="token punctuation">(</span>expression<span class="token punctuation">,</span> matchers<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <br>
 
 <h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p>验证某个 string 是否以某个 string 结束：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">using Catch::Matchers::EndsWith; // or Catch::EndsWith
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">using</span> Catch<span class="token operator">::</span>Matchers<span class="token operator">::</span>EndsWith<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// or Catch::EndsWith</span>
 
-std::string str = getStringFromSomewhere();
+std<span class="token operator">::</span>string str <span class="token operator">=</span> <span class="token function">getStringFromSomewhere</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-REQUIRE_THAT(str, EndsWith("as a service" ))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">REQUIRE_THAT</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token function">EndsWith</span><span class="token punctuation">(</span><span class="token string">"as a service"</span> <span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <p>验证某个 string 是否以某个 string 开始：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">using Catch::Matchers::StartsWith; // or Catch::EndsWith
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">using</span> Catch<span class="token operator">::</span>Matchers<span class="token operator">::</span>StartsWith<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// or Catch::EndsWith</span>
 
-std::string str = getStringFromSomewhere();
+std<span class="token operator">::</span>string str <span class="token operator">=</span> <span class="token function">getStringFromSomewhere</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-REQUIRE_THAT(str, StartsWith("as a service"))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">REQUIRE_THAT</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token function">StartsWith</span><span class="token punctuation">(</span><span class="token string">"as a service"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <br>
 
 <p>验证某个 string 是否包含某个 string：</p>
-<pre class="line-numbers language-c++"><code class="language-c++">using Catch::Matchers::StartsWith; // or Catch::EndsWith
+<pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token keyword">using</span> Catch<span class="token operator">::</span>Matchers<span class="token operator">::</span>StartsWith<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// or Catch::EndsWith</span>
 
-std::string str = getStringFromSomewhere();
+std<span class="token operator">::</span>string str <span class="token operator">=</span> <span class="token function">getStringFromSomewhere</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-REQUIRE_THAT(str, Contains("as a service"))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">REQUIRE_THAT</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token function">Contains</span><span class="token punctuation">(</span><span class="token string">"as a service"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             </div>
             <hr />
@@ -699,7 +699,7 @@ git branch branch_n
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">118k</span>
+            <span class="white-color">117.1k</span>
             
 
             <br>
