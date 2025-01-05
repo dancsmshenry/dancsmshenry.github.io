@@ -26,7 +26,7 @@ categories:
 
 `CHECK` 和 `REQUIRE` 用于检测当前括号中的表达式是否为真，常用于校验函数的结果是否符合预期，从而达到测试函数逻辑的目的
 
-```c++
+```cpp
 TEST_CASE("TEST", "[test1]") {
     CHECK(1 == 1);	//	CHECK 在检查项错误的时候，不会导致程序停下来
     REQUIRE(1 == 1); //	REQUIRE 在检查项错误的时候，会停下程序
@@ -48,7 +48,7 @@ TEST_CASE("TEST", "[test1]") {
 
 但是 CHECK 这种，在宏展开的时候会有些问题：
 
-```c++
+```cpp
 //	error
 CHECK(a == 1 && b == 2);
 CHECK(a == 2 || b == 1);
@@ -66,7 +66,7 @@ CHECK((a == 2 || b == 1));
 
 `SECTION` 主要用于测试某个类的多个函数。
 
-```C++
+```cpp
 TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
     std::vector<int> v( 5 );
 
@@ -95,7 +95,7 @@ TEST_CASE( "vectors can be sized and resized", "[vector]" ) {
 
 当前的表达式在 matcher 中是否成立
 
-```c++
+```cpp
 REQUIRE_THAT(expression, matchers);
 ```
 
@@ -105,7 +105,7 @@ REQUIRE_THAT(expression, matchers);
 
 验证某个 string 是否以某个 string 结束：
 
-```c++
+```cpp
 using Catch::Matchers::EndsWith; // or Catch::EndsWith
 
 std::string str = getStringFromSomewhere();
@@ -117,7 +117,7 @@ REQUIRE_THAT(str, EndsWith("as a service" ))
 
 验证某个 string 是否以某个 string 开始：
 
-```c++
+```cpp
 using Catch::Matchers::StartsWith; // or Catch::EndsWith
 
 std::string str = getStringFromSomewhere();
@@ -129,7 +129,7 @@ REQUIRE_THAT(str, StartsWith("as a service"))
 
 验证某个 string 是否包含某个 string：
 
-```c++
+```cpp
 using Catch::Matchers::StartsWith; // or Catch::EndsWith
 
 std::string str = getStringFromSomewhere();

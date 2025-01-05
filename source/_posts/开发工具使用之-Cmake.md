@@ -78,7 +78,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/dog)
 后续参数则是设置一些编译参数，例如 DCMAKE_EXPORT_COMPILE_COMMANDS 用于生成 json 数据库文件，方便使用插件 clangd 进行代码跳转，DCMAKE_INSTALL_PREFIX 是用于设置安装目录，DCMAKE_BUILD_TYPE 是用于设置安装的版本
 
 ```shell
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake -B build \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=./build/release \
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```
 
 <br/>
@@ -145,9 +148,7 @@ list(APPEND <list><element> [<element>...])
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 ```
 
-
-
-`` 向 list 中添加数据 element
+向 list 中添加数据 element
 
 PS：这里给 .cmake 模块指定了文件夹以后，后续的子模块可以直接 include 对应的 .cmake 文件并使用，而不需要重新指定路径
 
