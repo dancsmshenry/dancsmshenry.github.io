@@ -11,33 +11,38 @@ tags:
 categories:
 ---
 
-在 dcm 中的服务，与 dem 相关的主要是 0x19 和 0x85；其中 ap 支持的 19 服务，为 17/18/19
-
-0x14（cleardiagnosticInformation） 需要传入 groupDTC（三个字节），删除该组 DTC 相关的所有数据
-
-0x19 01（reportNumberOfDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量
-
-0x19 02（reportDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表
-
-0x19 03（reportDTCSnapshotIdentification）不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ）
-
-0x19 04（reportDTCSnapshotRecordByDTCNumber） 需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据）
-
-0x19 06 （reportDTCExtDataRecordByDTCNumber）需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据）
-
-0x19 07（reportNumberOfDTCBySeverityMaskRecord）需要传入状态码和严重程度，然后返回对应 DTC 的数量
-
-0x19 0a（reportSupportedDTC）不需要传入数据，返回当前支持的所有的 DTC 及其状态
-
-0x19 14（reportDTCFaultDetectionCounter）不需要传入数据，返回当前所有处于 prefailed 的 DTC
-
-0x19 17（reportUserDefMemoryDTCByStatusMask） TODO
-
-0x19 18（reportUserDefMemoryDTCSnapshotRecordByDTCNumber）功能和 04 很像，但区别在哪？
-
-0x19 19（reportUserDefMemoryDTCExtDataRecordByDTCNumber）功能和 06 很像，但区别在哪？
 
 
+
+
+# DTC 状态位
+
+| Bit  | Name                               | Description                                                  |
+| ---- | ---------------------------------- | ------------------------------------------------------------ |
+| Bit0 | TestFailed                         | 表示 DTC 最近一次报告的结果是否为 Failed。<br/>当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；<br/>当最近一次报告的结果为 Passed、DEM 模块首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0（老化成功并不会将当前 Bit 置为 0） |
+| Bit1 | TestFailedThisOperationCycle       | 表示 DTC 在当前的操作循环中，是否报告过 Failed。<br/>在当前操作循环中，只要报告了 Failed，就需要将当前 Bit 置为 1；<br/>当重启操作循环、DEM 模块初始化，或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
+| Bit2 | PendingDTC                         | 表示 DTC 在当前的操作循环，以及上一个操作循环中，是否报告过 Failed。<br/>当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当此时的操作循环结束，并且在这个操作循环中没有报告过 Failed（Bit1 和 Bit6 都为 0）、或者 DEM 首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
+| Bit3 | ConfirmedDTC                       | 表示 DTC 经历了一定次数的操作循环，并且在这些操作循环中都报告过 Failed 时，需要将当前 Bit 置为 1<br/>当 DTC 老化完成，或是 DEM 模块首次初始化，或是当前的数据因为存储的 overflow 而被移除，或是 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
+| Bit4 | TestnotCompletedSinceLastClear     | 表示自从上一次 clear 之后，是否有报告过 Passed 或者 Failed。<br/>当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化时，需要将当前 Bit 置为 1；<br/>需要注意的是，下游 dtc 报告的 preFailed 或者 prePassed 并不算是一次完整的报告 |
+| Bit5 | TestFailedSinceLastClear           | 表示自从上一次 clear，当前的 DTC 是否有报告过 Failed。<br/>当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化，或者老化成功，或者因为 overflow 将数据删除了，需要将当前 Bit 置为 0 |
+| Bit6 | TestNotCompletedThisOperationCycle | 表示在当前的操作循环中，是否没报告过 Failed 或者 Passed。<br/>当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当重启操作循环、DEM 模块初始化，或者 `clearDiagnosticInformation` 时，需要将当前 Bit 置为 1 |
+| Bit7 | WarningIndicator                   | 初始值为 0；当配置了 indicator，Bit3 变为 1（此时 Bit0 也一定为 1），并且也符合主机厂或者供应商的需求时，将当前 Bit 置为 1<br/>当 healing 结束，0x14 服务，或者一些主机厂自定义的条件满足时，将当前 Bit 置为 0 |
+
+<br/>
+
+<br/>
+
+<br/>
+
+# 子服务
+
+一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x10
 
@@ -67,7 +72,7 @@ categories:
 
 1. 在一般的情况下， ECU 一上电，都是处于默认会话
 2. 在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下
-3. 在 UDS 的概念中定义了定时器 p2 和 p2 *。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 **p2\***的定时器，在 p2 * 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 1ms，p2* 定时器的单位是 10ms）
+3. 在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 1ms，`p2*` 定时器的单位是 10ms）
 
 根据 14229 的规范，0x10 的 positive response message 格式为：
 
@@ -77,6 +82,12 @@ categories:
 | #2,#3  | 会话 id                   | 0x00-0xFF     | 是           |
 | #4,#5  | p2 server 定时器          | 0x0000-0xFFFF | 是           |
 | #6,#7  | p2* server 定时器         | 0x0000-0xFFFF | 是           |
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x11
 
@@ -108,6 +119,12 @@ categories:
 | #1     | 服务 id + positive 偏移量 | 0x51      | 是                               |
 | #2     | 子服务 id                 | 0x00-0x7F | 是                               |
 | #3     | powerDownTime             | 0x00-0xFF | 当子服务为 0x04 的时候才会有该项 |
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x27
 
@@ -148,6 +165,12 @@ categories:
 | #1     | 服务 id + positive 偏移量 | 0x67                     | 是           |
 | #2     | 子服务 id                 | 0x02,0x04,0x06,0x08-0x7E | 是           |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x28
 
 0x28 服务是用来打开或者关闭某类报文信息的发送和接收功能。
@@ -182,9 +205,21 @@ categories:
 | #1     | 服务 id + positive 偏移量 | 0x68      | 是           |
 | #2     | 子服务 id                 | 0x00-0x7F | 是           |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x29
 
 Todo
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x3E
 
@@ -197,7 +232,7 @@ Todo
 | #1     | 服务 id   | 0x3E      | 是           |
 | #2     | 子服务 id | 0x00/0x80 | 是           |
 
-注：在子服务 id 中，其中的 bit7，也就是第八位，当为 0 的时候，表示为需要发送肯定响应，而为1的时候，则需要抑制肯定响应
+注：在子服务 id 中，其中的 Bit7，也就是第八位，当为 0 的时候，表示为需要发送肯定响应，而为1的时候，则需要抑制肯定响应
 
 根据 14229 的规范，目前支持的 subfunction 有
 
@@ -212,13 +247,31 @@ Todo
 | #1     | 服务 id + positive 偏移量 | 0x7E   | 是           |
 | #2     | 子服务 id                 | 0x00   | 是           |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x85
 
 Todo
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x86
 
 Todo
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x22
 
@@ -243,6 +296,12 @@ Todo
 | #4..#(k-1)+4          | Did record，为 did 对应的数据 | 0x00-0xFF | 是（did 对应的数据至少为一个字节）           |
 | #n-(0-1)-2,#n-(o-1)-1 | did                           | 0x00-0xFF | 否（至少有一个 did 可读就可以了）            |
 | #n-(o-1)..#n          | Did record，为did对应的数据   | 0x00-0xFF | 否（至少有一个 did 可读就可以了）            |
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x2A
 
@@ -270,6 +329,12 @@ Todo
 | -------- | ----------------------------- | --------- | ---------------------------------- |
 | #1       | periodicDataIdentifier        | 0x00-0xFF | 是                                 |
 | #2..#k+2 | Did record，为 did 对应的数据 | 0x00-0xFF | 是（did 对应的数据至少为一个字节） |
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x2C
 
@@ -309,6 +374,12 @@ Todo
 | #2     | subfunction                      | 0x00-0x7F            | 是                                                           |
 | #3,#4  | dynamicallyDefinedDataIdentifier | 0xF2/0xF3，0x00-0xFF | 否（如果 request 中有 ddid，那么就需要填写此参数，否则则不需要） |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x2E
 
 该服务是用来写 did 对应的数据的。而对于动态定义的 did 来说，是不能够写入的。
@@ -328,6 +399,12 @@ Todo
 | #1     | 服务 id + positive 偏移量 | 0x6E      | 是           |
 | #2,#3  | dataIdentifier            | 0x00-0xFF | 是           |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x14
 
 clearDiagnosticInformation，该服务是用于删除一个或者多个 DTC 对应的数据。当完全删除 DTC 对应的数据，或者不存在对应 DTC 时，需要返回积极响应，如果在 server 中存在多份 DTC 的数据（比如说可能存在备份的情况），那么同样也要将其删除。
@@ -346,6 +423,12 @@ clearDiagnosticInformation，该服务是用于删除一个或者多个 DTC 对�
 | ------ | ------------------------- | ------ | ------------ |
 | #1     | 服务 id + positive 偏移量 | 0x54   | 是           |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x19
 
 readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对应的数据。
@@ -361,10 +444,38 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 | 0x06      | reportDTCExtDataRecordByDTCNumber，读取某个 DTC 相关的拓展数据 |
 | 0x07      | reportNumberOfDTCByServerityMaskRecord，读取符合严重性掩码的 DTC 的数量 |
 | 0x0A      | reportSupportedDTC，读取当前所有 DTC 的状态                  |
-| 0x14      | reportDTCFaultDetectionCounter，获取所有 prefailed 的 DTC 列表 |
+| 0x14      | reportDTCFaultDetectionCounter，获取所有 preFailed 的 DTC 列表 |
 | 0x17      | reportUserDefMemoryByStatusMask                              |
 | 0x18      | reportUserDefMemoryDTCSnapshotRecordByDTCNumber              |
 | 0x19      | reportUserDefMemoryDTCExtDataRecordByDTCNumber               |
+
+0x19 01（reportNumberOfDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量
+
+0x19 02（reportDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表
+
+0x19 03（reportDTCSnapshotIdentification）不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ）
+
+0x19 04（reportDTCSnapshotRecordByDTCNumber） 需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据）
+
+0x19 06 （reportDTCExtDataRecordByDTCNumber）需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据）
+
+0x19 07（reportNumberOfDTCBySeverityMaskRecord）需要传入状态码和严重程度，然后返回对应 DTC 的数量
+
+0x19 0a（reportSupportedDTC）不需要传入数据，返回当前支持的所有的 DTC 及其状态
+
+0x19 14（reportDTCFaultDetectionCounter）不需要传入数据，返回当前所有处于 preFailed 的 DTC
+
+0x19 17（reportUserDefMemoryDTCByStatusMask） TODO
+
+0x19 18（reportUserDefMemoryDTCSnapshotRecordByDTCNumber）功能和 04 很像，但区别在哪？
+
+0x19 19（reportUserDefMemoryDTCExtDataRecordByDTCNumber）功能和 06 很像，但区别在哪？
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x31
 
@@ -401,6 +512,12 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 | #5      | routineInfo                        | 0x00-0xFF | 否（该参数由不同的协议及车厂共同实现） |
 | #6...#n | routineStatusRecord                | 0x00-0xFF | 否                                     |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x34
 
 服务名为 requestDownload。此处需要注意的是，UDS 提供了服务用于数据的传输，而在具体数据的传输上，是需要先告知当前的数据流走向的。
@@ -421,7 +538,7 @@ requestDownload 表示数据是从 client 传输到 server 上。
 
 如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。
 
-adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 bit7-4 表示的是后续 memorySize 所需的长度，bit3-0 表示的是 memoryAddress 所需的字节数
+adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 Bit7-4 表示的是后续 memorySize 所需的长度，Bit3-0 表示的是 memoryAddress 所需的字节数
 
 memoryAddress 表示的是当前的数据具体要写在哪一个内存地址开始的位置。
 
@@ -435,9 +552,15 @@ memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判�
 | #2     | lengthFormatIdentifier    | 0x00-0xF0 | 是           |
 | #3,#n  | maxNumberOfBlockLength    | 0x00-0xFF | 是           |
 
-其中 lengthFormatIdentifier 需要分为两部分理解：bit7-4 表示后续 maxNumberOfBlockLength 的长度，bit3-0 为 0，具体的内容为 ISO 保留
+其中 lengthFormatIdentifier 需要分为两部分理解：Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留
 
 而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x35
 
@@ -459,7 +582,7 @@ requestUpload 表示数据是从 server 传输到 client 上。
 
 如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。
 
-adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 bit7-4 表示的是后续 memorySize 所需的长度，bit3-0 表示的是 memoryAddress 所需的字节数
+adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 Bit7-4 表示的是后续 memorySize 所需的长度，Bit3-0 表示的是 memoryAddress 所需的字节数
 
 memoryAddress 表示当前需要上传的数据，是从哪一个内存地址开始的。
 
@@ -473,9 +596,15 @@ memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判�
 | #2     | lengthFormatIdentifier    | 0x00-0xF0 | 是           |
 | #3,#n  | maxNumberOfBlockLength    | 0x00-0xFF | 是           |
 
-其中 lengthFormatIdentifier 需要分为两部分理解：bit7-4 表示后续 maxNumberOfBlockLength 的长度，bit3-0 为 0，具体的内容为 ISO 保留
+其中 lengthFormatIdentifier 需要分为两部分理解：Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留
 
 而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x36
 
@@ -499,6 +628,12 @@ blockSequenceCounter 是从 01 开始计数的，是用来计算当前已经传�
 | #2     | blockSequenceCounter            | 0x00-0xFF | 是                                                     |
 | #3,#n  | transferResponseParameterRecord | 0x00-0xFF | 否（如果此时是 0x35 对应的数据传输，就必须要有该参数） |
 
+<br/>
+
+<br/>
+
+<br/>
+
 # 0x37
 
 requestTransferExit 是用于表示当前数据传输的终止的。
@@ -516,6 +651,12 @@ requestTransferExit 是用于表示当前数据传输的终止的。
 | ------ | ------------------------------- | --------- | ---------------------- |
 | #1     | 服务 id + positive 偏移量       | 0x77      | 是                     |
 | #2..#n | transferResponseParameterRecord | 0x00-0xFF | 否（为用户自定义数据） |
+
+<br/>
+
+<br/>
+
+<br/>
 
 # 0x38
 
