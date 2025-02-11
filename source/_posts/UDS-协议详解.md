@@ -34,6 +34,23 @@ categories:
 
 <br/>
 
+# 常用的拓展数据
+
+所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加
+
+| 名称  | 介绍                                                         |
+| ----- | ------------------------------------------------------------ |
+| OCC1  | +1 的条件：报告 failed 之后的**每次**操作循环重启都 +1 <br/>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br/>一些实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC3  | +1 的条件：**首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>一些实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC4  | +1 的条件：当前操作循环**首次**报告 failed 之后，就 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>一些实现细节：<br/>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| FDC10 | 等价于当前 dtc 的 fdc 值<br/>达到 127 的条件：当报告 failed 之后，值变为 127<br/>达到 -128 的条件：当报告 passed 之后，值变为 128<br/>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时 |
+
+<br/>
+
+<br/>
+
+<br/>
+
 # 子服务
 
 一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
@@ -660,9 +677,9 @@ requestTransferExit 是用于表示当前数据传输的终止的。
 
 # 0x38
 
-RequestFileTransfer，该服务是用来传输文件或者文件夹的。
+RequestFileTransfer，该服务是用来传输文件或者文件夹。
 
-根据 14229 的规范，0x38 的 request message 的报文结构如下所示。
+根据 14229 的规范，0x38 的 request message 的报文结构如下所示：
 
 | 数值位              | 参数名字                | 可选值    | 是否为必选项                        |
 | ------------------- | ----------------------- | --------- | ----------------------------------- |
@@ -675,19 +692,11 @@ RequestFileTransfer，该服务是用来传输文件或者文件夹的。
 | #5+n+2..#5+n+2+k-1  | fileSizeUnCompressed    | 0x00-0xFF | 否（与具体的 modeOfOperation 有关） |
 | #5+n+2+k..#5+n+1+2k | fileSizeCompressed      | 0x00-0xFF | 否（与具体的 modeOfOperation 有关） |
 
-filePathAndNameLength 表示的是后续文件路径及名字的长度
+<br/>
 
-filePathAndName 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）
+<br/>
 
-dataFormatIdentifier 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）
-
-fileSizeParameterLength 记录了后续 fileSizeUncompressed（fileSizeCompressed 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
-
-fileSizeUncompressed 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
-
-fileSizeCompressed 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等
-
-根据 14229 的规范，0x38 的 request message 的报文结构如下所示。
+根据 14229 的规范，0x38 的 request message 的报文结构如下所示：
 
 | 数值位                | 参数名字                            | 可选值    | 是否为必选项                   |
 | --------------------- | ----------------------------------- | --------- | ------------------------------ |
@@ -699,3 +708,25 @@ fileSizeCompressed 表示当前文件被压缩的长度（如果当前的 modeOf
 | #4+m+1..#4+m+2        | fileSizeOrDirInfoParameterlength    | 0x00-0xFF | 否                             |
 | #4+m+3..#4+m+3+k-1    | fileSizeUncompressedOrDirInfoLength | 0x00-0xFF | 否                             |
 | #4+m+3+k..#4+m+3+2k-1 | fileSizeCompressed                  | 0x00-0xFF | 否                             |
+
+`filePathAndNameLength` 表示的是后续文件路径及名字的长度
+
+<br/>
+
+`filePathAndName` 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）
+
+<br/>
+
+`dataFormatIdentifier` 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）
+
+<br/>
+
+`fileSizeParameterLength`（或者 `fileSizeOrDirInfoParameterlength`） 记录了后续 `fileSizeUncompressed`（`fileSizeCompressed` 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
+
+<br/>
+
+`fileSizeUncompressed` 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
+
+<br/>
+
+`fileSizeCompressed` 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等
