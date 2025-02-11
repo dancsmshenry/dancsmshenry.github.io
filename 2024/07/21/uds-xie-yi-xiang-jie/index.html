@@ -213,7 +213,7 @@ TestFailed
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -355,14 +355,14 @@ TestFailed
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    6.9k
+                    7.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    26 分
+                    28 分
                 </div>
                 
                 
@@ -420,6 +420,37 @@ TestFailed
 <td>Bit7</td>
 <td>WarningIndicator</td>
 <td>初始值为 0；当配置了 indicator，Bit3 变为 1（此时 Bit0 也一定为 1），并且也符合主机厂或者供应商的需求时，将当前 Bit 置为 1<br>当 healing 结束，0x14 服务，或者一些主机厂自定义的条件满足时，将当前 Bit 置为 0</td>
+</tr>
+</tbody></table>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="常用的拓展数据"><a href="#常用的拓展数据" class="headerlink" title="常用的拓展数据"></a>常用的拓展数据</h1><p>所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OCC1</td>
+<td>+1 的条件：报告 failed 之后的<strong>每次</strong>操作循环重启都 +1 <br>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br>一些实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br>或者 occ1 不为零并且 bit1 为零，则加一<br>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+</tr>
+<tr>
+<td>OCC3</td>
+<td>+1 的条件：<strong>首次</strong>报告 failed 之后的<strong>每次</strong>操作循环重启都 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>一些实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+</tr>
+<tr>
+<td>OCC4</td>
+<td>+1 的条件：当前操作循环<strong>首次</strong>报告 failed 之后，就 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>一些实现细节：<br>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+</tr>
+<tr>
+<td>FDC10</td>
+<td>等价于当前 dtc 的 fdc 值<br>达到 127 的条件：当报告 failed 之后，值变为 127<br>达到 -128 的条件：当报告 passed 之后，值变为 128<br>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时</td>
 </tr>
 </tbody></table>
 <br>
@@ -1799,8 +1830,8 @@ TestFailed
 
 <br>
 
-<h1 id="0x38"><a href="#0x38" class="headerlink" title="0x38"></a>0x38</h1><p>RequestFileTransfer，该服务是用来传输文件或者文件夹的。</p>
-<p>根据 14229 的规范，0x38 的 request message 的报文结构如下所示。</p>
+<h1 id="0x38"><a href="#0x38" class="headerlink" title="0x38"></a>0x38</h1><p>RequestFileTransfer，该服务是用来传输文件或者文件夹。</p>
+<p>根据 14229 的规范，0x38 的 request message 的报文结构如下所示：</p>
 <table>
 <thead>
 <tr>
@@ -1859,13 +1890,11 @@ TestFailed
 <td>否（与具体的 modeOfOperation 有关）</td>
 </tr>
 </tbody></table>
-<p>filePathAndNameLength 表示的是后续文件路径及名字的长度</p>
-<p>filePathAndName 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）</p>
-<p>dataFormatIdentifier 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）</p>
-<p>fileSizeParameterLength 记录了后续 fileSizeUncompressed（fileSizeCompressed 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
-<p>fileSizeUncompressed 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
-<p>fileSizeCompressed 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等</p>
-<p>根据 14229 的规范，0x38 的 request message 的报文结构如下所示。</p>
+<br>
+
+<br>
+
+<p>根据 14229 的规范，0x38 的 request message 的报文结构如下所示：</p>
 <table>
 <thead>
 <tr>
@@ -1924,6 +1953,22 @@ TestFailed
 <td>否</td>
 </tr>
 </tbody></table>
+<p><code>filePathAndNameLength</code> 表示的是后续文件路径及名字的长度</p>
+<br>
+
+<p><code>filePathAndName</code> 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）</p>
+<br>
+
+<p><code>dataFormatIdentifier</code> 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）</p>
+<br>
+
+<p><code>fileSizeParameterLength</code>（或者 <code>fileSizeOrDirInfoParameterlength</code>） 记录了后续 <code>fileSizeUncompressed</code>（<code>fileSizeCompressed</code> 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
+<br>
+
+<p><code>fileSizeUncompressed</code> 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
+<br>
+
+<p><code>fileSizeCompressed</code> 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等</p>
 
             </div>
             <hr />
@@ -1962,47 +2007,42 @@ TestFailed
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/07/21/uds-xie-yi-xiang-jie/">
+                <a href="/2025/02/12/kai-fa-gong-ju-shi-yong-zhi-gdb/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="UDS 协议详解">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
-                        <span class="card-title">UDS 协议详解</span>
+                        <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            DTC 状态位
+                            常用的 gdb 指令bt # 查看的堆栈
 
+f 1/2/3/4 # 查看具体第几个帧栈
 
-Bit
-Name
-Description
+p 变量名字 # 查看具体某个变量
 
+print/x 变量名字 # 打印变量的数据，以十六进制的形式打印（默认的是 8 进制）
 
-
-Bit0
-TestFailed
-表示 DTC 最近一次报告的结果是否为 Failed。当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；当最近一次报告
+thread app
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2024-07-21
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2025-02-12
+                        </span>
                         <span class="publish-author">
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -2017,7 +2057,7 @@ TestFailed
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2179,7 +2219,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">117.7k</span>
+            <span class="white-color">118.4k</span>
             
 
             <br>
