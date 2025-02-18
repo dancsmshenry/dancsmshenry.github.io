@@ -8,18 +8,9 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="DTC 状态位
-
-
-Bit
-Name
-Description
-
-
-
-Bit0
-TestFailed
-表示 DTC 最近一次报告的结果是否为 Failed。当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；当最近一次报告">
+    <meta name="description" content="基本概念对于 UDS 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
+所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，
+然后再通过一个简单的服务请求，或是 DTC 的报告，将这些概念逐个逐个的进行穿插">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -213,7 +204,7 @@ TestFailed
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -355,7 +346,7 @@ TestFailed
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    7.3k
+                    7.4k
                 </div>
                 
 
@@ -373,7 +364,30 @@ TestFailed
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="DTC-状态位"><a href="#DTC-状态位" class="headerlink" title="DTC 状态位"></a>DTC 状态位</h1><table>
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>对于 <code>UDS</code> 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。</p>
+<p>所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，</p>
+<p>然后再通过一个简单的服务请求，或是 <code>DTC</code> 的报告，将这些概念逐个逐个的进行穿插和联系。</p>
+<p>（TODO：后续可以画两个图，分别将  <code>DCM</code> 和 <code>DEM</code> 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）</p>
+<h2 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h2><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
+<p>抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；</p>
+<p>第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。</p>
+<br>
+
+<h2 id="积极响应与消极响应"><a href="#积极响应与消极响应" class="headerlink" title="积极响应与消极响应"></a>积极响应与消极响应</h2><br>
+
+<h2 id="常见的定时器"><a href="#常见的定时器" class="headerlink" title="常见的定时器"></a>常见的定时器</h2><br>
+
+<h2 id="DataIdentifier"><a href="#DataIdentifier" class="headerlink" title="DataIdentifier"></a>DataIdentifier</h2><br>
+
+<h2 id="RoutineIdentifier"><a href="#RoutineIdentifier" class="headerlink" title="RoutineIdentifier"></a>RoutineIdentifier</h2><br>
+
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><br>
+
+<h2 id="SecurityLevel"><a href="#SecurityLevel" class="headerlink" title="SecurityLevel"></a>SecurityLevel</h2><br>
+
+<h2 id="DiagnosticTroubleCode"><a href="#DiagnosticTroubleCode" class="headerlink" title="DiagnosticTroubleCode"></a>DiagnosticTroubleCode</h2><br>
+
+<h2 id="DiagnosticTroubleCodeStatus"><a href="#DiagnosticTroubleCodeStatus" class="headerlink" title="DiagnosticTroubleCodeStatus"></a>DiagnosticTroubleCodeStatus</h2><table>
 <thead>
 <tr>
 <th>Bit</th>
@@ -428,7 +442,19 @@ TestFailed
 
 <br>
 
-<h1 id="常用的拓展数据"><a href="#常用的拓展数据" class="headerlink" title="常用的拓展数据"></a>常用的拓展数据</h1><p>所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加</p>
+<h2 id="Aging-与-Healing"><a href="#Aging-与-Healing" class="headerlink" title="Aging 与 Healing"></a>Aging 与 Healing</h2><br>
+
+<br>
+
+<br>
+
+<h2 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h2><br>
+
+<br>
+
+<br>
+
+<h2 id="ExtendedData"><a href="#ExtendedData" class="headerlink" title="ExtendedData"></a>ExtendedData</h2><p>所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加</p>
 <table>
 <thead>
 <tr>
@@ -438,28 +464,21 @@ TestFailed
 </thead>
 <tbody><tr>
 <td>OCC1</td>
-<td>+1 的条件：报告 failed 之后的<strong>每次</strong>操作循环重启都 +1 <br>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br>一些实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br>或者 occ1 不为零并且 bit1 为零，则加一<br>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+<td>+1 的条件：报告 failed 之后的<strong>每次</strong>操作循环重启都 +1 <br>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br>实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br>或者 occ1 不为零并且 bit1 为零，则加一<br>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零</td>
 </tr>
 <tr>
 <td>OCC3</td>
-<td>+1 的条件：<strong>首次</strong>报告 failed 之后的<strong>每次</strong>操作循环重启都 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>一些实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+<td>+1 的条件：<strong>首次</strong>报告 failed 之后的<strong>每次</strong>操作循环重启都 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
 </tr>
 <tr>
 <td>OCC4</td>
-<td>+1 的条件：当前操作循环<strong>首次</strong>报告 failed 之后，就 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>一些实现细节：<br>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+<td>+1 的条件：当前操作循环<strong>首次</strong>报告 failed 之后，就 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>实现细节：<br>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
 </tr>
 <tr>
 <td>FDC10</td>
 <td>等价于当前 dtc 的 fdc 值<br>达到 127 的条件：当报告 failed 之后，值变为 127<br>达到 -128 的条件：当报告 passed 之后，值变为 128<br>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时</td>
 </tr>
 </tbody></table>
-<br>
-
-<br>
-
-<br>
-
-<h1 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h1><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
 <br>
 
 <br>
@@ -519,7 +538,7 @@ TestFailed
 </tbody></table>
 <p>关于会话模式，有以下几点是需要注意了解的：</p>
 <ol>
-<li>在一般的情况下， ECU 一上电，都是处于默认会话</li>
+<li>在一般的情况下， ECU 一上电，都是处于<strong>默认会话</strong></li>
 <li>在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下</li>
 <li>在 UDS 的概念中定义了定时器 <code>p2</code> 和 <code>p2 *</code>。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 <code>p2*</code>的定时器，在 <code>p2*</code> 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 1ms，<code>p2*</code> 定时器的单位是 10ms）</li>
 </ol>
@@ -877,8 +896,7 @@ TestFailed
 
 <br>
 
-<h1 id="0x29"><a href="#0x29" class="headerlink" title="0x29"></a>0x29</h1><p>Todo</p>
-<br>
+<h1 id="0x29-TODO"><a href="#0x29-TODO" class="headerlink" title="0x29(TODO)"></a>0x29(TODO)</h1><br>
 
 <br>
 
@@ -951,21 +969,68 @@ TestFailed
 
 <br>
 
-<h1 id="0x85"><a href="#0x85" class="headerlink" title="0x85"></a>0x85</h1><p>Todo</p>
+<h1 id="0x85"><a href="#0x85" class="headerlink" title="0x85"></a>0x85</h1><p>该服务用于表示是否开启 DEM 模块的报告。需要注意的是，按照 14229 的规范，如果切换到了默认会话，是需要开启 DEM 模块的报告的</p>
+<p>根据 14229 的规范，0x85 的 request message 的报文结构如下所示。</p>
+<table>
+<thead>
+<tr>
+<th>数值位</th>
+<th>参数名字</th>
+<th>可选值</th>
+<th>是否为必选项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#1</td>
+<td>服务 id</td>
+<td>0x85</td>
+<td>是</td>
+</tr>
+<tr>
+<td>#2</td>
+<td>子服务 id</td>
+<td>0x01/0x02</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<br>
+
+<p>根据 14229 的规范，0x85 的 positive response message 格式为：</p>
+<table>
+<thead>
+<tr>
+<th>数值位</th>
+<th>参数名字</th>
+<th>可选值</th>
+<th>是否为必选项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#1</td>
+<td>服务 id + positive 偏移量</td>
+<td>0xC5</td>
+<td>是</td>
+</tr>
+<tr>
+<td>#2</td>
+<td>子服务 id</td>
+<td>0x01/0x02</td>
+<td>是</td>
+</tr>
+</tbody></table>
 <br>
 
 <br>
 
 <br>
 
-<h1 id="0x86"><a href="#0x86" class="headerlink" title="0x86"></a>0x86</h1><p>Todo</p>
-<br>
+<h1 id="0x86-TODO"><a href="#0x86-TODO" class="headerlink" title="0x86(TODO)"></a>0x86(TODO)</h1><br>
 
 <br>
 
 <br>
 
-<h1 id="0x22"><a href="#0x22" class="headerlink" title="0x22"></a>0x22</h1><p>该服务是用来读取一个或者多个 did 对应的数据的。did 的全程是 dataIdentifier，它是由一个 std::uint16_t 和一连串二进制数据组成的，可以简单的理解为键值对的关系。此处的 std::uint16_t 为 did 号。</p>
+<h1 id="0x22"><a href="#0x22" class="headerlink" title="0x22"></a>0x22</h1><p>该服务是用来读取一个或者多个 did 对应的数据的。did 的全程是 dataIdentifier，它是由一个 <code>uint16</code> 和一连串二进制数据组成的，可以简单的理解为键值对的关系。此处的 <code>uint16</code> 为 did 号。</p>
 <p>而读取 did 的这个服务，可以理解是，外部的诊断仪传入 did 号，诊断 server 便根据报文中的 did 号，返回对应的数据。</p>
 <p>根据 14229 的规范，0x22 的 request message 的报文结构如下所示。</p>
 <table>
@@ -1074,7 +1139,7 @@ TestFailed
 <td>否（可以传入任意数量的 did；如果 transmissionMode 为 stopSending，且后续没有 did 存在时，则表示 client 需要将所有的定时读取的 did 都给取消）</td>
 </tr>
 </tbody></table>
-<p>根据 14229 的规范，0x22 的 response message 的报文结构如下所示。</p>
+<p>根据 14229 的规范，0x2A 的 response message 的报文结构如下所示。</p>
 <table>
 <thead>
 <tr>
@@ -1374,36 +1439,36 @@ TestFailed
 </tr>
 </thead>
 <tbody><tr>
-<td>0x01</td>
-<td>reportNumberOfDTCByStatusMask，读取符合该掩码要求的 DTC 的数量</td>
+<td><strong>0x01</strong></td>
+<td>reportNumberOfDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量</td>
 </tr>
 <tr>
-<td>0x02</td>
-<td>reportDTCByStatusMask，读取符合该掩码要求的 DTC 的数量</td>
+<td><strong>0x02</strong></td>
+<td>reportDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表</td>
 </tr>
 <tr>
 <td>0x03</td>
-<td>reportDTCSnapshotIdentification，读取某个 DTC 的所有快照组编号</td>
+<td>reportDTCSnapshotIdentification，不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ）</td>
 </tr>
 <tr>
-<td>0x04</td>
-<td>reportDTCSnapshotRecordByDTCNumber，读取某个 DTC 的某个快照组数据</td>
+<td><strong>0x04</strong></td>
+<td>reportDTCSnapshotRecordByDTCNumber，需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据）</td>
 </tr>
 <tr>
-<td>0x06</td>
-<td>reportDTCExtDataRecordByDTCNumber，读取某个 DTC 相关的拓展数据</td>
+<td><strong>0x06</strong></td>
+<td>reportDTCExtDataRecordByDTCNumber，需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据）</td>
 </tr>
 <tr>
 <td>0x07</td>
-<td>reportNumberOfDTCByServerityMaskRecord，读取符合严重性掩码的 DTC 的数量</td>
+<td>reportNumberOfDTCByServerityMaskRecord，需要传入状态码和严重程度，然后返回对应 DTC 的数量</td>
 </tr>
 <tr>
-<td>0x0A</td>
-<td>reportSupportedDTC，读取当前所有 DTC 的状态</td>
+<td><strong>0x0A</strong></td>
+<td>reportSupportedDTC，不需要传入数据，返回当前支持的所有的 DTC 及其状态</td>
 </tr>
 <tr>
 <td>0x14</td>
-<td>reportDTCFaultDetectionCounter，获取所有 preFailed 的 DTC 列表</td>
+<td>reportDTCFaultDetectionCounter，不需要传入数据，返回当前所有处于 preFailed 的 DTC</td>
 </tr>
 <tr>
 <td>0x17</td>
@@ -1418,27 +1483,16 @@ TestFailed
 <td>reportUserDefMemoryDTCExtDataRecordByDTCNumber</td>
 </tr>
 </tbody></table>
-<p>0x19 01（reportNumberOfDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量</p>
-<p>0x19 02（reportDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表</p>
-<p>0x19 03（reportDTCSnapshotIdentification）不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ）</p>
-<p>0x19 04（reportDTCSnapshotRecordByDTCNumber） 需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据）</p>
-<p>0x19 06 （reportDTCExtDataRecordByDTCNumber）需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据）</p>
-<p>0x19 07（reportNumberOfDTCBySeverityMaskRecord）需要传入状态码和严重程度，然后返回对应 DTC 的数量</p>
-<p>0x19 0a（reportSupportedDTC）不需要传入数据，返回当前支持的所有的 DTC 及其状态</p>
-<p>0x19 14（reportDTCFaultDetectionCounter）不需要传入数据，返回当前所有处于 preFailed 的 DTC</p>
-<p>0x19 17（reportUserDefMemoryDTCByStatusMask） TODO</p>
-<p>0x19 18（reportUserDefMemoryDTCSnapshotRecordByDTCNumber）功能和 04 很像，但区别在哪？</p>
-<p>0x19 19（reportUserDefMemoryDTCExtDataRecordByDTCNumber）功能和 06 很像，但区别在哪？</p>
 <br>
 
 <br>
 
 <br>
 
-<h1 id="0x31"><a href="#0x31" class="headerlink" title="0x31"></a>0x31</h1><p>该服务的全称为 routineControl。在介绍这个服务之前需要介绍 routineIdentifier，为一个 std::uint16_t 的值，表示某一个 routine。</p>
+<h1 id="0x31"><a href="#0x31" class="headerlink" title="0x31"></a>0x31</h1><p>该服务的全称为 routineControl。在介绍这个服务之前需要介绍 routineIdentifier，为一个 uint16 的值，表示某一个 routine。</p>
 <p>而服务 routineControl 表示的是外部的诊断仪或是脚本，想让诊断 server（或是 ECU）执行一段此前已经定义好了的代码逻辑，比如常见的擦除内存，重置或是修改某个参数等。</p>
 <p>如果从常见的网络模型上看，可以简单的立即为 routine 就是某个函数，当传入 0x31 0x01 的时候，就是让程序执行某段代码；当传入 0x31 0x02 的时候，就是让程序停止执行某段代码；当传入 0x31 0x03 的时候，就是获取这段代码执行结果的返回值。</p>
-<p>根据 14229 的规范，0x2E 的 request message 的报文结构如下所示。</p>
+<p>根据 14229 的规范，0x31 的 request message 的报文结构如下所示。</p>
 <table>
 <thead>
 <tr>
@@ -1542,7 +1596,7 @@ TestFailed
 <br>
 
 <h1 id="0x34"><a href="#0x34" class="headerlink" title="0x34"></a>0x34</h1><p>服务名为 requestDownload。此处需要注意的是，UDS 提供了服务用于数据的传输，而在具体数据的传输上，是需要先告知当前的数据流走向的。</p>
-<p>requestDownload 表示数据是从 client 传输到 server 上。</p>
+<p>requestDownload 表示数据是从 client 传输到 server 上，即上位机传输给 ECU。</p>
 <p>根据 14229 的规范，0x34 的 request message 的报文结构如下所示。</p>
 <table>
 <thead>
@@ -1584,11 +1638,22 @@ TestFailed
 <td>是（最少需要有一个字节）</td>
 </tr>
 </tbody></table>
-<p>其中，dataFormatIdentifier 需要分为两部分理解：它的高字节表示数据的压缩方法，低字节表示数据的加密方法。</p>
+<p><strong>dataFormatIdentifier</strong> 需要分为两部分理解：</p>
+<p>它的高 4 位字节表示数据的压缩方法，低 4 位字节表示数据的加密方法。</p>
 <p>如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。</p>
-<p>adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 Bit7-4 表示的是后续 memorySize 所需的长度，Bit3-0 表示的是 memoryAddress 所需的字节数</p>
-<p>memoryAddress 表示的是当前的数据具体要写在哪一个内存地址开始的位置。</p>
-<p>memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判断，最后返回给用户每次可以传输数据的最大大小，如果用户使用了数据压缩，那么此处的大小是压缩前还是压缩后的，需要厂商自行决定。</p>
+<br>
+
+<p><strong>adderssAndLengthFormatIdentifier</strong> 也需要分两部分来理解：</p>
+<p>它的 Bit7-4 表示的是后续 memorySize 所需的字节数，Bit3-0 表示的是 memoryAddress 所需的字节数。</p>
+<br>
+
+<p><strong>memoryAddress</strong> 表示的是当前的数据具体要写在哪一个内存地址开始的位置。</p>
+<br>
+
+<p><strong>memorySize</strong> 表示传输数据块的大小。</p>
+<p>ECU 需要使用该参数进行判断，最后返回给用户每次可以传输数据的最大大小，如果用户使用了数据压缩，那么此处的大小是压缩前还是压缩后的，需要厂商自行决定。</p>
+<br>
+
 <p>根据 14229 的规范，0x34 的 response message 的报文结构如下所示。</p>
 <table>
 <thead>
@@ -1618,8 +1683,11 @@ TestFailed
 <td>是</td>
 </tr>
 </tbody></table>
-<p>其中 lengthFormatIdentifier 需要分为两部分理解：Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留</p>
-<p>而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。</p>
+<p><strong>lengthFormatIdentifier</strong> 需要分为两部分理解：</p>
+<p>Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留。</p>
+<br>
+
+<p><strong>maxNumberOfBlockLength</strong> 表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。</p>
 <br>
 
 <br>
@@ -1627,7 +1695,7 @@ TestFailed
 <br>
 
 <h1 id="0x35"><a href="#0x35" class="headerlink" title="0x35"></a>0x35</h1><p>服务名为 requestUpload。此处需要注意的是，UDS 提供了服务用于数据的传输，而在具体数据的传输上，是需要先告知当前的数据流走向的。</p>
-<p>requestUpload 表示数据是从 server 传输到 client 上。</p>
+<p>requestUpload 表示数据是从 server 传输到 client 上，即从 ECU 传输给上位机。</p>
 <p>根据 14229 的规范，0x35 的 request message 的报文结构如下所示。</p>
 <table>
 <thead>
@@ -1669,11 +1737,9 @@ TestFailed
 <td>是（最少需要有一个字节）</td>
 </tr>
 </tbody></table>
-<p>其中，dataFormatIdentifier 需要分为两部分理解：它的高字节表示数据的压缩方法，低字节表示数据的加密方法。</p>
-<p>如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。</p>
-<p>adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 Bit7-4 表示的是后续 memorySize 所需的长度，Bit3-0 表示的是 memoryAddress 所需的字节数</p>
-<p>memoryAddress 表示当前需要上传的数据，是从哪一个内存地址开始的。</p>
-<p>memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判断，最后返回给用户每次可以传输数据的最大大小，如果用户使用了数据压缩，那么此处的大小是压缩前还是压缩后的，需要厂商自行决定。</p>
+<p>其中关于 <code>dataFormatIdentifier</code>，<code>addressAndLengthFormatIdentifier</code>，<code>memoryAddress</code>，<code>memorySize</code> 的描述，可以完全参见<code>0x34</code>中的描述。</p>
+<br>
+
 <p>根据 14229 的规范，0x35 的 response message 的报文结构如下所示。</p>
 <table>
 <thead>
@@ -1703,7 +1769,8 @@ TestFailed
 <td>是</td>
 </tr>
 </tbody></table>
-<p>其中 lengthFormatIdentifier 需要分为两部分理解：Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留</p>
+<p>lengthFormatIdentifier 需要分为两部分理解：</p>
+<p>Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留</p>
 <p>而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。</p>
 <br>
 
@@ -1742,6 +1809,9 @@ TestFailed
 </tr>
 </tbody></table>
 <p>blockSequenceCounter 是从 01 开始计数的，是用来计算当前已经传输数据的大小的。该值是为了保证数据的顺序及完整性传输。</p>
+<p>如果循环至 0xFF，则会回到 0x00。</p>
+<br>
+
 <p>根据 14229 的规范，0x36 的 response message 的报文结构如下所示。</p>
 <table>
 <thead>
@@ -1953,22 +2023,22 @@ TestFailed
 <td>否</td>
 </tr>
 </tbody></table>
-<p><code>filePathAndNameLength</code> 表示的是后续文件路径及名字的长度</p>
+<p><strong>filePathAndNameLength</strong> 表示的是后续文件路径及名字的长度</p>
 <br>
 
-<p><code>filePathAndName</code> 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）</p>
+<p><strong>filePathAndName</strong> 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）</p>
 <br>
 
-<p><code>dataFormatIdentifier</code> 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）</p>
+<p><strong>dataFormatIdentifier</strong> 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）</p>
 <br>
 
-<p><code>fileSizeParameterLength</code>（或者 <code>fileSizeOrDirInfoParameterlength</code>） 记录了后续 <code>fileSizeUncompressed</code>（<code>fileSizeCompressed</code> 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
+<p><strong>fileSizeParameterLength</strong>（或者 <strong>fileSizeOrDirInfoParameterlength</strong>） 记录了后续 <code>fileSizeUncompressed</code>（<code>fileSizeCompressed</code> 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
 <br>
 
-<p><code>fileSizeUncompressed</code> 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
+<p><strong>fileSizeUncompressed</strong> 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
 <br>
 
-<p><code>fileSizeCompressed</code> 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等</p>
+<p><strong>fileSizeCompressed</strong> 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等</p>
 
             </div>
             <hr />
@@ -2015,7 +2085,7 @@ TestFailed
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2057,7 +2127,7 @@ thread app
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2219,7 +2289,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">118.4k</span>
+            <span class="white-color">118.5k</span>
             
 
             <br>
