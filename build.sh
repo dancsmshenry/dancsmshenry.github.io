@@ -8,3 +8,6 @@ hexo s
 
 # update in github
 hexo d
+
+# add article
+hexo new post 'article'

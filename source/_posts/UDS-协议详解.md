@@ -11,11 +11,55 @@ tags:
 categories:
 ---
 
+# 基本概念
 
+对于 `UDS` 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
 
+所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，
 
+然后再通过一个简单的服务请求，或是 `DTC` 的报告，将这些概念逐个逐个的进行穿插和联系。
 
-# DTC 状态位
+（TODO：后续可以画两个图，分别将  `DCM` 和 `DEM` 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）
+
+## 子服务
+
+一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
+
+抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；
+
+第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。
+
+<br/>
+
+## 积极响应与消极响应
+
+<br/>
+
+## 常见的定时器
+
+<br/>
+
+## DataIdentifier
+
+<br/>
+
+## RoutineIdentifier
+
+<br/>
+
+## Session
+
+<br/>
+
+## SecurityLevel
+
+<br/>
+
+## DiagnosticTroubleCode
+
+<br/>
+
+## DiagnosticTroubleCodeStatus
 
 | Bit  | Name                               | Description                                                  |
 | ---- | ---------------------------------- | ------------------------------------------------------------ |
@@ -34,26 +78,32 @@ categories:
 
 <br/>
 
-# 常用的拓展数据
+## Aging 与 Healing
+
+<br/>
+
+<br/>
+
+<br/>
+
+## Snapshot
+
+<br/>
+
+<br/>
+
+<br/>
+
+## ExtendedData
 
 所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加
 
 | 名称  | 介绍                                                         |
 | ----- | ------------------------------------------------------------ |
-| OCC1  | +1 的条件：报告 failed 之后的**每次**操作循环重启都 +1 <br/>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br/>一些实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| OCC3  | +1 的条件：**首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>一些实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| OCC4  | +1 的条件：当前操作循环**首次**报告 failed 之后，就 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>一些实现细节：<br/>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC1  | +1 的条件：报告 failed 之后的**每次**操作循环重启都 +1 <br/>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC3  | +1 的条件：**首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC4  | +1 的条件：当前操作循环**首次**报告 failed 之后，就 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
 | FDC10 | 等价于当前 dtc 的 fdc 值<br/>达到 127 的条件：当报告 failed 之后，值变为 127<br/>达到 -128 的条件：当报告 passed 之后，值变为 128<br/>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时 |
-
-<br/>
-
-<br/>
-
-<br/>
-
-# 子服务
-
-一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
 
 <br/>
 
@@ -87,7 +137,7 @@ categories:
 
 关于会话模式，有以下几点是需要注意了解的：
 
-1. 在一般的情况下， ECU 一上电，都是处于默认会话
+1. 在一般的情况下， ECU 一上电，都是处于**默认会话**
 2. 在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下
 3. 在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 1ms，`p2*` 定时器的单位是 10ms）
 
@@ -228,9 +278,7 @@ categories:
 
 <br/>
 
-# 0x29
-
-Todo
+# 0x29(TODO)
 
 <br/>
 
@@ -272,7 +320,23 @@ Todo
 
 # 0x85
 
-Todo
+该服务用于表示是否开启 DEM 模块的报告。需要注意的是，按照 14229 的规范，如果切换到了默认会话，是需要开启 DEM 模块的报告的
+
+根据 14229 的规范，0x85 的 request message 的报文结构如下所示。
+
+| 数值位 | 参数名字  | 可选值    | 是否为必选项 |
+| ------ | --------- | --------- | ------------ |
+| #1     | 服务 id   | 0x85      | 是           |
+| #2     | 子服务 id | 0x01/0x02 | 是           |
+
+<br/>
+
+根据 14229 的规范，0x85 的 positive response message 格式为：
+
+| 数值位 | 参数名字                  | 可选值    | 是否为必选项 |
+| ------ | ------------------------- | --------- | ------------ |
+| #1     | 服务 id + positive 偏移量 | 0xC5      | 是           |
+| #2     | 子服务 id                 | 0x01/0x02 | 是           |
 
 <br/>
 
@@ -280,9 +344,7 @@ Todo
 
 <br/>
 
-# 0x86
-
-Todo
+# 0x86(TODO)
 
 <br/>
 
@@ -292,7 +354,7 @@ Todo
 
 # 0x22
 
-该服务是用来读取一个或者多个 did 对应的数据的。did 的全程是 dataIdentifier，它是由一个 std::uint16_t 和一连串二进制数据组成的，可以简单的理解为键值对的关系。此处的 std::uint16_t 为 did 号。
+该服务是用来读取一个或者多个 did 对应的数据的。did 的全程是 dataIdentifier，它是由一个 `uint16` 和一连串二进制数据组成的，可以简单的理解为键值对的关系。此处的 `uint16` 为 did 号。
 
 而读取 did 的这个服务，可以理解是，外部的诊断仪传入 did 号，诊断 server 便根据报文中的 did 号，返回对应的数据。
 
@@ -334,7 +396,7 @@ Todo
 | #2     | transmissionMode，表示传输的速率 | 0x00-0xFF | 是                                                           |
 | #3     | periodicDataIdentifier           | 0x00-0xFF | 否（可以传入任意数量的 did；如果 transmissionMode 为 stopSending，且后续没有 did 存在时，则表示 client 需要将所有的定时读取的 did 都给取消） |
 
-根据 14229 的规范，0x22 的 response message 的报文结构如下所示。
+根据 14229 的规范，0x2A 的 response message 的报文结构如下所示。
 
 | 数值位 | 参数名字                  | 可选值 | 是否为必选项 |
 | ------ | ------------------------- | ------ | ------------ |
@@ -454,39 +516,17 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 
 | 子服务 id | 含义                                                         |
 | --------- | ------------------------------------------------------------ |
-| 0x01      | reportNumberOfDTCByStatusMask，读取符合该掩码要求的 DTC 的数量 |
-| 0x02      | reportDTCByStatusMask，读取符合该掩码要求的 DTC 的数量       |
-| 0x03      | reportDTCSnapshotIdentification，读取某个 DTC 的所有快照组编号 |
-| 0x04      | reportDTCSnapshotRecordByDTCNumber，读取某个 DTC 的某个快照组数据 |
-| 0x06      | reportDTCExtDataRecordByDTCNumber，读取某个 DTC 相关的拓展数据 |
-| 0x07      | reportNumberOfDTCByServerityMaskRecord，读取符合严重性掩码的 DTC 的数量 |
-| 0x0A      | reportSupportedDTC，读取当前所有 DTC 的状态                  |
-| 0x14      | reportDTCFaultDetectionCounter，获取所有 preFailed 的 DTC 列表 |
+| **0x01**  | reportNumberOfDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量 |
+| **0x02**  | reportDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表 |
+| 0x03      | reportDTCSnapshotIdentification，不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ） |
+| **0x04**  | reportDTCSnapshotRecordByDTCNumber，需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据） |
+| **0x06**  | reportDTCExtDataRecordByDTCNumber，需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据） |
+| 0x07      | reportNumberOfDTCByServerityMaskRecord，需要传入状态码和严重程度，然后返回对应 DTC 的数量 |
+| **0x0A**  | reportSupportedDTC，不需要传入数据，返回当前支持的所有的 DTC 及其状态 |
+| 0x14      | reportDTCFaultDetectionCounter，不需要传入数据，返回当前所有处于 preFailed 的 DTC |
 | 0x17      | reportUserDefMemoryByStatusMask                              |
 | 0x18      | reportUserDefMemoryDTCSnapshotRecordByDTCNumber              |
 | 0x19      | reportUserDefMemoryDTCExtDataRecordByDTCNumber               |
-
-0x19 01（reportNumberOfDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量
-
-0x19 02（reportDTCByStatusMask） 需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表
-
-0x19 03（reportDTCSnapshotIdentification）不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ）
-
-0x19 04（reportDTCSnapshotRecordByDTCNumber） 需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据）
-
-0x19 06 （reportDTCExtDataRecordByDTCNumber）需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据）
-
-0x19 07（reportNumberOfDTCBySeverityMaskRecord）需要传入状态码和严重程度，然后返回对应 DTC 的数量
-
-0x19 0a（reportSupportedDTC）不需要传入数据，返回当前支持的所有的 DTC 及其状态
-
-0x19 14（reportDTCFaultDetectionCounter）不需要传入数据，返回当前所有处于 preFailed 的 DTC
-
-0x19 17（reportUserDefMemoryDTCByStatusMask） TODO
-
-0x19 18（reportUserDefMemoryDTCSnapshotRecordByDTCNumber）功能和 04 很像，但区别在哪？
-
-0x19 19（reportUserDefMemoryDTCExtDataRecordByDTCNumber）功能和 06 很像，但区别在哪？
 
 <br/>
 
@@ -496,13 +536,13 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 
 # 0x31
 
-该服务的全称为 routineControl。在介绍这个服务之前需要介绍 routineIdentifier，为一个 std::uint16_t 的值，表示某一个 routine。
+该服务的全称为 routineControl。在介绍这个服务之前需要介绍 routineIdentifier，为一个 uint16 的值，表示某一个 routine。
 
 而服务 routineControl 表示的是外部的诊断仪或是脚本，想让诊断 server（或是 ECU）执行一段此前已经定义好了的代码逻辑，比如常见的擦除内存，重置或是修改某个参数等。
 
 如果从常见的网络模型上看，可以简单的立即为 routine 就是某个函数，当传入 0x31 0x01 的时候，就是让程序执行某段代码；当传入 0x31 0x02 的时候，就是让程序停止执行某段代码；当传入 0x31 0x03 的时候，就是获取这段代码执行结果的返回值。
 
-根据 14229 的规范，0x2E 的 request message 的报文结构如下所示。
+根据 14229 的规范，0x31 的 request message 的报文结构如下所示。
 
 | 数值位 | 参数名字                   | 可选值    | 是否为必选项                     |
 | ------ | -------------------------- | --------- | -------------------------------- |
@@ -539,7 +579,7 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 
 服务名为 requestDownload。此处需要注意的是，UDS 提供了服务用于数据的传输，而在具体数据的传输上，是需要先告知当前的数据流走向的。
 
-requestDownload 表示数据是从 client 传输到 server 上。
+requestDownload 表示数据是从 client 传输到 server 上，即上位机传输给 ECU。
 
 根据 14229 的规范，0x34 的 request message 的报文结构如下所示。
 
@@ -551,15 +591,29 @@ requestDownload 表示数据是从 client 传输到 server 上。
 | #4..#(m-1)+4 | memoryAddress                    | 0x00-0xFF | 是（最少需要有一个字节） |
 | #n-(k-1)..#n | memorySize                       | 0x00-0xFF | 是（最少需要有一个字节） |
 
-其中，dataFormatIdentifier 需要分为两部分理解：它的高字节表示数据的压缩方法，低字节表示数据的加密方法。
+**dataFormatIdentifier** 需要分为两部分理解：
+
+它的高 4 位字节表示数据的压缩方法，低 4 位字节表示数据的加密方法。
 
 如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。
 
-adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 Bit7-4 表示的是后续 memorySize 所需的长度，Bit3-0 表示的是 memoryAddress 所需的字节数
+<br/>
 
-memoryAddress 表示的是当前的数据具体要写在哪一个内存地址开始的位置。
+**adderssAndLengthFormatIdentifier** 也需要分两部分来理解：
 
-memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判断，最后返回给用户每次可以传输数据的最大大小，如果用户使用了数据压缩，那么此处的大小是压缩前还是压缩后的，需要厂商自行决定。
+它的 Bit7-4 表示的是后续 memorySize 所需的字节数，Bit3-0 表示的是 memoryAddress 所需的字节数。
+
+<br/>
+
+**memoryAddress** 表示的是当前的数据具体要写在哪一个内存地址开始的位置。
+
+<br/>
+
+**memorySize** 表示传输数据块的大小。
+
+ECU 需要使用该参数进行判断，最后返回给用户每次可以传输数据的最大大小，如果用户使用了数据压缩，那么此处的大小是压缩前还是压缩后的，需要厂商自行决定。
+
+<br/>
 
 根据 14229 的规范，0x34 的 response message 的报文结构如下所示。
 
@@ -569,9 +623,13 @@ memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判�
 | #2     | lengthFormatIdentifier    | 0x00-0xF0 | 是           |
 | #3,#n  | maxNumberOfBlockLength    | 0x00-0xFF | 是           |
 
-其中 lengthFormatIdentifier 需要分为两部分理解：Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留
+**lengthFormatIdentifier** 需要分为两部分理解：
 
-而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
+Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留。
+
+<br/>
+
+**maxNumberOfBlockLength** 表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
 
 <br/>
 
@@ -583,7 +641,7 @@ memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判�
 
 服务名为 requestUpload。此处需要注意的是，UDS 提供了服务用于数据的传输，而在具体数据的传输上，是需要先告知当前的数据流走向的。
 
-requestUpload 表示数据是从 server 传输到 client 上。
+requestUpload 表示数据是从 server 传输到 client 上，即从 ECU 传输给上位机。
 
 根据 14229 的规范，0x35 的 request message 的报文结构如下所示。
 
@@ -595,15 +653,9 @@ requestUpload 表示数据是从 server 传输到 client 上。
 | #4..#(m-1)+4 | memoryAddress                    | 0x00-0xFF | 是（最少需要有一个字节） |
 | #n-(k-1)..#n | memorySize                       | 0x00-0xFF | 是（最少需要有一个字节） |
 
-其中，dataFormatIdentifier 需要分为两部分理解：它的高字节表示数据的压缩方法，低字节表示数据的加密方法。
+其中关于 `dataFormatIdentifier`，`addressAndLengthFormatIdentifier`，`memoryAddress`，`memorySize` 的描述，可以完全参见`0x34`中的描述。
 
-如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。
-
-adderssAndLengthFormatIdentifier 也需要分两部分来理解：它的 Bit7-4 表示的是后续 memorySize 所需的长度，Bit3-0 表示的是 memoryAddress 所需的字节数
-
-memoryAddress 表示当前需要上传的数据，是从哪一个内存地址开始的。
-
-memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判断，最后返回给用户每次可以传输数据的最大大小，如果用户使用了数据压缩，那么此处的大小是压缩前还是压缩后的，需要厂商自行决定。
+<br/>
 
 根据 14229 的规范，0x35 的 response message 的报文结构如下所示。
 
@@ -613,7 +665,9 @@ memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判�
 | #2     | lengthFormatIdentifier    | 0x00-0xF0 | 是           |
 | #3,#n  | maxNumberOfBlockLength    | 0x00-0xFF | 是           |
 
-其中 lengthFormatIdentifier 需要分为两部分理解：Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留
+lengthFormatIdentifier 需要分为两部分理解：
+
+Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留
 
 而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
 
@@ -636,6 +690,10 @@ memorySize 表示传输数据块的大小。ECU 需要使用该参数进行判�
 | #3..#n | transferRequestParameterRecord | 0x00-0xFF | 否（如果此时是 0x34 对应的数据传输，就必须要有该参数） |
 
 blockSequenceCounter 是从 01 开始计数的，是用来计算当前已经传输数据的大小的。该值是为了保证数据的顺序及完整性传输。
+
+如果循环至 0xFF，则会回到 0x00。
+
+<br/>
 
 根据 14229 的规范，0x36 的 response message 的报文结构如下所示。
 
@@ -709,24 +767,24 @@ RequestFileTransfer，该服务是用来传输文件或者文件夹。
 | #4+m+3..#4+m+3+k-1    | fileSizeUncompressedOrDirInfoLength | 0x00-0xFF | 否                             |
 | #4+m+3+k..#4+m+3+2k-1 | fileSizeCompressed                  | 0x00-0xFF | 否                             |
 
-`filePathAndNameLength` 表示的是后续文件路径及名字的长度
+**filePathAndNameLength** 表示的是后续文件路径及名字的长度
 
 <br/>
 
-`filePathAndName` 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）
+**filePathAndName** 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）
 
 <br/>
 
-`dataFormatIdentifier` 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）
+**dataFormatIdentifier** 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）
 
 <br/>
 
-`fileSizeParameterLength`（或者 `fileSizeOrDirInfoParameterlength`） 记录了后续 `fileSizeUncompressed`（`fileSizeCompressed` 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
+**fileSizeParameterLength**（或者 **fileSizeOrDirInfoParameterlength**） 记录了后续 `fileSizeUncompressed`（`fileSizeCompressed` 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
 
 <br/>
 
-`fileSizeUncompressed` 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
+**fileSizeUncompressed** 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
 
 <br/>
 
-`fileSizeCompressed` 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等
+**fileSizeCompressed** 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等
