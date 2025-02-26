@@ -44,6 +44,6 @@ kill -9 processId # signal kill
 # 如何生成 coredump
 
 1. 在 shell 中输入 `ulimit -c`，查看当前允许的生成 coredump 文件的大小
-2. 接着在 shell 中输入 `ulimit -c unlimited`允许生成无限大小的 coredump 文件
-3. 再在 shell 中输入 `echo "kernel.core_pattern=/tmp/core-%e-%p-%t" W| sudo dd of=/proc/sys/kernel/core_pattern`指定 coredump 文件的生成路径（可以用 vim 修改对应文件，但是有些场景可能会无法写入，所以需要强行用 dd 写进去）
+2. 接着在 shell 中输入 `ulimit -c unlimited`允 许生成无限大小的 coredump 文件
+3. 再在 shell 中输入 `echo "kernel.core_pattern=/tmp/core-%e-%p-%t" | sudo dd of=/proc/sys/kernel/core_pattern` 指定 coredump 文件的生成路径（可以用 vim 修改对应文件，但是有些场景可能会无法写入，所以需要强行用 dd 写进去）
 4. 生成 coredump 后会到指定路径下，然后 gdb 可执行文件，接着在 gdb 的输入模式下，写 core /tmp/core** ，后面填写的是 coredump 文件的路径
