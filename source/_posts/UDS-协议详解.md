@@ -8,6 +8,7 @@ date: 2024-07-21 14:59:47
 password:
 summary:
 tags:
+- AutomotiveElectronic
 categories:
 ---
 
@@ -20,6 +21,8 @@ categories:
 然后再通过一个简单的服务请求，或是 `DTC` 的报告，将这些概念逐个逐个的进行穿插和联系。
 
 （TODO：后续可以画两个图，分别将  `DCM` 和 `DEM` 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）
+
+<br/>
 
 ## 子服务
 
@@ -36,6 +39,8 @@ categories:
 <br/>
 
 ## 常见的定时器
+
+主要分为 p2、p2* 以及 s3。
 
 <br/>
 
@@ -278,7 +283,37 @@ categories:
 
 <br/>
 
-# 0x29(TODO)
+# 0x29
+
+认证主要分为 APCE 和 ACR，a 核上的协议栈一般只支持 APCE。而其中 APCE 又分为单向认证和双向认证
+
+APCE 的全称 Authentication with PKI Certificate Exchange
+
+ACR 的全称 Authentication with Challenge-Response
+
+<br/>
+
+按照 14229 的规范，支持的子服务如下所示：
+
+| 子服务名称                                | 作用                                       |
+| ----------------------------------------- | ------------------------------------------ |
+| 0x00 deAuthenticate                       | 主动结束认证状态                           |
+| 0x01 verifyCertificateUnidirectional      | 单向认证（为 APCE 下的子服务）             |
+| 0x02 verifyCertificateBidirectional       | 双向认证（为 APCE 下的子服务）             |
+| 0x03 proofOfOwnership                     | 所有权证明（为 APCE 下的子服务）           |
+| 0x04 transmitCertificate                  | 传输证书（为 APCE 下的子服务）             |
+| 0x05 requestChallengeForAuthentication    | （为 ACR 下的子服务）                      |
+| 0x06 verifyProofOfOwnershipUnidirectional | （为 ACR 下的子服务）                      |
+| 0x07 verifyProofOfOwnershipBidirectional  | （为 ACR 下的子服务）                      |
+| 0x08 authenticationConfiguration          | 表示当前协议栈支持的认证，是 APCE 还是 ACR |
+
+
+
+单向认证：
+
+0x01 服务，传递 client certificate 和 client challenge；server 回复 server challenge 和 server ephemeral public key
+
+再使用 0x03 服务，传递 client proofOfOwnershipClient 和 client ephemeral public key；server 回复 SessionKeyInfo
 
 <br/>
 
@@ -344,7 +379,9 @@ categories:
 
 <br/>
 
-# 0x86(TODO)
+# 0x86
+
+Todo：很少看到有客户使用这个服务，后续需要用到的时候，再进行深入的了解。
 
 <br/>
 
@@ -593,7 +630,7 @@ requestDownload 表示数据是从 client 传输到 server 上，即上位机传
 
 **dataFormatIdentifier** 需要分为两部分理解：
 
-它的高 4 位字节表示数据的压缩方法，低 4 位字节表示数据的加密方法。
+Bit7-4 表示数据的压缩方法；Bit3-0 表示数据的加密方法。
 
 如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。
 
@@ -601,7 +638,7 @@ requestDownload 表示数据是从 client 传输到 server 上，即上位机传
 
 **adderssAndLengthFormatIdentifier** 也需要分两部分来理解：
 
-它的 Bit7-4 表示的是后续 memorySize 所需的字节数，Bit3-0 表示的是 memoryAddress 所需的字节数。
+Bit7-4 表示的是 memorySize 所需的字节数；Bit3-0 表示的是 memoryAddress 所需的字节数。
 
 <br/>
 
@@ -625,7 +662,7 @@ ECU 需要使用该参数进行判断，最后返回给用户每次可以传输�
 
 **lengthFormatIdentifier** 需要分为两部分理解：
 
-Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留。
+Bit7-4 表示后续 maxNumberOfBlockLength 的长度；Bit3-0 为 0，具体的内容为 ISO 保留。
 
 <br/>
 
@@ -667,7 +704,7 @@ requestUpload 表示数据是从 server 传输到 client 上，即从 ECU 传输
 
 lengthFormatIdentifier 需要分为两部分理解：
 
-Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留
+Bit7-4 表示后续 maxNumberOfBlockLength 的长度；Bit3-0 为 0，具体的内容为 ISO 保留
 
 而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
 

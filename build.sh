@@ -3,11 +3,11 @@
 hexo clean
 hexo g
 
-# show in local
+# show in localServer
 hexo s
 
-# update in github
+# update to github
 hexo d
 
-# add article
+# create article
 hexo new post 'article'
