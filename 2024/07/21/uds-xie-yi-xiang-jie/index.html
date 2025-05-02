@@ -204,7 +204,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/25.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -320,7 +320,11 @@
                 <div class="col s7">
                     
                     <div class="article-tag">
-                        <span class="chip bg-color">无标签</span>
+                        
+                        <a href="/tags/AutomotiveElectronic/" target="_blank">
+                            <span class="chip bg-color">AutomotiveElectronic</span>
+                        </a>
+                        
                     </div>
                     
                 </div>
@@ -346,14 +350,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    7.4k
+                    7.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    28 分
+                    29 分
                 </div>
                 
                 
@@ -368,6 +372,8 @@
 <p>所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，</p>
 <p>然后再通过一个简单的服务请求，或是 <code>DTC</code> 的报告，将这些概念逐个逐个的进行穿插和联系。</p>
 <p>（TODO：后续可以画两个图，分别将  <code>DCM</code> 和 <code>DEM</code> 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）</p>
+<br>
+
 <h2 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h2><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
 <p>抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；</p>
 <p>第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。</p>
@@ -375,7 +381,8 @@
 
 <h2 id="积极响应与消极响应"><a href="#积极响应与消极响应" class="headerlink" title="积极响应与消极响应"></a>积极响应与消极响应</h2><br>
 
-<h2 id="常见的定时器"><a href="#常见的定时器" class="headerlink" title="常见的定时器"></a>常见的定时器</h2><br>
+<h2 id="常见的定时器"><a href="#常见的定时器" class="headerlink" title="常见的定时器"></a>常见的定时器</h2><p>主要分为 p2、p2* 以及 s3。</p>
+<br>
 
 <h2 id="DataIdentifier"><a href="#DataIdentifier" class="headerlink" title="DataIdentifier"></a>DataIdentifier</h2><br>
 
@@ -896,7 +903,60 @@
 
 <br>
 
-<h1 id="0x29-TODO"><a href="#0x29-TODO" class="headerlink" title="0x29(TODO)"></a>0x29(TODO)</h1><br>
+<h1 id="0x29"><a href="#0x29" class="headerlink" title="0x29"></a>0x29</h1><p>认证主要分为 APCE 和 ACR，a 核上的协议栈一般只支持 APCE。而其中 APCE 又分为单向认证和双向认证</p>
+<p>APCE 的全称 Authentication with PKI Certificate Exchange</p>
+<p>ACR 的全称 Authentication with Challenge-Response</p>
+<br>
+
+<p>按照 14229 的规范，支持的子服务如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>子服务名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x00 deAuthenticate</td>
+<td>主动结束认证状态</td>
+</tr>
+<tr>
+<td>0x01 verifyCertificateUnidirectional</td>
+<td>单向认证（为 APCE 下的子服务）</td>
+</tr>
+<tr>
+<td>0x02 verifyCertificateBidirectional</td>
+<td>双向认证（为 APCE 下的子服务）</td>
+</tr>
+<tr>
+<td>0x03 proofOfOwnership</td>
+<td>所有权证明（为 APCE 下的子服务）</td>
+</tr>
+<tr>
+<td>0x04 transmitCertificate</td>
+<td>传输证书（为 APCE 下的子服务）</td>
+</tr>
+<tr>
+<td>0x05 requestChallengeForAuthentication</td>
+<td>（为 ACR 下的子服务）</td>
+</tr>
+<tr>
+<td>0x06 verifyProofOfOwnershipUnidirectional</td>
+<td>（为 ACR 下的子服务）</td>
+</tr>
+<tr>
+<td>0x07 verifyProofOfOwnershipBidirectional</td>
+<td>（为 ACR 下的子服务）</td>
+</tr>
+<tr>
+<td>0x08 authenticationConfiguration</td>
+<td>表示当前协议栈支持的认证，是 APCE 还是 ACR</td>
+</tr>
+</tbody></table>
+<p>单向认证：</p>
+<p>0x01 服务，传递 client certificate 和 client challenge；server 回复 server challenge 和 server ephemeral public key</p>
+<p>再使用 0x03 服务，传递 client proofOfOwnershipClient 和 client ephemeral public key；server 回复 SessionKeyInfo</p>
+<br>
 
 <br>
 
@@ -1024,7 +1084,8 @@
 
 <br>
 
-<h1 id="0x86-TODO"><a href="#0x86-TODO" class="headerlink" title="0x86(TODO)"></a>0x86(TODO)</h1><br>
+<h1 id="0x86"><a href="#0x86" class="headerlink" title="0x86"></a>0x86</h1><p>Todo：很少看到有客户使用这个服务，后续需要用到的时候，再进行深入的了解。</p>
+<br>
 
 <br>
 
@@ -1639,12 +1700,12 @@
 </tr>
 </tbody></table>
 <p><strong>dataFormatIdentifier</strong> 需要分为两部分理解：</p>
-<p>它的高 4 位字节表示数据的压缩方法，低 4 位字节表示数据的加密方法。</p>
+<p>Bit7-4 表示数据的压缩方法；Bit3-0 表示数据的加密方法。</p>
 <p>如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。</p>
 <br>
 
 <p><strong>adderssAndLengthFormatIdentifier</strong> 也需要分两部分来理解：</p>
-<p>它的 Bit7-4 表示的是后续 memorySize 所需的字节数，Bit3-0 表示的是 memoryAddress 所需的字节数。</p>
+<p>Bit7-4 表示的是 memorySize 所需的字节数；Bit3-0 表示的是 memoryAddress 所需的字节数。</p>
 <br>
 
 <p><strong>memoryAddress</strong> 表示的是当前的数据具体要写在哪一个内存地址开始的位置。</p>
@@ -1684,7 +1745,7 @@
 </tr>
 </tbody></table>
 <p><strong>lengthFormatIdentifier</strong> 需要分为两部分理解：</p>
-<p>Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留。</p>
+<p>Bit7-4 表示后续 maxNumberOfBlockLength 的长度；Bit3-0 为 0，具体的内容为 ISO 保留。</p>
 <br>
 
 <p><strong>maxNumberOfBlockLength</strong> 表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。</p>
@@ -1770,7 +1831,7 @@
 </tr>
 </tbody></table>
 <p>lengthFormatIdentifier 需要分为两部分理解：</p>
-<p>Bit7-4 表示后续 maxNumberOfBlockLength 的长度，Bit3-0 为 0，具体的内容为 ISO 保留</p>
+<p>Bit7-4 表示后续 maxNumberOfBlockLength 的长度；Bit3-0 为 0，具体的内容为 ISO 保留</p>
 <p>而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。</p>
 <br>
 
@@ -2085,7 +2146,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2093,15 +2154,16 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            常用的 gdb 指令bt # 查看的堆栈
+                            多线程调试# 查看所有线程的堆栈
+thread apply all bt
 
-f 1/2/3/4 # 查看具体第几个帧栈
+# 切换到指定线程的堆栈
+t 线程号
 
-p 变量名字 # 查看具体某个变量
+# 进入正在运行的程序查看堆栈（一般用于排查死锁或者进程卡死的问题）
+gdb attach 进程号
 
-print/x 变量名字 # 打印变量的数据，以十六进制的形式打印（默认的是 8 进制）
-
-thread app
+# 查看当前所有线程的
                         
                     </div>
                     <div class="publish-info">
@@ -2112,6 +2174,14 @@ thread app
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Tool/" target="_blank">
+                        <span class="chip bg-color">Tool</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -2127,7 +2197,7 @@ thread app
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2151,8 +2221,8 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Tool/" target="_blank">
-                        <span class="chip bg-color">Tool</span>
+                    <a href="/tags/Test/" target="_blank">
+                        <span class="chip bg-color">Test</span>
                     </a>
                     
                 </div>
@@ -2289,7 +2359,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">118.5k</span>
+            <span class="white-color">118.2k</span>
             
 
             <br>
