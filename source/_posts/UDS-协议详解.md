@@ -79,11 +79,45 @@ categories:
 
 <br/>
 
+对于有 dtc，当报告 failed 时需要将 bit7 置为 0 的 dtc 而言，有以下的状态位变化：
+
+|                      | bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0 | Result |
+| -------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 初始状态             | 0    | 1    | 0    | 1    | 0    | 0    | 0    | 0    | 0x50   |
+| 初始化->failed       | 0    | 0    | 1    | 0    | 1    | 1    | 1    | 1    | 0x2F   |
+| failed->重启操作循环 | 0    | 1    | 1    | 0    | 1    | 1    | 0    | 1    | 0x6D   |
+| failed->重启操作循环 | 0    | 1    | 1    | 0    | 1    | 0    | 0    | 1    | 0x69   |
+
+<br/>
+
+对于有 dtc，当报告 failed 时需要将 bit7 置为 1 的 dtc 而言，有以下的状态位变化：
+
+|                      | bit7 | bit6 | bit5 | bit4 | bit3 | bit2 | bit1 | bit0 | Result |
+| -------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ------ |
+| 初始状态             | 0    | 1    | 0    | 1    | 0    | 0    | 0    | 0    | 0x50   |
+| 初始化->failed       | 1    | 0    | 1    | 0    | 1    | 1    | 1    | 1    | 0xAF   |
+| failed->重启操作循环 | 1    | 1    | 1    | 0    | 1    | 1    | 0    | 1    | 0xED   |
+| failed->重启操作循环 | 0    | 1    | 1    | 0    | 1    | 0    | 0    | 1    | 0xE9   |
+
+<br/>
+
 <br/>
 
 <br/>
 
 ## Aging 与 Healing
+
+二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。
+
+（注：此处先不考虑 dtc 在这期间报告 passed 的情况，因为存在一些厂商要求报告 passed 之后，将 bit7 置为 0）
+
+因此，将上述流程，描述为 healing，也就是愈合。
+
+<br/>
+
+而在经过了 healing 之后，距离能够自主的通过操作循环的重启，将相关的故障信息清楚的流程，称之为 aging，也就是老化。
+
+（注：此处先不考虑 dtc 在这期间报告 failed 的情况）
 
 <br/>
 
@@ -92,6 +126,10 @@ categories:
 <br/>
 
 ## Snapshot
+
+在发生了故障时，存储一些重要的信息。
+
+从实现上来看，就是读取某些 did 的信息，并存储在非易失性存储介质中。
 
 <br/>
 
@@ -105,10 +143,14 @@ categories:
 
 | 名称  | 介绍                                                         |
 | ----- | ------------------------------------------------------------ |
-| OCC1  | +1 的条件：报告 failed 之后的**每次**操作循环重启都 +1 <br/>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC1  | +1 的条件：报告 failed 之后的**每次**操作循环重启都 +1 <br/>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零<br/>和老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息 |
 | OCC3  | +1 的条件：**首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| OCC4  | +1 的条件：当前操作循环**首次**报告 failed 之后，就 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1d]<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC4  | +1 的条件：当前操作循环**首次**报告 failed 之后，就 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
 | FDC10 | 等价于当前 dtc 的 fdc 值<br/>达到 127 的条件：当报告 failed 之后，值变为 127<br/>达到 -128 的条件：当报告 passed 之后，值变为 128<br/>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时 |
+
+<br/>
+
+注：实际上存在一些内置 dataelement 来做拓展数据的，但目前没有看到厂商用过（或许是因为本质上，是可以归纳为快照数据的）
 
 <br/>
 
@@ -144,7 +186,9 @@ categories:
 
 1. 在一般的情况下， ECU 一上电，都是处于**默认会话**
 2. 在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下
-3. 在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 1ms，`p2*` 定时器的单位是 10ms）
+3. 在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 **1ms**，`p2*` 定时器的单位是 **10ms**）
+
+<br/>
 
 根据 14229 的规范，0x10 的 positive response message 格式为：
 
@@ -184,6 +228,8 @@ categories:
 | 0x04      | enableRapidPowerShutDown，适用于非点火供电而仅为电池供电的ECU。因此，关机会迫使睡眠模式关闭，而不是关闭电源。睡眠意味着关闭电源，但仍准备唤醒（电池供电）。子功能的目的是减少在点火开关进入关闭位置后的ECU的备用时间。 |
 | 0x05      | disableRapidPowerShutDown，关闭 0x04 服务                    |
 
+<br/>
+
 根据 14229 的规范，0x11 的 positive response message 格式为：
 
 | 数值位 | 参数名字                  | 可选值    | 是否为必选项                     |
@@ -206,6 +252,8 @@ categories:
 
 其实，这里的子服务是一一对应的。比如说 子服务id 为 0x01 的 requestSeed 服务，那么就需要对应子服务id 为 0x02 的 sendkey 服务，即 requestSeed 的子服务 id，是其对应的
 
+<br/>
+
 根据 14229 的规范，0x27 的 request message ，其中子服务为 requestSeed 的报文结构
 
 | 数值位  | 参数名字  | 可选值                   | 是否为必选项 |
@@ -213,6 +261,8 @@ categories:
 | #1      | 服务 id   | 0x27                     | 是           |
 | #2      | 子服务 id | 0x01,0x03,0x05,0x07-0x7D | 是           |
 | #3...#n | 具体数据  | 0x00-0xFF                | 否           |
+
+<br/>
 
 根据 14229 的规范，0x27 的 request message ，其中子服务为 sendKey 的报文结构
 
@@ -222,6 +272,8 @@ categories:
 | #2      | 子服务 id   | 0x02,0x04,0x06,0x08-0x7E | 是           |
 | #3...#n | securityKey | 0x00-0xFF                | 是           |
 
+<br/>
+
 根据 14229 的规范，0x27 的子服务 requestSeed 的 positive response message 格式为：
 
 | 数值位  | 参数名字                  | 可选值                   | 是否为必选项 |
@@ -229,6 +281,8 @@ categories:
 | #1      | 服务 id + positive 偏移量 | 0x67                     | 是           |
 | #2      | 子服务 id                 | 0x01,0x03,0x05,0x07-0x7D | 是           |
 | #3...#n | securitySeed              | 0x00-0xFF                | 是           |
+
+<br/>
 
 根据 14229 的规范，0x27 的子服务 sendKey 的 positive response message 格式为：
 
@@ -269,6 +323,8 @@ categories:
 | 0x05      | enableRxAndTxWithEnhancedAddressInformation，表示寻址总线需要切换到应用程序调度模式 |
 
 而对于 communicationType，具体在 14229 中表 B.1 中有详细的赘述，更多细节可以关注 ISO 14229 的规范
+
+<br/>
 
 根据 14229 的规范，0x28 的 positive response message 格式为：
 
@@ -340,6 +396,8 @@ ACR 的全称 Authentication with Challenge-Response
 | --------- | --------------- |
 | 0x00      | zeroSubFunction |
 
+<br/>
+
 根据 14229 的规范，0x3E 的 positive response message 格式为：
 
 | 数值位 | 参数名字                  | 可选值 | 是否为必选项 |
@@ -403,6 +461,8 @@ Todo：很少看到有客户使用这个服务，后续需要用到的时候，�
 | #2,#3       | did      | 0x00-0xFF | 是（每次 22 服务的请求中，至少要有一个 did） |
 | .. #n-1，#n | did      | 0x00-0xFF | 否                                           |
 
+<br/>
+
 根据 14229 的规范，0x22 的 response message 的报文结构如下所示。
 
 | 数值位                | 参数名字                      | 可选值    | 是否为必选项                                 |
@@ -432,6 +492,8 @@ Todo：很少看到有客户使用这个服务，后续需要用到的时候，�
 | #1     | 服务 id                          | 0x2A      | 是                                                           |
 | #2     | transmissionMode，表示传输的速率 | 0x00-0xFF | 是                                                           |
 | #3     | periodicDataIdentifier           | 0x00-0xFF | 否（可以传入任意数量的 did；如果 transmissionMode 为 stopSending，且后续没有 did 存在时，则表示 client 需要将所有的定时读取的 did 都给取消） |
+
+<br/>
 
 根据 14229 的规范，0x2A 的 response message 的报文结构如下所示。
 
@@ -482,6 +544,8 @@ Todo：很少看到有客户使用这个服务，后续需要用到的时候，�
 | #2     | SubFunction                      | 0x03(clearDynamicallyDefinedDataIdentifier) | 是                                                           |
 | #3,#4  | dynamicallyDefinedDataIdentifier | 0xF2/0xF3，0x00-0xFF                        | 否（如果没有该项，则表示需要清除所有的 ddid；否则则表示删除某个具体的 ddid） |
 
+<br/>
+
 根据 14229 的规范，0x2C 的 response message 的报文结构如下所示。
 
 | 数值位 | 参数名字                         | 可选值               | 是否为必选项                                                 |
@@ -508,6 +572,8 @@ Todo：很少看到有客户使用这个服务，后续需要用到的时候，�
 | #2,#3    | dataIdentifier | 0x00-0xFF | 是                   |
 | #4..#m+3 | dataRecord     | 0x00-0xFF | 是，最少应为一个字节 |
 
+<br/>
+
 根据 14229 的规范，0x2E 的 response message 的报文结构如下所示。
 
 | 数值位 | 参数名字                  | 可选值    | 是否为必选项 |
@@ -532,6 +598,8 @@ clearDiagnosticInformation，该服务是用于删除一个或者多个 DTC 对�
 | #1       | 服务 id          | 0x14      | 是                         |
 | #2,#3,#4 | groupOfDTC       | 0x00-0xFF | 是                         |
 | #5       | Memory selection | 0x00-0xFF | 否（为用户自定义的内存序） |
+
+<br/>
 
 根据 14229 的规范，0x14 的 response message 的报文结构如下所示。
 
@@ -596,6 +664,8 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 | 0x02      | stopRoutine，该服务是用于停止某个 routine                    |
 | 0x03      | requestRoutineResults，该服务是用于获取某个 routine 运行得到的结果 |
 
+<br/>
+
 根据 14229 的规范，0x31 的 response message 的报文结构如下所示。
 
 | 数值位  | 参数名字                           | 可选值    | 是否为必选项                           |
@@ -630,7 +700,9 @@ requestDownload 表示数据是从 client 传输到 server 上，即上位机传
 
 **dataFormatIdentifier** 需要分为两部分理解：
 
-Bit7-4 表示数据的压缩方法；Bit3-0 表示数据的加密方法。
+- Bit7-4 表示数据的压缩方法
+
+- Bit3-0 表示数据的加密方法
 
 如果为 0x00，则表示传输的数据既不需要加密，也不需要压缩。具体的压缩和加密方法，由主机厂自行定义。
 
@@ -638,7 +710,9 @@ Bit7-4 表示数据的压缩方法；Bit3-0 表示数据的加密方法。
 
 **adderssAndLengthFormatIdentifier** 也需要分两部分来理解：
 
-Bit7-4 表示的是 memorySize 所需的字节数；Bit3-0 表示的是 memoryAddress 所需的字节数。
+- Bit7-4 表示的是 memorySize 所需的字节数
+
+- Bit3-0 表示的是 memoryAddress 所需的字节数
 
 <br/>
 
@@ -662,7 +736,9 @@ ECU 需要使用该参数进行判断，最后返回给用户每次可以传输�
 
 **lengthFormatIdentifier** 需要分为两部分理解：
 
-Bit7-4 表示后续 maxNumberOfBlockLength 的长度；Bit3-0 为 0，具体的内容为 ISO 保留。
+- Bit7-4 表示后续 maxNumberOfBlockLength 的长度
+
+- Bit3-0 为 0，具体的内容为 ISO 保留
 
 <br/>
 
@@ -690,7 +766,9 @@ requestUpload 表示数据是从 server 传输到 client 上，即从 ECU 传输
 | #4..#(m-1)+4 | memoryAddress                    | 0x00-0xFF | 是（最少需要有一个字节） |
 | #n-(k-1)..#n | memorySize                       | 0x00-0xFF | 是（最少需要有一个字节） |
 
-其中关于 `dataFormatIdentifier`，`addressAndLengthFormatIdentifier`，`memoryAddress`，`memorySize` 的描述，可以完全参见`0x34`中的描述。
+其中关于 `dataFormatIdentifier`，`addressAndLengthFormatIdentifier`，`memoryAddress`，`memorySize` 的描述，
+
+可以完全参见`0x34`中的描述。
 
 <br/>
 
@@ -704,7 +782,9 @@ requestUpload 表示数据是从 server 传输到 client 上，即从 ECU 传输
 
 lengthFormatIdentifier 需要分为两部分理解：
 
-Bit7-4 表示后续 maxNumberOfBlockLength 的长度；Bit3-0 为 0，具体的内容为 ISO 保留
+- Bit7-4 表示后续 maxNumberOfBlockLength 的长度
+
+- Bit3-0 为 0，具体的内容为 ISO 保留
 
 而 maxNumberOfBlockLength 则表示后续的 0x36（transferData）需要传输数据内容的大小最大为多少。
 
@@ -756,6 +836,8 @@ requestTransferExit 是用于表示当前数据传输的终止的。
 | ------ | ------------------------------ | --------- | ---------------------- |
 | #1     | 服务 id                        | 0x37      | 是                     |
 | #2..#n | transferRequestParameterRecord | 0x00-0xFF | 否（为用户自定义数据） |
+
+<br/>
 
 根据 14229 的规范，0x37 的 response message 的报文结构如下所示。
 

@@ -1,6 +1,9 @@
 #!/bin/sh
 
+# clean cache
 hexo clean
+
+# generate article
 hexo g
 
 # show in localServer
