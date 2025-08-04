@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://dancsmshenry.github.io/2025/08/03/doip-xie-yi-xiang-jie/</loc>
+    <loc>https://dancsmshenry.github.io/2024/07/21/uds-xie-yi-xiang-jie/</loc>
     
-    <lastmod>2025-08-03T15:56:51.291Z</lastmod>
+    <lastmod>2025-08-04T15:39:21.643Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/2024/07/21/uds-xie-yi-xiang-jie/</loc>
+    <loc>https://dancsmshenry.github.io/2025/08/04/someip-xie-yi-xiang-jie/</loc>
     
-    <lastmod>2025-08-03T15:08:30.263Z</lastmod>
+    <lastmod>2025-08-04T15:19:09.138Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.github.io/2025/08/03/doip-xie-yi-xiang-jie/</loc>
+    
+    <lastmod>2025-08-03T15:56:51.291Z</lastmod>
     
   </url>
   
@@ -23,7 +30,7 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/contact/index.html</loc>
+    <loc>https://dancsmshenry.github.io/tags/index.html</loc>
     
     <lastmod>2025-05-02T17:32:03.092Z</lastmod>
     
@@ -37,7 +44,7 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/tags/index.html</loc>
+    <loc>https://dancsmshenry.github.io/contact/index.html</loc>
     
     <lastmod>2025-05-02T17:32:03.092Z</lastmod>
     
@@ -93,6 +100,13 @@
   </url>
   
   <url>
+    <loc>https://dancsmshenry.github.io/2022/11/09/mei-ri-yi-ti-764-zui-da-jia-hao-biao-zhi/</loc>
+    
+    <lastmod>2024-09-17T06:10:19.605Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://dancsmshenry.github.io/2024/05/04/kai-fa-gong-ju-shi-yong-zhi-git/</loc>
     
     <lastmod>2024-09-17T06:10:19.605Z</lastmod>
@@ -107,7 +121,7 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/2022/11/09/mei-ri-yi-ti-764-zui-da-jia-hao-biao-zhi/</loc>
+    <loc>https://dancsmshenry.github.io/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/</loc>
     
     <lastmod>2024-09-17T06:10:19.605Z</lastmod>
     
@@ -115,6 +129,13 @@
   
   <url>
     <loc>https://dancsmshenry.github.io/2022/11/07/mei-ri-yi-ti-816-mo-hu-zuo-biao/</loc>
+    
+    <lastmod>2024-09-17T06:10:19.605Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://dancsmshenry.github.io/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/</loc>
     
     <lastmod>2024-09-17T06:10:19.605Z</lastmod>
     
@@ -135,28 +156,14 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/2022/10/26/shen-ru-li-jie-cpp-zhi-smart-pointer/</loc>
-    
-    <lastmod>2024-09-17T06:10:19.605Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.github.io/2022/11/11/mian-shi-ti-zhi-zhi-li-ti/</loc>
-    
-    <lastmod>2024-09-17T06:10:19.605Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://dancsmshenry.github.io/2022/10/24/the-google-file-system/</loc>
+    <loc>https://dancsmshenry.github.io/2024/03/17/yi-xie-cpp-de-bian-ma-gui-fan/</loc>
     
     <lastmod>2024-09-17T06:10:19.604Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/2024/03/17/yi-xie-cpp-de-bian-ma-gui-fan/</loc>
+    <loc>https://dancsmshenry.github.io/2022/10/24/the-google-file-system/</loc>
     
     <lastmod>2024-09-17T06:10:19.604Z</lastmod>
     
@@ -191,14 +198,14 @@
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/2022/10/10/deep-into-dynamicprogming/</loc>
+    <loc>https://dancsmshenry.github.io/2022/10/09/deep-into-sort/</loc>
     
     <lastmod>2024-09-17T06:10:19.596Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://dancsmshenry.github.io/2022/10/09/deep-into-sort/</loc>
+    <loc>https://dancsmshenry.github.io/2022/10/10/deep-into-dynamicprogming/</loc>
     
     <lastmod>2024-09-17T06:10:19.596Z</lastmod>
     

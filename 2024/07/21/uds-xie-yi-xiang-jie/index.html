@@ -8,9 +8,9 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="基本概念对于 UDS 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
+    <meta name="description" content="序对于 UDS 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
 所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，
-然后再通过一个简单的服务请求，或是 DTC 的报告，将这些概念逐个逐个的进行穿插">
+然后再通过一个简单的服务请求，或是 DTC 的报告，将这些概念逐个逐个的进行穿插和联系">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -204,7 +204,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -350,14 +350,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    8.2k
+                    8.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    31 分
+                    32 分
                 </div>
                 
                 
@@ -368,33 +368,38 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>对于 <code>UDS</code> 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。</p>
+                <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>对于 <code>UDS</code> 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。</p>
 <p>所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，</p>
 <p>然后再通过一个简单的服务请求，或是 <code>DTC</code> 的报告，将这些概念逐个逐个的进行穿插和联系。</p>
 <p>（TODO：后续可以画两个图，分别将  <code>DCM</code> 和 <code>DEM</code> 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）</p>
 <br>
 
-<h2 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h2><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
+<h1 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h1><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
 <p>抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；</p>
 <p>第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。</p>
 <br>
 
-<h2 id="积极响应与消极响应"><a href="#积极响应与消极响应" class="headerlink" title="积极响应与消极响应"></a>积极响应与消极响应</h2><br>
+<h1 id="积极响应与消极响应"><a href="#积极响应与消极响应" class="headerlink" title="积极响应与消极响应"></a>积极响应与消极响应</h1><br>
 
-<h2 id="常见的定时器"><a href="#常见的定时器" class="headerlink" title="常见的定时器"></a>常见的定时器</h2><p>主要分为 p2、p2* 以及 s3。</p>
-<br>
+<h1 id="常见的定时器"><a href="#常见的定时器" class="headerlink" title="常见的定时器"></a>常见的定时器</h1><br>
 
-<h2 id="DataIdentifier"><a href="#DataIdentifier" class="headerlink" title="DataIdentifier"></a>DataIdentifier</h2><br>
+<h2 id="p2"><a href="#p2" class="headerlink" title="p2"></a>p2</h2><br>
 
-<h2 id="RoutineIdentifier"><a href="#RoutineIdentifier" class="headerlink" title="RoutineIdentifier"></a>RoutineIdentifier</h2><br>
+<h2 id="p2-1"><a href="#p2-1" class="headerlink" title="p2*"></a>p2*</h2><br>
 
-<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><br>
+<h2 id="s3"><a href="#s3" class="headerlink" title="s3"></a>s3</h2><br>
 
-<h2 id="SecurityLevel"><a href="#SecurityLevel" class="headerlink" title="SecurityLevel"></a>SecurityLevel</h2><br>
+<h1 id="DataIdentifier"><a href="#DataIdentifier" class="headerlink" title="DataIdentifier"></a>DataIdentifier</h1><br>
 
-<h2 id="DiagnosticTroubleCode"><a href="#DiagnosticTroubleCode" class="headerlink" title="DiagnosticTroubleCode"></a>DiagnosticTroubleCode</h2><br>
+<h1 id="RoutineIdentifier"><a href="#RoutineIdentifier" class="headerlink" title="RoutineIdentifier"></a>RoutineIdentifier</h1><br>
 
-<h2 id="DiagnosticTroubleCodeStatus"><a href="#DiagnosticTroubleCodeStatus" class="headerlink" title="DiagnosticTroubleCodeStatus"></a>DiagnosticTroubleCodeStatus</h2><table>
+<h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><br>
+
+<h1 id="SecurityLevel"><a href="#SecurityLevel" class="headerlink" title="SecurityLevel"></a>SecurityLevel</h1><br>
+
+<h1 id="DiagnosticTroubleCode"><a href="#DiagnosticTroubleCode" class="headerlink" title="DiagnosticTroubleCode"></a>DiagnosticTroubleCode</h1><br>
+
+<h1 id="DiagnosticTroubleCodeStatus"><a href="#DiagnosticTroubleCodeStatus" class="headerlink" title="DiagnosticTroubleCodeStatus"></a>DiagnosticTroubleCodeStatus</h1><table>
 <thead>
 <tr>
 <th>Bit</th>
@@ -583,7 +588,7 @@
 
 <br>
 
-<h2 id="Aging-与-Healing"><a href="#Aging-与-Healing" class="headerlink" title="Aging 与 Healing"></a>Aging 与 Healing</h2><p>二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。</p>
+<h1 id="Aging-与-Healing"><a href="#Aging-与-Healing" class="headerlink" title="Aging 与 Healing"></a>Aging 与 Healing</h1><p>二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。</p>
 <p>（注：此处先不考虑 dtc 在这期间报告 passed 的情况，因为存在一些厂商要求报告 passed 之后，将 bit7 置为 0）</p>
 <p>因此，将上述流程，描述为 healing，也就是愈合。</p>
 <br>
@@ -596,7 +601,7 @@
 
 <br>
 
-<h2 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h2><p>在发生了故障时，存储一些重要的信息。</p>
+<h1 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h1><p>在发生了故障时，存储一些重要的信息。</p>
 <p>从实现上来看，就是读取某些 did 的信息，并存储在非易失性存储介质中。</p>
 <br>
 
@@ -604,29 +609,39 @@
 
 <br>
 
-<h2 id="ExtendedData"><a href="#ExtendedData" class="headerlink" title="ExtendedData"></a>ExtendedData</h2><p>所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加</p>
+<h1 id="ExtendedData"><a href="#ExtendedData" class="headerlink" title="ExtendedData"></a>ExtendedData</h1><p>所有的数据都是 <code>std::uint8</code> 类型的（除了 FDC10），达到 255 之后都不会继续增加。</p>
 <table>
 <thead>
 <tr>
 <th>名称</th>
-<th>介绍</th>
+<th>+1 的条件</th>
+<th>清零的条件</th>
+<th>实现细节</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>OCC1</td>
-<td>+1 的条件：报告 failed 之后的<strong>每次</strong>操作循环重启都 +1 <br>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br>实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br>或者 occ1 不为零并且 bit1 为零，则加一<br>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零<br>和老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息</td>
+<td>OCC1（CyclesSinceLast Failed）</td>
+<td>报告 failed 之后的<strong>每次</strong>操作循环重启都 +1</td>
+<td>报告 failed 之后；0x14 服务清除 dtc 之后；老化成功之后</td>
+<td>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br>或者 occ1 不为零并且 bit1 为零，则加一<br>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零<br>和老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息</td>
 </tr>
 <tr>
-<td>OCC3</td>
-<td>+1 的条件：<strong>首次</strong>报告 failed 之后的<strong>每次</strong>操作循环重启都 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>实现细节：<br>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+<td>OCC3（CyclesSinceFirst Failed）</td>
+<td><strong>首次</strong>报告 failed 之后的<strong>每次</strong>操作循环重启都 +1</td>
+<td>0x14 服务清除 dtc 之后，老化成功之后</td>
+<td>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
 </tr>
 <tr>
-<td>OCC4</td>
-<td>+1 的条件：当前操作循环<strong>首次</strong>报告 failed 之后，就 +1<br>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br>实现细节：<br>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
+<td>OCC4（FailedCycles）</td>
+<td>当前操作循环<strong>首次</strong>报告 failed 之后，就 +1</td>
+<td>0x14 服务清除 dtc 之后，老化成功之后</td>
+<td>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1<br>14 服务清除 dtc 时，或者老化成功清零时，清零</td>
 </tr>
 <tr>
 <td>FDC10</td>
-<td>等价于当前 dtc 的 fdc 值<br>达到 127 的条件：当报告 failed 之后，值变为 127<br>达到 -128 的条件：当报告 passed 之后，值变为 128<br>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时</td>
+<td>当前 dtc 的 fdc 值</td>
+<td>当前 dtc 的 fdc 值</td>
+<td>达到 127 的条件：当报告 failed 之后，值变为 127<br>达到 -128 的条件：当报告 passed 之后，值变为 128<br>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时</td>
 </tr>
 </tbody></table>
 <br>
@@ -1672,34 +1687,6 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>0x01</strong></td>
-<td>reportNumberOfDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量</td>
-</tr>
-<tr>
-<td><strong>0x02</strong></td>
-<td>reportDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表</td>
-</tr>
-<tr>
-<td>0x03</td>
-<td>reportDTCSnapshotIdentification，不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ）</td>
-</tr>
-<tr>
-<td><strong>0x04</strong></td>
-<td>reportDTCSnapshotRecordByDTCNumber，需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据）</td>
-</tr>
-<tr>
-<td><strong>0x06</strong></td>
-<td>reportDTCExtDataRecordByDTCNumber，需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据）</td>
-</tr>
-<tr>
-<td>0x07</td>
-<td>reportNumberOfDTCByServerityMaskRecord，需要传入状态码和严重程度，然后返回对应 DTC 的数量</td>
-</tr>
-<tr>
-<td><strong>0x0A</strong></td>
-<td>reportSupportedDTC，不需要传入数据，返回当前支持的所有的 DTC 及其状态</td>
-</tr>
-<tr>
 <td>0x14</td>
 <td>reportDTCFaultDetectionCounter，不需要传入数据，返回当前所有处于 preFailed 的 DTC</td>
 </tr>
@@ -1714,6 +1701,208 @@
 <tr>
 <td>0x19</td>
 <td>reportUserDefMemoryDTCExtDataRecordByDTCNumber</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-01"><a href="#19-01" class="headerlink" title="19 01"></a>19 01</h2><p>reportNumberOfDTCByStatusMask</p>
+<p>给定一个状态掩码，返回符合条件的 dtc 个数</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Dtc status mask</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-02"><a href="#19-02" class="headerlink" title="19 02"></a>19 02</h2><p>reportDTCByStatusMask</p>
+<p>给定一个状态掩码，返回一个 dtc status 的合集，其中每个 dtc 的 status 与这个掩码进行 &amp; 操作，都不为 0</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Dtc status mask</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-03"><a href="#19-03" class="headerlink" title="19 03"></a>19 03</h2><p>reportDTCSnapshotIdentification</p>
+<p>返回所有 dtc 的快照数据，返回的数据逻辑为 dtc code + freeze data</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x03</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-04"><a href="#19-04" class="headerlink" title="19 04"></a>19 04</h2><p>reportDTCSnapshotRecordByDTCNumber</p>
+<p>用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>3，4，5</td>
+<td>Dtc number，表示需要读取的 dtc 号</td>
+<td>0x00-0xFF</td>
+</tr>
+<tr>
+<td>6</td>
+<td>快照号 id</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-06"><a href="#19-06" class="headerlink" title="19 06"></a>19 06</h2><p>reportDTCExtDataRecordByDTCNumber</p>
+<p>用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x06</td>
+</tr>
+<tr>
+<td>3，4，5</td>
+<td>Dtc number，表示需要读取的 dtc 号</td>
+<td>0x00-0xFF</td>
+</tr>
+<tr>
+<td>6</td>
+<td>拓展数据号 id</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-07"><a href="#19-07" class="headerlink" title="19 07"></a>19 07</h2><p>reportNumberOfDTCBySeverityMaskRecord</p>
+<p>返回一个符合条件的 dtc 数，其中 dtc 的 status 要和 statusmask 做位运算（&amp;）后不为 0，</p>
+<p>dtc 的 severitymask 要和 severitymask 做位运算（&amp;）后不为 0</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x07</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DTCSeverityMask</td>
+<td>0x00-0xFF</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DTCStatusMask</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody></table>
+<br>
+
+<h2 id="19-0a"><a href="#19-0a" class="headerlink" title="19 0a"></a>19 0a</h2><p>reportSupportedDTC</p>
+<p>用于读取当前支持的所有 dtc</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id</td>
+<td>0x19</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x0a</td>
 </tr>
 </tbody></table>
 <br>
@@ -2343,7 +2532,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2394,7 +2583,7 @@ gdb attach 进程号
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2556,7 +2745,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">119.3k</span>
+            <span class="white-color">120.1k</span>
             
 
             <br>
