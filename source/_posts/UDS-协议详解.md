@@ -12,7 +12,7 @@ tags:
 categories:
 ---
 
-# 基本概念
+# 序
 
 对于 `UDS` 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
 
@@ -24,7 +24,7 @@ categories:
 
 <br/>
 
-## 子服务
+# 子服务
 
 一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
 
@@ -34,37 +34,47 @@ categories:
 
 <br/>
 
-## 积极响应与消极响应
+# 积极响应与消极响应
 
 <br/>
 
-## 常见的定时器
-
-主要分为 p2、p2* 以及 s3。
+# 常见的定时器
 
 <br/>
 
-## DataIdentifier
+## p2
 
 <br/>
 
-## RoutineIdentifier
+## p2*
 
 <br/>
 
-## Session
+## s3
 
 <br/>
 
-## SecurityLevel
+# DataIdentifier
 
 <br/>
 
-## DiagnosticTroubleCode
+# RoutineIdentifier
 
 <br/>
 
-## DiagnosticTroubleCodeStatus
+# Session
+
+<br/>
+
+# SecurityLevel
+
+<br/>
+
+# DiagnosticTroubleCode
+
+<br/>
+
+# DiagnosticTroubleCodeStatus
 
 | Bit  | Name                               | Description                                                  |
 | ---- | ---------------------------------- | ------------------------------------------------------------ |
@@ -105,7 +115,7 @@ categories:
 
 <br/>
 
-## Aging 与 Healing
+# Aging 与 Healing
 
 二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。
 
@@ -125,7 +135,7 @@ categories:
 
 <br/>
 
-## Snapshot
+# Snapshot
 
 在发生了故障时，存储一些重要的信息。
 
@@ -137,16 +147,16 @@ categories:
 
 <br/>
 
-## ExtendedData
+# ExtendedData
 
-所有的数据都是 uint8 类型的（除了 FDC10），达到 255 之后都不会继续增加
+所有的数据都是 `std::uint8` 类型的（除了 FDC10），达到 255 之后都不会继续增加。
 
-| 名称  | 介绍                                                         |
-| ----- | ------------------------------------------------------------ |
-| OCC1  | +1 的条件：报告 failed 之后的**每次**操作循环重启都 +1 <br/>清零的条件：报告 failed 之后；0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零<br/>和老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息 |
-| OCC3  | +1 的条件：**首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| OCC4  | +1 的条件：当前操作循环**首次**报告 failed 之后，就 +1<br/>清零的条件：0x14 服务清除 dtc 之后，老化成功之后<br/>实现细节：<br/>每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| FDC10 | 等价于当前 dtc 的 fdc 值<br/>达到 127 的条件：当报告 failed 之后，值变为 127<br/>达到 -128 的条件：当报告 passed 之后，值变为 128<br/>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时 |
+| 名称                            | +1 的条件                                           | 清零的条件                                             | 实现细节                                                     |
+| ------------------------------- | --------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| OCC1（CyclesSinceLast Failed）  | 报告 failed 之后的**每次**操作循环重启都 +1         | 报告 failed 之后；0x14 服务清除 dtc 之后；老化成功之后 | 每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零<br/>和老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息 |
+| OCC3（CyclesSinceFirst Failed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1 | 0x14 服务清除 dtc 之后，老化成功之后                   | 每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| OCC4（FailedCycles）            | 当前操作循环**首次**报告 failed 之后，就 +1         | 0x14 服务清除 dtc 之后，老化成功之后                   | 每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
+| FDC10                           | 当前 dtc 的 fdc 值                                  | 当前 dtc 的 fdc 值                                     | 达到 127 的条件：当报告 failed 之后，值变为 127<br/>达到 -128 的条件：当报告 passed 之后，值变为 128<br/>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时 |
 
 <br/>
 
@@ -621,17 +631,111 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 
 | 子服务 id | 含义                                                         |
 | --------- | ------------------------------------------------------------ |
-| **0x01**  | reportNumberOfDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的数量 |
-| **0x02**  | reportDTCByStatusMask，需要传入 statusMask（一个字节），返回处于当前状态的 DTC 的列表 |
-| 0x03      | reportDTCSnapshotIdentification，不需要传入数据，返回所有 DTC 的所有快照号（即冻结帧的 recordnumber）（具体的格式应该是 dtc 号,freeze.recordNumber + dtc ） |
-| **0x04**  | reportDTCSnapshotRecordByDTCNumber，需要传入 DTC 码以及其对应的快照信息的 recordNumber，然后去读对应快照信息的数据（如果此处的 recordNumber 是 FF，就会读取所有的数据） |
-| **0x06**  | reportDTCExtDataRecordByDTCNumber，需要传入 DTC 码以及其对应的拓展数据的 recordNumber，然后返回数据（如果此处的 recordNumber 是 FE 或者 FF，就会读取所有的数据） |
-| 0x07      | reportNumberOfDTCByServerityMaskRecord，需要传入状态码和严重程度，然后返回对应 DTC 的数量 |
-| **0x0A**  | reportSupportedDTC，不需要传入数据，返回当前支持的所有的 DTC 及其状态 |
 | 0x14      | reportDTCFaultDetectionCounter，不需要传入数据，返回当前所有处于 preFailed 的 DTC |
 | 0x17      | reportUserDefMemoryByStatusMask                              |
 | 0x18      | reportUserDefMemoryDTCSnapshotRecordByDTCNumber              |
 | 0x19      | reportUserDefMemoryDTCExtDataRecordByDTCNumber               |
+
+<br/>
+
+## 19 01
+
+reportNumberOfDTCByStatusMask
+
+给定一个状态掩码，返回符合条件的 dtc 个数
+
+| **数值位** | **参数名字**    | 可选值    |
+| ---------- | --------------- | --------- |
+| 1          | 服务 id         | 0x19      |
+| 2          | 子服务 id       | 0x01      |
+| 3          | Dtc status mask | 0x00-0xFF |
+
+<br/>
+
+## 19 02
+
+reportDTCByStatusMask
+
+给定一个状态掩码，返回一个 dtc status 的合集，其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
+
+| **数值位** | **参数名字**    | 可选值    |
+| ---------- | --------------- | --------- |
+| 1          | 服务 id         | 0x19      |
+| 2          | 子服务 id       | 0x02      |
+| 3          | Dtc status mask | 0x00-0xFF |
+
+<br/>
+
+## 19 03
+
+reportDTCSnapshotIdentification
+
+返回所有 dtc 的快照数据，返回的数据逻辑为 dtc code + freeze data
+
+| **数值位** | **参数名字** | 可选值 |
+| ---------- | ------------ | ------ |
+| 1          | 服务 id      | 0x19   |
+| 2          | 子服务 id    | 0x03   |
+
+<br/>
+
+## 19 04 
+
+reportDTCSnapshotRecordByDTCNumber
+
+用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据
+
+| **数值位** | **参数名字**                      | 可选值    |
+| ---------- | --------------------------------- | --------- |
+| 1          | 服务 id                           | 0x19      |
+| 2          | 子服务 id                         | 0x04      |
+| 3，4，5    | Dtc number，表示需要读取的 dtc 号 | 0x00-0xFF |
+| 6          | 快照号 id                         | 0x00-0xFF |
+
+<br/>
+
+## 19 06 
+
+reportDTCExtDataRecordByDTCNumber
+
+用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据
+
+| **数值位** | **参数名字**                      | 可选值    |
+| ---------- | --------------------------------- | --------- |
+| 1          | 服务 id                           | 0x19      |
+| 2          | 子服务 id                         | 0x06      |
+| 3，4，5    | Dtc number，表示需要读取的 dtc 号 | 0x00-0xFF |
+| 6          | 拓展数据号 id                     | 0x00-0xFF |
+
+<br/>
+
+## 19 07
+
+reportNumberOfDTCBySeverityMaskRecord
+
+返回一个符合条件的 dtc 数，其中 dtc 的 status 要和 statusmask 做位运算（&）后不为 0，
+
+dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0
+
+| **数值位** | **参数名字**    | 可选值    |
+| ---------- | --------------- | --------- |
+| 1          | 服务 id         | 0x19      |
+| 2          | 子服务 id       | 0x07      |
+| 3          | DTCSeverityMask | 0x00-0xFF |
+| 4          | DTCStatusMask   | 0x00-0xFF |
+
+<br/>
+
+## 19 0a 
+
+reportSupportedDTC
+
+用于读取当前支持的所有 dtc
+
+| **数值位** | **参数名字** | 可选值 |
+| ---------- | ------------ | ------ |
+| 1          | 服务 id      | 0x19   |
+| 2          | 子服务 id    | 0x0a   |
 
 <br/>
 
