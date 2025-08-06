@@ -123,6 +123,22 @@ Sd 的报文头同样使用的是 SomeIpHeader，但是其中的部分值是固�
 
 <br/>
 
+Find service，意思为服务的使用者想要找到服务的提供者，从而在组播上发出的报文；而对应的提供者在收到了相应的报文之后，会发送 offer service，从而告知服务的使用者，提供者的元信息。
+
+Offer service，目的为服务的提供者通过组播，告知外界自己这个节点，对外提供了什么服务。（可以注意到是周期发送的）
+
+StopOffer service，目的是告知外界当前节点不再提供什么类型的服务了，从而在服务的使用者方，删除对应的 mapping
+
+Subscribe，意思是 event 的使用者需要订阅对应 event 的提供者，而发出的报文。需要注意的是，实际上是以 eventgroup 的形式进行订阅的，而不能只订阅单个 event
+
+Stop subscribe，停止订阅
+
+<br/>
+
+对于 someip-sd 消息而言，可以将其分为 someip header，someip sd header，entries array 以及 options array。
+
+<br/>
+
 <br/>
 
 ## Entry

@@ -149,14 +149,22 @@ categories:
 
 # ExtendedData
 
-所有的数据都是 `std::uint8` 类型的（除了 FDC10），达到 255 之后都不会继续增加。
+常用的几个内置 DataElement 都是 `std::uint8` 类型的（除了 FDC10），达到 255 之后都不会继续增加。
 
-| 名称                            | +1 的条件                                           | 清零的条件                                             | 实现细节                                                     |
-| ------------------------------- | --------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| OCC1（CyclesSinceLast Failed）  | 报告 failed 之后的**每次**操作循环重启都 +1         | 报告 failed 之后；0x14 服务清除 dtc 之后；老化成功之后 | 每次操作循环重启的时候，如果此时的 bit1 为一并且 occ1 为零，<br/>或者 occ1 不为零并且 bit1 为零，则加一<br/>每次报告 failed 、14 服务清除 dtc 时，或者老化成功清零时，清零<br/>和老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息 |
-| OCC3（CyclesSinceFirst Failed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1 | 0x14 服务清除 dtc 之后，老化成功之后                   | 每次操作循环重启的时候，如果此时的 bit1 为一，或者 occ3 不为零，则加一<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| OCC4（FailedCycles）            | 当前操作循环**首次**报告 failed 之后，就 +1         | 0x14 服务清除 dtc 之后，老化成功之后                   | 每次报告 failed 的时候，记录是否是第一次报告，如果是才 +1<br/>14 服务清除 dtc 时，或者老化成功清零时，清零 |
-| FDC10                           | 当前 dtc 的 fdc 值                                  | 当前 dtc 的 fdc 值                                     | 达到 127 的条件：当报告 failed 之后，值变为 127<br/>达到 -128 的条件：当报告 passed 之后，值变为 128<br/>达到 0 的条件：当 14 服务清除 dtc、老化成功、或者操作循环重启时 |
+| Name                                | Condition                                                    | ClearCondition                                   |
+| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
+| OCC1<br/>（CyclesSinceLastFailed）  | 报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，如果此时 bit1 为 1 并且 OCC1 为零，<br/>或者 OCC1 不为 0 并且 bit1 为 0，才 + 1<br/> | 1. 0x14 服务<br/>2. 老化成功<br/>3. 上报 failed  |
+| OCC3<br/>（CyclesSinceFirstFailed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，如果此时 bit1 为 1，<br/>或者 OCC3 不为 0，才 +1 | 1. 0x14 服务<br/>2. 老化成功                     |
+| OCC4<br/>（FailedCycles）           | 当前操作循环**首次**报告 failed 之后，就 +1<br/>也就是当 bit1 从 0 变为 1 时，才 + 1 | 1. 0x14 服务<br/>2. 老化成功                     |
+| FDC10                               | 当报告 failed 之后，变为 127<br/>当报告 passed 之后，变为 -128 | 1. 0x14 服务<br/>2. 老化成功<br/>3. 操作循环重启 |
+
+<br/>
+
+在 uds 侧的 dtc，confirmed 的 threshold 一般都是 1。
+
+<br/>
+
+OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息
 
 <br/>
 
@@ -172,18 +180,16 @@ categories:
 
 在 UDS 的规范中，定义了会话状态的概念。会话状态可以简单的理解为是当前的 ECU 处于某种会话模式下。
 
-会话模式的作用，主要是为了限制服务的使用。比如说在做诊断应用的设计的时候，可以指定某个服务必须要在某些指定的会话状态下执行。
-
-而会话状态如何进行切换呢？0x10 服务便是用来切换会话的。
+会话模式的作用，主要是为了限制服务的使用。比如说在做诊断应用的设计的时候，可以指定某个服务必须要在某些指定的会话状态下执行。其中 0x10 服务便是用来切换会话的。
 
 根据 14229 的规范，0x10 的 request message 格式为：
 
 | 数值位 | 参数名字 | 可选值    | 是否为必选项 |
 | ------ | -------- | --------- | ------------ |
 | #1     | 服务 id  | 0x10      | 是           |
-| #2,#3  | 会话 id  | 0x00-0xFF | 是           |
+| #2, #3 | 会话 id  | 0x00-0xFF | 是           |
 
-会话可由用户自行在工具中配置，但规范规定了一些固有的会话类型
+会话可由用户自行在工具中配置，但规范规定了一些固有的会话类型：
 
 | 会话 id | 会话名                        |
 | ------- | ----------------------------- |
@@ -205,9 +211,9 @@ categories:
 | 数值位 | 参数名字                  | 可选值        | 是否为必选项 |
 | ------ | ------------------------- | ------------- | ------------ |
 | #1     | 服务 id + positive 偏移量 | 0x50          | 是           |
-| #2,#3  | 会话 id                   | 0x00-0xFF     | 是           |
-| #4,#5  | p2 server 定时器          | 0x0000-0xFFFF | 是           |
-| #6,#7  | p2* server 定时器         | 0x0000-0xFFFF | 是           |
+| #2, #3 | 会话 id                   | 0x00-0xFF     | 是           |
+| #4, #5 | p2 server 定时器          | 0x0000-0xFFFF | 是           |
+| #6, #7 | p2* server 定时器         | 0x0000-0xFFFF | 是           |
 
 <br/>
 
@@ -264,7 +270,7 @@ categories:
 
 <br/>
 
-根据 14229 的规范，0x27 的 request message ，其中子服务为 requestSeed 的报文结构
+根据 14229 的规范，0x27 的 request message ，其中子服务为 requestSeed 的报文结构为：
 
 | 数值位  | 参数名字  | 可选值                   | 是否为必选项 |
 | ------- | --------- | ------------------------ | ------------ |
@@ -274,7 +280,7 @@ categories:
 
 <br/>
 
-根据 14229 的规范，0x27 的 request message ，其中子服务为 sendKey 的报文结构
+根据 14229 的规范，0x27 的 request message ，其中子服务为 sendKey 的报文结构为：
 
 | 数值位  | 参数名字    | 可选值                   | 是否为必选项 |
 | ------- | ----------- | ------------------------ | ------------ |
@@ -321,7 +327,7 @@ categories:
 | #4     | nodeIdentificationNumber    | 0x00-0xFF | 否，当 communicationType 是 04 或者 05 的失火，才需要填写该参数 |
 | #5     | nodeIdentificationNumber    | 0x00-0xFF | 否，当 communicationType 是 04 或者 05 的失火，才需要填写该参数 |
 
-根据 14229 的规范，目前支持的 subfunction 有
+根据 14229 的规范，目前支持的 subfunction 有：
 
 | 子服务 id | 含义                                                         |
 | --------- | ------------------------------------------------------------ |
@@ -332,7 +338,7 @@ categories:
 | 0x04      | enableRxAndDisableTxWithEnhancedAddressInformation，表示寻址总选需要切换到诊断调度模式 |
 | 0x05      | enableRxAndTxWithEnhancedAddressInformation，表示寻址总线需要切换到应用程序调度模式 |
 
-而对于 communicationType，具体在 14229 中表 B.1 中有详细的赘述，更多细节可以关注 ISO 14229 的规范
+而对于 communicationType，具体在 14229 中表 B.1 中有详细的赘述，更多细节可以关注 ISO 14229 的规范。
 
 <br/>
 
@@ -351,9 +357,9 @@ categories:
 
 # 0x29
 
-认证主要分为 APCE 和 ACR，a 核上的协议栈一般只支持 APCE。而其中 APCE 又分为单向认证和双向认证
+认证主要分为 APCE 和 ACR，a 核上的协议栈一般只支持 APCE。
 
-APCE 的全称 Authentication with PKI Certificate Exchange
+APCE 的全称 Authentication with PKI Certificate Exchange，又分为单向认证和双向认证
 
 ACR 的全称 Authentication with Challenge-Response
 
@@ -449,7 +455,7 @@ ACR 的全称 Authentication with Challenge-Response
 
 # 0x86
 
-Todo：很少看到有客户使用这个服务，后续需要用到的时候，再进行深入的了解。
+TODO：很少看到有客户使用这个服务，后续需要用到的时候，再进行深入的了解。
 
 <br/>
 
@@ -640,9 +646,9 @@ readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对
 
 ## 19 01
 
-reportNumberOfDTCByStatusMask
+reportNumberOfDTCByStatusMask，给定一个状态掩码，返回符合这个状态掩码的 dtc 个数。
 
-给定一个状态掩码，返回符合条件的 dtc 个数
+其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
 
 | **数值位** | **参数名字**    | 可选值    |
 | ---------- | --------------- | --------- |
@@ -654,9 +660,9 @@ reportNumberOfDTCByStatusMask
 
 ## 19 02
 
-reportDTCByStatusMask
+reportDTCByStatusMask，给定一个状态掩码，返回一个 dtc status 的合集。
 
-给定一个状态掩码，返回一个 dtc status 的合集，其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
+其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
 
 | **数值位** | **参数名字**    | 可选值    |
 | ---------- | --------------- | --------- |
@@ -668,9 +674,7 @@ reportDTCByStatusMask
 
 ## 19 03
 
-reportDTCSnapshotIdentification
-
-返回所有 dtc 的快照数据，返回的数据逻辑为 dtc code + freeze data
+reportDTCSnapshotIdentification，返回所有 dtc 的快照数据，返回的数据逻辑为 dtc code + freeze data。
 
 | **数值位** | **参数名字** | 可选值 |
 | ---------- | ------------ | ------ |
@@ -681,9 +685,7 @@ reportDTCSnapshotIdentification
 
 ## 19 04 
 
-reportDTCSnapshotRecordByDTCNumber
-
-用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据
+reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据。
 
 | **数值位** | **参数名字**                      | 可选值    |
 | ---------- | --------------------------------- | --------- |
@@ -696,9 +698,7 @@ reportDTCSnapshotRecordByDTCNumber
 
 ## 19 06 
 
-reportDTCExtDataRecordByDTCNumber
-
-用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据
+reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据。
 
 | **数值位** | **参数名字**                      | 可选值    |
 | ---------- | --------------------------------- | --------- |
@@ -711,11 +711,11 @@ reportDTCExtDataRecordByDTCNumber
 
 ## 19 07
 
-reportNumberOfDTCBySeverityMaskRecord
+reportNumberOfDTCBySeverityMaskRecord，回一个符合条件的 dtc 数。
 
-返回一个符合条件的 dtc 数，其中 dtc 的 status 要和 statusmask 做位运算（&）后不为 0，
+其中 dtc 的 status 要和 statusmask 做位运算（&）后不为 0，
 
-dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0
+dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0。
 
 | **数值位** | **参数名字**    | 可选值    |
 | ---------- | --------------- | --------- |
@@ -728,9 +728,7 @@ dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0
 
 ## 19 0a 
 
-reportSupportedDTC
-
-用于读取当前支持的所有 dtc
+reportSupportedDTC，用于读取当前支持的所有 dtc。
 
 | **数值位** | **参数名字** | 可选值 |
 | ---------- | ------------ | ------ |
