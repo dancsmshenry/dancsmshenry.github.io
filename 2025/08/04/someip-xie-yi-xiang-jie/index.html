@@ -213,7 +213,7 @@ SomeIp">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/26.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -359,14 +359,14 @@ SomeIp">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    601
+                    845
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
                 
@@ -436,6 +436,16 @@ SomeIp">
 
 <p>接着就会有一个 1 字节的 Flags，和 3 字节的 reserved。</p>
 <p>后续都是 entry 和 option。</p>
+<br>
+
+<p>Find service，意思为服务的使用者想要找到服务的提供者，从而在组播上发出的报文；而对应的提供者在收到了相应的报文之后，会发送 offer service，从而告知服务的使用者，提供者的元信息。</p>
+<p>Offer service，目的为服务的提供者通过组播，告知外界自己这个节点，对外提供了什么服务。（可以注意到是周期发送的）</p>
+<p>StopOffer service，目的是告知外界当前节点不再提供什么类型的服务了，从而在服务的使用者方，删除对应的 mapping</p>
+<p>Subscribe，意思是 event 的使用者需要订阅对应 event 的提供者，而发出的报文。需要注意的是，实际上是以 eventgroup 的形式进行订阅的，而不能只订阅单个 event</p>
+<p>Stop subscribe，停止订阅</p>
+<br>
+
+<p>对于 someip-sd 消息而言，可以将其分为 someip header，someip sd header，entries array 以及 options array。</p>
 <br>
 
 <br>
@@ -515,7 +525,7 @@ SomeIp">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="SomeIp 协议详解">
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="SomeIp 协议详解">
                         
                         <span class="card-title">SomeIp 协议详解</span>
                     </div>
@@ -569,7 +579,7 @@ SomeIp
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="Doip 协议详解">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="Doip 协议详解">
                         
                         <span class="card-title">Doip 协议详解</span>
                     </div>
@@ -736,7 +746,7 @@ Tcp type0x0005 路由激活请求
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">120.1k</span>
+            <span class="white-color">120.2k</span>
             
 
             <br>
