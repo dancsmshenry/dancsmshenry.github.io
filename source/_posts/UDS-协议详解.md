@@ -38,19 +38,19 @@ categories:
 
 <br/>
 
-# 常见的定时器
+# 定时器
 
 <br/>
 
-## p2
+## P2/P2*
+
+在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 **1ms**，`p2*` 定时器的单位是 **10ms**）
 
 <br/>
 
-## p2*
+## S3
 
-<br/>
-
-## s3
+在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下。
 
 <br/>
 
@@ -64,6 +64,17 @@ categories:
 
 # Session
 
+ECU 刚上电时，都是处于**默认会话**
+
+会话可由用户自行在工具中配置，但规范规定了一些固有的会话类型：
+
+| 会话 id | 会话名                        |
+| ------- | ----------------------------- |
+| 0x01    | defaultSession                |
+| 0x02    | ProgrammingSession            |
+| 0x03    | extendedDiagnosticSession     |
+| 0x04    | safetySystemDiagnosticSession |
+
 <br/>
 
 # SecurityLevel
@@ -76,16 +87,16 @@ categories:
 
 # DiagnosticTroubleCodeStatus
 
-| Bit  | Name                               | Description                                                  |
-| ---- | ---------------------------------- | ------------------------------------------------------------ |
-| Bit0 | TestFailed                         | 表示 DTC 最近一次报告的结果是否为 Failed。<br/>当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；<br/>当最近一次报告的结果为 Passed、DEM 模块首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0（老化成功并不会将当前 Bit 置为 0） |
-| Bit1 | TestFailedThisOperationCycle       | 表示 DTC 在当前的操作循环中，是否报告过 Failed。<br/>在当前操作循环中，只要报告了 Failed，就需要将当前 Bit 置为 1；<br/>当重启操作循环、DEM 模块初始化，或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
-| Bit2 | PendingDTC                         | 表示 DTC 在当前的操作循环，以及上一个操作循环中，是否报告过 Failed。<br/>当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当此时的操作循环结束，并且在这个操作循环中没有报告过 Failed（Bit1 和 Bit6 都为 0）、或者 DEM 首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
-| Bit3 | ConfirmedDTC                       | 表示 DTC 经历了一定次数的操作循环，并且在这些操作循环中都报告过 Failed 时，需要将当前 Bit 置为 1<br/>当 DTC 老化完成，或是 DEM 模块首次初始化，或是当前的数据因为存储的 overflow 而被移除，或是 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
-| Bit4 | TestnotCompletedSinceLastClear     | 表示自从上一次 clear 之后，是否有报告过 Passed 或者 Failed。<br/>当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化时，需要将当前 Bit 置为 1；<br/>需要注意的是，下游 dtc 报告的 preFailed 或者 prePassed 并不算是一次完整的报告 |
-| Bit5 | TestFailedSinceLastClear           | 表示自从上一次 clear，当前的 DTC 是否有报告过 Failed。<br/>当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化，或者老化成功，或者因为 overflow 将数据删除了，需要将当前 Bit 置为 0 |
-| Bit6 | TestNotCompletedThisOperationCycle | 表示在当前的操作循环中，是否没报告过 Failed 或者 Passed。<br/>当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当重启操作循环、DEM 模块初始化，或者 `clearDiagnosticInformation` 时，需要将当前 Bit 置为 1 |
-| Bit7 | WarningIndicator                   | 初始值为 0；当配置了 indicator，Bit3 变为 1（此时 Bit0 也一定为 1），并且也符合主机厂或者供应商的需求时，将当前 Bit 置为 1<br/>当 healing 结束，0x14 服务，或者一些主机厂自定义的条件满足时，将当前 Bit 置为 0 |
+| Bit  | Name                               | Description                                                  | Condition                                                    |
+| ---- | ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Bit0 | TestFailed                         | 表示 DTC 最近一次报告的结果是否为 Failed                     | 当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；<br/>当最近一次报告的结果为 Passed、DEM 模块首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0（老化成功并不会将当前 Bit 置为 0） |
+| Bit1 | TestFailedThisOperationCycle       | 表示 DTC 在当前的操作循环中，是否报告过 Failed               | 在当前操作循环中，只要报告了 Failed，就需要将当前 Bit 置为 1；<br/>当重启操作循环、DEM 模块初始化，或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
+| Bit2 | PendingDTC                         | 表示 DTC 在当前的操作循环，以及上一个操作循环中，是否报告过 Failed | 当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当此时的操作循环结束，并且在这个操作循环中没有报告过 Failed（Bit1 和 Bit6 都为 0）、或者 DEM 首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
+| Bit3 | ConfirmedDTC                       | 表示 DTC 经历了一定次数的操作循环，并且在这些操作循环中都报告过 Failed 时，需要将当前 Bit 置为 1 | 当 DTC 老化完成，<br/>或是 DEM 模块首次初始化，<br/>或是当前的数据因为存储的 overflow 而被移除，<br/>或是 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
+| Bit4 | TestnotCompletedSinceLastClear     | 表示自从上一次 clear 之后，是否有报告过 Passed 或者 Failed   | 当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化时，需要将当前 Bit 置为 1；<br/>需要注意的是，dtc 报告的 preFailed 或者 prePassed 并不算是一次完整的报告 |
+| Bit5 | TestFailedSinceLastClear           | 表示自从上一次 clear，当前的 DTC 是否有报告过 Failed。       | 当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化，或者老化成功，或者因为 overflow 将数据删除了，需要将当前 Bit 置为 0 |
+| Bit6 | TestNotCompletedThisOperationCycle | 表示在当前的操作循环中，是否没报告过 Failed 或者 Passed。    | 当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当重启操作循环、DEM 模块初始化，或者 `clearDiagnosticInformation` 时，需要将当前 Bit 置为 1 |
+| Bit7 | WarningIndicator                   | 初始值为 0；当配置了 indicator，Bit3 变为 1（此时 Bit0 也一定为 1），并且也符合主机厂或者供应商的需求时，将当前 Bit 置为 1<br/>当 healing 结束，0x14 服务，或者一些主机厂自定义的条件满足时，将当前 Bit 置为 0 |                                                              |
 
 <br/>
 
@@ -154,7 +165,7 @@ categories:
 | Name                                | Condition                                                    | ClearCondition                                   |
 | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
 | OCC1<br/>（CyclesSinceLastFailed）  | 报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，如果此时 bit1 为 1 并且 OCC1 为零，<br/>或者 OCC1 不为 0 并且 bit1 为 0，才 + 1<br/> | 1. 0x14 服务<br/>2. 老化成功<br/>3. 上报 failed  |
-| OCC3<br/>（CyclesSinceFirstFailed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，如果此时 bit1 为 1，<br/>或者 OCC3 不为 0，才 +1 | 1. 0x14 服务<br/>2. 老化成功                     |
+| OCC3<br/>（CyclesSinceFirstFailed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，<br/>检查 bit5 是否为 1，如果为 1 的话，则 +1 | 1. 0x14 服务<br/>2. 老化成功                     |
 | OCC4<br/>（FailedCycles）           | 当前操作循环**首次**报告 failed 之后，就 +1<br/>也就是当 bit1 从 0 变为 1 时，才 + 1 | 1. 0x14 服务<br/>2. 老化成功                     |
 | FDC10                               | 当报告 failed 之后，变为 127<br/>当报告 passed 之后，变为 -128 | 1. 0x14 服务<br/>2. 老化成功<br/>3. 操作循环重启 |
 
@@ -188,21 +199,6 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 | ------ | -------- | --------- | ------------ |
 | #1     | 服务 id  | 0x10      | 是           |
 | #2, #3 | 会话 id  | 0x00-0xFF | 是           |
-
-会话可由用户自行在工具中配置，但规范规定了一些固有的会话类型：
-
-| 会话 id | 会话名                        |
-| ------- | ----------------------------- |
-| 0x01    | defaultSession                |
-| 0x02    | ProgrammingSession            |
-| 0x03    | extendedDiagnosticSession     |
-| 0x04    | safetySystemDiagnosticSession |
-
-关于会话模式，有以下几点是需要注意了解的：
-
-1. 在一般的情况下， ECU 一上电，都是处于**默认会话**
-2. 在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下
-3. 在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 **1ms**，`p2*` 定时器的单位是 **10ms**）
 
 <br/>
 
@@ -324,8 +320,8 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 | #1     | 服务 id                     | 0x28      | 是                                                           |
 | #2     | 子服务 id                   | 0x00-0xFF | 是                                                           |
 | #3     | communicationType，消息类型 | 0x00-0xFF | 是                                                           |
-| #4     | nodeIdentificationNumber    | 0x00-0xFF | 否，当 communicationType 是 04 或者 05 的失火，才需要填写该参数 |
-| #5     | nodeIdentificationNumber    | 0x00-0xFF | 否，当 communicationType 是 04 或者 05 的失火，才需要填写该参数 |
+| #4     | nodeIdentificationNumber    | 0x00-0xFF | 否，当 communicationType 是 04 或者 05 的时候，才需要填写该参数 |
+| #5     | nodeIdentificationNumber    | 0x00-0xFF | 否，当 communicationType 是 04 或者 05 的时候，才需要填写该参数 |
 
 根据 14229 的规范，目前支持的 subfunction 有：
 
