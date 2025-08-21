@@ -1,0 +1,25 @@
+@startuml spdlog-sink
+
+class sink {
+  - void log(log_msg);
+  - void flush();
+  - void set_pattern();
+  - void set_formatter();
+}
+
+class basic_sink {
+  - void sink_it_(log_msg);
+  - void flush_();
+  - void set_pattern_();
+  - void set_formatter_();
+}
+
+sink <|-- basic_sink
+
+sink <|-- ansicolor_sink
+
+basic_sink <|-- basic_file_sink
+
+file_helper --* basic_file_sink
+
+@enduml

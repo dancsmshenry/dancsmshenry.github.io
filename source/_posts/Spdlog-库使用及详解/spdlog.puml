@@ -1,0 +1,15 @@
+@startuml spdlog-total
+
+logger <|-- async_logger
+
+synchronous_factory *-- logger
+
+sink --* logger
+
+backtracer --* logger
+
+registry *-- logger
+
+synchronous_factory : Create()
+
+@enduml
