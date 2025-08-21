@@ -1,0 +1,14 @@
+@startuml spdlog-format
+
+class formatter {
+  - void format(log_msg, dest_buffer) = 0;
+  - std::unique_ptr<formater> clone() = 0;
+}
+
+class pattern_format {
+
+}
+
+pattern_format <|-- formatter
+
+@enduml

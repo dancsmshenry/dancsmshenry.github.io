@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Spdlog 库使用及详解</title>
+      <link href="/2025/08/21/spdlog-ku-shi-yong-ji-xiang-jie/"/>
+      <url>/2025/08/21/spdlog-ku-shi-yong-ji-xiang-jie/</url>
+      
+        <content type="html"><![CDATA[<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><ul><li>函数 fwrite 是 glibc 封装的一层有关 write 的接口，会在应用层再创建一个缓冲的 buffer，当调用的 fwrite 到一定的数量时，才会调用一次操作系统原生的 write。也因此有了函数 fflush，将这个缓冲的 buffer 内容，强制调用一次 write。</li><li>而 write 也不一定能够强制刷盘，所以还需要再强制调用一次 fsync（或是 fdatasync）（spdlog 估计是不想再上层再封装一个缓冲的 buffer，所以就走 glibc 的接口）</li></ul><br><h1 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h1><p>异步逻辑的类图</p><p><img src="spdlog-async.svg" alt="async"></p><br><p>Pattern 的类图</p><p><img src="spdlog-format.svg" alt="format"></p><br><p>Sink 的类图</p><p><img src="spdlog-sink.svg" alt="sink"></p><br><p>总体图</p><p><img src="spdlog-total.svg" alt="total"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> CPP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SomeIp 协议详解</title>
       <link href="/2025/08/04/someip-xie-yi-xiang-jie/"/>
       <url>/2025/08/04/someip-xie-yi-xiang-jie/</url>

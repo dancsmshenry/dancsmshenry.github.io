@@ -1,0 +1,52 @@
+@startuml spdlog-async
+
+async_factory_impl : Create()
+
+logger <|-- async_logger
+
+circular_q --* mpmc_blocking_queue
+
+mpmc_blocking_queue --* thread_pool
+
+async_logger --* async_factory_impl
+
+thread_pool --* async_logger
+
+class logger {
+  + std::vector<sink_ptr>
+}
+
+class async_logger {
+  - void sink_it(log_msg)
+  - void flush_()
+  + std::weak_ptr<thread_pool>
+}
+
+class thread_pool {
+  - void post_log(log_msg)
+  - void post_flush()
+  + mpmc_blocking_queue
+}
+
+class mpmc_blocking_queue {
+  - void enqueue(item)
+  - void enqueue_nowait(item)
+  - void enqueue_if_have_room(item)
+  - void dequeue_for(item)
+  - void dequeue(item)
+  + circular_q
+}
+
+class circular_q {
+  - void push_back(item)
+  - T front()
+  - std::size_t size()
+  - T& at(size_t)
+  - void pop_front()
+  - bool empty()
+  + std::vector<T>
+  + head
+  + tail
+}
+
+@enduml
