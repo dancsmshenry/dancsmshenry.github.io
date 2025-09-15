@@ -204,7 +204,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -350,14 +350,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    8.2k
+                    9.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    32 分
+                    35 分
                 </div>
                 
                 
@@ -969,6 +969,118 @@
 <td>是</td>
 </tr>
 </tbody></table>
+<br>
+
+<br>
+
+<h2 id="Situation-1"><a href="#Situation-1" class="headerlink" title="Situation 1"></a>Situation 1</h2><p>当前处于 no actived seed &amp;&amp; level unlocked 状态</p>
+<ul>
+<li>刚上电</li>
+</ul>
+<p><img src="27-01.png" alt></p>
+<br>
+
+<h2 id="Situation-2"><a href="#Situation-2" class="headerlink" title="Situation 2"></a>Situation 2</h2><p>当前处于 no actived seed &amp;&amp; level locked 状态</p>
+<ul>
+<li>收到 L1 的 requestSeed（奇数服务），变为 wait key 状态</li>
+</ul>
+<p><img src="27-02.png" alt></p>
+<br>
+
+<h2 id="Situation-3"><a href="#Situation-3" class="headerlink" title="Situation 3"></a>Situation 3</h2><p>当前处于 wait key 状态，此前收到 L1 的 requestseed</p>
+<ul>
+<li>收到 L1 的 sendkey（偶数服务），清空计数器，切换安全等级，变为 level unlocked &amp;&amp; no actived seed 状态</li>
+</ul>
+<p><img src="27-03.png" alt></p>
+<br>
+
+<h2 id="Situation-4"><a href="#Situation-4" class="headerlink" title="Situation 4"></a>Situation 4</h2><p>当前处于 no actived seed &amp;&amp; level locked 状态</p>
+<ul>
+<li><p>收到 L1 的requestSeed（奇数服务），长度错误，返回 NRC13，状态依然为 no actived seed 状态</p>
+</li>
+<li><p>收到 L2 的 sendKey（偶数服务），序列错误，返回 NRC24，状态依然为 no actived seed 状态</p>
+</li>
+<li><p>收到 L1 的 requestSeed（奇数服务），当前处于定时状态，返回 NRC37，状态依然为 no actived seed 状态</p>
+</li>
+<li><p>报文的 total or subfunction check failed，回复对应 NRC，状态依然为 no active seed 状态</p>
+</li>
+</ul>
+<p><img src="27-04.png" alt></p>
+<br>
+
+<h2 id="Situation-5"><a href="#Situation-5" class="headerlink" title="Situation 5"></a>Situation 5</h2><p>当前处于 wait key 状态</p>
+<ul>
+<li><p>收到 requestSeed，生成新的 seed 并返回，状态依然为 wait key 状态</p>
+</li>
+<li><p>需要注意的是，不管此前 requestSeed 的安全等级，和当前 requestSeed 的安全等级是否一致，请求了就会回复 seed，并进入最近一次安全等级的 wait key 状态</p>
+</li>
+</ul>
+<p><img src="27-05.png" alt></p>
+<br>
+
+<h2 id="Situation-6"><a href="#Situation-6" class="headerlink" title="Situation 6"></a>Situation 6</h2><p>当已经解锁安全等级 L1 时</p>
+<ul>
+<li>会话切换，将当前状态切换为未解锁状态</li>
+</ul>
+<p><img src="27-06.png" alt></p>
+<br>
+
+<h2 id="Situation-7"><a href="#Situation-7" class="headerlink" title="Situation 7"></a>Situation 7</h2><p>当已经解锁安全等级 L1 时</p>
+<ul>
+<li><p>收到 L2 的 sendkey（偶数服务），回复 NRC24，不增加计数器，状态依然为 no actived seed 状态</p>
+</li>
+<li><p>收到 L1 的 requestseed（奇数服务），回复<strong>全零</strong>的 seed，状态依然为 no actived seed 状态</p>
+</li>
+<li><p>报文的 total or subfunction check failed，回复对应 NRC，状态依然为 no active seed 状态</p>
+</li>
+</ul>
+<p><img src="27-07.png" alt></p>
+<br>
+
+<h2 id="Situation-8"><a href="#Situation-8" class="headerlink" title="Situation 8"></a>Situation 8</h2><p>当已经解锁安全等级 L1 时</p>
+<ul>
+<li>收到 L2 的 requestseed（奇数服务），回复正常 seed，切换状态为 wait key 状态</li>
+</ul>
+<p><img src="27-08.png" alt></p>
+<br>
+
+<h2 id="Situation-9"><a href="#Situation-9" class="headerlink" title="Situation 9"></a>Situation 9</h2><p>未解锁任何安全等级，收到安全等级 L1 的 getseed，继而处于 wait key 状态</p>
+<ul>
+<li><p>收到 L1 的 sendkey（偶数服务），key 错误，增加 L1 的失败计数器（没到阈值），回复 NRC35，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L1 的 sendkey（偶数服务），key 错误，增加 L1 的失败计数器（达到阈值），开启定时器，回复 NRC36，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L2 的 sendkey（偶数服务），增加 L1 的失败计数器，回复 NRC24，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L1 的 sendkey（偶数服务），长度检查错误，增加 L1 的失败计数器，回复 NRC13，切换 no actived seed 状态</p>
+</li>
+<li><p>会话切换或者超时，切换为 no actived seed 状态</p>
+</li>
+<li><p>报文的 total or subfunction check failed，回复对应 NRC，切换为 no actived seed 状态</p>
+</li>
+</ul>
+<p><img src="27-09.png" alt></p>
+<br>
+
+<h2 id="Situation-10"><a href="#Situation-10" class="headerlink" title="Situation 10"></a>Situation 10</h2><p>当前已经解锁安全等级 L1，收到安全等级 L2 的 getseed，继而处于 wait key 状态</p>
+<ul>
+<li><p>收到 L1 的 requestseed（奇数服务），回复<strong>全零</strong>种子，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L2 的 sendkey（偶数服务），解锁成功，清空计数器，更新安全等级，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L2 的 sendkey（偶数服务），key 错误，增加 L2 的失败计数器（没到阈值），回复 NRC35，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L2 的 sendkey（偶数服务），key 错误，增加 L2 的失败计数器（达到阈值），开启定时器，回复 NRC36，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L3 的 sendkey（偶数服务），增加 L2 的失败计数器，回复 NRC24，切换为 no actived seed 状态</p>
+</li>
+<li><p>收到 L2 的 sendkey（偶数服务），长度检查错误，增加 L2 的失败计数器，回复 NRC13，切换 no actived seed 状态</p>
+</li>
+<li><p>报文的 total or subfunction check failed，回复对应 NRC，切换 no actived seed 状态</p>
+</li>
+</ul>
+<p><img src="27-10.png" alt></p>
+<h2 id="Total"><a href="#Total" class="headerlink" title="Total"></a>Total</h2><p><img src="27-total.png" alt></p>
 <br>
 
 <br>
@@ -2532,7 +2644,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2583,7 +2695,7 @@ gdb attach 进程号
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2745,7 +2857,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">120.3k</span>
+            <span class="white-color">121.2k</span>
             
 
             <br>
