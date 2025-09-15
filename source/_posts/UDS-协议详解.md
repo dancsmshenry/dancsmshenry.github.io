@@ -307,6 +307,146 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 <br/>
 
+## Situation 1
+
+当前处于 no actived seed && level unlocked 状态
+
+- 刚上电
+
+![](27-01.png)
+
+<br/>
+
+## Situation 2
+
+当前处于 no actived seed && level locked 状态
+
+- 收到 L1 的 requestSeed（奇数服务），变为 wait key 状态
+
+![](27-02.png)
+
+<br/>
+
+## Situation 3
+
+当前处于 wait key 状态，此前收到 L1 的 requestseed
+
+- 收到 L1 的 sendkey（偶数服务），清空计数器，切换安全等级，变为 level unlocked && no actived seed 状态
+
+![](27-03.png)
+
+<br/>
+
+## Situation 4
+
+当前处于 no actived seed && level locked 状态
+
+- 收到 L1 的requestSeed（奇数服务），长度错误，返回 NRC13，状态依然为 no actived seed 状态
+
+- 收到 L2 的 sendKey（偶数服务），序列错误，返回 NRC24，状态依然为 no actived seed 状态
+
+- 收到 L1 的 requestSeed（奇数服务），当前处于定时状态，返回 NRC37，状态依然为 no actived seed 状态
+
+- 报文的 total or subfunction check failed，回复对应 NRC，状态依然为 no active seed 状态
+
+![](27-04.png)
+
+<br/>
+
+## Situation 5
+
+当前处于 wait key 状态
+
+- 收到 requestSeed，生成新的 seed 并返回，状态依然为 wait key 状态
+
+- 需要注意的是，不管此前 requestSeed 的安全等级，和当前 requestSeed 的安全等级是否一致，请求了就会回复 seed，并进入最近一次安全等级的 wait key 状态
+
+![](27-05.png)
+
+<br/>
+
+## Situation 6
+
+当已经解锁安全等级 L1 时
+
+- 会话切换，将当前状态切换为未解锁状态
+
+![](27-06.png)
+
+<br/>
+
+## Situation 7
+
+当已经解锁安全等级 L1 时
+
+- 收到 L2 的 sendkey（偶数服务），回复 NRC24，不增加计数器，状态依然为 no actived seed 状态
+
+- 收到 L1 的 requestseed（奇数服务），回复**全零**的 seed，状态依然为 no actived seed 状态
+
+- 报文的 total or subfunction check failed，回复对应 NRC，状态依然为 no active seed 状态
+
+![](27-07.png)
+
+<br/>
+
+## Situation 8
+
+当已经解锁安全等级 L1 时
+
+- 收到 L2 的 requestseed（奇数服务），回复正常 seed，切换状态为 wait key 状态
+
+![](27-08.png)
+
+<br/>
+
+## Situation 9
+
+未解锁任何安全等级，收到安全等级 L1 的 getseed，继而处于 wait key 状态
+
+- 收到 L1 的 sendkey（偶数服务），key 错误，增加 L1 的失败计数器（没到阈值），回复 NRC35，切换为 no actived seed 状态
+
+- 收到 L1 的 sendkey（偶数服务），key 错误，增加 L1 的失败计数器（达到阈值），开启定时器，回复 NRC36，切换为 no actived seed 状态
+
+- 收到 L2 的 sendkey（偶数服务），增加 L1 的失败计数器，回复 NRC24，切换为 no actived seed 状态
+
+- 收到 L1 的 sendkey（偶数服务），长度检查错误，增加 L1 的失败计数器，回复 NRC13，切换 no actived seed 状态
+
+- 会话切换或者超时，切换为 no actived seed 状态
+
+- 报文的 total or subfunction check failed，回复对应 NRC，切换为 no actived seed 状态
+
+![](27-09.png)
+
+<br/>
+
+## Situation 10
+
+当前已经解锁安全等级 L1，收到安全等级 L2 的 getseed，继而处于 wait key 状态
+
+- 收到 L1 的 requestseed（奇数服务），回复**全零**种子，切换为 no actived seed 状态
+
+- 收到 L2 的 sendkey（偶数服务），解锁成功，清空计数器，更新安全等级，切换为 no actived seed 状态
+
+- 收到 L2 的 sendkey（偶数服务），key 错误，增加 L2 的失败计数器（没到阈值），回复 NRC35，切换为 no actived seed 状态
+
+- 收到 L2 的 sendkey（偶数服务），key 错误，增加 L2 的失败计数器（达到阈值），开启定时器，回复 NRC36，切换为 no actived seed 状态
+
+- 收到 L3 的 sendkey（偶数服务），增加 L2 的失败计数器，回复 NRC24，切换为 no actived seed 状态
+
+- 收到 L2 的 sendkey（偶数服务），长度检查错误，增加 L2 的失败计数器，回复 NRC13，切换 no actived seed 状态
+
+- 报文的 total or subfunction check failed，回复对应 NRC，切换 no actived seed 状态
+
+![](27-10.png)
+
+## Total
+
+![](27-total.png)
+
+<br/>
+
+<br/>
+
 <br/>
 
 # 0x28
