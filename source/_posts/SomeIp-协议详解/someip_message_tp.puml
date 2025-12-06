@@ -1,0 +1,24 @@
+@startjson someip_message_tp
+
+{
+    "ServiceHeader": {
+        "serviceId" : "uint16", 
+        "methodId" : "uint16",
+        "length" : "uint32"
+    },
+    "RequestHeader": {
+        "clientId" : "uint16",
+        "sessionId" : "uint16",
+        "ProtocolVersion" : "uint8",
+        "InterfaceVersion" : "uint8",
+        "MessageType" : "uint8",
+        "returnCode" : "uint8"
+    },
+    "TpHeader": {
+        "offset" : "uint28",
+        "Reserved" : "uint3",
+        "MoreSegmentsFlag" : "uint1"
+    }
+}
+
+@endjson

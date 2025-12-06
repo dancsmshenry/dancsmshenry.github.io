@@ -1,0 +1,10 @@
+@startjson someip_sd_configuration_option
+
+{
+    "Length" : "uint16",
+    "Type" : "uint8, fixed for 1",
+    "Reserved" : "uint8, fixed for 0",
+    "Configuration string" : "string map"
+}
+
+@endjson

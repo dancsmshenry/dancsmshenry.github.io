@@ -365,6 +365,35 @@ int main() {
 
 <br/>
 
+# 有关 value
+
+**结论**：value 必须要有默认构造函数
+
+- 因为 .end() 本质也是一个 pair，因此会调用默认构造出一对 pair。
+- 但需要注意的是，在最开始构建 map 的时候，如果不做任何操作，是不会创建 .end() 的，因此不会编译报错
+- 由此引申，如果 value 是值类型，那么访问 end 的 value，相当于访问默认构造函数的 value；而如果是指针类型，那么就会访问空指针，然后 coredump
+
+```C++
+#include <cstdint>
+#include <map>
+#include <vector>
+
+struct A {
+  A() = delete;
+  A(int i1) { (void)i1; }
+};
+
+int main() {
+  std::map<int, A> map1{};
+
+  //  加上这段代码，就会编译报错
+  // A aa(1);
+  // map1[0] = aa;
+}
+```
+
+<br/>
+
 # to do list
 
 https://mp.weixin.qq.com/s?__biz=MzkyMjIxMzIxNA==&mid=2247483656&idx=1&sn=a204fedfbf2cf7f2023979c56b756c8a&scene=19#wechat_redirect

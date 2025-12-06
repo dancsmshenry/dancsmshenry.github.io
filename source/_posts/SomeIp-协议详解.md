@@ -14,187 +14,231 @@ categories:
 
 
 
-# 基本概念
-
 **S**calable Service-**O**riented **M**iddlewar**E** over **IP**
+
+基于 IP 协议，面向服务的可拓展中间件协议
 
 <br/>
 
+# MessageCompoent
+
+![someip_message_component](out/someip_message_component.svg)
+
+- serviceId：当前的报文消息属于哪种服务
+- methodId：其最高位为 0 表示的是 method，最高位为 1 表示为 event 或者 notification
+- length：表示从这里开始的后面数据，总共占用多少个字节
+- clientId：用于区分同一个 ECU 上的不同 client
+  - 如果是不同 ecu 的，则需要通过 ip+port（fd）+clientid 进行分辨
+  
+- sessionId：用于区分来自同一个 client 的多次请求
+
+- protocolVersion：用于确认 someip 协议栈本身的版本，默认为 1
+
+- interfaceVersion：用于表示上层接口的版本
+
+- messageType：表示当前消息的类型（ method，event，reponse）
+- returnCode：类似错误码或者 ok 码的机制
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Communication
+
 ## Event
+
+server 向 client 发送 notification 通知，不需要 client 回复
+
+<br/>
+
+## R/R Method
+
+request **with** response，client 向 server 发送 method 的 request，预期收到对端的 response
+
+<br/>
+
+## F/F Method
+
+request **without** response，client 向 server 发送 method 的 request，不需要收到对端的响应
 
 <br/>
 
 ## Field
 
-<br/>
-
-## Request/Response Method
-
-<br/>
-
-## Fire&Forget Method
-
-<br/>
-
-# SomeIpHeader
-
-## MessageId
-
-### ServiceId
-
-2 字节，表示当前报文是属于什么服务的
-
-<br/>
-
-### MethodId
-
-2 字节，其最高位为 0 表示的是 method，最高位为 1 表示为 event 或者 notification
+细分为 get，set 和 notification，前两者等价于 r/r 的 method 和 f/f 的 method，后者等价于 event
 
 <br/>
 
 <br/>
 
-## Length
-
-4 字节，表示从 RequestId 到消息结束的长度。
-
 <br/>
 
-<br/>
+# ServiceDiscovery
 
-## RequestId
+只能为 udp 类型的报文，Sd 的报文头使用相同的报文头，但其中部分值是固定的：
 
-### ClientId
-
-2 字节，表示请求的 client 是哪一个，或者说消息来自于哪一个 client
-
-<br/>
-
-### SessionId
-
-2 字节，表示该请求是当前 client 的哪一次请求
-
-<br/>
-
-## ProtocalVersion
-
-1 字节，表示当前 SOME/IP 协议的版本号，默认为 1
-
-<br/>
-
-## InterfaceVersion
-
-1 字节，表示服务接口的版本号
-
-<br/>
-
-## MessageType
-
-1 字节，表示当前的报文类型
-
-<br/>
-
-## ReturnCode
-
-1 字节
-
-<br/>
-
-<br/>
-
-# SomeIpSd
-
-Sd 的报文头同样使用的是 SomeIpHeader，但是其中的部分值是固定的：
-
-- ServiceID 固定为 0xFFFF
-- MethodID 固定为 0x8100
-- ClientID 一般固定为 0x0000
+- ServiceID 为 0xFFFF
+- MethodID 为 0x8100
+- ClientID 为 0x0000
 - SessionID 初始为 0x0001，每发送一次数据后便加 1
-- Protocol Version 固定为 0x01
-- Interface Version 固定为 0x01
-- Message type 固定为 0x02（Notification）
-- ReturnCode 固定为 0x00（E_OK）
+- Protocol Version 为 0x01
+- Interface Version 为 0x01
+- Message type 为 0x02（Notification）
+- ReturnCode 为 0x00（E_OK）
+
+![someip_sd](out/someip_sd.svg)
+
+- flags 的取值有 None, Reboot, Unicast, ExplicitInitialData
 
 <br/>
 
-接着就会有一个 1 字节的 Flags，和 3 字节的 reserved。
+## ServiceEntry
 
-后续都是 entry 和 option。
+一个 service entry 总共占用 16 个字节
 
-<br/>
+![someip_sd_service](out/someip_sd_service.svg)
 
-Find service，意思为服务的使用者想要找到服务的提供者，从而在组播上发出的报文；而对应的提供者在收到了相应的报文之后，会发送 offer service，从而告知服务的使用者，提供者的元信息。
+- Type：
+  - FindService (0x00)
+  - OfferService (0x01)
+  - StopOfferService (0x01)
 
-Offer service，目的为服务的提供者通过组播，告知外界自己这个节点，对外提供了什么服务。（可以注意到是周期发送的）
+- Index First Option Run：Option Array 中第一个 Option 的索引
 
-StopOffer service，目的是告知外界当前节点不再提供什么类型的服务了，从而在服务的使用者方，删除对应的 mapping
+- Index Second Option Run：Option Array 中第二个 Option 的索引
 
-Subscribe，意思是 event 的使用者需要订阅对应 event 的提供者，而发出的报文。需要注意的是，实际上是以 eventgroup 的形式进行订阅的，而不能只订阅单个 event
+- of opt 1：第一个 Option 使用的选项数
 
-Stop subscribe，停止订阅
+- of opt 2：第二个 Option 使用的选项数
 
-<br/>
+- Service ID：表示该 Entry 所涉及的服务或服务实例的 Service ID
 
-对于 someip-sd 消息而言，可以将其分为 someip header，someip sd header，entries array 以及 options array。
+- Instance ID：表示该 Entry 涉及服务实例的 Instance ID，如果包含一个服务的所有服务实例，则设置为 0xFFFF
 
-<br/>
+- Major Version：服务的主版本号
 
-<br/>
+- TTL：Entry 的生命周期，单位为秒
 
-## Entry
-
-### ServiceEntry
-
-Type：FindService (0x00)、OfferService (0x01)、StopOfferService (0x01)
-
-Index First Option Run：Option Array 中第一个 Option 的索引
-
-Index Second Option Run：Option Array 中第二个 Option 的索引
-
-of opt 1：第一个 Option 使用的选项数
-
-of opt 2：第二个 Option 使用的选项数
-
-Service ID：表示该 Entry 所涉及的服务或服务实例的 Service ID
-
-Instance ID：表示该 Entry 涉及服务实例的 Instance ID，如果包含一个服务的所有服务实例，则设置为 0xFFFF
-
-Major Version：服务的主版本号
-
-TTL：Entry 的生命周期，单位为秒
-
-Minor Version：服务的次版本号
-
-<br/>
-
-### EventGroupEntry
-
-Type：SubscribeEventgroup（0x06）、StopSubscribeEventgroup（0x06）、  SubscribeEventgroupAck（0x07）、SubscribeEventgroupNack（0x07）
-
-Index First Option Run：Option Array 中第一个 Option 的索引
-
-Index Second Option Run：Option Array 中第二个 Option 的索引
-
-of opt 1：第一个 Option 使用的选项数
-
-of opt 2：第二个 Option 使用的选项数
-
-Service ID：表示该 Entry 所涉及的服务或服务实例的 Service ID
-
-Instance ID：表示该 Entry 涉及服务实例的 Instance ID，任何实例的 Instance ID 都不能设置为 0xFFFF（这一点和在 Service Entry 中的不同）
-
-Major Version：服务的主版本号
-
-TTL：Entry 的生命周期，单位为秒
-
-Reserved：应被设置为 0x000
-
-Counter：用于区分同一订阅者的订阅事件组。如果不使用，设置为0x0
-
-Eventgroup ID：事件组 ID
+- Minor Version：服务的次版本号
 
 <br/>
 
 <br/>
 
-## Option
+## EventGroupEntry
+
+一个 event group entry 总共占用 20 个字节
+
+![someip_sd_eventgroup](out/someip_sd_eventgroup.svg)
+
+- Type：
+  - SubscribeEventgroup（0x06）
+  - StopSubscribeEventgroup（0x06）
+  - SubscribeEventgroupAck（0x07）
+  - SubscribeEventgroupNack（0x07）
+
+- Index First Option Run：Option Array 中第一个 Option 的索引
+
+- Index Second Option Run：Option Array 中第二个 Option 的索引
+
+- of opt 1：表示从上述第一个 option 开始，总共使用多少个 option
+
+- of opt 2：表示从上述第二个 option 开始，总共使用多少个 option
+
+- ServiceId：表示该 Entry 所涉及的服务或服务实例的 Service ID
+
+- InstanceId：表示该 Entry 涉及服务实例的 Instance ID，任何实例的 Instance ID 都不能设置为 0xFFFF（这一点和在 Service Entry 中的不同）
+
+- MajorVersion：服务的主版本号
+
+- TTL：Entry 的生命周期，单位为秒
+
+- Reserved：应被设置为 0x000
+
+- Counter：用于区分同一订阅者的订阅事件组。如果不使用，设置为0x0
+
+- EventgroupId：事件组 ID
+
+<br/>
+
+## Ipv4Option
+
+![someip_sd_ipv4_option](out/someip_sd_ipv4_option.svg)
+
+![someip_sd_ipv4_multicast_option](out/someip_sd_ipv4_multicast_option.svg)
+
+<br/>
+
+## Ipv6Option
+
+![someip_sd_ipv6_multicast_option](out/someip_sd_ipv6_multicast_option.svg)
+
+![someip_sd_ipv6_option](out/someip_sd_ipv6_option.svg)
+
+<br/>
+
+## LoadBalancingOption
+
+![someip_sd_load_balancing_option](out/someip_sd_load_balancing_option.svg)
+
+<br/>
+
+## ConfigurationOption
+
+用于额外传输一些定制化信息的
+
+![someip_sd_configuration_option](out/someip_sd_configuration_option.svg)
+
+<br/>
+
+## ServerInstance StateMachine
+
+<br/>
+
+## ClientInstance StateMachine
+
+<br/>
+
+<br/>
+
+# TransportProtocol
+
+对于大包的数据，tcp 本身的协议特性，是支持分片的（流式协议）；但是 udp 是不支持的，所以需要应用层自行实现分片。
+
+![someip_message_tp](out/someip_message_tp.svg)
+
+- 高 28 位，表示当前报文在 total message 中的偏移量是多少，因为后面 4 位用做了其他的功能，所以分片的长度，必须为 2^4 的倍数
+- 中 3 位，为协议保留字段
+- 低 1 位，表示当前报文是否为整个数据包的最后一包
+
+<br/>
+
+<br/>
+
+<br/>
+
+# Appendix
+
+用于记载一些配置项的全部信息。
+
+<br/>
+
+<br/>
+
+# 八股
+
+- 为什么需要有 findservice，或者说，只监听组播，通过 offer service，就可以找到是哪个 endpoint 提供了这个 service 了？
+  - 缺乏实时性，offer service 是周期发送的，但可能 client 刚上线的时机，刚好是上一个 offerservice 发送完的时候，那么就需要等一个 gap 才能收到 offer service 了
+  - 或者说，上述的 gap 是可以尽可能的缩减，但这会造成总线上大量的无用消息发送
+
+<br/>
+
+<br/>
+
+# TodoList
+
+- 将 someip 协议划分为 messagecompoent（消息组成），communication（通信接口），servicediscovery（端点发现）和 transportprotocol（消息分片）几个大的模块
+- 文章的组成划分为协议的基本介绍（介绍协议原理），附录（一些配置项的全部信息）和八股（为什么协议需要这样设定，结合实际的一些场景进行分析）
+- 需要参考 vsomeip，写一些 demo，wireshark 的抓包分析，后续可能会有源码分析

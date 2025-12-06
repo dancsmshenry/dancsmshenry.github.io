@@ -1,0 +1,13 @@
+@startjson someip_sd_ipv4_multicast_option
+
+{
+    "Length" : "uint16, fixed for 15",
+    "Type" : "uint8, fixed for 14",
+    "Reserved" : "uint8, fixed for 0",
+    "Ipv4-address" : "uint32",
+    "Reserved" : "uint8, fixed for 0",
+    "L4-protocol" : "uint8",
+    "PortNumber" : "uint16"
+}
+
+@endjson

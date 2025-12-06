@@ -16,9 +16,11 @@ categories:
 
 # Header
 
-1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度。
+1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度
 
-其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的。
+![doip_header](out/doip_header.svg)
+
+其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的
 
 <br/>
 
@@ -32,6 +34,8 @@ categories:
 
 4 字节的 vm specific，一般是通过配置决定
 
+![doip_routing_activication_request](out/doip_routing_activication_request.svg)
+
 <br/>
 
 ## 0x0006 路由激活响应
@@ -42,11 +46,15 @@ categories:
 
 4 字节的 future standardization use，被标准保留的值，一般为 0000 0000
 
+![doip_routing_activication_response](out/doip_routing_activication_response.svg)
+
 <br/>
 
 ## 0x0007 在线检查请求
 
 不携带任何数据
+
+![doip_alive_check_request](out/doip_alive_check_request.svg)
 
 <br/>
 
@@ -54,11 +62,15 @@ categories:
 
 2 字节的 diagnostic address
 
+![doip_alive_check_response](out/doip_alive_check_response.svg)
+
 <br/>
 
 ## 0x8001 诊断报文
 
 2 字节的 source address，2 字节的 target address，一定字节数量的 uds 报文
+
+![doip_diagnostic](out/doip_diagnostic.svg)
 
 <br/>
 
@@ -68,6 +80,8 @@ categories:
 
 后面可以携带一定字节数量的诊断报文，长度可以通过配置来决定
 
+![doip_diagnostic_ack](out/doip_diagnostic_ack.svg)
+
 <br/>
 
 ## 0x8003 诊断消极响应
@@ -75,6 +89,8 @@ categories:
 2 字节的 source address，2 字节的 target address，1 字节的 nack code
 
 后面可以携带一定字节数量的诊断报文，长度可以通过配置来决定
+
+![doip_diagnostic_nack](out/doip_diagnostic_nack.svg)
 
 <br/>
 

@@ -1,0 +1,25 @@
+@startjson someip_sd_eventgroup
+
+{
+    "MessageHeader":["serviceHeader","requestHeader"],
+    "Flags": "uint8",
+    "Reserved": "uint24",
+    "Length of entries": "uint32",
+    "EventGroupEntry":{
+        "Type": "uint8",
+        "Index 1st options": "uint8",
+        "Index 2nd options": "uint8",
+        "Of opt 1": "uint4",
+        "Of opt 2": "uint4",
+        "service id": "uint16",
+        "instance id": "uint16",
+        "major version": "uint8",
+        "ttl": "uint24",
+        "minor version": "uint32",
+        "Reserved field": "uint12",
+        "Counter": "uint4",
+        "EventGroupId": "uint16"
+    }
+}
+
+@endjson
