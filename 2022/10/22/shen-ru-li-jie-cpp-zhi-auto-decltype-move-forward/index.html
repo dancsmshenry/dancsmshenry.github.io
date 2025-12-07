@@ -8,9 +8,11 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="left value定义其实left value并没有很好的定义去说明，一种被普遍认同的观点便是在内存的表达式，能够用内置&amp;amp;进行取地址的值
-//    错误的观点1：等号右边的是右值，左边的是左值
-int a = 3;    // ">
+    <meta name="description" content="2025.09.23 
+其实左值，右值，本身是没有任何意义的，必须要结合具体的场景来分析。
+因为在一些推导过程中，一些变量会被推导为其他的类型，这个时候再去讨论原来是左值，还是右值，是没有意义的了
+比如
+std::vector&amp;lt;int">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -204,7 +206,7 @@ int a = 3;    // ">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -350,14 +352,14 @@ int a = 3;    // ">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.5k
+                    3.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    14 分
+                    15 分
                 </div>
                 
                 
@@ -368,7 +370,14 @@ int a = 3;    // ">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="left-value"><a href="#left-value" class="headerlink" title="left value"></a>left value</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>其实<code>left value</code>并没有很好的定义去说明，一种被普遍认同的观点便是<strong>在内存的表达式，能够用内置&amp;进行取地址</strong>的值</p>
+                <p>2025.09.23 </p>
+<p>其实左值，右值，本身是没有任何意义的，必须要结合具体的场景来分析。</p>
+<p>因为在一些推导过程中，一些变量会被推导为其他的类型，这个时候再去讨论原来是左值，还是右值，是没有意义的了</p>
+<p>比如</p>
+<pre class="line-numbers language-cpp"><code class="language-cpp">std<span class="token operator">::</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span> vec<span class="token punctuation">;</span>
+vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//    注：push_back 是右值引用接的，因此这里会被推导为一个右值</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="left-value"><a href="#left-value" class="headerlink" title="left value"></a>left value</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>其实<code>left value</code>并没有很好的定义去说明，一种被普遍认同的观点便是<strong>在内存的表达式，能够用内置&amp;进行取地址</strong>的值</p>
 <pre class="line-numbers language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">//    错误的观点1：等号右边的是右值，左边的是左值</span>
 <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    a是左值，3是右值</span>
 <span class="token keyword">int</span> b<span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">//    b是左值</span>
@@ -395,6 +404,12 @@ arrs<span class="token punctuation">.</span><span class="token function">push_ba
 </li>
 </ul>
 <p>可以理解为<code>c++</code>的<strong>语法糖</strong>，更加方便的使用指针</p>
+<p>2025.09.23 错了，push_back 的实现上是万能引用</p>
+<p>一些理解：</p>
+<ul>
+<li>Int &amp; a = 10; 会编译抱错，猜测编译器确实给 10 找了块地方放，但是可能这块地方不能被修改，所以编译报错</li>
+<li>Const int &amp; a = 10; 不会编译报错，是因为这块地方也不能修改</li>
+</ul>
 <br>
 
 <h2 id="左值（举例）"><a href="#左值（举例）" class="headerlink" title="左值（举例）"></a>左值（举例）</h2><p>函数名和变量名</p>
@@ -840,7 +855,7 @@ _GLIBCXX_NODISCARD
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
                         
                         <span class="card-title">MapReduce: Simplified Data Processing on Large Clusters</span>
                     </div>
@@ -889,7 +904,7 @@ _GLIBCXX_NODISCARD
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="STL 源码剖析之 map">
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="STL 源码剖析之 map">
                         
                         <span class="card-title">STL 源码剖析之 map</span>
                     </div>
@@ -1058,7 +1073,7 @@ _GLIBCXX_NODISCARD
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">121.2k</span>
+            <span class="white-color">121.9k</span>
             
 
             <br>

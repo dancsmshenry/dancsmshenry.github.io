@@ -210,7 +210,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -356,14 +356,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2.1k
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    8 分
+                    9 分
                 </div>
                 
                 
@@ -633,6 +633,30 @@
 
 <br>
 
+<h1 id="有关-value"><a href="#有关-value" class="headerlink" title="有关 value"></a>有关 value</h1><p><strong>结论</strong>：value 必须要有默认构造函数</p>
+<ul>
+<li>因为 .end() 本质也是一个 pair，因此会调用默认构造出一对 pair。</li>
+<li>但需要注意的是，在最开始构建 map 的时候，如果不做任何操作，是不会创建 .end() 的，因此不会编译报错</li>
+<li>由此引申，如果 value 是值类型，那么访问 end 的 value，相当于访问默认构造函数的 value；而如果是指针类型，那么就会访问空指针，然后 coredump</li>
+</ul>
+<pre class="line-numbers language-C++"><code class="language-C++">#include <cstdint>
+#include <map>
+#include <vector>
+
+struct A {
+  A() = delete;
+  A(int i1) { (void)i1; }
+};
+
+int main() {
+  std::map<int, A> map1{};
+
+  //  加上这段代码，就会编译报错
+  // A aa(1);
+  // map1[0] = aa;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<br>
+
 <h1 id="to-do-list"><a href="#to-do-list" class="headerlink" title="to do list"></a>to do list</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzkyMjIxMzIxNA==&amp;mid=2247483656&amp;idx=1&amp;sn=a204fedfbf2cf7f2023979c56b756c8a&amp;scene=19#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkyMjIxMzIxNA==&amp;mid=2247483656&amp;idx=1&amp;sn=a204fedfbf2cf7f2023979c56b756c8a&amp;scene=19#wechat_redirect</a></p>
 <p><a href="https://mp.weixin.qq.com/s?__biz=MzkyMjIxMzIxNA==&amp;mid=2247483848&amp;idx=1&amp;sn=d459a04730a4e56653452eae9f71d424&amp;scene=19#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzkyMjIxMzIxNA==&amp;mid=2247483848&amp;idx=1&amp;sn=d459a04730a4e56653452eae9f71d424&amp;scene=19#wechat_redirect</a></p>
 
@@ -681,7 +705,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="深入理解 CPP 之 auto,decltype,move,forward">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="深入理解 CPP 之 auto,decltype,move,forward">
                         
                         <span class="card-title">深入理解 CPP 之 auto,decltype,move,forward</span>
                     </div>
@@ -689,9 +713,11 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            left value定义其实left value并没有很好的定义去说明，一种被普遍认同的观点便是在内存的表达式，能够用内置&amp;进行取地址的值
-//    错误的观点1：等号右边的是右值，左边的是左值
-int a = 3;    // 
+                            2025.09.23 
+其实左值，右值，本身是没有任何意义的，必须要结合具体的场景来分析。
+因为在一些推导过程中，一些变量会被推导为其他的类型，这个时候再去讨论原来是左值，还是右值，是没有意义的了
+比如
+std::vector&lt;int
                         
                     </div>
                     <div class="publish-info">
@@ -725,7 +751,7 @@ int a = 3;    //
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="STL 源码剖析之 deque">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="STL 源码剖析之 deque">
                         
                         <span class="card-title">STL 源码剖析之 deque</span>
                     </div>
@@ -896,7 +922,7 @@ int a = 3;    //
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">121.2k</span>
+            <span class="white-color">121.9k</span>
             
 
             <br>

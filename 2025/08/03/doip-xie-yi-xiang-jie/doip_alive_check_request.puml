@@ -1,0 +1,12 @@
+@startjson doip_alive_check_request
+
+{
+    "Messageheader" : {
+        "ProtocolVersion" : "uint8",
+        "~ProtocolVersion" : "uint8",
+        "PayloadType" : "uint16",
+        "PayloadLength" : "uint32"
+    }
+}
+
+@endjson

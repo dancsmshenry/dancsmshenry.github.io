@@ -8,18 +8,15 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="基本概念Scalable Service-Oriented MiddlewarE over IP
+    <meta name="description" content="Scalable Service-Oriented MiddlewarE over IP
+基于 IP 协议，面向服务的可拓展中间件协议
 
 
-Event
+MessageCompoent
 
-Field
+serviceId：当前的报文消息属于哪种服务
 
-Request/Response Method
-
-Fire&amp;amp;Forget Method
-
-SomeIp">
+methodId">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -213,7 +210,7 @@ SomeIp">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -359,14 +356,14 @@ SomeIp">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    845
+                    1.1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
                 
@@ -377,108 +374,198 @@ SomeIp">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p><strong>S</strong>calable Service-<strong>O</strong>riented <strong>M</strong>iddlewar<strong>E</strong> over <strong>IP</strong></p>
+                <p><strong>S</strong>calable Service-<strong>O</strong>riented <strong>M</strong>iddlewar<strong>E</strong> over <strong>IP</strong></p>
+<p>基于 IP 协议，面向服务的可拓展中间件协议</p>
 <br>
 
-<h2 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h2><br>
-
-<h2 id="Field"><a href="#Field" class="headerlink" title="Field"></a>Field</h2><br>
-
-<h2 id="Request-Response-Method"><a href="#Request-Response-Method" class="headerlink" title="Request/Response Method"></a>Request/Response Method</h2><br>
-
-<h2 id="Fire-amp-Forget-Method"><a href="#Fire-amp-Forget-Method" class="headerlink" title="Fire&amp;Forget Method"></a>Fire&amp;Forget Method</h2><br>
-
-<h1 id="SomeIpHeader"><a href="#SomeIpHeader" class="headerlink" title="SomeIpHeader"></a>SomeIpHeader</h1><h2 id="MessageId"><a href="#MessageId" class="headerlink" title="MessageId"></a>MessageId</h2><h3 id="ServiceId"><a href="#ServiceId" class="headerlink" title="ServiceId"></a>ServiceId</h3><p>2 字节，表示当前报文是属于什么服务的</p>
-<br>
-
-<h3 id="MethodId"><a href="#MethodId" class="headerlink" title="MethodId"></a>MethodId</h3><p>2 字节，其最高位为 0 表示的是 method，最高位为 1 表示为 event 或者 notification</p>
-<br>
-
-<br>
-
-<h2 id="Length"><a href="#Length" class="headerlink" title="Length"></a>Length</h2><p>4 字节，表示从 RequestId 到消息结束的长度。</p>
-<br>
-
-<br>
-
-<h2 id="RequestId"><a href="#RequestId" class="headerlink" title="RequestId"></a>RequestId</h2><h3 id="ClientId"><a href="#ClientId" class="headerlink" title="ClientId"></a>ClientId</h3><p>2 字节，表示请求的 client 是哪一个，或者说消息来自于哪一个 client</p>
-<br>
-
-<h3 id="SessionId"><a href="#SessionId" class="headerlink" title="SessionId"></a>SessionId</h3><p>2 字节，表示该请求是当前 client 的哪一次请求</p>
-<br>
-
-<h2 id="ProtocalVersion"><a href="#ProtocalVersion" class="headerlink" title="ProtocalVersion"></a>ProtocalVersion</h2><p>1 字节，表示当前 SOME/IP 协议的版本号，默认为 1</p>
-<br>
-
-<h2 id="InterfaceVersion"><a href="#InterfaceVersion" class="headerlink" title="InterfaceVersion"></a>InterfaceVersion</h2><p>1 字节，表示服务接口的版本号</p>
-<br>
-
-<h2 id="MessageType"><a href="#MessageType" class="headerlink" title="MessageType"></a>MessageType</h2><p>1 字节，表示当前的报文类型</p>
-<br>
-
-<h2 id="ReturnCode"><a href="#ReturnCode" class="headerlink" title="ReturnCode"></a>ReturnCode</h2><p>1 字节</p>
-<br>
-
-<br>
-
-<h1 id="SomeIpSd"><a href="#SomeIpSd" class="headerlink" title="SomeIpSd"></a>SomeIpSd</h1><p>Sd 的报文头同样使用的是 SomeIpHeader，但是其中的部分值是固定的：</p>
+<h1 id="MessageCompoent"><a href="#MessageCompoent" class="headerlink" title="MessageCompoent"></a>MessageCompoent</h1><p><img src="out/someip_message_component.svg" alt="someip_message_component"></p>
 <ul>
-<li>ServiceID 固定为 0xFFFF</li>
-<li>MethodID 固定为 0x8100</li>
-<li>ClientID 一般固定为 0x0000</li>
-<li>SessionID 初始为 0x0001，每发送一次数据后便加 1</li>
-<li>Protocol Version 固定为 0x01</li>
-<li>Interface Version 固定为 0x01</li>
-<li>Message type 固定为 0x02（Notification）</li>
-<li>ReturnCode 固定为 0x00（E_OK）</li>
+<li><p>serviceId：当前的报文消息属于哪种服务</p>
+</li>
+<li><p>methodId：其最高位为 0 表示的是 method，最高位为 1 表示为 event 或者 notification</p>
+</li>
+<li><p>length：表示从这里开始的后面数据，总共占用多少个字节</p>
+</li>
+<li><p>clientId：用于区分同一个 ECU 上的不同 client</p>
+<ul>
+<li>如果是不同 ecu 的，则需要通过 ip+port（fd）+clientid 进行分辨</li>
+</ul>
+</li>
+<li><p>sessionId：用于区分来自同一个 client 的多次请求</p>
+</li>
+<li><p>protocolVersion：用于确认 someip 协议栈本身的版本，默认为 1</p>
+</li>
+<li><p>interfaceVersion：用于表示上层接口的版本</p>
+</li>
+<li><p>messageType：表示当前消息的类型（ method，event，reponse）</p>
+</li>
+<li><p>returnCode：类似错误码或者 ok 码的机制</p>
+</li>
 </ul>
 <br>
 
-<p>接着就会有一个 1 字节的 Flags，和 3 字节的 reserved。</p>
-<p>后续都是 entry 和 option。</p>
-<br>
-
-<p>Find service，意思为服务的使用者想要找到服务的提供者，从而在组播上发出的报文；而对应的提供者在收到了相应的报文之后，会发送 offer service，从而告知服务的使用者，提供者的元信息。</p>
-<p>Offer service，目的为服务的提供者通过组播，告知外界自己这个节点，对外提供了什么服务。（可以注意到是周期发送的）</p>
-<p>StopOffer service，目的是告知外界当前节点不再提供什么类型的服务了，从而在服务的使用者方，删除对应的 mapping</p>
-<p>Subscribe，意思是 event 的使用者需要订阅对应 event 的提供者，而发出的报文。需要注意的是，实际上是以 eventgroup 的形式进行订阅的，而不能只订阅单个 event</p>
-<p>Stop subscribe，停止订阅</p>
-<br>
-
-<p>对于 someip-sd 消息而言，可以将其分为 someip header，someip sd header，entries array 以及 options array。</p>
 <br>
 
 <br>
 
-<h2 id="Entry"><a href="#Entry" class="headerlink" title="Entry"></a>Entry</h2><h3 id="ServiceEntry"><a href="#ServiceEntry" class="headerlink" title="ServiceEntry"></a>ServiceEntry</h3><p>Type：FindService (0x00)、OfferService (0x01)、StopOfferService (0x01)</p>
-<p>Index First Option Run：Option Array 中第一个 Option 的索引</p>
-<p>Index Second Option Run：Option Array 中第二个 Option 的索引</p>
-<p>of opt 1：第一个 Option 使用的选项数</p>
-<p>of opt 2：第二个 Option 使用的选项数</p>
-<p>Service ID：表示该 Entry 所涉及的服务或服务实例的 Service ID</p>
-<p>Instance ID：表示该 Entry 涉及服务实例的 Instance ID，如果包含一个服务的所有服务实例，则设置为 0xFFFF</p>
-<p>Major Version：服务的主版本号</p>
-<p>TTL：Entry 的生命周期，单位为秒</p>
-<p>Minor Version：服务的次版本号</p>
+<h1 id="Communication"><a href="#Communication" class="headerlink" title="Communication"></a>Communication</h1><h2 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h2><p>server 向 client 发送 notification 通知，不需要 client 回复</p>
 <br>
 
-<h3 id="EventGroupEntry"><a href="#EventGroupEntry" class="headerlink" title="EventGroupEntry"></a>EventGroupEntry</h3><p>Type：SubscribeEventgroup（0x06）、StopSubscribeEventgroup（0x06）、  SubscribeEventgroupAck（0x07）、SubscribeEventgroupNack（0x07）</p>
-<p>Index First Option Run：Option Array 中第一个 Option 的索引</p>
-<p>Index Second Option Run：Option Array 中第二个 Option 的索引</p>
-<p>of opt 1：第一个 Option 使用的选项数</p>
-<p>of opt 2：第二个 Option 使用的选项数</p>
-<p>Service ID：表示该 Entry 所涉及的服务或服务实例的 Service ID</p>
-<p>Instance ID：表示该 Entry 涉及服务实例的 Instance ID，任何实例的 Instance ID 都不能设置为 0xFFFF（这一点和在 Service Entry 中的不同）</p>
-<p>Major Version：服务的主版本号</p>
-<p>TTL：Entry 的生命周期，单位为秒</p>
-<p>Reserved：应被设置为 0x000</p>
-<p>Counter：用于区分同一订阅者的订阅事件组。如果不使用，设置为0x0</p>
-<p>Eventgroup ID：事件组 ID</p>
+<h2 id="R-R-Method"><a href="#R-R-Method" class="headerlink" title="R/R Method"></a>R/R Method</h2><p>request <strong>with</strong> response，client 向 server 发送 method 的 request，预期收到对端的 response</p>
+<br>
+
+<h2 id="F-F-Method"><a href="#F-F-Method" class="headerlink" title="F/F Method"></a>F/F Method</h2><p>request <strong>without</strong> response，client 向 server 发送 method 的 request，不需要收到对端的响应</p>
+<br>
+
+<h2 id="Field"><a href="#Field" class="headerlink" title="Field"></a>Field</h2><p>细分为 get，set 和 notification，前两者等价于 r/r 的 method 和 f/f 的 method，后者等价于 event</p>
 <br>
 
 <br>
 
-<h2 id="Option"><a href="#Option" class="headerlink" title="Option"></a>Option</h2>
+<br>
+
+<h1 id="ServiceDiscovery"><a href="#ServiceDiscovery" class="headerlink" title="ServiceDiscovery"></a>ServiceDiscovery</h1><p>只能为 udp 类型的报文，Sd 的报文头使用相同的报文头，但其中部分值是固定的：</p>
+<ul>
+<li>ServiceID 为 0xFFFF</li>
+<li>MethodID 为 0x8100</li>
+<li>ClientID 为 0x0000</li>
+<li>SessionID 初始为 0x0001，每发送一次数据后便加 1</li>
+<li>Protocol Version 为 0x01</li>
+<li>Interface Version 为 0x01</li>
+<li>Message type 为 0x02（Notification）</li>
+<li>ReturnCode 为 0x00（E_OK）</li>
+</ul>
+<p><img src="out/someip_sd.svg" alt="someip_sd"></p>
+<ul>
+<li>flags 的取值有 None, Reboot, Unicast, ExplicitInitialData</li>
+</ul>
+<br>
+
+<h2 id="ServiceEntry"><a href="#ServiceEntry" class="headerlink" title="ServiceEntry"></a>ServiceEntry</h2><p>一个 service entry 总共占用 16 个字节</p>
+<p><img src="out/someip_sd_service.svg" alt="someip_sd_service"></p>
+<ul>
+<li><p>Type：</p>
+<ul>
+<li>FindService (0x00)</li>
+<li>OfferService (0x01)</li>
+<li>StopOfferService (0x01)</li>
+</ul>
+</li>
+<li><p>Index First Option Run：Option Array 中第一个 Option 的索引</p>
+</li>
+<li><p>Index Second Option Run：Option Array 中第二个 Option 的索引</p>
+</li>
+<li><p>of opt 1：第一个 Option 使用的选项数</p>
+</li>
+<li><p>of opt 2：第二个 Option 使用的选项数</p>
+</li>
+<li><p>Service ID：表示该 Entry 所涉及的服务或服务实例的 Service ID</p>
+</li>
+<li><p>Instance ID：表示该 Entry 涉及服务实例的 Instance ID，如果包含一个服务的所有服务实例，则设置为 0xFFFF</p>
+</li>
+<li><p>Major Version：服务的主版本号</p>
+</li>
+<li><p>TTL：Entry 的生命周期，单位为秒</p>
+</li>
+<li><p>Minor Version：服务的次版本号</p>
+</li>
+</ul>
+<br>
+
+<br>
+
+<h2 id="EventGroupEntry"><a href="#EventGroupEntry" class="headerlink" title="EventGroupEntry"></a>EventGroupEntry</h2><p>一个 event group entry 总共占用 20 个字节</p>
+<p><img src="out/someip_sd_eventgroup.svg" alt="someip_sd_eventgroup"></p>
+<ul>
+<li><p>Type：</p>
+<ul>
+<li>SubscribeEventgroup（0x06）</li>
+<li>StopSubscribeEventgroup（0x06）</li>
+<li>SubscribeEventgroupAck（0x07）</li>
+<li>SubscribeEventgroupNack（0x07）</li>
+</ul>
+</li>
+<li><p>Index First Option Run：Option Array 中第一个 Option 的索引</p>
+</li>
+<li><p>Index Second Option Run：Option Array 中第二个 Option 的索引</p>
+</li>
+<li><p>of opt 1：表示从上述第一个 option 开始，总共使用多少个 option</p>
+</li>
+<li><p>of opt 2：表示从上述第二个 option 开始，总共使用多少个 option</p>
+</li>
+<li><p>ServiceId：表示该 Entry 所涉及的服务或服务实例的 Service ID</p>
+</li>
+<li><p>InstanceId：表示该 Entry 涉及服务实例的 Instance ID，任何实例的 Instance ID 都不能设置为 0xFFFF（这一点和在 Service Entry 中的不同）</p>
+</li>
+<li><p>MajorVersion：服务的主版本号</p>
+</li>
+<li><p>TTL：Entry 的生命周期，单位为秒</p>
+</li>
+<li><p>Reserved：应被设置为 0x000</p>
+</li>
+<li><p>Counter：用于区分同一订阅者的订阅事件组。如果不使用，设置为0x0</p>
+</li>
+<li><p>EventgroupId：事件组 ID</p>
+</li>
+</ul>
+<br>
+
+<h2 id="Ipv4Option"><a href="#Ipv4Option" class="headerlink" title="Ipv4Option"></a>Ipv4Option</h2><p><img src="out/someip_sd_ipv4_option.svg" alt="someip_sd_ipv4_option"></p>
+<p><img src="out/someip_sd_ipv4_multicast_option.svg" alt="someip_sd_ipv4_multicast_option"></p>
+<br>
+
+<h2 id="Ipv6Option"><a href="#Ipv6Option" class="headerlink" title="Ipv6Option"></a>Ipv6Option</h2><p><img src="out/someip_sd_ipv6_multicast_option.svg" alt="someip_sd_ipv6_multicast_option"></p>
+<p><img src="out/someip_sd_ipv6_option.svg" alt="someip_sd_ipv6_option"></p>
+<br>
+
+<h2 id="LoadBalancingOption"><a href="#LoadBalancingOption" class="headerlink" title="LoadBalancingOption"></a>LoadBalancingOption</h2><p><img src="out/someip_sd_load_balancing_option.svg" alt="someip_sd_load_balancing_option"></p>
+<br>
+
+<h2 id="ConfigurationOption"><a href="#ConfigurationOption" class="headerlink" title="ConfigurationOption"></a>ConfigurationOption</h2><p>用于额外传输一些定制化信息的</p>
+<p><img src="out/someip_sd_configuration_option.svg" alt="someip_sd_configuration_option"></p>
+<br>
+
+<h2 id="ServerInstance-StateMachine"><a href="#ServerInstance-StateMachine" class="headerlink" title="ServerInstance StateMachine"></a>ServerInstance StateMachine</h2><br>
+
+<h2 id="ClientInstance-StateMachine"><a href="#ClientInstance-StateMachine" class="headerlink" title="ClientInstance StateMachine"></a>ClientInstance StateMachine</h2><br>
+
+<br>
+
+<h1 id="TransportProtocol"><a href="#TransportProtocol" class="headerlink" title="TransportProtocol"></a>TransportProtocol</h1><p>对于大包的数据，tcp 本身的协议特性，是支持分片的（流式协议）；但是 udp 是不支持的，所以需要应用层自行实现分片。</p>
+<p><img src="out/someip_message_tp.svg" alt="someip_message_tp"></p>
+<ul>
+<li>高 28 位，表示当前报文在 total message 中的偏移量是多少，因为后面 4 位用做了其他的功能，所以分片的长度，必须为 2^4 的倍数</li>
+<li>中 3 位，为协议保留字段</li>
+<li>低 1 位，表示当前报文是否为整个数据包的最后一包</li>
+</ul>
+<br>
+
+<br>
+
+<br>
+
+<h1 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h1><p>用于记载一些配置项的全部信息。</p>
+<br>
+
+<br>
+
+<h1 id="八股"><a href="#八股" class="headerlink" title="八股"></a>八股</h1><ul>
+<li>为什么需要有 findservice，或者说，只监听组播，通过 offer service，就可以找到是哪个 endpoint 提供了这个 service 了？<ul>
+<li>缺乏实时性，offer service 是周期发送的，但可能 client 刚上线的时机，刚好是上一个 offerservice 发送完的时候，那么就需要等一个 gap 才能收到 offer service 了</li>
+<li>或者说，上述的 gap 是可以尽可能的缩减，但这会造成总线上大量的无用消息发送</li>
+</ul>
+</li>
+</ul>
+<br>
+
+<br>
+
+<h1 id="TodoList"><a href="#TodoList" class="headerlink" title="TodoList"></a>TodoList</h1><ul>
+<li>将 someip 协议划分为 messagecompoent（消息组成），communication（通信接口），servicediscovery（端点发现）和 transportprotocol（消息分片）几个大的模块</li>
+<li>文章的组成划分为协议的基本介绍（介绍协议原理），附录（一些配置项的全部信息）和八股（为什么协议需要这样设定，结合实际的一些场景进行分析）</li>
+<li>需要参考 vsomeip，写一些 demo，wireshark 的抓包分析，后续可能会有源码分析</li>
+</ul>
+
             </div>
             <hr />
 
@@ -524,7 +611,7 @@ SomeIp">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
                         
                         <span class="card-title">Spdlog 库使用及详解</span>
                     </div>
@@ -567,7 +654,7 @@ SomeIp">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="Doip 协议详解">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="Doip 协议详解">
                         
                         <span class="card-title">Doip 协议详解</span>
                     </div>
@@ -575,13 +662,14 @@ SomeIp">
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Header1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度。
-其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的。
+                            Header1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度
+
+其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的
 
 
 
 
-Tcp type0x0005 路由激活请求
+Tcp type0x0005 路由激活请求2
                         
                     </div>
                     <div class="publish-info">
@@ -734,7 +822,7 @@ Tcp type0x0005 路由激活请求
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">121.2k</span>
+            <span class="white-color">121.9k</span>
             
 
             <br>

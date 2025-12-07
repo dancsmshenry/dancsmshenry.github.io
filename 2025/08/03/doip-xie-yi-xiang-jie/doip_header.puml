@@ -1,0 +1,10 @@
+@startjson doip_header
+
+{
+    "ProtocolVersion" : "uint8",
+    "~ProtocolVersion" : "uint8",
+    "PayloadType" : "uint16",
+    "PayloadLength" : "uint32"
+}
+
+@endjson

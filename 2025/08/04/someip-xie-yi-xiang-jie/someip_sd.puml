@@ -1,0 +1,9 @@
+@startjson someip_sd
+
+{
+    "MessageHeader":["serviceHeader","requestHeader"],
+    "Flags": "uint8",
+    "Reserved": "uint24"
+}
+
+@endjson

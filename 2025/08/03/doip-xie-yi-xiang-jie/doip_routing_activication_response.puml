@@ -1,0 +1,16 @@
+@startjson doip_routing_activication_response
+
+{
+    "Messageheader" : {
+        "ProtocolVersion" : "uint8",
+        "~ProtocolVersion" : "uint8",
+        "PayloadType" : "uint16",
+        "PayloadLength" : "uint32"
+    },
+    "TargetAddress" : "uint16",
+    "SourceAddress" : "uint16",
+    "ActiciationCode" : "uint8",
+    "FutureStandardizationUse" : "uint32"
+}
+
+@endjson

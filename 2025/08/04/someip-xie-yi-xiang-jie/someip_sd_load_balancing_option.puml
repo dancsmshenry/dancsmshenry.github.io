@@ -1,0 +1,11 @@
+@startjson someip_sd_load_balancing_option
+
+{
+    "Length" : "uint16",
+    "Type" : "uint8, fixed for 2",
+    "Reserved" : "uint8, fixed for 0",
+    "Priority" : "uint16",
+    "Weight" : "uint16"
+}
+
+@endjson
