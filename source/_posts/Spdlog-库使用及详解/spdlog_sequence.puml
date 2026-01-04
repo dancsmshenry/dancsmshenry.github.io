@@ -1,0 +1,43 @@
+@startuml spdlog_sequence
+
+actor User as F1
+participant async_logger as F2
+participant thread_pool as F3
+participant ansicolor_sink as F4
+participant file_sink as F5
+
+F1 --> F2: info(...)
+
+F2 --> F2: log(...)
+
+F2 --> F2: log_(...)
+
+F2 --> F2: fmt::vformat_to
+
+F2 --> F2: log_it_(...)
+
+F2 --> F2: sink_it_(...)
+
+F2 --> F3: post_log(...)
+
+F3 --> F3: post_async_msg_(...)
+
+group in another thread
+    loop without message
+        F3 --> F3: process_next_msg_(...)
+    else message coming
+        F3 --> F2: backend_sink_it_(...)
+
+        F2 --> F2: For each logSink
+
+        F2 --> F4: log(...)
+
+        F4 --> F4: log message to console
+
+        F2 --> F5: log(...)
+
+        F5 --> F5: log message to file
+    end
+end
+
+@enduml

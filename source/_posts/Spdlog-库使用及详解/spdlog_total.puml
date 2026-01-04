@@ -1,0 +1,48 @@
+@startuml spdlog_total
+
+interface logger {
+    - void sink_it_(log_msg)
+    - void flush_()
+}
+
+interface sink {
+    - void log(log_msg)
+    - void flush()
+    - void set_pattern(pattern)
+    - void set_formatter(sink_formatter)
+}
+
+interface base_sink {
+    - void sink_it_(log_msg)
+    - void flush_()
+}
+
+interface formatter {
+    - void format(log_msg, dest)
+}
+
+logger --> registry
+
+logger --> synchronous_factory
+
+async_logger --> async_factory
+
+sink "n"--*"1" logger
+
+formatter "1"--*"1" sink
+
+thread_pool "1"--*"1" registry
+
+mpmc_blocking_queue "1"--*"1" thread_pool
+
+base_sink --|> sink
+
+ansicolor_sink --|> sink
+
+async_logger --|> logger
+
+basic_file_sink --|> base_sink
+
+pattern_formatter --|> formatter
+
+@enduml

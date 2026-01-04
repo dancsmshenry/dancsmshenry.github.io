@@ -16,29 +16,29 @@ categories:
 
 - 函数 fwrite 是 glibc 封装的一层有关 write 的接口，会在应用层再创建一个缓冲的 buffer，当调用的 fwrite 到一定的数量时，才会调用一次操作系统原生的 write。也因此有了函数 fflush，将这个缓冲的 buffer 内容，强制调用一次 write。
 - 而 write 也不一定能够强制刷盘，所以还需要再强制调用一次 fsync（或是 fdatasync）（spdlog 估计是不想再上层再封装一个缓冲的 buffer，所以就走 glibc 的接口）
+- localtime_r 和 localtime 区别：都是将时间点转换成当前时间，前者是线程安全的
+- gmtime_r 和 gmtime 区别：将时间转换为格林尼治天文台的时间，前者是线程安全的
+
+<br/>
 
 <br/>
 
 # 整体架构
 
-异步逻辑的类图
-
-![async](spdlog-async.svg)
+![total](out/spdlog_total.svg)
 
 <br/>
 
-Pattern 的类图
+<br/>
 
-![format](spdlog-format.svg)
+# 时序图
+
+![sequence](out/spdlog_sequence.svg)
 
 <br/>
 
-Sink 的类图
-
-![sink](spdlog-sink.svg)
-
 <br/>
 
-总体图
+# From
 
-![total](spdlog-total.svg)
+https://www.cnblogs.com/fortunely/p/17388565.html
