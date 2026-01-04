@@ -4,11 +4,24 @@
   
     
     <entry>
+      <title>DDS 协议详解</title>
+      <link href="/2025/12/21/dds-xie-yi-xiang-jie/"/>
+      <url>/2025/12/21/dds-xie-yi-xiang-jie/</url>
+      
+        <content type="html"><![CDATA[<h1 id="RTPS"><a href="#RTPS" class="headerlink" title="RTPS"></a>RTPS</h1><h2 id="Struct-module"><a href="#Struct-module" class="headerlink" title="Struct module"></a>Struct module</h2><p>guid_t ，globally unique rtps-entity identifiers，一个独一无二的标识符，用于区分每一个 rtps entity，有 16 个字节</p><p>前面 12 个字节是 guidprefix_t，表示在同一个参与者下，所有的 entity 都拥有相同的前缀</p><p>后面 4 个字节是 entityid_t，用于区分一个参与者下的不同 entity</p><p>locator，表示使用哪一种网络协议发送数据，一般上只有 udp_v4 和 udp_v6</p><p>并且其中有对应的 ip 和 port</p><p>rtps 层和 dds 层，之间是使用 historycache 进行解耦</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Spdlog 库使用及详解</title>
       <link href="/2025/08/21/spdlog-ku-shi-yong-ji-xiang-jie/"/>
       <url>/2025/08/21/spdlog-ku-shi-yong-ji-xiang-jie/</url>
       
-        <content type="html"><![CDATA[<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><ul><li>函数 fwrite 是 glibc 封装的一层有关 write 的接口，会在应用层再创建一个缓冲的 buffer，当调用的 fwrite 到一定的数量时，才会调用一次操作系统原生的 write。也因此有了函数 fflush，将这个缓冲的 buffer 内容，强制调用一次 write。</li><li>而 write 也不一定能够强制刷盘，所以还需要再强制调用一次 fsync（或是 fdatasync）（spdlog 估计是不想再上层再封装一个缓冲的 buffer，所以就走 glibc 的接口）</li></ul><br><h1 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h1><p>异步逻辑的类图</p><p><img src="spdlog-async.svg" alt="async"></p><br><p>Pattern 的类图</p><p><img src="spdlog-format.svg" alt="format"></p><br><p>Sink 的类图</p><p><img src="spdlog-sink.svg" alt="sink"></p><br><p>总体图</p><p><img src="spdlog-total.svg" alt="total"></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><ul><li>函数 fwrite 是 glibc 封装的一层有关 write 的接口，会在应用层再创建一个缓冲的 buffer，当调用的 fwrite 到一定的数量时，才会调用一次操作系统原生的 write。也因此有了函数 fflush，将这个缓冲的 buffer 内容，强制调用一次 write。</li><li>而 write 也不一定能够强制刷盘，所以还需要再强制调用一次 fsync（或是 fdatasync）（spdlog 估计是不想再上层再封装一个缓冲的 buffer，所以就走 glibc 的接口）</li><li>localtime_r 和 localtime 区别：都是将时间点转换成当前时间，前者是线程安全的</li><li>gmtime_r 和 gmtime 区别：将时间转换为格林尼治天文台的时间，前者是线程安全的</li></ul><br><br><h1 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h1><p><img src="out/spdlog_total.svg" alt="total"></p><br><br><h1 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h1><p><img src="out/spdlog_sequence.svg" alt="sequence"></p><br><br><h1 id="From"><a href="#From" class="headerlink" title="From"></a>From</h1><p><a href="https://www.cnblogs.com/fortunely/p/17388565.html" target="_blank" rel="noopener">https://www.cnblogs.com/fortunely/p/17388565.html</a></p>]]></content>
       
       
       
