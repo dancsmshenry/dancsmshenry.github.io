@@ -1,0 +1,48 @@
+@startuml recv_message_total
+
+interface TransportInterface
+' 实现 udp/tcp/shm 等传输协议
+
+interface TransportReceiverInterface
+' 解耦传输协议和业务层
+
+interface MessageReceiverInterface
+' 抽象基类，用于抽象出 receiver 的逻辑
+
+class TCPTransportInterface
+
+class ReceiverResource
+
+class MessageReceiver
+
+class TransportFactory
+' 单例 single
+
+class Transport
+
+class TCPv4Transport
+
+MessageReceiver --|> MessageReceiverInterface
+
+TCPTransportInterface --|> TransportInterface
+
+ReceiverResource --|> TransportReceiverInterface
+
+TCPv4Transport --|> TCPTransportInterface
+
+Transport "n"--*"1" TransportFactory
+
+TransportInterface "1"--*"1" Transport
+
+ReceiverResource "n"--*"1" TCPTransportInterface
+' tcptransportinterface 是用 port 区分不同的 receiverresource 的
+
+MessageReceiverInterface "1"--*"1" ReceiverResource
+
+@enduml
+
+' 总结：实际数据传输这一块，tcp/udp/uds 基本使用的是 asio 的接口，
+' 但是封装的极为简陋，epoll 上使用的也是 lt，相比传统的 brpc 使用的 et+无锁队列，
+' 性能上，在少链接的场景下，不会有过多的差别，但是大数据的情况下，会有很大的差别
+' 每个 connection 一个 thread 的做法，看上去也很简陋，并且 tcp 的 write 不支持连续 write，
+' 没法很好的利用 tcp 的特性
