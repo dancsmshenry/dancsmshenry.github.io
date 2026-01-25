@@ -204,7 +204,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -350,14 +350,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    9.1k
+                    9.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    35 分
+                    38 分
                 </div>
                 
                 
@@ -1793,36 +1793,16 @@
 
 <br>
 
-<h1 id="0x19"><a href="#0x19" class="headerlink" title="0x19"></a>0x19</h1><p>readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对应的数据。</p>
-<p>根据 14229 的规范以及 autosar ap 的规范，目前支持的 subfunction 有</p>
-<table>
-<thead>
-<tr>
-<th>子服务 id</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0x14</td>
-<td>reportDTCFaultDetectionCounter，不需要传入数据，返回当前所有处于 preFailed 的 DTC</td>
-</tr>
-<tr>
-<td>0x17</td>
-<td>reportUserDefMemoryByStatusMask</td>
-</tr>
-<tr>
-<td>0x18</td>
-<td>reportUserDefMemoryDTCSnapshotRecordByDTCNumber</td>
-</tr>
-<tr>
-<td>0x19</td>
-<td>reportUserDefMemoryDTCExtDataRecordByDTCNumber</td>
-</tr>
-</tbody></table>
+<h1 id="0x19"><a href="#0x19" class="headerlink" title="0x19"></a>0x19</h1><p>ReadDTCInformation，该服务是用于读取 DTC 相关的数据。</p>
 <br>
 
-<h2 id="19-01"><a href="#19-01" class="headerlink" title="19 01"></a>19 01</h2><p>reportNumberOfDTCByStatusMask，给定一个状态掩码，返回符合这个状态掩码的 dtc 个数。</p>
-<p>其中每个 dtc 的 status 与这个掩码进行 &amp; 操作，都不为 0</p>
+<h2 id="19-01"><a href="#19-01" class="headerlink" title="19 01"></a>19 01</h2><p><strong>reportNumberOfDTCByStatusMask</strong></p>
+<p>通过 request 中的状态掩码，返回符合这个状态掩码的 dtc 个数。</p>
+<p>其中每个 dtc 的 status 与这个掩码进行 &amp; 操作，都不为 0。</p>
+<p>位于 uds 协议的 page 261。</p>
+<br>
+
+<p>对应的 request 为：</p>
 <table>
 <thead>
 <tr>
@@ -1849,7 +1829,16 @@
 </tbody></table>
 <br>
 
-<h2 id="19-02"><a href="#19-02" class="headerlink" title="19 02"></a>19 02</h2><p>reportDTCByStatusMask，给定一个状态掩码，返回一个 dtc status 的合集。</p>
+<p>对应的 positive response 为：</p>
+<p><img src="19_01_07.png" alt="19 服务子服务 01 的正响应"></p>
+<p>DTCStatusAvailabilityMask 表示当前协议栈支持的 dtc status 中的哪些 bit，值 0xff 表示全支持；</p>
+<p>DTCFormatIdentifier 表示当前的 dtc 是哪一种 format；</p>
+<p>DTCCount 表示 dtc 的个数</p>
+<br>
+
+<h2 id="19-02"><a href="#19-02" class="headerlink" title="19 02"></a>19 02</h2><p><strong>reportDTCByStatusMask</strong></p>
+<p>给定一个状态掩码，返回一个 dtc status 的合集。</p>
+<p>表示需要读取处于某个状态的所有 dtc 以及对应的状态，uds 协议的 page 262</p>
 <p>其中每个 dtc 的 status 与这个掩码进行 &amp; 操作，都不为 0</p>
 <table>
 <thead>
@@ -1877,7 +1866,14 @@
 </tbody></table>
 <br>
 
-<h2 id="19-03"><a href="#19-03" class="headerlink" title="19 03"></a>19 03</h2><p>reportDTCSnapshotIdentification，返回所有 dtc 的快照数据，返回的数据逻辑为 dtc code + freeze data。</p>
+<p><img src="19_02_0a_15.png" alt="19 02的响应"></p>
+<p>59（19+40）</p>
+<p>+ 02（subfunctionid）/0a （subfunctionid）</p>
+<p>+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）</p>
+<p>+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）</p>
+<br>
+
+<h2 id="19-03"><a href="#19-03" class="headerlink" title="19 03"></a>19 03</h2><p><strong>reportDTCSnapshotIdentification</strong>，返回所有 dtc 的快照号，对应 uds 协议的 page 262。</p>
 <table>
 <thead>
 <tr>
@@ -1897,6 +1893,43 @@
 <td>0x03</td>
 </tr>
 </tbody></table>
+<br>
+
+<p><img src="19_03.png" alt="19 03的响应"></p>
+<br>
+
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id + 偏移量</td>
+<td>0x59</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x03</td>
+</tr>
+<tr>
+<td>3-5</td>
+<td>dtc value（3 个字节）</td>
+<td>0x000000-0xFFFFFF</td>
+</tr>
+<tr>
+<td>6…</td>
+<td>record number（1 个字节）</td>
+<td>0x00-0xff</td>
+</tr>
+</tbody></table>
+<p>后续按照 3-5 6 的方式累加下去，</p>
+<p>当没有快照数据的时候，后续的数据，从 dtc value 开始，就为空</p>
+<p>最少要有一个 record number</p>
 <br>
 
 <h2 id="19-04"><a href="#19-04" class="headerlink" title="19 04"></a>19 04</h2><p>reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据。</p>
@@ -1931,6 +1964,17 @@
 </tbody></table>
 <br>
 
+<p><img src="19_04.png" alt="19 04的响应"></p>
+<br>
+
+<p>表示需要获取某个 dtc 指定 record number 的快照数据，uds 协议的 263</p>
+<p>59（19+40）</p>
+<p>+ 04（subfunctionid）</p>
+<p>+dtc value（3 个字节） + dtc status（1 个字节）</p>
+<p>+record number（1 个字节，表示当前是哪一个 record） + did number（后续有多少个 did，1 个字节）</p>
+<p>+ data identifier（2 个字节，did 的 number） + n 个字节的 did 数据</p>
+<br>
+
 <h2 id="19-06"><a href="#19-06" class="headerlink" title="19 06"></a>19 06</h2><p>reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据。</p>
 <table>
 <thead>
@@ -1961,6 +2005,16 @@
 <td>0x00-0xFF</td>
 </tr>
 </tbody></table>
+<br>
+
+<p><img src="19_06.png" alt="19 06的响应"></p>
+<br>
+
+<p>表示需要获取某个 dtc 指定 record number 的拓展数据，uds 协议的 265</p>
+<p>59（19+40）</p>
+<p>+ 06（subfunctionid）</p>
+<p>+dtc value（3 个字节） + dtc status（1 个字节）</p>
+<p>+record number（1 个字节，表示当前是哪一个 record） + n 个字节的 拓展数据 数据</p>
 <br>
 
 <h2 id="19-07"><a href="#19-07" class="headerlink" title="19 07"></a>19 07</h2><p>reportNumberOfDTCBySeverityMaskRecord，回一个符合条件的 dtc 数。</p>
@@ -1997,7 +2051,47 @@
 </tbody></table>
 <br>
 
-<h2 id="19-0a"><a href="#19-0a" class="headerlink" title="19 0a"></a>19 0a</h2><p>reportSupportedDTC，用于读取当前支持的所有 dtc。</p>
+<p><img src="19_01_07.png" alt="19 07的响应"></p>
+<p>对应的正响应为</p>
+<table>
+<thead>
+<tr>
+<th><strong>数值位</strong></th>
+<th><strong>参数名字</strong></th>
+<th>可选值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>服务 id + 偏移量</td>
+<td>0x59</td>
+</tr>
+<tr>
+<td>2</td>
+<td>子服务 id</td>
+<td>0x07</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit）</td>
+<td>0x00-0xFF</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DTCFormatIdentifier（表示当前的 dtc 是那种 format 的，一个字节）</td>
+<td>具体参考规范细节</td>
+</tr>
+<tr>
+<td>5-6</td>
+<td>dtc counter（个数，两个字节）</td>
+<td>0x00-0xFF</td>
+</tr>
+</tbody></table>
+<br>
+
+<br>
+
+<h2 id="19-0a"><a href="#19-0a" class="headerlink" title="19 0a"></a>19 0a</h2><p><strong>reportSupportedDTCs</strong>，用于读取当前支持的所有 dtc。表示需要读取当前所有的 dtc 以及对应的状态，uds 协议的 page 262</p>
 <table>
 <thead>
 <tr>
@@ -2017,6 +2111,21 @@
 <td>0x0a</td>
 </tr>
 </tbody></table>
+<br>
+
+<p><img src="19_02_0a_15.png" alt="19 0a的响应"></p>
+<p>59（19+40）</p>
+<p>+ 0a （subfunctionid）</p>
+<p>+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）</p>
+<p>+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）</p>
+<br>
+
+<h2 id="19-15"><a href="#19-15" class="headerlink" title="19 15"></a>19 15</h2><p>reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的状态，后续将被 55 子服务替代</p>
+<p><img src="19_02_0a_15.png" alt="19 15的响应"></p>
+<p>59（19+40）</p>
+<p>+ 02（subfunctionid）/0a （subfunctionid）</p>
+<p>+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）</p>
+<p>+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）</p>
 <br>
 
 <br>
@@ -2644,7 +2753,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2695,7 +2804,7 @@ gdb attach 进程号
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2857,7 +2966,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.1k</span>
+            <span class="white-color">122.9k</span>
             
 
             <br>

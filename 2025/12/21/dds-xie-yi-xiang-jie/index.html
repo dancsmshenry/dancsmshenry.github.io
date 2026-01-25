@@ -203,7 +203,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -345,7 +345,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    133
+                    366
                 </div>
                 
 
@@ -369,6 +369,15 @@
 <p>locator，表示使用哪一种网络协议发送数据，一般上只有 udp_v4 和 udp_v6</p>
 <p>并且其中有对应的 ip 和 port</p>
 <p>rtps 层和 dds 层，之间是使用 historycache 进行解耦</p>
+<p>常见的 Qos</p>
+<p>user_data，字符串类型，用于传递一些信息（比如网络绑定的 service name 等），用于 domain，participant，datareader 和 datawriter</p>
+<p>topic_data，字符串类型，用于传递一些信息，用于 topic</p>
+<p>group_data，字符串类型，用于传递一些信息，用于 publisher 和 subscriber</p>
+<p>durability，枚举类型，表示是否需要对收到的 change 进行 cache，可选值有 volatile（不 cache），transient_local，transient（在内存 cache） 和 persistent（持久化存储），用于 topic，datareader 和 datawriter</p>
+<p>Deadline，数值类型，表示 endpoint 预期在一定的时间内需要收到对端的消息，如果没有收到，就会调用 onrequesteddeadlinemissed（周期性）</p>
+<p>latency_budget，数值类型，表示 writer 的消息，到 reader，允许的最大时延（如果超过了，会怎样，规范没有说）</p>
+<p>Ownership，表示是否允许多个 writer 写入同一个 topic，同时多个 writer 有优先级的区分</p>
+<p>liveliness，保活机制，表示是在哪些范畴之间的</p>
 
             </div>
             <hr />
@@ -415,7 +424,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="FastDds 库使用及详解">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="FastDds 库使用及详解">
                         
                         <span class="card-title">FastDds 库使用及详解</span>
                     </div>
@@ -455,7 +464,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
                         
                         <span class="card-title">Spdlog 库使用及详解</span>
                     </div>
@@ -617,7 +626,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.1k</span>
+            <span class="white-color">122.9k</span>
             
 
             <br>
