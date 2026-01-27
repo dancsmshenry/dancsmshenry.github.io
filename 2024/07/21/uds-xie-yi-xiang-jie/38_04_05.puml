@@ -1,0 +1,11 @@
+@startjson 38_04_05
+
+{
+    "ServiceId":["服务请求 id，一个字节，固定值为 0x38"],
+    "ModeOfOperation":["表示当前的 mode，一个字节，值 0x04，为 ReadFile，或者 0x05，为 ReadDir；二者都是 upload，将文件从 ECU 上传到上位机中"],
+    "filePathAndNameLength": ["表示需要读取的文件/目录，其名称的字节总长度，两个字节"],
+    "filePathAndName": ["表示需要读取的文件/目录名称，其字节长度为 filePathAndNameLength 的值"],
+    "dataFormatIdentifier": ["format identifier，表示加密和压缩，一个字节"]
+}
+
+@endjson

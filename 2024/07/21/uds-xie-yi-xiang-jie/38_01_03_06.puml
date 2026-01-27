@@ -1,0 +1,14 @@
+@startjson 38_01_03_06
+
+{
+    "ServiceId":["服务请求 id，一个字节，固定值为 0x38"],
+    "ModeOfOperation":["表示当前的 mode，一个字节，值 0x01，为 AddFile，或者 0x03，为 ReplaceFile，或者为 0x06，为 ResumeFile；三者都是 download，将文件从上位机下载到 ECU 中"],
+    "filePathAndNameLength": ["表示需要添加的文件，其名称的字节总长度，两个字节"],
+    "filePathAndName": ["表示需要添加的文件名称，其字节长度为 filePathAndNameLength 的值"],
+    "dataFormatIdentifier": ["format identifier，表示加密和压缩，一个字节"],
+    "fileSizeParameterLength": ["表示后续未压缩长度和压缩长度，占用多少个字节，一个字节"],
+    "fileSizeUnCompressed": ["表示文件未压缩时的长度，其字节长度为 fileSizeParameterLength 的值"],
+    "fileSizeCompressed": ["表示文件压缩时的长度，其字节长度为 fileSizeParameterLength 的值"]
+}
+
+@endjson

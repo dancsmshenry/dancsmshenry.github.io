@@ -8,9 +8,9 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="序对于 UDS 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
+    <meta name="description" content="对于 UDS 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
 所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，
-然后再通过一个简单的服务请求，或是 DTC 的报告，将这些概念逐个逐个的进行穿插和联系">
+然后再通过一个简单的服务请求，或是 DTC 的报告，将这些概念逐个逐个的进行穿插和联系。">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -204,7 +204,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -350,14 +350,14 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    9.7k
+                    9.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    38 分
+                    36 分
                 </div>
                 
                 
@@ -368,20 +368,18 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>对于 <code>UDS</code> 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。</p>
+                <p>对于 <code>UDS</code> 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。</p>
 <p>所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，</p>
 <p>然后再通过一个简单的服务请求，或是 <code>DTC</code> 的报告，将这些概念逐个逐个的进行穿插和联系。</p>
 <p>（TODO：后续可以画两个图，分别将  <code>DCM</code> 和 <code>DEM</code> 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）</p>
-<br>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><br>
 
-<h1 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h1><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
+<h2 id="子服务"><a href="#子服务" class="headerlink" title="子服务"></a>子服务</h2><p>一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。</p>
 <p>抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；</p>
 <p>第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。</p>
 <br>
 
-<h1 id="积极响应与消极响应"><a href="#积极响应与消极响应" class="headerlink" title="积极响应与消极响应"></a>积极响应与消极响应</h1><br>
-
-<h1 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h1><br>
+<h2 id="积极响应与消极响应"><a href="#积极响应与消极响应" class="headerlink" title="积极响应与消极响应"></a>积极响应与消极响应</h2><br>
 
 <h2 id="P2-P2"><a href="#P2-P2" class="headerlink" title="P2/P2*"></a>P2/P2*</h2><p>在 UDS 的概念中定义了定时器 <code>p2</code> 和 <code>p2 *</code>。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 <code>p2*</code>的定时器，在 <code>p2*</code> 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 <strong>1ms</strong>，<code>p2*</code> 定时器的单位是 <strong>10ms</strong>）</p>
 <br>
@@ -389,11 +387,11 @@
 <h2 id="S3"><a href="#S3" class="headerlink" title="S3"></a>S3</h2><p>在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下。</p>
 <br>
 
-<h1 id="DataIdentifier"><a href="#DataIdentifier" class="headerlink" title="DataIdentifier"></a>DataIdentifier</h1><br>
+<h1 id="Dcm"><a href="#Dcm" class="headerlink" title="Dcm"></a>Dcm</h1><h2 id="DataIdentifier"><a href="#DataIdentifier" class="headerlink" title="DataIdentifier"></a>DataIdentifier</h2><br>
 
-<h1 id="RoutineIdentifier"><a href="#RoutineIdentifier" class="headerlink" title="RoutineIdentifier"></a>RoutineIdentifier</h1><br>
+<h2 id="RoutineIdentifier"><a href="#RoutineIdentifier" class="headerlink" title="RoutineIdentifier"></a>RoutineIdentifier</h2><br>
 
-<h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><p>ECU 刚上电时，都是处于<strong>默认会话</strong></p>
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p>ECU 刚上电时，都是处于<strong>默认会话</strong></p>
 <p>会话可由用户自行在工具中配置，但规范规定了一些固有的会话类型：</p>
 <table>
 <thead>
@@ -421,11 +419,11 @@
 </tbody></table>
 <br>
 
-<h1 id="SecurityLevel"><a href="#SecurityLevel" class="headerlink" title="SecurityLevel"></a>SecurityLevel</h1><br>
+<h2 id="SecurityLevel"><a href="#SecurityLevel" class="headerlink" title="SecurityLevel"></a>SecurityLevel</h2><br>
 
-<h1 id="DiagnosticTroubleCode"><a href="#DiagnosticTroubleCode" class="headerlink" title="DiagnosticTroubleCode"></a>DiagnosticTroubleCode</h1><br>
+<h1 id="Dem"><a href="#Dem" class="headerlink" title="Dem"></a>Dem</h1><h2 id="DiagnosticTroubleCode"><a href="#DiagnosticTroubleCode" class="headerlink" title="DiagnosticTroubleCode"></a>DiagnosticTroubleCode</h2><br>
 
-<h1 id="DiagnosticTroubleCodeStatus"><a href="#DiagnosticTroubleCodeStatus" class="headerlink" title="DiagnosticTroubleCodeStatus"></a>DiagnosticTroubleCodeStatus</h1><table>
+<h2 id="DiagnosticTroubleCodeStatus"><a href="#DiagnosticTroubleCodeStatus" class="headerlink" title="DiagnosticTroubleCodeStatus"></a>DiagnosticTroubleCodeStatus</h2><table>
 <thead>
 <tr>
 <th>Bit</th>
@@ -623,7 +621,7 @@
 
 <br>
 
-<h1 id="Aging-与-Healing"><a href="#Aging-与-Healing" class="headerlink" title="Aging 与 Healing"></a>Aging 与 Healing</h1><p>二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。</p>
+<h2 id="Aging-与-Healing"><a href="#Aging-与-Healing" class="headerlink" title="Aging 与 Healing"></a>Aging 与 Healing</h2><p>二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。</p>
 <p>（注：此处先不考虑 dtc 在这期间报告 passed 的情况，因为存在一些厂商要求报告 passed 之后，将 bit7 置为 0）</p>
 <p>因此，将上述流程，描述为 healing，也就是愈合。</p>
 <br>
@@ -636,7 +634,7 @@
 
 <br>
 
-<h1 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h1><p>在发生了故障时，存储一些重要的信息。</p>
+<h2 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h2><p>在发生了故障时，存储一些重要的信息。</p>
 <p>从实现上来看，就是读取某些 did 的信息，并存储在非易失性存储介质中。</p>
 <br>
 
@@ -644,7 +642,7 @@
 
 <br>
 
-<h1 id="ExtendedData"><a href="#ExtendedData" class="headerlink" title="ExtendedData"></a>ExtendedData</h1><p>常用的几个内置 DataElement 都是 <code>std::uint8</code> 类型的（除了 FDC10），达到 255 之后都不会继续增加。</p>
+<h2 id="ExtendedData"><a href="#ExtendedData" class="headerlink" title="ExtendedData"></a>ExtendedData</h2><p>常用的几个内置 DataElement 都是 <code>std::uint8</code> 类型的（除了 FDC10），达到 255 之后都不会继续增加。</p>
 <table>
 <thead>
 <tr>
@@ -2568,145 +2566,30 @@
 
 <br>
 
-<h1 id="0x38"><a href="#0x38" class="headerlink" title="0x38"></a>0x38</h1><p>RequestFileTransfer，该服务是用来传输文件或者文件夹。</p>
-<p>根据 14229 的规范，0x38 的 request message 的报文结构如下所示：</p>
-<table>
-<thead>
-<tr>
-<th>数值位</th>
-<th>参数名字</th>
-<th>可选值</th>
-<th>是否为必选项</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>#1</td>
-<td>服务 id</td>
-<td>0x38</td>
-<td>是</td>
-</tr>
-<tr>
-<td>#2</td>
-<td>modeOfOperation</td>
-<td>0x01-0x06</td>
-<td>是（表示当前对文件处理的操作）</td>
-</tr>
-<tr>
-<td>#3,#4</td>
-<td>filePathAndNameLength</td>
-<td>0x00-0xFF</td>
-<td>是</td>
-</tr>
-<tr>
-<td>#5…#5+n-1</td>
-<td>filePathAndName</td>
-<td>0x00-0xFF</td>
-<td>是（文件路径和名字至少为一个字节）</td>
-</tr>
-<tr>
-<td>#5+n</td>
-<td>dataFormatIdentifier</td>
-<td>0x00-0xFF</td>
-<td>否（与具体的 modeOfOperation 有关）</td>
-</tr>
-<tr>
-<td>#5+n+1</td>
-<td>fileSizeParameterLength</td>
-<td>0x00-0xFF</td>
-<td>否（与具体的 modeOfOperation 有关）</td>
-</tr>
-<tr>
-<td>#5+n+2..#5+n+2+k-1</td>
-<td>fileSizeUnCompressed</td>
-<td>0x00-0xFF</td>
-<td>否（与具体的 modeOfOperation 有关）</td>
-</tr>
-<tr>
-<td>#5+n+2+k..#5+n+1+2k</td>
-<td>fileSizeCompressed</td>
-<td>0x00-0xFF</td>
-<td>否（与具体的 modeOfOperation 有关）</td>
-</tr>
-</tbody></table>
+<h1 id="0x38"><a href="#0x38" class="headerlink" title="0x38"></a>0x38</h1><p><strong>RequestFileTransfer</strong>，该服务是用来传输文件或者文件夹。根据规范，目前仅支持 6 种 mode：</p>
+<br>
+
+<h2 id="01-03-06"><a href="#01-03-06" class="headerlink" title="01/03/06"></a>01/03/06</h2><p><img src="out/38_01_03_06.svg" alt="Request of 01/03/06"></p>
+<br>
+
+<p><img src="out/response_38_01_03.svg" alt="Reponse of 01/03"></p>
+<br>
+
+<p><img src="out/response_38_06.svg" alt="Reponse of 06"></p>
 <br>
 
 <br>
 
-<p>根据 14229 的规范，0x38 的 request message 的报文结构如下所示：</p>
-<table>
-<thead>
-<tr>
-<th>数值位</th>
-<th>参数名字</th>
-<th>可选值</th>
-<th>是否为必选项</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>#1</td>
-<td>服务 id + positive 偏移量</td>
-<td>0x78</td>
-<td>是</td>
-</tr>
-<tr>
-<td>#2</td>
-<td>modeOfOperation</td>
-<td>0x01-0x06</td>
-<td>是（表示当前对文件处理的操作）</td>
-</tr>
-<tr>
-<td>#3</td>
-<td>lengthFormatIdentifier</td>
-<td>0x00-0xFF</td>
-<td>否</td>
-</tr>
-<tr>
-<td>#4…#4+m-1</td>
-<td>maxNumberOfBlockLength</td>
-<td>0x00-0xFF</td>
-<td>否</td>
-</tr>
-<tr>
-<td>#4+m</td>
-<td>dataFormatIdentifier</td>
-<td>0x00-0xFF</td>
-<td>否</td>
-</tr>
-<tr>
-<td>#4+m+1..#4+m+2</td>
-<td>fileSizeOrDirInfoParameterlength</td>
-<td>0x00-0xFF</td>
-<td>否</td>
-</tr>
-<tr>
-<td>#4+m+3..#4+m+3+k-1</td>
-<td>fileSizeUncompressedOrDirInfoLength</td>
-<td>0x00-0xFF</td>
-<td>否</td>
-</tr>
-<tr>
-<td>#4+m+3+k..#4+m+3+2k-1</td>
-<td>fileSizeCompressed</td>
-<td>0x00-0xFF</td>
-<td>否</td>
-</tr>
-</tbody></table>
-<p><strong>filePathAndNameLength</strong> 表示的是后续文件路径及名字的长度</p>
+<h2 id="02"><a href="#02" class="headerlink" title="02"></a>02</h2><p><img src="out/38_02.svg" alt="Request of 02"></p>
 <br>
 
-<p><strong>filePathAndName</strong> 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）</p>
+<p><img src="out/response_38_02.svg" alt="Reponse of 02"></p>
 <br>
 
-<p><strong>dataFormatIdentifier</strong> 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）</p>
+<h2 id="04-05"><a href="#04-05" class="headerlink" title="04/05"></a>04/05</h2><p><img src="out/38_04_05.svg" alt="Request of 04/05"></p>
 <br>
 
-<p><strong>fileSizeParameterLength</strong>（或者 <strong>fileSizeOrDirInfoParameterlength</strong>） 记录了后续 <code>fileSizeUncompressed</code>（<code>fileSizeCompressed</code> 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
-<br>
-
-<p><strong>fileSizeUncompressed</strong> 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）</p>
-<br>
-
-<p><strong>fileSizeCompressed</strong> 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等</p>
+<p><img src="out/response_38_04_05.svg" alt="Reponse of 04/05"></p>
 
             </div>
             <hr />
@@ -2753,7 +2636,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2804,7 +2687,7 @@ gdb attach 进程号
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2966,7 +2849,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.9k</span>
+            <span class="white-color">122.4k</span>
             
 
             <br>

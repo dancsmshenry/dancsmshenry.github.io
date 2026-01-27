@@ -1,0 +1,10 @@
+@startjson 38_02
+
+{
+    "ServiceId":["服务请求 id，一个字节，固定值为 0x38"],
+    "ModeOfOperation":["表示当前的 mode，一个字节，值 0x02，为 DeleteFile"],
+    "filePathAndNameLength": ["表示需要删除的文件，其名称的字节总长度，两个字节"],
+    "filePathAndName": ["表示需要删除的文件名称，其字节长度为 filePathAndNameLength 的值"]
+}
+
+@endjson
