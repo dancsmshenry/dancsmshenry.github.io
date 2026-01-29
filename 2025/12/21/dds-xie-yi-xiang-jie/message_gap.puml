@@ -1,0 +1,13 @@
+@startjson message_gap
+
+'  Gap, 由一个 writer 告知多个 readers, 哪一个序列中的数据, 是不再可用的了
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端的 flag"],
+    "GroupInfoFlag" : ["1 个字节,表示大小端的 flag"],
+    "readerId" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "writerId" : ["4 个字节,表示是来自于哪一个 writer 的"],
+    "gapStart" : ["8 个字节,当前 writer 中最小的一条 sequence request"],
+    "gapList" : ["8 个字节,当前 writer 中最大的一条 sequence request"],
+    "gapStartGSN":[""],
+    "gapEndGSN":[""]
+}

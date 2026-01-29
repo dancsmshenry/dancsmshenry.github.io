@@ -204,7 +204,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -1794,7 +1794,7 @@
 <h1 id="0x19"><a href="#0x19" class="headerlink" title="0x19"></a>0x19</h1><p>ReadDTCInformation，该服务是用于读取 DTC 相关的数据。</p>
 <br>
 
-<h2 id="19-01"><a href="#19-01" class="headerlink" title="19 01"></a>19 01</h2><p><strong>reportNumberOfDTCByStatusMask</strong></p>
+<h2 id="01"><a href="#01" class="headerlink" title="01"></a>01</h2><p><strong>reportNumberOfDTCByStatusMask</strong></p>
 <p>通过 request 中的状态掩码，返回符合这个状态掩码的 dtc 个数。</p>
 <p>其中每个 dtc 的 status 与这个掩码进行 &amp; 操作，都不为 0。</p>
 <p>位于 uds 协议的 page 261。</p>
@@ -1828,13 +1828,13 @@
 <br>
 
 <p>对应的 positive response 为：</p>
-<p><img src="19_01_07.png" alt="19 服务子服务 01 的正响应"></p>
+<p><img src="19_01_07.png" alt="Response of 01"></p>
 <p>DTCStatusAvailabilityMask 表示当前协议栈支持的 dtc status 中的哪些 bit，值 0xff 表示全支持；</p>
 <p>DTCFormatIdentifier 表示当前的 dtc 是哪一种 format；</p>
 <p>DTCCount 表示 dtc 的个数</p>
 <br>
 
-<h2 id="19-02"><a href="#19-02" class="headerlink" title="19 02"></a>19 02</h2><p><strong>reportDTCByStatusMask</strong></p>
+<h2 id="02"><a href="#02" class="headerlink" title="02"></a>02</h2><p><strong>reportDTCByStatusMask</strong></p>
 <p>给定一个状态掩码，返回一个 dtc status 的合集。</p>
 <p>表示需要读取处于某个状态的所有 dtc 以及对应的状态，uds 协议的 page 262</p>
 <p>其中每个 dtc 的 status 与这个掩码进行 &amp; 操作，都不为 0</p>
@@ -1864,14 +1864,16 @@
 </tbody></table>
 <br>
 
-<p><img src="19_02_0a_15.png" alt="19 02的响应"></p>
+<p><img src="19_02_0a_15.png" alt="Response of 02"></p>
 <p>59（19+40）</p>
 <p>+ 02（subfunctionid）/0a （subfunctionid）</p>
 <p>+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）</p>
 <p>+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）</p>
 <br>
 
-<h2 id="19-03"><a href="#19-03" class="headerlink" title="19 03"></a>19 03</h2><p><strong>reportDTCSnapshotIdentification</strong>，返回所有 dtc 的快照号，对应 uds 协议的 page 262。</p>
+<h2 id="03"><a href="#03" class="headerlink" title="03"></a>03</h2><p><strong>reportDTCSnapshotIdentification</strong></p>
+<p>返回所有 dtc 的快照号，</p>
+<p>对应 uds 协议的 page 262。</p>
 <table>
 <thead>
 <tr>
@@ -1930,7 +1932,7 @@
 <p>最少要有一个 record number</p>
 <br>
 
-<h2 id="19-04"><a href="#19-04" class="headerlink" title="19 04"></a>19 04</h2><p>reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据。</p>
+<h2 id="04"><a href="#04" class="headerlink" title="04"></a>04</h2><p>reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据。</p>
 <table>
 <thead>
 <tr>
@@ -1973,7 +1975,7 @@
 <p>+ data identifier（2 个字节，did 的 number） + n 个字节的 did 数据</p>
 <br>
 
-<h2 id="19-06"><a href="#19-06" class="headerlink" title="19 06"></a>19 06</h2><p>reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据。</p>
+<h2 id="06"><a href="#06" class="headerlink" title="06"></a>06</h2><p>reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据。</p>
 <table>
 <thead>
 <tr>
@@ -2015,7 +2017,7 @@
 <p>+record number（1 个字节，表示当前是哪一个 record） + n 个字节的 拓展数据 数据</p>
 <br>
 
-<h2 id="19-07"><a href="#19-07" class="headerlink" title="19 07"></a>19 07</h2><p>reportNumberOfDTCBySeverityMaskRecord，回一个符合条件的 dtc 数。</p>
+<h2 id="07"><a href="#07" class="headerlink" title="07"></a>07</h2><p>reportNumberOfDTCBySeverityMaskRecord，回一个符合条件的 dtc 数。</p>
 <p>其中 dtc 的 status 要和 statusmask 做位运算（&amp;）后不为 0，</p>
 <p>dtc 的 severitymask 要和 severitymask 做位运算（&amp;）后不为 0。</p>
 <table>
@@ -2089,7 +2091,7 @@
 
 <br>
 
-<h2 id="19-0a"><a href="#19-0a" class="headerlink" title="19 0a"></a>19 0a</h2><p><strong>reportSupportedDTCs</strong>，用于读取当前支持的所有 dtc。表示需要读取当前所有的 dtc 以及对应的状态，uds 协议的 page 262</p>
+<h2 id="0a"><a href="#0a" class="headerlink" title="0a"></a>0a</h2><p><strong>reportSupportedDTCs</strong>，用于读取当前支持的所有 dtc。表示需要读取当前所有的 dtc 以及对应的状态，uds 协议的 page 262</p>
 <table>
 <thead>
 <tr>
@@ -2118,7 +2120,7 @@
 <p>+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）</p>
 <br>
 
-<h2 id="19-15"><a href="#19-15" class="headerlink" title="19 15"></a>19 15</h2><p>reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的状态，后续将被 55 子服务替代</p>
+<h2 id="15"><a href="#15" class="headerlink" title="15"></a>15</h2><p>reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的状态，后续将被 55 子服务替代</p>
 <p><img src="19_02_0a_15.png" alt="19 15的响应"></p>
 <p>59（19+40）</p>
 <p>+ 02（subfunctionid）/0a （subfunctionid）</p>
@@ -2580,7 +2582,7 @@
 
 <br>
 
-<h2 id="02"><a href="#02" class="headerlink" title="02"></a>02</h2><p><img src="out/38_02.svg" alt="Request of 02"></p>
+<h2 id="02-1"><a href="#02-1" class="headerlink" title="02"></a>02</h2><p><img src="out/38_02.svg" alt="Request of 02"></p>
 <br>
 
 <p><img src="out/response_38_02.svg" alt="Reponse of 02"></p>
@@ -2636,7 +2638,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -2687,7 +2689,7 @@ gdb attach 进程号
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="开发工具使用之 Catch2">
                         
                         <span class="card-title">开发工具使用之 Catch2</span>
                     </div>
@@ -2849,7 +2851,7 @@ CHECK 和 REQUIRECHECK 和 REQUIRE 用于检测当前括号中的表达式是否
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.4k</span>
+            <span class="white-color">122.3k</span>
             
 
             <br>

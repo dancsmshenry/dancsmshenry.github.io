@@ -1,0 +1,8 @@
+@startjson message_infodestination
+
+' infodestination, info_dst 报文,用于表示目标端点的 guid prefix 是什么,从而更新 对端 receiver 的 guidprefix
+' infodestination
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端以及一些 flag"],
+    "guid_prefix" : ["12 个字节, guid 前缀"]
+}

@@ -1,0 +1,14 @@
+@startjson message_data
+' Data, 表示应用消息(这里的应用不仅仅是客户的 topic,内置的 topic 也算应用)
+{
+    "EndiannessFlag" : ["flag"],
+    "inlineQosFlag" : ["flag"],
+    "NonStandardPayloadFlag" : ["flag"],
+    "KeyFlag" : ["flag"],
+    "DataFlag" : ["flag"],
+    "readerId" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "writerId" : ["4 个字节,表示是来自于哪一个 writer 的"],
+    "writerSN" : ["8 个字节,当前 writer 中最小的一条 sequence request"],
+    "inlineQos":[""],
+    "serializedPayload":[""]
+}

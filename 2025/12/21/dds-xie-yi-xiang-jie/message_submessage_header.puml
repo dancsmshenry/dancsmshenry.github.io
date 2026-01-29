@@ -1,0 +1,9 @@
+@startjson message_submessage_header
+
+{
+    "submessage_id": ["1 个字节，表示当前的子消息为哪一种类型的子消息"],
+    "flags" : ["1 个字节，为 flag，用于描述后续子消息的一些属性，比如说大小端等"],
+    "submessage_length": ["2 个字节，表示后续的数据占用多少个字节"]
+}
+
+@endjson

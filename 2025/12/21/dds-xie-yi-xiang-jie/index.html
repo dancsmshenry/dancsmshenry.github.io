@@ -8,8 +8,36 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="RTPSStruct moduleguid_t ，globally unique rtps-entity identifiers，一个独一无二的标识符，用于区分每一个 rtps entity，有 16 个字节
-前面 12 个字节是 guid">
+    <meta name="description" content="RTPSMessage module
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Qosuser_data，字符串类型，用于传递一些信息（比如网络绑定的 service name 等），用于 domain，participant">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -203,7 +231,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -345,7 +373,7 @@
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    366
+                    231
                 </div>
                 
 
@@ -363,14 +391,36 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="RTPS"><a href="#RTPS" class="headerlink" title="RTPS"></a>RTPS</h1><h2 id="Struct-module"><a href="#Struct-module" class="headerlink" title="Struct module"></a>Struct module</h2><p>guid_t ，globally unique rtps-entity identifiers，一个独一无二的标识符，用于区分每一个 rtps entity，有 16 个字节</p>
-<p>前面 12 个字节是 guidprefix_t，表示在同一个参与者下，所有的 entity 都拥有相同的前缀</p>
-<p>后面 4 个字节是 entityid_t，用于区分一个参与者下的不同 entity</p>
-<p>locator，表示使用哪一种网络协议发送数据，一般上只有 udp_v4 和 udp_v6</p>
-<p>并且其中有对应的 ip 和 port</p>
-<p>rtps 层和 dds 层，之间是使用 historycache 进行解耦</p>
-<p>常见的 Qos</p>
-<p>user_data，字符串类型，用于传递一些信息（比如网络绑定的 service name 等），用于 domain，participant，datareader 和 datawriter</p>
+                <h1 id="RTPS"><a href="#RTPS" class="headerlink" title="RTPS"></a>RTPS</h1><h2 id="Message-module"><a href="#Message-module" class="headerlink" title="Message module"></a>Message module</h2><br>
+
+<p><img src="out/message_header.svg" alt="header"></p>
+<p><img src="out/message_submessage_header.svg" alt="submessage_header"></p>
+<br>
+
+<p><img src="out/message_infosource.svg" alt="infosource"></p>
+<p><img src="out/message_inforeply.svg" alt="inforeply"></p>
+<p><img src="out/message_infodestination.svg" alt="infodestination"></p>
+<p><img src="out/message_infotimestamp.svg" alt="infotimestamp"></p>
+<br>
+
+<p><img src="out/message_heartbeat.svg" alt="heartbeat"></p>
+<p><img src="out/message_heartbeatfrag.svg" alt="heartbeatfrag"></p>
+<br>
+
+<p><img src="out/message_nackfrag.svg" alt="nackfrag"></p>
+<p><img src="out/message_acknack.svg" alt="acknack"></p>
+<br>
+
+<p><img src="out/message_datafrag.svg" alt="datafrag"></p>
+<p><img src="out/message_data.svg" alt="data"></p>
+<br>
+
+<p><img src="out/message_gap.svg" alt="gap"></p>
+<br>
+
+<br>
+
+<h2 id="Qos"><a href="#Qos" class="headerlink" title="Qos"></a>Qos</h2><p>user_data，字符串类型，用于传递一些信息（比如网络绑定的 service name 等），用于 domain，participant，datareader 和 datawriter</p>
 <p>topic_data，字符串类型，用于传递一些信息，用于 topic</p>
 <p>group_data，字符串类型，用于传递一些信息，用于 publisher 和 subscriber</p>
 <p>durability，枚举类型，表示是否需要对收到的 change 进行 cache，可选值有 volatile（不 cache），transient_local，transient（在内存 cache） 和 persistent（持久化存储），用于 topic，datareader 和 datawriter</p>
@@ -424,7 +474,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="FastDds 库使用及详解">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="FastDds 库使用及详解">
                         
                         <span class="card-title">FastDds 库使用及详解</span>
                     </div>
@@ -464,7 +514,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
                         
                         <span class="card-title">Spdlog 库使用及详解</span>
                     </div>
@@ -626,7 +676,7 @@
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.4k</span>
+            <span class="white-color">122.3k</span>
             
 
             <br>

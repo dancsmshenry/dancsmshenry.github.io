@@ -1,0 +1,15 @@
+@startjson message_heartbeatfrag
+
+' HeartBeatFrag,也是由一个 writer 同时发给多个 readers, 用于告知哪些数据分段是可用的
+' HeartbeatFrag, 表示数据发送完了,并且告知是哪一个 sequence 以及最大的分片号是多少,
+' 如果 reader 觉得有问题,就会发送 nackfrag
+' The HeartbeatFrag.readerId can be ENTITYID_UNKNOWN, in which case the HeartbeatFrag applies to
+' all Readers of that Writer GUID within the Participant.
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端的 flag"],
+    "readerId" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "writerId" : ["4 个字节,表示是来自于哪一个 writer 的"],
+    "writerSN" : ["8 个字节,表示是哪一个 sequence request 出了问题"],
+    "lastFragmentNum" : ["上一个可用的 分片 id 是多少"],
+    "count" : ["一个累加器,每次 writer 发送了一个 nackfrag 之后都会 ++,为了方式 reader 重复收到了同样的 submessage,而导致后续的重发"]
+}

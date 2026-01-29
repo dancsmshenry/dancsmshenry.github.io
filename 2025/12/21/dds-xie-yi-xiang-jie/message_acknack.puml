@@ -1,0 +1,12 @@
+@startjson message_acknack
+
+' acknack, 为 reader 告知多个 writers,当前的一些状态信息    
+{
+    "EndiannessFlag" : ["flag"],
+    "FinalFlag" : ["flag"],
+    "NonStandardPayloadFlag" : ["flag"],
+    "readerSNState" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "count":[""]
+}
+
+@endjson

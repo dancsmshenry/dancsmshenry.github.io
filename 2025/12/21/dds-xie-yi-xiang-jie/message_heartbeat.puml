@@ -1,0 +1,20 @@
+@startjson message_heartbeat
+
+' Heartbeat,用于 writer 告知 reader,在自己的 cache 中,还有哪些 sequence request 是还缓存着的
+' HeartBeat,由一个 writer 同时发送给多个 readers, 用于告知 reader 当前的 writer 是可靠的,未下线的,同时告知可用的数据序列号范围
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端的 flag"],
+    "FinalFlag" : ["1 个字节,表示大小端的 flag"],
+    "LivelinessFlag" : ["1 个字节,表示大小端的 flag"],
+    "GroupInfoFlag" : ["1 个字节,表示大小端的 flag"],
+    "readerId" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "writerId" : ["4 个字节,表示是来自于哪一个 writer 的"],
+    "firstSN" : ["8 个字节,当前 writer 中最小的一条 sequence request"],
+    "lastSN" : ["8 个字节,当前 writer 中最大的一条 sequence request"],
+    "count" : ["一个累加器,每次 writer 发送了一个 nackfrag 之后都会 ++,为了方式 reader 重复收到了同样的 submessage,而导致后续的重发"],
+    "currentGSN":[""],
+    "firstGSN":[""],
+    "lastGSN":[""],
+    "writerSet":[""],
+    "secureWriterSet":[""]
+}
