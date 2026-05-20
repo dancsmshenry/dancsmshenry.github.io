@@ -1,0 +1,12 @@
+@startjson message_nackfrag
+
+' nackfrag, 为 reader 告知 writers 哪些分片是丢失的了
+' nackfrag, 用于告知 writer 在分片传输数据的过程中,reader 有哪些分片是没有收到的
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端的 flag"],
+    "readerId" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "writerId" : ["4 个字节,表示是来自于哪一个 writer 的"],
+    "writerSN" : ["8 个字节,表示是哪一个 sequence request 出了问题"],
+    "fragmentNumberState" : ["为数组类型,表示哪些 missing 了的分片 id"],
+    "count" : ["一个累加器,每次 reader 发送了一个 nackfrag 之后都会 ++,为了方式 writer 重复收到了同样的 submessage,而导致后续的重发"]
+}

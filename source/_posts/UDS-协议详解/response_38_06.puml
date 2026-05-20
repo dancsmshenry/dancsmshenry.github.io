@@ -1,0 +1,12 @@
+@startjson response_38_06
+
+{
+    "ServiceId":["服务请求 id + 偏移量，一个字节，固定值为 0x78"],
+    "ModeOfOperation":["表示当前的 mode，一个字节，值 0x06"],
+    "LengthFormatIdentifier": ["表示后续的 maxNumberOfBlockLength 占用字节的长度，一个字节"],
+    "MaxNumberOfBlockLength": ["表示后续 36 一包能够传输多长的数据，maxNumberOfBlockLength 个字节"],
+    "dataFormatIdentifier": ["format identifier，表示加密和压缩，一个字节"],
+    "filePosition": ["表示断点续传的偏移量"]
+}
+
+@endjson

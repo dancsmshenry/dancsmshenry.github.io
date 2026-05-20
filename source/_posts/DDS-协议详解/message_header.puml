@@ -1,0 +1,14 @@
+@startjson message_header
+
+{
+    "protocol": ["4 个字节，值为 R T P S，表示为当前协议的名称"],
+    "version" : ["2 个字节，值为 2 4，表示当前 rtps 协议的版本，major 和 minor 两个版本号"],
+    "vendorid" : ["2 个字节，用于区分提供协议栈的供应商"],
+    "guid_prefix" : ["12 个字节，类似于 identifier 的概念，一个参与者下所有的实体共用同一个 id，一个拓扑下不允许有相同的 id"]
+}
+
+' 所以一条 rtps 的报文，其 header 的固定长度为 20 个字节
+' 对于 guid 的确定规则，各家的协议栈生成方式都不一样，但需要确保的一点，就是在网络拓扑中，必须要是独一无二的
+' guid prefix 其实表示的应该是 source guid，而不是 target
+
+@endjson

@@ -1,0 +1,14 @@
+@startjson response_38_04_05
+
+{
+    "ServiceId":["服务请求 id + 偏移量，一个字节，固定值为 0x78"],
+    "ModeOfOperation":["表示当前的 mode，一个字节，值 0x04，或为 0x05"],
+    "LengthFormatIdentifier": ["表示后续的 maxNumberOfBlockLength 占用字节的长度，一个字节"],
+    "MaxNumberOfBlockLength": ["表示后续 36 一包能够传输多长的数据，maxNumberOfBlockLength 个字节"],
+    "dataFormatIdentifier": ["format identifier，表示加密和压缩，一个字节；当为 0x05 的mode 时，该值应为 0"],
+    "fileSizeOrDirInfoParameterLength":["表示后续的压缩和未压缩的长度，占用多少个字节，2 字节"],
+    "fileSizeUncompressedOrDirInfoLength":["表示未压缩数据的长度，fileSizeOrDirInfoParameterLength 个字节"],
+    "fileSizeCompressed":["表示压缩数据的长度，fileSizeOrDirInfoParameterLength 个字节"]
+}
+
+@endjson

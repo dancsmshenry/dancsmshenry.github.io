@@ -1,0 +1,8 @@
+@startjson response_38_02
+
+{
+    "ServiceId":["服务请求 id + 偏移量，一个字节，固定值为 0x78"],
+    "ModeOfOperation":["表示当前的 mode，一个字节，值 0x02"]
+}
+
+@endjson

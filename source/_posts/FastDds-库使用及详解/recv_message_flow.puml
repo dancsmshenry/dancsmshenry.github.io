@@ -1,0 +1,33 @@
+@startuml recv_message_flow
+
+' actor User as F1
+' participant thread_pool as F3
+' participant ansicolor_sink as F4
+' participant file_sink as F5
+participant RTPSParticipantImpl as F1
+participant ReceiverResource as F4
+participant MessageReceiver as F2
+participant Reader as F3
+participant TransportInterface as F5
+
+F1 --> F2: associateEndpoint(),\nadd reader
+
+F1 --> F4: RegisterReceiver(),\nregister receiver
+
+F5 --> F4: OnDataReceived()
+
+F4 --> F2: processMsg()
+
+F2 --> F2: readSubmessageHeader()
+
+F2 --> F2: proc_Submsg_Data()
+
+F2 --> F2: process_data_message_function_()
+
+F2 --> F2: process_data_message_without_security()
+
+F2 --> F2: findAllReaders()
+
+F2 --> F3: processDataMsg()
+
+@enduml

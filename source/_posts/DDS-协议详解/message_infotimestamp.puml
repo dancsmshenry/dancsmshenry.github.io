@@ -1,0 +1,8 @@
+@startjson message_infotimestamp
+
+' infotimestamp,用于更新时间戳
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端的 flag"],
+    "InvalidateFlag" : ["1 个字节,表示后续是否有携带时间戳"],
+    "timestamp" : ["时间戳"]
+}

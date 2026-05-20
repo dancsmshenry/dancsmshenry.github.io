@@ -1,0 +1,18 @@
+@startjson message_datafrag
+
+' DataFrag,同样表示应用消息,但区别在于一些比较大的数据,可能会超过传输层的限制,所以需要 dds 框架进行分片处理
+{
+    "EndiannessFlag" : ["flag"],
+    "inlineQosFlag" : ["flag"],
+    "NonStandardPayloadFlag" : ["flag"],
+    "KeyFlag" : ["flag"],
+    "readerId" : ["4 个字节,表示是来自于哪一个 reader 的"],
+    "writerId" : ["4 个字节,表示是来自于哪一个 writer 的"],
+    "writerSN" : ["8 个字节,当前 writer 中最小的一条 sequence request"],
+    "fragmentStartingNum" : ["8 个字节,当前 writer 中最大的一条 sequence request"],
+    "fragmentsInSubmessage":[""],
+    "dataSize":[""],
+    "fragmentSize":[""],
+    "inlineQos":[""],
+    "serializedPayload":[""]
+}

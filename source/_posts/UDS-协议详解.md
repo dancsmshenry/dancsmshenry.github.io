@@ -12,8 +12,6 @@ tags:
 categories:
 ---
 
-# 序
-
 对于 `UDS` 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
 
 所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，
@@ -22,9 +20,11 @@ categories:
 
 （TODO：后续可以画两个图，分别将  `DCM` 和 `DEM` 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）
 
+# 基本概念
+
 <br/>
 
-# 子服务
+## 子服务
 
 一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
 
@@ -34,11 +34,7 @@ categories:
 
 <br/>
 
-# 积极响应与消极响应
-
-<br/>
-
-# 定时器
+## 积极响应与消极响应
 
 <br/>
 
@@ -54,15 +50,17 @@ categories:
 
 <br/>
 
-# DataIdentifier
+# Dcm
+
+## DataIdentifier
 
 <br/>
 
-# RoutineIdentifier
+## RoutineIdentifier
 
 <br/>
 
-# Session
+## Session
 
 ECU 刚上电时，都是处于**默认会话**
 
@@ -77,15 +75,17 @@ ECU 刚上电时，都是处于**默认会话**
 
 <br/>
 
-# SecurityLevel
+## SecurityLevel
 
 <br/>
 
-# DiagnosticTroubleCode
+# Dem
+
+## DiagnosticTroubleCode
 
 <br/>
 
-# DiagnosticTroubleCodeStatus
+## DiagnosticTroubleCodeStatus
 
 | Bit  | Name                               | Description                                                  | Condition                                                    |
 | ---- | ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -126,7 +126,7 @@ ECU 刚上电时，都是处于**默认会话**
 
 <br/>
 
-# Aging 与 Healing
+## Aging 与 Healing
 
 二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。
 
@@ -146,7 +146,7 @@ ECU 刚上电时，都是处于**默认会话**
 
 <br/>
 
-# Snapshot
+## Snapshot
 
 在发生了故障时，存储一些重要的信息。
 
@@ -158,7 +158,7 @@ ECU 刚上电时，都是处于**默认会话**
 
 <br/>
 
-# ExtendedData
+## ExtendedData
 
 常用的几个内置 DataElement 都是 `std::uint8` 类型的（除了 FDC10），达到 255 之后都不会继续增加。
 
@@ -767,24 +767,23 @@ clearDiagnosticInformation，该服务是用于删除一个或者多个 DTC 对�
 
 # 0x19
 
-readDTCInformation，该服务是用于读取处于某个状态的所有 DTC 对应的数据。
-
-根据 14229 的规范以及 autosar ap 的规范，目前支持的 subfunction 有
-
-| 子服务 id | 含义                                                         |
-| --------- | ------------------------------------------------------------ |
-| 0x14      | reportDTCFaultDetectionCounter，不需要传入数据，返回当前所有处于 preFailed 的 DTC |
-| 0x17      | reportUserDefMemoryByStatusMask                              |
-| 0x18      | reportUserDefMemoryDTCSnapshotRecordByDTCNumber              |
-| 0x19      | reportUserDefMemoryDTCExtDataRecordByDTCNumber               |
+ReadDTCInformation，该服务是用于读取 DTC 相关的数据。
 
 <br/>
 
-## 19 01
+## 01
 
-reportNumberOfDTCByStatusMask，给定一个状态掩码，返回符合这个状态掩码的 dtc 个数。
+**reportNumberOfDTCByStatusMask**
 
-其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
+通过 request 中的状态掩码，返回符合这个状态掩码的 dtc 个数。
+
+其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0。
+
+位于 uds 协议的 page 261。
+
+<br/>
+
+对应的 request 为：
 
 | **数值位** | **参数名字**    | 可选值    |
 | ---------- | --------------- | --------- |
@@ -794,9 +793,25 @@ reportNumberOfDTCByStatusMask，给定一个状态掩码，返回符合这个状
 
 <br/>
 
-## 19 02
+对应的 positive response 为：
 
-reportDTCByStatusMask，给定一个状态掩码，返回一个 dtc status 的合集。
+![Response of 01](19_01_07.png)
+
+DTCStatusAvailabilityMask 表示当前协议栈支持的 dtc status 中的哪些 bit，值 0xff 表示全支持；
+
+DTCFormatIdentifier 表示当前的 dtc 是哪一种 format；
+
+DTCCount 表示 dtc 的个数
+
+<br/>
+
+## 02
+
+**reportDTCByStatusMask**
+
+给定一个状态掩码，返回一个 dtc status 的合集。
+
+表示需要读取处于某个状态的所有 dtc 以及对应的状态，uds 协议的 page 262
 
 其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
 
@@ -808,9 +823,25 @@ reportDTCByStatusMask，给定一个状态掩码，返回一个 dtc status 的�
 
 <br/>
 
-## 19 03
+![Response of 02](19_02_0a_15.png)
 
-reportDTCSnapshotIdentification，返回所有 dtc 的快照数据，返回的数据逻辑为 dtc code + freeze data。
+59（19+40）
+
+\+ 02（subfunctionid）/0a （subfunctionid）
+
+\+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）
+
+\+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）
+
+<br/>
+
+## 03
+
+**reportDTCSnapshotIdentification**
+
+返回所有 dtc 的快照号，
+
+对应 uds 协议的 page 262。
 
 | **数值位** | **参数名字** | 可选值 |
 | ---------- | ------------ | ------ |
@@ -819,7 +850,26 @@ reportDTCSnapshotIdentification，返回所有 dtc 的快照数据，返回的�
 
 <br/>
 
-## 19 04 
+![19 03的响应](19_03.png)
+
+<br/>
+
+| **数值位** | **参数名字**              | 可选值            |
+| ---------- | ------------------------- | ----------------- |
+| 1          | 服务 id + 偏移量          | 0x59              |
+| 2          | 子服务 id                 | 0x03              |
+| 3-5        | dtc value（3 个字节）     | 0x000000-0xFFFFFF |
+| 6...       | record number（1 个字节） | 0x00-0xff         |
+
+后续按照 3-5 6 的方式累加下去，
+
+当没有快照数据的时候，后续的数据，从 dtc value 开始，就为空
+
+最少要有一个 record number
+
+<br/>
+
+## 04 
 
 reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据。
 
@@ -832,7 +882,25 @@ reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快�
 
 <br/>
 
-## 19 06 
+![19 04的响应](19_04.png)
+
+<br/>
+
+表示需要获取某个 dtc 指定 record number 的快照数据，uds 协议的 263
+
+59（19+40）
+
+\+ 04（subfunctionid）
+
++dtc value（3 个字节） + dtc status（1 个字节）
+
++record number（1 个字节，表示当前是哪一个 record） + did number（后续有多少个 did，1 个字节）
+
+\+ data identifier（2 个字节，did 的 number） + n 个字节的 did 数据
+
+<br/>
+
+## 06 
 
 reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据。
 
@@ -845,7 +913,23 @@ reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展
 
 <br/>
 
-## 19 07
+![19 06的响应](19_06.png)
+
+<br/>
+
+表示需要获取某个 dtc 指定 record number 的拓展数据，uds 协议的 265
+
+59（19+40）
+
+\+ 06（subfunctionid）
+
++dtc value（3 个字节） + dtc status（1 个字节）
+
++record number（1 个字节，表示当前是哪一个 record） + n 个字节的 拓展数据 数据
+
+<br/>
+
+## 07
 
 reportNumberOfDTCBySeverityMaskRecord，回一个符合条件的 dtc 数。
 
@@ -862,14 +946,58 @@ dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0。
 
 <br/>
 
-## 19 0a 
+![19 07的响应](19_01_07.png)
 
-reportSupportedDTC，用于读取当前支持的所有 dtc。
+对应的正响应为
+
+| **数值位** | **参数名字**                                                 | 可选值           |
+| ---------- | ------------------------------------------------------------ | ---------------- |
+| 1          | 服务 id + 偏移量                                             | 0x59             |
+| 2          | 子服务 id                                                    | 0x07             |
+| 3          | DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit） | 0x00-0xFF        |
+| 4          | DTCFormatIdentifier（表示当前的 dtc 是那种 format 的，一个字节） | 具体参考规范细节 |
+| 5-6        | dtc counter（个数，两个字节）                                | 0x00-0xFF        |
+
+<br/>
+
+<br/>
+
+## 0a 
+
+**reportSupportedDTCs**，用于读取当前支持的所有 dtc。表示需要读取当前所有的 dtc 以及对应的状态，uds 协议的 page 262
 
 | **数值位** | **参数名字** | 可选值 |
 | ---------- | ------------ | ------ |
 | 1          | 服务 id      | 0x19   |
 | 2          | 子服务 id    | 0x0a   |
+
+<br/>
+
+![19 0a的响应](19_02_0a_15.png)
+
+59（19+40）
+
+\+ 0a （subfunctionid）
+
+\+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）
+
+\+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）
+
+<br/>
+
+## 15
+
+reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的状态，后续将被 55 子服务替代
+
+![19 15的响应](19_02_0a_15.png)
+
+59（19+40）
+
+\+ 02（subfunctionid）/0a （subfunctionid）
+
+\+ DTCStatusAvailabilityMask（表示当前协议栈支持的 dtc status 中的哪些 bit，一个字节）
+
+\+ dtc value（3 个字节，大端序列化） + dtc status （1 个字节）（后续一直累加下去）
 
 <br/>
 
@@ -1092,56 +1220,40 @@ requestTransferExit 是用于表示当前数据传输的终止的。
 
 # 0x38
 
-RequestFileTransfer，该服务是用来传输文件或者文件夹。
+**RequestFileTransfer**，该服务是用来传输文件或者文件夹。根据规范，目前仅支持 6 种 mode：
 
-根据 14229 的规范，0x38 的 request message 的报文结构如下所示：
+<br/>
 
-| 数值位              | 参数名字                | 可选值    | 是否为必选项                        |
-| ------------------- | ----------------------- | --------- | ----------------------------------- |
-| #1                  | 服务 id                 | 0x38      | 是                                  |
-| #2                  | modeOfOperation         | 0x01-0x06 | 是（表示当前对文件处理的操作）      |
-| #3,#4               | filePathAndNameLength   | 0x00-0xFF | 是                                  |
-| #5...#5+n-1         | filePathAndName         | 0x00-0xFF | 是（文件路径和名字至少为一个字节）  |
-| #5+n                | dataFormatIdentifier    | 0x00-0xFF | 否（与具体的 modeOfOperation 有关） |
-| #5+n+1              | fileSizeParameterLength | 0x00-0xFF | 否（与具体的 modeOfOperation 有关） |
-| #5+n+2..#5+n+2+k-1  | fileSizeUnCompressed    | 0x00-0xFF | 否（与具体的 modeOfOperation 有关） |
-| #5+n+2+k..#5+n+1+2k | fileSizeCompressed      | 0x00-0xFF | 否（与具体的 modeOfOperation 有关） |
+## 01/03/06
+
+![Request of 01/03/06](out/38_01_03_06.svg)
+
+<br/>
+
+![Reponse of 01/03](out/response_38_01_03.svg)
+
+<br/>
+
+![Reponse of 06](out/response_38_06.svg)
 
 <br/>
 
 <br/>
 
-根据 14229 的规范，0x38 的 request message 的报文结构如下所示：
+## 02
 
-| 数值位                | 参数名字                            | 可选值    | 是否为必选项                   |
-| --------------------- | ----------------------------------- | --------- | ------------------------------ |
-| #1                    | 服务 id + positive 偏移量           | 0x78      | 是                             |
-| #2                    | modeOfOperation                     | 0x01-0x06 | 是（表示当前对文件处理的操作） |
-| #3                    | lengthFormatIdentifier              | 0x00-0xFF | 否                             |
-| #4...#4+m-1           | maxNumberOfBlockLength              | 0x00-0xFF | 否                             |
-| #4+m                  | dataFormatIdentifier                | 0x00-0xFF | 否                             |
-| #4+m+1..#4+m+2        | fileSizeOrDirInfoParameterlength    | 0x00-0xFF | 否                             |
-| #4+m+3..#4+m+3+k-1    | fileSizeUncompressedOrDirInfoLength | 0x00-0xFF | 否                             |
-| #4+m+3+k..#4+m+3+2k-1 | fileSizeCompressed                  | 0x00-0xFF | 否                             |
-
-**filePathAndNameLength** 表示的是后续文件路径及名字的长度
+![Request of 02](out/38_02.svg)
 
 <br/>
 
-**filePathAndName** 表示后续的文件路径和名字（如果当前的 modeOfOperation 是 0x05 readDir，那么此处就应该是文件夹）
+![Reponse of 02](out/response_38_02.svg)
 
 <br/>
 
-**dataFormatIdentifier** 的具体功能，需参考此前的赘述（如果当前的 modeOfOperation 是 0x02 或者 0x05，那么则不应该有该参数）
+## 04/05
+
+![Request of 04/05](out/38_04_05.svg)
 
 <br/>
 
-**fileSizeParameterLength**（或者 **fileSizeOrDirInfoParameterlength**） 记录了后续 `fileSizeUncompressed`（`fileSizeCompressed` 的大小也一样） 的大小（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
-
-<br/>
-
-**fileSizeUncompressed** 表示当前文件未压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数）
-
-<br/>
-
-**fileSizeCompressed** 表示当前文件被压缩的长度（如果当前的 modeOfOperation 是 0x02，0x04，0x05，则不应该有该参数），如果传输的文件未被压缩，那么值应该和 fileSizeUncompressed 相等
+![Reponse of 04/05](out/response_38_04_05.svg)

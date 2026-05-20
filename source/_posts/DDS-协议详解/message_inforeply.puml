@@ -1,0 +1,9 @@
+@startjson message_inforeply
+
+' inforeply, 用于更新后续 receiver 对于单播/多播消息回复的网络地址
+{
+    "EndiannessFlag" : ["1 个字节,表示大小端的 flag"],
+    "MulticastFlag" : ["1 个字节,表示后续是否有多播地址"],
+    "unicastLocatorList" : ["单播地址"],
+    "multicastLocatorList" : ["多播地址"]
+}
