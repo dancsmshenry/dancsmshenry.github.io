@@ -12,13 +12,11 @@ tags:
 categories:
 ---
 
-对于 `UDS` 协议，没法剥离出一个完全原子的概念出来理解，很多概念之间是相互穿插着的。
+对于 `UDS` 协议，无法剥离出完全原子的概念来理解，很多概念之间是相互穿插着的。
 
-所以私以为一种比较好的理解思路便是，一股脑的介绍完所有的概念，
+所以私以为一种比较好的理解思路便是，先一股脑地介绍完所有的概念，然后再通过一个简单的服务请求，或是 `DTC` 的报告，将这些概念逐个进行穿插和联系。
 
-然后再通过一个简单的服务请求，或是 `DTC` 的报告，将这些概念逐个逐个的进行穿插和联系。
-
-（TODO：后续可以画两个图，分别将  `DCM` 和 `DEM` 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼新人的脸上，不知道的以为是在期末考试划重点。。。）
+（TODO：后续可以画两个图，分别将 `DCM` 和 `DEM` 的概念串联起来；实名 diss 一下公司的某讲师，一上来就把各种服务的参数怼到新人脸上，不知道的以为是在期末考试划重点。。。）
 
 # 基本概念
 
@@ -26,11 +24,9 @@ categories:
 
 ## 子服务
 
-一个 Bit 有 8 个 b，其中的后 7 个 b 表示子服务的 id，而第 8 个 b 表示是否抑制肯定响应位。
+一个 Byte 有 8 个 bit，其中的后 7 个 bit 表示子服务的 id，而第 8 个 bit 表示是否抑制肯定响应位。
 
-抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；
-
-第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。
+抑制肯定响应位的含义有两层，第一层是如果当前需要回复的是消极响应，那么无论如何都需要回复出去；第二层是，只有需要回复的是积极响应，并且没有发送过 0x78 的报文（也就是 p2 没有超时），那么则不需要回复该积极响应，否则都要回复。
 
 <br/>
 
@@ -40,13 +36,13 @@ categories:
 
 ## P2/P2*
 
-在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*`的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文 （其中 p2 定时器的单位是 **1ms**，`p2*` 定时器的单位是 **10ms**）
+在 UDS 的概念中定义了定时器 `p2` 和 `p2 *`。当一条服务从刚开始处理，到 p2 定时器超时，在这个期间，如果服务还没有处理完，则需要给外部的诊断仪或者脚本发送 0x78 的报文，告知对方当前的服务超时了，后续还会将响应发来。紧接着就会启动 `p2*` 的定时器，在 `p2*` 的定时器超时后，又会接着发送 0x78 的报文（其中 p2 定时器的单位是 **1ms**，`p2*` 定时器的单位是 **10ms**）。
 
 <br/>
 
 ## S3
 
-在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到时的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下。
+在 ECU 中会维护一个名为 S3 的定时器，假如当前 ECU 的会话状态不是默认会话，那么就会启用该定时器。一旦有新的请求，便会刷新该定时器。如果在定时器到期的时候，依旧没有新的请求，那么 ECU 就会自动将会话切换到默认会话下。
 
 <br/>
 
@@ -62,7 +58,7 @@ categories:
 
 ## Session
 
-ECU 刚上电时，都是处于**默认会话**
+ECU 刚上电时，都处于**默认会话**。
 
 会话可由用户自行在工具中配置，但规范规定了一些固有的会话类型：
 
@@ -89,14 +85,14 @@ ECU 刚上电时，都是处于**默认会话**
 
 | Bit  | Name                               | Description                                                  | Condition                                                    |
 | ---- | ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Bit0 | TestFailed                         | 表示 DTC 最近一次报告的结果是否为 Failed                     | 当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；<br/>当最近一次报告的结果为 Passed、DEM 模块首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0（老化成功并不会将当前 Bit 置为 0） |
-| Bit1 | TestFailedThisOperationCycle       | 表示 DTC 在当前的操作循环中，是否报告过 Failed               | 在当前操作循环中，只要报告了 Failed，就需要将当前 Bit 置为 1；<br/>当重启操作循环、DEM 模块初始化，或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
-| Bit2 | PendingDTC                         | 表示 DTC 在当前的操作循环，以及上一个操作循环中，是否报告过 Failed | 当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当此时的操作循环结束，并且在这个操作循环中没有报告过 Failed（Bit1 和 Bit6 都为 0）、或者 DEM 首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
-| Bit3 | ConfirmedDTC                       | 表示 DTC 经历了一定次数的操作循环，并且在这些操作循环中都报告过 Failed 时，需要将当前 Bit 置为 1 | 当 DTC 老化完成，<br/>或是 DEM 模块首次初始化，<br/>或是当前的数据因为存储的 overflow 而被移除，<br/>或是 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0 |
-| Bit4 | TestnotCompletedSinceLastClear     | 表示自从上一次 clear 之后，是否有报告过 Passed 或者 Failed   | 当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化时，需要将当前 Bit 置为 1；<br/>需要注意的是，dtc 报告的 preFailed 或者 prePassed 并不算是一次完整的报告 |
-| Bit5 | TestFailedSinceLastClear           | 表示自从上一次 clear，当前的 DTC 是否有报告过 Failed。       | 当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化，或者老化成功，或者因为 overflow 将数据删除了，需要将当前 Bit 置为 0 |
-| Bit6 | TestNotCompletedThisOperationCycle | 表示在当前的操作循环中，是否没报告过 Failed 或者 Passed。    | 当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当重启操作循环、DEM 模块初始化，或者 `clearDiagnosticInformation` 时，需要将当前 Bit 置为 1 |
-| Bit7 | WarningIndicator                   | 初始值为 0；当配置了 indicator，Bit3 变为 1（此时 Bit0 也一定为 1），并且也符合主机厂或者供应商的需求时，将当前 Bit 置为 1<br/>当 healing 结束，0x14 服务，或者一些主机厂自定义的条件满足时，将当前 Bit 置为 0 |                                                              |
+| Bit0 | TestFailed                         | 表示 DTC 最近一次报告的结果是否为 Failed                     | 当最近一次报告的结果为 Failed 时，需要将当前 Bit 置为 1；<br/>当最近一次报告的结果为 Passed、DEM 模块首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0（老化成功并不会将当前 Bit 置为 0）。 |
+| Bit1 | TestFailedThisOperationCycle       | 表示 DTC 在当前的操作循环中，是否报告过 Failed               | 在当前操作循环中，只要报告了 Failed，就需要将当前 Bit 置为 1；<br/>当重启操作循环、DEM 模块初始化，或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0。 |
+| Bit2 | PendingDTC                         | 表示 DTC 在当前的操作循环，以及上一个操作循环中，是否报告过 Failed | 当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当此时的操作循环结束，并且在这个操作循环中没有报告过 Failed（Bit1 和 Bit6 都为 0）、或者 DEM 首次初始化、或者 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0。 |
+| Bit3 | ConfirmedDTC                       | 表示 DTC 经历了一定次数的操作循环，并且在这些操作循环中都报告过 Failed 时，需要将当前 Bit 置为 1 | 当 DTC 老化完成时，或是 DEM 模块首次初始化，或是当前的数据因为存储的 overflow 而被移除，或是 `ClearDiagnosticInformation` 时，需要将当前 Bit 置为 0。 |
+| Bit4 | TestnotCompletedSinceLastClear     | 表示自从上一次 clear 之后，是否有报告过 Passed 或者 Failed   | 当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化时，需要将当前 Bit 置为 1；<br/>需要注意的是，dtc 报告的 preFailed 或者 prePassed 并不算是一次完整的报告。 |
+| Bit5 | TestFailedSinceLastClear           | 表示自从上一次 clear，当前的 DTC 是否有报告过 Failed。       | 当报告 Failed 时，需要将当前 Bit 置为 1；<br/>当 `ClearDiagnosticInformation` 或者 DEM 模块初始化，或者老化成功，或者因为 overflow 将数据删除，需要将当前 Bit 置为 0。 |
+| Bit6 | TestNotCompletedThisOperationCycle | 表示在当前的操作循环中，是否没有报告过 Failed 或者 Passed。  | 当报告 Failed 或者 Passed 时，需要将当前 Bit 置为 0；<br/>当重启操作循环、DEM 模块初始化，或者 `clearDiagnosticInformation` 时，需要将当前 Bit 置为 1。 |
+| Bit7 | WarningIndicator                   | 初始值为 0；当配置了 indicator，Bit3 变为 1（此时 Bit0 也一定为 1），并且也符合主机厂或者供应商的需求时，将当前 Bit 置为 1。<br/>当 healing 结束，0x14 服务，或者一些主机厂自定义的条件满足时，将当前 Bit 置为 0。 |                                                              |
 
 <br/>
 
@@ -129,15 +125,12 @@ ECU 刚上电时，都是处于**默认会话**
 ## Aging 与 Healing
 
 二者的区别就在于，对于一些 dtc 而言，需要在报告 failed 之后，将 bit7 置位为 1，并在一定的操作循环之后，才将其置为 0。
-
 （注：此处先不考虑 dtc 在这期间报告 passed 的情况，因为存在一些厂商要求报告 passed 之后，将 bit7 置为 0）
-
 因此，将上述流程，描述为 healing，也就是愈合。
 
 <br/>
 
-而在经过了 healing 之后，距离能够自主的通过操作循环的重启，将相关的故障信息清楚的流程，称之为 aging，也就是老化。
-
+而在经过了 healing 之后，距离能够自主的通过操作循环的重启，将相关的故障信息清除的流程，称之为 aging，也就是老化。
 （注：此处先不考虑 dtc 在这期间报告 failed 的情况）
 
 <br/>
@@ -149,7 +142,6 @@ ECU 刚上电时，都是处于**默认会话**
 ## Snapshot
 
 在发生了故障时，存储一些重要的信息。
-
 从实现上来看，就是读取某些 did 的信息，并存储在非易失性存储介质中。
 
 <br/>
@@ -162,12 +154,12 @@ ECU 刚上电时，都是处于**默认会话**
 
 常用的几个内置 DataElement 都是 `std::uint8` 类型的（除了 FDC10），达到 255 之后都不会继续增加。
 
-| Name                                | Condition                                                    | ClearCondition                                   |
-| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
-| OCC1<br/>（CyclesSinceLastFailed）  | 报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，如果此时 bit1 为 1 并且 OCC1 为零，<br/>或者 OCC1 不为 0 并且 bit1 为 0，才 + 1<br/> | 1. 0x14 服务<br/>2. 老化成功<br/>3. 上报 failed  |
-| OCC3<br/>（CyclesSinceFirstFailed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，<br/>检查 bit5 是否为 1，如果为 1 的话，则 +1 | 1. 0x14 服务<br/>2. 老化成功                     |
-| OCC4<br/>（FailedCycles）           | 当前操作循环**首次**报告 failed 之后，就 +1<br/>也就是当 bit1 从 0 变为 1 时，才 + 1 | 1. 0x14 服务<br/>2. 老化成功                     |
-| FDC10                               | 当报告 failed 之后，变为 127<br/>当报告 passed 之后，变为 -128 | 1. 0x14 服务<br/>2. 老化成功<br/>3. 操作循环重启 |
+| Name                                | Condition                                                    | ClearCondition                                           |
+| ----------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------- |
+| OCC1<br/>（CyclesSinceLastFailed）  | 报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，如果此时 bit1 为 1 并且 OCC1 为零，<br/>或者 OCC1 不为 0 并且 bit1 为 0，才 +1。 | 1. 0x14 服务<br/>2. 老化成功<br/>3. 上报 failed          |
+| OCC3<br/>（CyclesSinceFirstFailed） | **首次**报告 failed 之后的**每次**操作循环重启都 +1<br/>也就是每次操作循环重启时，<br/>检查 bit5 是否为 1，如果为 1 的话，则 +1。 | 1. 0x14 服务<br/>2. 老化成功                             |
+| OCC4<br/>（FailedCycles）           | 当前操作循环**首次**报告 failed 之后，就 +1<br/>也就是当 bit1 从 0 变为 1 时，才 +1。 | 1. 0x14 服务<br/>2. 老化成功                             |
+| FDC10                               | 当报告 failed 之后，变为 127<br/>当报告 passed 之后，变为 -128 | 1. 0x14 服务<br/>2. 老化成功<br/>3. 操作循环重启         |
 
 <br/>
 
@@ -175,11 +167,11 @@ ECU 刚上电时，都是处于**默认会话**
 
 <br/>
 
-OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息
+OCC1 与老化计数的关系：假设老化计数配置为 10，那么当 occ1 变为 11 的那一刻，才会彻底清除故障信息。
 
 <br/>
 
-注：实际上存在一些内置 dataelement 来做拓展数据的，但目前没有看到厂商用过（或许是因为本质上，是可以归纳为快照数据的）
+注：实际上存在一些内置 dataelement 来做拓展数据的，但目前没有看到厂商用过（或许是因为本质上，是可以归纳为快照数据的）。
 
 <br/>
 
@@ -189,9 +181,7 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 # 0x10
 
-在 UDS 的规范中，定义了会话状态的概念。会话状态可以简单的理解为是当前的 ECU 处于某种会话模式下。
-
-会话模式的作用，主要是为了限制服务的使用。比如说在做诊断应用的设计的时候，可以指定某个服务必须要在某些指定的会话状态下执行。其中 0x10 服务便是用来切换会话的。
+在 UDS 的规范中，定义了会话状态的概念。会话状态可以简单地理解为当前的 ECU 处于某种会话模式下。会话模式的作用，主要是为了限制服务的使用。比如说在做诊断应用的设计的时候，可以指定某个服务必须要在某些指定的会话状态下执行。其中 0x10 服务便是用来切换会话的。
 
 根据 14229 的规范，0x10 的 request message 格式为：
 
@@ -204,12 +194,12 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 根据 14229 的规范，0x10 的 positive response message 格式为：
 
-| 数值位 | 参数名字                  | 可选值        | 是否为必选项 |
-| ------ | ------------------------- | ------------- | ------------ |
-| #1     | 服务 id + positive 偏移量 | 0x50          | 是           |
-| #2, #3 | 会话 id                   | 0x00-0xFF     | 是           |
-| #4, #5 | p2 server 定时器          | 0x0000-0xFFFF | 是           |
-| #6, #7 | p2* server 定时器         | 0x0000-0xFFFF | 是           |
+| 数值位   | 参数名字                  | 可选值        | 是否为必选项 |
+| -------- | ------------------------- | ------------- | ------------ |
+| #1       | 服务 id + positive 偏移量 | 0x50          | 是           |
+| #2, #3   | 会话 id                   | 0x00-0xFF     | 是           |
+| #4, #5   | p2 server 定时器          | 0x0000-0xFFFF | 是           |
+| #6, #7   | p2* server 定时器         | 0x0000-0xFFFF | 是           |
 
 <br/>
 
@@ -219,9 +209,7 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 # 0x11
 
-该服务从字面意思上理解，就是用来重启 ECU 的。而重启有不同的类型，具体的重启类型可以参见子服务。
-
-规范中并没有定义在发送了 0x11 的 positive response 之后，到真正重启之间，ECU 的行为。但推荐在这个期间 ECU 不要解说任何的 request 或是发送任何的 response。
+该服务从字面意思上理解，就是用来重启 ECU 的。而重启有不同的类型，具体的重启类型可以参见子服务。规范中并没有定义在发送了 0x11 的 positive response 之后，到真正重启之间，ECU 的行为。但推荐在这个期间 ECU 不要接受任何的 request 或是发送任何的 response。
 
 根据 14229 的规范，0x11 的 request message 格式为：
 
@@ -230,15 +218,15 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 | #1     | 服务 id   | 0x11      | 是           |
 | #2     | 子服务 id | 0x00-0xFF | 是           |
 
-而其中具体的子服务，在 14229 的规范中，有定为以下几种：
+而其中具体的子服务，在 14229 的规范中，有定义为以下几种：
 
 | 子服务 id | 含义                                                         |
 | --------- | ------------------------------------------------------------ |
-| 0x01      | HardReset，硬件复位，模拟通常在服务器与其电源断开后执行的通电/启动顺序。简单的理解为就是整个 ECU 重启了。有可能会导致易失性存储和非易失性存储失效 |
-| 0x02      | keyOffOnReset，点火循环复位，模拟关机顺序（即中断开关电源）。有点类似于驾驶员用钥匙给汽车关闭后又重新点火的过程。其中非易失性存储将会被保存，易失性存储会被重置 |
-| 0x03      | softReset，软复位，简单理解就是将应用程序重启                |
-| 0x04      | enableRapidPowerShutDown，适用于非点火供电而仅为电池供电的ECU。因此，关机会迫使睡眠模式关闭，而不是关闭电源。睡眠意味着关闭电源，但仍准备唤醒（电池供电）。子功能的目的是减少在点火开关进入关闭位置后的ECU的备用时间。 |
-| 0x05      | disableRapidPowerShutDown，关闭 0x04 服务                    |
+| 0x01      | HardReset，硬件复位，模拟通常在服务器与其电源断开后执行的通电/启动顺序。简单的理解就是整个 ECU 重启了。有可能会导致易失性存储和非易失性存储失效。 |
+| 0x02      | keyOffOnReset，点火循环复位，模拟关机顺序（即中断开关电源）。有点类似于驾驶员用钥匙给汽车关闭后又重新点火的过程。其中非易失性存储将会被保存，易失性存储会被重置。 |
+| 0x03      | softReset，软复位，简单理解就是将应用程序重启。              |
+| 0x04      | enableRapidPowerShutDown，适用于非点火供电而仅为电池供电的 ECU。因此，关机会迫使睡眠模式关闭，而不是关闭电源。睡眠意味着关闭电源，但仍准备唤醒（电池供电）。子功能的目的是减少在点火开关进入关闭位置后的 ECU 的备用时间。 |
+| 0x05      | disableRapidPowerShutDown，关闭 0x04 服务。                  |
 
 <br/>
 
@@ -258,15 +246,13 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 # 0x27
 
-该服务是用来解锁安全等级的。安全等级和会话等级是类似的概念，都是用来限制服务需要在指定的环境下执行。但与会话等级不同的是，会话等级一问一答便可以切换会话，而安全等级则需要先请求安全种子，计算key，比较key，之后再判断是否可以解锁安全等级。
+该服务是用来解锁安全等级的。安全等级和会话等级是类似的概念，都是用来限制服务需要在指定的环境下执行。但与会话等级不同的是，会话等级一问一答便可以切换会话，而安全等级则需要先请求安全种子，计算 key，比较 key，之后再判断是否可以解锁安全等级。
 
-0x27 是带有子服务的 UDS 服务，其中子服务为 0x01-0x41 之间的奇数的，都是 requestSeed 请求种子的服务；子服务为 0x02-0x42 之间的偶数的，都是 sendKey 发送 key 值。
-
-其实，这里的子服务是一一对应的。比如说 子服务id 为 0x01 的 requestSeed 服务，那么就需要对应子服务id 为 0x02 的 sendkey 服务，即 requestSeed 的子服务 id，是其对应的
+0x27 是带有子服务的 UDS 服务，其中子服务为 0x01-0x41 之间的奇数的，都是 requestSeed 请求种子的服务；子服务为 0x02-0x42 之间的偶数的，都是 sendKey 发送 key 值。其实，这里的子服务是一一对应的。比如说子服务 id 为 0x01 的 requestSeed 服务，那么就需要对应子服务 id 为 0x02 的 sendkey 服务，即 requestSeed 的子服务 id，是其对应的...
 
 <br/>
 
-根据 14229 的规范，0x27 的 request message ，其中子服务为 requestSeed 的报文结构为：
+根据 14229 的规范，0x27 的 request message，其中子服务为 requestSeed 的报文结构为：
 
 | 数值位  | 参数名字  | 可选值                   | 是否为必选项 |
 | ------- | --------- | ------------------------ | ------------ |
@@ -276,7 +262,7 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 <br/>
 
-根据 14229 的规范，0x27 的 request message ，其中子服务为 sendKey 的报文结构为：
+根据 14229 的规范，0x27 的 request message，其中子服务为 sendKey 的报文结构为：
 
 | 数值位  | 参数名字    | 可选值                   | 是否为必选项 |
 | ------- | ----------- | ------------------------ | ------------ |
@@ -341,7 +327,7 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 当前处于 no actived seed && level locked 状态
 
-- 收到 L1 的requestSeed（奇数服务），长度错误，返回 NRC13，状态依然为 no actived seed 状态
+- 收到 L1 的 requestSeed（奇数服务），长度错误，返回 NRC13，状态依然为 no actived seed 状态
 
 - 收到 L2 的 sendKey（偶数服务），序列错误，返回 NRC24，状态依然为 no actived seed 状态
 
@@ -409,7 +395,7 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 - 收到 L2 的 sendkey（偶数服务），增加 L1 的失败计数器，回复 NRC24，切换为 no actived seed 状态
 
-- 收到 L1 的 sendkey（偶数服务），长度检查错误，增加 L1 的失败计数器，回复 NRC13，切换 no actived seed 状态
+- 收到 L1 的 sendkey（偶数服务），长度检查错误，增加 L1 的失败计数器，回复 NRC13，切换为 no actived seed 状态
 
 - 会话切换或者超时，切换为 no actived seed 状态
 
@@ -433,9 +419,9 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 - 收到 L3 的 sendkey（偶数服务），增加 L2 的失败计数器，回复 NRC24，切换为 no actived seed 状态
 
-- 收到 L2 的 sendkey（偶数服务），长度检查错误，增加 L2 的失败计数器，回复 NRC13，切换 no actived seed 状态
+- 收到 L2 的 sendkey（偶数服务），长度检查错误，增加 L2 的失败计数器，回复 NRC13，切换为 no actived seed 状态
 
-- 报文的 total or subfunction check failed，回复对应 NRC，切换 no actived seed 状态
+- 报文的 total or subfunction check failed，回复对应 NRC，切换为 no actived seed 状态
 
 ![](27-10.png)
 
@@ -468,10 +454,10 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 | 子服务 id | 含义                                                         |
 | --------- | ------------------------------------------------------------ |
 | 0x00      | enableRxAndTx，启用对某种消息的发送和接收                    |
-| 0x01      | enableRxAndDisableTx，启用对某种消息的接受，禁用对某种消息的发送 |
+| 0x01      | enableRxAndDisableTx，启用对某种消息的接收，禁用对某种消息的发送 |
 | 0x02      | disableRxAndEnableTx，禁用对某种消息的接收，启用对某种消息的发送 |
 | 0x03      | disableRxAndTx，禁用对某种消息的接收和发送                   |
-| 0x04      | enableRxAndDisableTxWithEnhancedAddressInformation，表示寻址总选需要切换到诊断调度模式 |
+| 0x04      | enableRxAndDisableTxWithEnhancedAddressInformation，表示寻址总线需要切换到诊断调度模式 |
 | 0x05      | enableRxAndTxWithEnhancedAddressInformation，表示寻址总线需要切换到应用程序调度模式 |
 
 而对于 communicationType，具体在 14229 中表 B.1 中有详细的赘述，更多细节可以关注 ISO 14229 的规范。
@@ -495,9 +481,9 @@ OCC1 与老化计数的关系：假设老化计数配的为 10，那么当 occ1 
 
 认证主要分为 APCE 和 ACR，a 核上的协议栈一般只支持 APCE。
 
-APCE 的全称 Authentication with PKI Certificate Exchange，又分为单向认证和双向认证
+APCE 的全称是 Authentication with PKI Certificate Exchange，又分为单向认证和双向认证。
 
-ACR 的全称 Authentication with Challenge-Response
+ACR 的全称是 Authentication with Challenge-Response。
 
 <br/>
 
@@ -515,13 +501,11 @@ ACR 的全称 Authentication with Challenge-Response
 | 0x07 verifyProofOfOwnershipBidirectional  | （为 ACR 下的子服务）                      |
 | 0x08 authenticationConfiguration          | 表示当前协议栈支持的认证，是 APCE 还是 ACR |
 
-
-
 单向认证：
 
-0x01 服务，传递 client certificate 和 client challenge；server 回复 server challenge 和 server ephemeral public key
+0x01 服务，传递 client certificate 和 client challenge；server 回复 server challenge 和 server ephemeral public key。
 
-再使用 0x03 服务，传递 client proofOfOwnershipClient 和 client ephemeral public key；server 回复 SessionKeyInfo
+再使用 0x03 服务，传递 client proofOfOwnershipClient 和 client ephemeral public key；server 回复 SessionKeyInfo。
 
 <br/>
 
@@ -540,9 +524,9 @@ ACR 的全称 Authentication with Challenge-Response
 | #1     | 服务 id   | 0x3E      | 是           |
 | #2     | 子服务 id | 0x00/0x80 | 是           |
 
-注：在子服务 id 中，其中的 Bit7，也就是第八位，当为 0 的时候，表示为需要发送肯定响应，而为1的时候，则需要抑制肯定响应
+注：在子服务 id 中，其中的 Bit7，也就是第八位，当为 0 的时候，表示需要发送肯定响应，而为 1 的时候，则需要抑制肯定响应。
 
-根据 14229 的规范，目前支持的 subfunction 有
+根据 14229 的规范，目前支持的 subfunction 有：
 
 | 子服务 id | 含义            |
 | --------- | --------------- |
@@ -565,7 +549,7 @@ ACR 的全称 Authentication with Challenge-Response
 
 # 0x85
 
-该服务用于表示是否开启 DEM 模块的报告。需要注意的是，按照 14229 的规范，如果切换到了默认会话，是需要开启 DEM 模块的报告的
+该服务用于表示是否开启 DEM 模块的报告。需要注意的是，按照 14229 的规范，如果切换到了默认会话，是需要开启 DEM 模块的报告的。
 
 根据 14229 的规范，0x85 的 request message 的报文结构如下所示。
 
@@ -601,9 +585,9 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 
 # 0x22
 
-该服务是用来读取一个或者多个 did 对应的数据的。did 的全程是 dataIdentifier，它是由一个 `uint16` 和一连串二进制数据组成的，可以简单的理解为键值对的关系。此处的 `uint16` 为 did 号。
+该服务是用来读取一个或者多个 did 对应的数据的。did 的全称是 dataIdentifier，它是由一个 `uint16` 和一连串二进制数据组成的，可以简单地理解为键值对的关系。此处的 `uint16` 为 did 号。
 
-而读取 did 的这个服务，可以理解是，外部的诊断仪传入 did 号，诊断 server 便根据报文中的 did 号，返回对应的数据。
+而读取 did 的这个服务，可以理解为，外部的诊断仪传入 did 号，诊断 server 便根据报文中的 did 号，返回对应的数据。
 
 根据 14229 的规范，0x22 的 request message 的报文结构如下所示。
 
@@ -611,7 +595,7 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 | ----------- | -------- | --------- | -------------------------------------------- |
 | #1          | 服务 id  | 0x22      | 是                                           |
 | #2,#3       | did      | 0x00-0xFF | 是（每次 22 服务的请求中，至少要有一个 did） |
-| .. #n-1，#n | did      | 0x00-0xFF | 否                                           |
+| ... #n-1，#n | did      | 0x00-0xFF | 否                                           |
 
 <br/>
 
@@ -623,7 +607,7 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 | #2,#3                 | did                           | 0x00-0xFF | 是（每次 22 服务的请求中，至少要有一个 did） |
 | #4..#(k-1)+4          | Did record，为 did 对应的数据 | 0x00-0xFF | 是（did 对应的数据至少为一个字节）           |
 | #n-(0-1)-2,#n-(o-1)-1 | did                           | 0x00-0xFF | 否（至少有一个 did 可读就可以了）            |
-| #n-(o-1)..#n          | Did record，为did对应的数据   | 0x00-0xFF | 否（至少有一个 did 可读就可以了）            |
+| #n-(o-1)..#n          | Did record，为 did 对应的数据 | 0x00-0xFF | 否（至少有一个 did 可读就可以了）            |
 
 <br/>
 
@@ -633,9 +617,7 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 
 # 0x2A
 
-该服务允许外部的诊断仪发送周期性读取一个或是多个 did 的请求。
-
-在 14229 的规范中，每次 2A 服务传入的 did 数据只包含低两位。其中的高两位固定为 0xF2。
+该服务允许外部的诊断仪发送周期性读取一个或是多个 did 的请求。在 14229 的规范中，每次 2A 服务传入的 did 数据只包含低两位。其中的高两位固定为 0xF2。
 
 根据 14229 的规范，0x2A 的 request message 的报文结构如下所示。
 
@@ -643,7 +625,7 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 | ------ | -------------------------------- | --------- | ------------------------------------------------------------ |
 | #1     | 服务 id                          | 0x2A      | 是                                                           |
 | #2     | transmissionMode，表示传输的速率 | 0x00-0xFF | 是                                                           |
-| #3     | periodicDataIdentifier           | 0x00-0xFF | 否（可以传入任意数量的 did；如果 transmissionMode 为 stopSending，且后续没有 did 存在时，则表示 client 需要将所有的定时读取的 did 都给取消） |
+| #3     | periodicDataIdentifier           | 0x00-0xFF | 否（可以传入任意数量的 did；如果 transmissionMode 为 stopSending，且后续没有 did 存在时，则表示 client 需要将所有的定时读取的 did 都取消） |
 
 <br/>
 
@@ -672,9 +654,9 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 
 比如说，已有 did1，did2，did3。其中 did3 是动态 did，那么通过 2c 服务指定，did3 是由 did1 的前四位，加上 did2 的中间四位组成的。
 
-注：在 autosar ap 的规范中，仅支持子服务 id 为 0x01 和 0x03 这两个子服务
+注：在 autosar ap 的规范中，仅支持子服务 id 为 0x01 和 0x03 这两个子服务。
 
-根据 14229 的规范，0x2C 的 request message ，子服务为 0x01 的报文结构如下所示。
+根据 14229 的规范，0x2C 的 request message，子服务为 0x01 的报文结构如下所示。
 
 | 数值位    | 参数名字                                              | 可选值                   | 是否为必选项                |
 | --------- | ----------------------------------------------------- | ------------------------ | --------------------------- |
@@ -682,13 +664,13 @@ TODO：很少看到有客户使用这个服务，后续需要用到的时候，�
 | #2        | SubFunction                                           | 0x01(defineByIdentifier) | 是                          |
 | #3,#4     | dynamicallyDefinedDataIdentifier                      | 0xF2/0xF3，0x00-0xFF     | 是                          |
 | #5,#6     | sourceDataIdentifier，表示源 did                      | 0x00-0xFF                | 是（至少要由一个 did 组成） |
-| #7        | positionInSourceDataRecord，表示在源头 did 上的偏移量 | 0x01-0xFF                | 是（至少要由一个 did 组成） |
+| #7        | positionInSourceDataRecord，表示在源 did 上的偏移量   | 0x01-0xFF                | 是（至少要由一个 did 组成） |
 | #8        | memorySize                                            | 0x01-0xFF                | 是（至少要由一个 did 组成） |
 | #n-3,#n-2 | sourceDataIdentifier，表示源 did                      | 0x00-0xFF                | 否                          |
-| #n-1      | positionInSourceDataRecord，表示在源头 did 上的偏移量 | 0x01-0xFF                | 否                          |
+| #n-1      | positionInSourceDataRecord，表示在源 did 上的偏移量   | 0x01-0xFF                | 否                          |
 | #n        | memorySize                                            | 0x01-0xFF                | 否                          |
 
-根据 14229 的规范，0x2C 的 request message ，子服务为 0x03 的报文结构如下所示。
+根据 14229 的规范，0x2C 的 request message，子服务为 0x03 的报文结构如下所示。
 
 | 数值位 | 参数名字                         | 可选值                                      | 是否为必选项                                                 |
 | ------ | -------------------------------- | ------------------------------------------- | ------------------------------------------------------------ |
@@ -775,11 +757,7 @@ ReadDTCInformation，该服务是用于读取 DTC 相关的数据。
 
 **reportNumberOfDTCByStatusMask**
 
-通过 request 中的状态掩码，返回符合这个状态掩码的 dtc 个数。
-
-其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0。
-
-位于 uds 协议的 page 261。
+通过 request 中的状态掩码，返回符合这个状态掩码的 dtc 个数。其中每个 dtc 的 status 与这个掩码进行 & 操作，结果都不为 0。位于 uds 协议的 page 261。
 
 <br/>
 
@@ -799,9 +777,9 @@ ReadDTCInformation，该服务是用于读取 DTC 相关的数据。
 
 DTCStatusAvailabilityMask 表示当前协议栈支持的 dtc status 中的哪些 bit，值 0xff 表示全支持；
 
-DTCFormatIdentifier 表示当前的 dtc 是哪一种 format；
+DTCFormatIdentifier 表示当前的 dtc 是哪种 format；
 
-DTCCount 表示 dtc 的个数
+DTCCount 表示 dtc 的个数。
 
 <br/>
 
@@ -809,11 +787,7 @@ DTCCount 表示 dtc 的个数
 
 **reportDTCByStatusMask**
 
-给定一个状态掩码，返回一个 dtc status 的合集。
-
-表示需要读取处于某个状态的所有 dtc 以及对应的状态，uds 协议的 page 262
-
-其中每个 dtc 的 status 与这个掩码进行 & 操作，都不为 0
+给定一个状态掩码，返回一个 dtc status 的合集。表示需要读取处于某个状态的所有 dtc 以及对应的状态，uds 协议的 page 262。其中每个 dtc 的 status 与这个掩码进行 & 操作，结果都不为 0。
 
 | **数值位** | **参数名字**    | 可选值    |
 | ---------- | --------------- | --------- |
@@ -839,9 +813,7 @@ DTCCount 表示 dtc 的个数
 
 **reportDTCSnapshotIdentification**
 
-返回所有 dtc 的快照号，
-
-对应 uds 协议的 page 262。
+返回所有 dtc 的快照号，对应 uds 协议的 page 262。
 
 | **数值位** | **参数名字** | 可选值 |
 | ---------- | ------------ | ------ |
@@ -861,15 +833,11 @@ DTCCount 表示 dtc 的个数
 | 3-5        | dtc value（3 个字节）     | 0x000000-0xFFFFFF |
 | 6...       | record number（1 个字节） | 0x00-0xff         |
 
-后续按照 3-5 6 的方式累加下去，
-
-当没有快照数据的时候，后续的数据，从 dtc value 开始，就为空
-
-最少要有一个 record number
+后续按照 3-5 6 的方式累加下去，当没有快照数据的时候，后续的数据，从 dtc value 开始，就为空。最少要有一个 record number。
 
 <br/>
 
-## 04 
+## 04
 
 reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快照数据（需要传入快照号），其中当快照号 id 为 ff 的时候，是读取所有的快照数据。
 
@@ -886,7 +854,7 @@ reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快�
 
 <br/>
 
-表示需要获取某个 dtc 指定 record number 的快照数据，uds 协议的 263
+表示需要获取某个 dtc 指定 record number 的快照数据，uds 协议的 263。
 
 59（19+40）
 
@@ -900,7 +868,7 @@ reportDTCSnapshotRecordByDTCNumber，用于读取某一个 dtc 的某一个快�
 
 <br/>
 
-## 06 
+## 06
 
 reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展数据（需要传入拓展数据号），其中当拓展数据 id 为 ff 的时候，是读取所有的拓展数据。
 
@@ -917,7 +885,7 @@ reportDTCExtDataRecordByDTCNumber，用于读取某一个 dtc 的某一个拓展
 
 <br/>
 
-表示需要获取某个 dtc 指定 record number 的拓展数据，uds 协议的 265
+表示需要获取某个 dtc 指定 record number 的拓展数据，uds 协议的 265。
 
 59（19+40）
 
@@ -962,9 +930,9 @@ dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0。
 
 <br/>
 
-## 0a 
+## 0a
 
-**reportSupportedDTCs**，用于读取当前支持的所有 dtc。表示需要读取当前所有的 dtc 以及对应的状态，uds 协议的 page 262
+**reportSupportedDTCs**，用于读取当前支持的所有 dtc。表示需要读取当前所有的 dtc 以及对应的状态，uds 协议的 page 262。
 
 | **数值位** | **参数名字** | 可选值 |
 | ---------- | ------------ | ------ |
@@ -987,7 +955,7 @@ dtc 的 severitymask 要和 severitymask 做位运算（&）后不为 0。
 
 ## 15
 
-reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的状态，后续将被 55 子服务替代
+reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的状态，后续将被 55 子服务替代。
 
 ![19 15的响应](19_02_0a_15.png)
 
@@ -1011,7 +979,7 @@ reportDTCWithPermanentStatus 15 表示需要读取处于永久状态的 dtc 的�
 
 而服务 routineControl 表示的是外部的诊断仪或是脚本，想让诊断 server（或是 ECU）执行一段此前已经定义好了的代码逻辑，比如常见的擦除内存，重置或是修改某个参数等。
 
-如果从常见的网络模型上看，可以简单的立即为 routine 就是某个函数，当传入 0x31 0x01 的时候，就是让程序执行某段代码；当传入 0x31 0x02 的时候，就是让程序停止执行某段代码；当传入 0x31 0x03 的时候，就是获取这段代码执行结果的返回值。
+如果从常见的网络模型上看，可以简单地理解为 routine 就是某个函数，当传入 0x31 0x01 的时候，就是让程序执行某段代码；当传入 0x31 0x02 的时候，就是让程序停止执行某段代码；当传入 0x31 0x03 的时候，就是获取这段代码执行结果的返回值。
 
 根据 14229 的规范，0x31 的 request message 的报文结构如下所示。
 
