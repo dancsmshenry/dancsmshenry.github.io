@@ -3,14 +3,12 @@ title: CMU 15-445 23-Distributed OLAP Databases
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-12-19 21:08:31
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

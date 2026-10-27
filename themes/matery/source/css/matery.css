@@ -274,8 +274,7 @@ mark {
 }
 
 .bg-color {
-    background-image: linear-gradient(to right, #bf30ac 0%, #0f9d58 100%);
-    opacity: 0.7;
+    background-image: linear-gradient(to right, rgba(191, 48, 172, 0.92) 0%, rgba(15, 157, 88, 0.92) 100%);
 }
 
 .text-color {
@@ -317,6 +316,11 @@ header .nav-transparent {
     background-color: transparent !important;
     background-image: none;
     box-shadow: none;
+}
+
+header .nav-transparent .right a,
+header .nav-transparent .brand-logo a {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
 }
 
 header nav .brand-span {
@@ -503,6 +507,7 @@ header .go-back i {
     line-height: 1.85em;
     margin-bottom: 20px;
     position: relative;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .bg-cover .description {
@@ -510,6 +515,7 @@ header .go-back i {
     font-weight: 300;
     line-height: 1.4em;
     color: #eee;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .bg-cover .post-title {
@@ -1915,4 +1921,27 @@ footer .copy-right {
     margin-top: 0.2em;
     /* bg color = bg color under block */
     background: white;
+}
+
+/* 移动端：避免站名换行并覆盖文章标题 */
+@media only screen and (max-width: 992px) {
+    header .brand-logo {
+        left: 0;
+        right: 0;
+        transform: none;
+        text-align: center;
+    }
+
+    header .brand-logo a {
+        display: inline-flex;
+        align-items: center;
+        max-width: calc(100% - 120px);
+    }
+
+    header .brand-logo .logo-span {
+        font-size: 1.15rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }

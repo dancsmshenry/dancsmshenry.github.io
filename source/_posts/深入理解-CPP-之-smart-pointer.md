@@ -3,13 +3,12 @@ title: 深入理解 CPP 之 smart pointer
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-26 22:10:38
 password:
 summary:
 tags:
 - CPP
-categories:
+
 ---
 
 

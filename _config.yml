@@ -4,8 +4,8 @@
 
 # Site
 title: dancsmshenry's blog
-subtitle: 
-description: 
+subtitle:
+description:
 keywords: C++
 author: dancsmshenry
 language: zh-CN
@@ -117,8 +117,11 @@ deploy:
     # coding: git@e.coding.net:dancsmshenry/dancsmshenry.git
   repo: git@github.com:dancsmshenry/dancsmshenry.github.io.git
   branch: main
-- type: baidu_url_submitter
 
+
+baidu_url_submit:
+  count: 100
+  path: baidu_urls.txt
 
 live2d:
   enable: false
@@ -138,9 +141,3 @@ live2d:
     show: false
   react:
     opacity: 0.7
-
-baidu_url_submit:
-  count: 100
-  host: dancsmshenry.com
-  token: jp7MKvOw74Yh3F09
-  path: baidu_urls.txt

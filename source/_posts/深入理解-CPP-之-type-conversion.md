@@ -3,13 +3,12 @@ title: 深入理解 CPP 之 type conversion
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-23 17:03:40
 password:
 summary:
 tags:
 - CPP
-categories:
+
 ---
 
 

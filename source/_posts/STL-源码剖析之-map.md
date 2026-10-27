@@ -9,7 +9,6 @@ password:
 summary:
 tags:
 - STL
-categories:
 
 ---
 

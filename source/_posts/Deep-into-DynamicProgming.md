@@ -1,16 +1,15 @@
 ---
-title: Deep into DynamicProgming
+title: Deep into Dynamic Programming
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-10 12:35:33
 password:
 summary:
 tags:
 - Algorithm
-- DynamicProgming
-categories:
+- DynamicProgramming
+
 ---
 
 

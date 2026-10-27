@@ -10,7 +10,7 @@ summary:
 tags:
 - Database
 - CMU 15-445
-categories:
+
 ---
 
 

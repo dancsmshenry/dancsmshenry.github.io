@@ -3,14 +3,12 @@ title: CMU 15-445 15-Concurrency Control Theory
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-11-26 22:42:58
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

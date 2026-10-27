@@ -3,13 +3,12 @@ title: UDS 协议详解
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2024-07-21 14:59:47
 password:
 summary:
 tags:
 - AutomotiveElectronic
-categories:
+
 ---
 
 对于 `UDS` 协议，无法剥离出完全原子的概念来理解，很多概念之间是相互穿插着的。

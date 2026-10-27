@@ -3,13 +3,12 @@ title: 开发工具使用之 Git
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2024-05-04 13:51:54
 password:
 summary:
 tags:
 - Tool
-categories:
+
 ---
 
 

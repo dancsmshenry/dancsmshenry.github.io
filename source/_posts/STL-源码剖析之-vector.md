@@ -3,14 +3,13 @@ title: STL 源码剖析之 vector
 top: false
 cover: false
 toc: true
-mathjax: true
 math: true
 date: 2022-10-20 08:46:01
 password:
 summary:
 tags:
 - STL
-categories:
+
 ---
 
 

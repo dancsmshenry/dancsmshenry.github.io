@@ -3,14 +3,12 @@ title: CMU 15-445 16-Two Phase Locking
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-11-27 03:11:43
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

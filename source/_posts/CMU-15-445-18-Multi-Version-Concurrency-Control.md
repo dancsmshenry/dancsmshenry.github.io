@@ -3,14 +3,12 @@ title: CMU 15-445 18-Multi-Version Concurrency Control
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-12-01 02:38:24
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

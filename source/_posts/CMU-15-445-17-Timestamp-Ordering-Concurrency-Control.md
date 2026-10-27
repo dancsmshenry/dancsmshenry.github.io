@@ -3,14 +3,12 @@ title: CMU 15-445 17-Timestamp Ordering Concurrency Control
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-11-28 18:13:25
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

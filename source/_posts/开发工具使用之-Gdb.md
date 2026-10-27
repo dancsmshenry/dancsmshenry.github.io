@@ -3,13 +3,12 @@ title: 开发工具使用之 Gdb
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2025-02-12 00:00:11
 password:
 summary:
 tags:
 - Tool
-categories:
+
 ---
 
 

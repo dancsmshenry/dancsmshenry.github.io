@@ -3,14 +3,12 @@ title: CMU 15-445 21-Introduction To Distributed Databases
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-12-19 21:07:48
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

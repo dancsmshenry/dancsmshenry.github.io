@@ -3,14 +3,12 @@ title: CMU 15-445 08-Index Concurrency
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2023-02-12 21:23:52
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

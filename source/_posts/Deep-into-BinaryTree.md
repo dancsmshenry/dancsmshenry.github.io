@@ -3,14 +3,12 @@ title: Deep into BinaryTree
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-10 09:31:17
 password:
 summary:
 tags:
 - Algorithm
 - BinaryTree
-categories:
 
 ---
 

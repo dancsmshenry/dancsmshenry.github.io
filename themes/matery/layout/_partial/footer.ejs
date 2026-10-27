@@ -1,7 +1,7 @@
 <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2022-2025 dancsmshenry. 版权所有
+            &copy; 2022-<%= new Date().getFullYear() %> dancsmshenry. 版权所有
 
             <% if (theme.wordCount.enable && theme.wordCount.totalCount) { %>
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
@@ -33,26 +33,52 @@
 
 <div class="progress-bar"></div>
 
+<% if (theme.busuanziStatistics && theme.busuanziStatistics.enable && (theme.busuanziStatistics.totalTraffic || theme.busuanziStatistics.totalNumberOfvisitors)) { %>
 <!-- 不蒜子计数初始值纠正 -->
 <script>
     $(document).ready(function () {
-
-        var int = setInterval(fixCount, 50);
         var pvcountOffset = 80000;
         var uvcountOffset = 20000;
+        var pvContainer = document.getElementById("busuanzi_container_site_pv");
+        var uvContainer = document.getElementById("busuanzi_container_site_uv");
+        var pvApplied = false;
+        var uvApplied = false;
+        var attempts = 0;
+
+        if (!pvContainer && !uvContainer) {
+            return;
+        }
+
+        var int = setInterval(fixCount, 50);
 
         function fixCount() {
-            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
-                clearInterval(int);
+            attempts += 1;
+
+            if (pvContainer && !pvApplied) {
+                var pvValue = document.getElementById("busuanzi_value_site_pv");
+                if (pvValue && /\d/.test(pvValue.innerHTML)) {
+                    pvValue.innerHTML = parseInt(pvValue.innerHTML, 10) + pvcountOffset;
+                    pvApplied = true;
+                }
             }
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
+
+            if (uvContainer && !uvApplied) {
+                var uvValue = document.getElementById("busuanzi_value_site_uv");
+                if (uvValue && /\d/.test(uvValue.innerHTML)) {
+                    uvValue.innerHTML = parseInt(uvValue.innerHTML, 10) + uvcountOffset;
+                    uvApplied = true;
+                }
+            }
+
+            var pvDone = !pvContainer || pvApplied;
+            var uvDone = !uvContainer || uvApplied;
+            if ((pvDone && uvDone) || attempts >= 200) {
                 clearInterval(int);
             }
         }
     });
 </script>
+<% } %>
 
 <!-- <script language=javascript>
     function siteTime() {

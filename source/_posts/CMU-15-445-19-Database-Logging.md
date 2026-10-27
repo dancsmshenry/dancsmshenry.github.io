@@ -3,14 +3,12 @@ title: CMU 15-445 19-Database Logging
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-12-12 00:40:41
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 
@@ -328,7 +326,7 @@ shadow：未提交事务的一个临时数据库
 
 <br/>
 
-<img src="shadow page example.png" style="zoom:150%;" />
+<img src="shadow paging.png" style="zoom:150%;" />
 
 <br/>
 

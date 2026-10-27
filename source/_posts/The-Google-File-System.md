@@ -3,14 +3,13 @@ title: The Google File System
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-24 12:21:59
 password:
 summary:
 tags:
 - Paper
 - Distributed
-categories:
+
 ---
 
 

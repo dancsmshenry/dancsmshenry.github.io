@@ -3,14 +3,13 @@ title: Deep into Sort
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-09 22:40:33
 password:
 summary:
 tags:
 - Algorithm
 - Sort
-categories:
+
 ---
 
 

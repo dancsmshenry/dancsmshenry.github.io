@@ -3,13 +3,12 @@ title: SomeIp 协议详解
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2025-08-04 23:17:56
 password:
 summary:
 tags:
 - AutomotiveElectronic
-categories:
+
 ---
 
 

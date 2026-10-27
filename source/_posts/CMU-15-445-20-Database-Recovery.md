@@ -3,14 +3,12 @@ title: CMU 15-445 20-Database Recovery
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-12-15 01:56:07
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

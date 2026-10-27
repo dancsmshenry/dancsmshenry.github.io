@@ -3,7 +3,6 @@ title: about
 date: 2022-10-07 01:43:16
 type: "about"
 layout: "about"
-mathjax: true
 
 ---
 

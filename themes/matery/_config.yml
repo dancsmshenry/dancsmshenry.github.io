@@ -165,7 +165,7 @@ text:
 # profile in about page, including avatars, career, and personal introductions.
 # 在”关于”页面中配置个人信息，包括头像、职业和个人介绍.
 profile:
-  avatar: /medias/avatars/roses.png
+  avatar: /roses.jpg
   career: nullptr
   introduction: 入门CPPer
 
@@ -207,10 +207,10 @@ mySkills:
       background: 'linear-gradient(to right, #2196F3 0%, #42A5F5 100%)'
       percent: 45%
     Operating System:
-      background: 'linear-gradient(to right, #951213 0%, #961117 100%)'
+      background: 'linear-gradient(to right, #5C6BC0 0%, #7986CB 100%)'
       percent: 55%
-    NetWork:
-      background: 'linear-gradient(to right, #F12F12 0%, #F6464F 100%)'
+    Network:
+      background: 'linear-gradient(to right, #26A69A 0%, #4DB6AC 100%)'
       percent: 55%
     # Java:
     #   background: 'linear-gradient(to right, #00BCD4 0%, #80DEEA 100%)'

@@ -3,13 +3,12 @@ title: '深入理解 CPP 之 auto,decltype,move,forward'
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-10-22 13:50:52
 password:
 summary:
 tags:
 - CPP
-categories:
+
 ---
 
 

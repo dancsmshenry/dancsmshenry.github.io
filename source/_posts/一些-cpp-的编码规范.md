@@ -3,13 +3,12 @@ title: 一些 cpp 的编码规范
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2024-03-17 16:11:58
 password:
 summary:
 tags:
 - CPP
-categories:
+
 ---
 
 

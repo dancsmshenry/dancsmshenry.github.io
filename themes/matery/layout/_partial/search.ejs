@@ -13,6 +13,13 @@
 <script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("<%= config.root %>" + "search.xml", 'searchInput', 'searchResult');
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("<%= config.root %>" + "search.xml", 'searchInput', 'searchResult');
+    });
 });
 </script>

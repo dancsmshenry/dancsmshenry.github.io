@@ -3,14 +3,13 @@ title: CMU 15-445 12-Query Execution Part II
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2022-12-29 21:53:43
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
+
 ---
 
 

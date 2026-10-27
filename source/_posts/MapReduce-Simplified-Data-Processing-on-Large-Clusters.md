@@ -10,7 +10,7 @@ summary:
 tags:
 - Paper
 - Distributed
-categories:
+
 ---
 
 

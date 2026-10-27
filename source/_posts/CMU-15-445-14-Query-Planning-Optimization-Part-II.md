@@ -3,14 +3,12 @@ title: CMU 15-445 14-Query Planning Optimization Part II
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2023-01-19 23:15:59
 password:
 summary:
 tags:
 - Database
 - CMU 15-445
-categories:
 
 ---
 

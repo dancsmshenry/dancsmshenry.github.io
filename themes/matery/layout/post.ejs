@@ -34,9 +34,10 @@
 <script src="<%- theme.mathjax.cdn %>"></script>
 <script>
     MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+        tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
     });
 </script>
+<% } %>
 
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 <!-- 代码语言 -->
@@ -45,8 +46,6 @@
 <script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 <script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
 <!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 <!-- 代码块折行 -->
 <style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
-
-<% } %>

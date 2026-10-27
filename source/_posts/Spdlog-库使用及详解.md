@@ -3,13 +3,12 @@ title: Spdlog 库使用及详解
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2025-08-21 22:38:50
 password:
 summary:
 tags:
 - CPP
-categories:
+
 ---
 
 # 前置知识

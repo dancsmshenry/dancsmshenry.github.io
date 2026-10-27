@@ -3,13 +3,12 @@ title: 开发工具使用之 Catch2
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2024-05-04 13:53:24
 password:
 summary:
 tags:
 - Test
-categories:
+
 ---
 
 

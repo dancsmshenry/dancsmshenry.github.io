@@ -3,13 +3,12 @@ title: 开发工具使用之 Cmake
 top: false
 cover: false
 toc: true
-mathjax: true
 date: 2023-11-21 23:25:05
 password:
 summary:
 tags:
 - Tool
-categories:
+
 ---
 
 
