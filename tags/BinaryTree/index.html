@@ -31,7 +31,6 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -258,10 +257,19 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 </a>
                 
                 
+                <a href="/tags/AutomotiveElectronic/" title="AutomotiveElectronic: 5">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            data-tagname="AutomotiveElectronic" style="background-color: #D5F5E3;">AutomotiveElectronic
+                        <span class="tag-length">5</span>
+                    </span>
+                </a>
+                
+                
                 <a href="/tags/Algorithm/" title="Algorithm: 3">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="Algorithm" style="background-color: #D5F5E3;">Algorithm
+                            data-tagname="Algorithm" style="background-color: #E8F8F5;">Algorithm
                         <span class="tag-length">3</span>
                     </span>
                 </a>
@@ -270,26 +278,17 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 <a href="/tags/BinaryTree/" title="BinaryTree: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
-                            data-tagname="BinaryTree" style="background-color: #E8F8F5;">BinaryTree
+                            data-tagname="BinaryTree" style="background-color: #FEF9E7;">BinaryTree
                         <span class="tag-length">1</span>
                     </span>
                 </a>
                 
                 
-                <a href="/tags/DynamicProgming/" title="DynamicProgming: 1">
+                <a href="/tags/DynamicProgramming/" title="DynamicProgramming: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            data-tagname="DynamicProgming" style="background-color: #FEF9E7;">DynamicProgming
+                            data-tagname="DynamicProgramming" style="background-color: #F8F9F9;">DynamicProgramming
                         <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/AutomotiveElectronic/" title="AutomotiveElectronic: 3">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="AutomotiveElectronic" style="background-color: #F8F9F9;">AutomotiveElectronic
-                        <span class="tag-length">3</span>
                     </span>
                 </a>
                 
@@ -400,7 +399,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Deep into BinaryTree">
+                            <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Deep into BinaryTree">
                             
                             <span class="card-title">Deep into BinaryTree</span>
                         </div>
@@ -426,11 +425,11 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2022-2025 dancsmshenry. 版权所有
+            &copy; 2022-2026 dancsmshenry. 版权所有
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.3k</span>
+            <span class="white-color">122.5k</span>
             
 
             <br>
@@ -471,26 +470,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
 <div class="progress-bar"></div>
 
-<!-- 不蒜子计数初始值纠正 -->
-<script>
-    $(document).ready(function () {
 
-        var int = setInterval(fixCount, 50);
-        var pvcountOffset = 80000;
-        var uvcountOffset = 20000;
-
-        function fixCount() {
-            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
-                clearInterval(int);
-            }
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
-                clearInterval(int);
-            }
-        }
-    });
-</script>
 
 <!-- <script language=javascript>
     function siteTime() {
@@ -543,7 +523,14 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 <script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    });
 });
 </script>
     <!-- 回到顶部按钮 -->

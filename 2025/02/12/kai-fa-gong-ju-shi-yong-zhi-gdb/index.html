@@ -40,7 +40,6 @@ gdb attach 进程号
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -211,7 +210,7 @@ gdb attach 进程号
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/28.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -466,7 +465,7 @@ shell clear<span aria-hidden="true" class="line-numbers-rows"><span></span><span
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="Doip 协议详解">
+                        <img src="/medias/featureimages/27.jpg" class="responsive-img" alt="Doip 协议详解">
                         
                         <span class="card-title">Doip 协议详解</span>
                     </div>
@@ -474,14 +473,12 @@ shell clear<span aria-hidden="true" class="line-numbers-rows"><span></span><span
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Header1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度
+                            Header1 字节的协议版本号
+1 字节的版本号按位取反（用于快速校验头部）
+2 字节的负载类型（payload type）
+4 字节的负载长度（仅指头部之后的数据长度，不含 8 字节头部）
 
-其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的
-
-
-
-
-Tcp type0x0005 路由激活请求2
+其中负载类型为 0x0000 的报文是通用 
                         
                     </div>
                     <div class="publish-info">
@@ -515,7 +512,7 @@ Tcp type0x0005 路由激活请求2
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="UDS 协议详解">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="UDS 协议详解">
                         
                         <span class="card-title">UDS 协议详解</span>
                     </div>
@@ -652,12 +649,6 @@ Tcp type0x0005 路由激活请求2
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 <!-- 代码语言 -->
@@ -666,19 +657,17 @@ Tcp type0x0005 路由激活请求2
 <script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 <script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
 <!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 <!-- 代码块折行 -->
 <style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
-
-
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2022-2025 dancsmshenry. 版权所有
+            &copy; 2022-2026 dancsmshenry. 版权所有
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.3k</span>
+            <span class="white-color">122.5k</span>
             
 
             <br>
@@ -719,26 +708,7 @@ Tcp type0x0005 路由激活请求2
 
 <div class="progress-bar"></div>
 
-<!-- 不蒜子计数初始值纠正 -->
-<script>
-    $(document).ready(function () {
 
-        var int = setInterval(fixCount, 50);
-        var pvcountOffset = 80000;
-        var uvcountOffset = 20000;
-
-        function fixCount() {
-            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
-                clearInterval(int);
-            }
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
-                clearInterval(int);
-            }
-        }
-    });
-</script>
 
 <!-- <script language=javascript>
     function siteTime() {
@@ -791,7 +761,14 @@ Tcp type0x0005 路由激活请求2
 <script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    });
 });
 </script>
     <!-- 回到顶部按钮 -->

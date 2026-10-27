@@ -35,7 +35,6 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -206,7 +205,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -563,7 +562,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="The Google File System">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="The Google File System">
                         
                         <span class="card-title">The Google File System</span>
                     </div>
@@ -611,7 +610,7 @@ GFS只存储数据，不关心数据的结构和内容是
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
+                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="MapReduce: Simplified Data Processing on Large Clusters">
                         
                         <span class="card-title">MapReduce: Simplified Data Processing on Large Clusters</span>
                     </div>
@@ -753,12 +752,6 @@ GFS只存储数据，不关心数据的结构和内容是
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 <!-- 代码语言 -->
@@ -767,19 +760,17 @@ GFS只存储数据，不关心数据的结构和内容是
 <script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 <script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
 <!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 <!-- 代码块折行 -->
 <style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
-
-
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2022-2025 dancsmshenry. 版权所有
+            &copy; 2022-2026 dancsmshenry. 版权所有
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.3k</span>
+            <span class="white-color">122.5k</span>
             
 
             <br>
@@ -820,26 +811,7 @@ GFS只存储数据，不关心数据的结构和内容是
 
 <div class="progress-bar"></div>
 
-<!-- 不蒜子计数初始值纠正 -->
-<script>
-    $(document).ready(function () {
 
-        var int = setInterval(fixCount, 50);
-        var pvcountOffset = 80000;
-        var uvcountOffset = 20000;
-
-        function fixCount() {
-            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
-                clearInterval(int);
-            }
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
-                clearInterval(int);
-            }
-        }
-    });
-</script>
 
 <!-- <script language=javascript>
     function siteTime() {
@@ -892,7 +864,14 @@ GFS只存储数据，不关心数据的结构和内容是
 <script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    });
 });
 </script>
     <!-- 回到顶部按钮 -->

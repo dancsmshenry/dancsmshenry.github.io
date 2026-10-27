@@ -8,14 +8,12 @@
     <meta name="baidu-site-verification" content="fmlEuI34ir">
     <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
     <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
-    <meta name="description" content="Header1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度
+    <meta name="description" content="Header1 字节的协议版本号
+1 字节的版本号按位取反（用于快速校验头部）
+2 字节的负载类型（payload type）
+4 字节的负载长度（仅指头部之后的数据长度，不含 8 字节头部）
 
-其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的
-
-
-
-
-Tcp type0x0005 路由激活请求2">
+其中负载类型为 0x0000 的报文是通用 ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -38,7 +36,6 @@ Tcp type0x0005 路由激活请求2">
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -209,7 +206,7 @@ Tcp type0x0005 路由激活请求2">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/28.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -355,14 +352,14 @@ Tcp type0x0005 路由激活请求2">
                 
                 <div class="info-break-policy">
                     <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    602
+                    804
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    3 分
                 </div>
                 
                 
@@ -373,55 +370,68 @@ Tcp type0x0005 路由激活请求2">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h1><p>1 字节的版本号，1 字节的版本号取反，2 字节的报文类型，4 字节的报文长度</p>
+                <h1 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h1><p>1 字节的协议版本号</p>
+<p>1 字节的版本号按位取反（用于快速校验头部）</p>
+<p>2 字节的负载类型（payload type）</p>
+<p>4 字节的负载长度（仅指头部之后的数据长度，不含 8 字节头部）</p>
 <p><img src="out/doip_header.svg" alt="doip_header"></p>
-<p>其中报文类型为 0000 的诊断报文，是通用 doip 报文头否定响应，所有类型都需要实现的</p>
+<p>其中负载类型为 0x0000 的报文是通用 DoIP 头部否定响应（generic header NACK），用于回复头部存在错误的报文，所有 DoIP 实体都必须支持</p>
 <br>
 
 <br>
 
-<h1 id="Tcp-type"><a href="#Tcp-type" class="headerlink" title="Tcp type"></a>Tcp type</h1><h2 id="0x0005-路由激活请求"><a href="#0x0005-路由激活请求" class="headerlink" title="0x0005 路由激活请求"></a>0x0005 路由激活请求</h2><p>2 字节的 source address，1 字节的 activation type，4 字节的 0000 0000</p>
-<p>4 字节的 vm specific，一般是通过配置决定</p>
+<h1 id="TCP-报文类型"><a href="#TCP-报文类型" class="headerlink" title="TCP 报文类型"></a>TCP 报文类型</h1><h2 id="0x0005-路由激活请求"><a href="#0x0005-路由激活请求" class="headerlink" title="0x0005 路由激活请求"></a>0x0005 路由激活请求</h2><p>2 字节的 source address</p>
+<p>1 字节的 activation type</p>
+<p>4 字节的保留字段，标准要求固定为 0x00000000，该保留字段常被用作 vm specific（OEM 自定义数据），具体内容一般通过配置决定</p>
 <p><img src="out/doip_routing_activication_request.svg" alt="doip_routing_activication_request"></p>
 <br>
 
-<h2 id="0x0006-路由激活响应"><a href="#0x0006-路由激活响应" class="headerlink" title="0x0006 路由激活响应"></a>0x0006 路由激活响应</h2><p>2 字节的 target address（一般是指 ecu 的地址），2 字节的 source address（一般是指上位机的诊断地址）</p>
-<p>1 字节的 routing activation response code，表示当前路由激活的状态</p>
-<p>4 字节的 future standardization use，被标准保留的值，一般为 0000 0000</p>
+<h2 id="0x0006-路由激活响应"><a href="#0x0006-路由激活响应" class="headerlink" title="0x0006 路由激活响应"></a>0x0006 路由激活响应</h2><p>2 字节的 DoIP 实体逻辑地址（一般指 ECU/网关的地址）</p>
+<p>2 字节的测试仪逻辑地址（一般指上位机的诊断地址）</p>
+<p>1 字节的 routing activation response code，表示本次路由激活的结果（成功或具体的失败原因）</p>
+<p>4 字节的保留字段（预留给未来标准使用），固定为 0x00000000</p>
 <p><img src="out/doip_routing_activication_response.svg" alt="doip_routing_activication_response"></p>
 <br>
 
-<h2 id="0x0007-在线检查请求"><a href="#0x0007-在线检查请求" class="headerlink" title="0x0007 在线检查请求"></a>0x0007 在线检查请求</h2><p>不携带任何数据</p>
+<h2 id="0x0007-存活检查请求"><a href="#0x0007-存活检查请求" class="headerlink" title="0x0007 存活检查请求"></a>0x0007 存活检查请求</h2><p>不携带任何数据</p>
 <p><img src="out/doip_alive_check_request.svg" alt="doip_alive_check_request"></p>
 <br>
 
-<h2 id="0x0008-在线检查响应"><a href="#0x0008-在线检查响应" class="headerlink" title="0x0008 在线检查响应"></a>0x0008 在线检查响应</h2><p>2 字节的 diagnostic address</p>
+<h2 id="0x0008-存活检查响应"><a href="#0x0008-存活检查响应" class="headerlink" title="0x0008 存活检查响应"></a>0x0008 存活检查响应</h2><p>2 字节的源地址（发起响应的 DoIP 实体的逻辑地址）</p>
 <p><img src="out/doip_alive_check_response.svg" alt="doip_alive_check_response"></p>
 <br>
 
-<h2 id="0x8001-诊断报文"><a href="#0x8001-诊断报文" class="headerlink" title="0x8001 诊断报文"></a>0x8001 诊断报文</h2><p>2 字节的 source address，2 字节的 target address，一定字节数量的 uds 报文</p>
+<h2 id="0x8001-诊断报文"><a href="#0x8001-诊断报文" class="headerlink" title="0x8001 诊断报文"></a>0x8001 诊断报文</h2><p>2 字节的 source address</p>
+<p>2 字节的 target address，可变长度的 UDS 诊断报文（长度由头部中的负载长度字段指明）</p>
 <p><img src="out/doip_diagnostic.svg" alt="doip_diagnostic"></p>
 <br>
 
-<h2 id="0x8002-诊断肯定响应"><a href="#0x8002-诊断肯定响应" class="headerlink" title="0x8002 诊断肯定响应"></a>0x8002 诊断肯定响应</h2><p>2 字节的 source address，2 字节的 target address，1 字节的 ack code</p>
-<p>后面可以携带一定字节数量的诊断报文，长度可以通过配置来决定</p>
+<h2 id="0x8002-诊断肯定确认"><a href="#0x8002-诊断肯定确认" class="headerlink" title="0x8002 诊断肯定确认"></a>0x8002 诊断肯定确认</h2><p>2 字节的 source address</p>
+<p>2 字节的 target address</p>
+<p>1 字节的 ack code</p>
+<p>ack code 为 0x00 时，后面会携带完整的 UDS 诊断响应报文；其长度由报文内容本身决定</p>
 <p><img src="out/doip_diagnostic_ack.svg" alt="doip_diagnostic_ack"></p>
 <br>
 
-<h2 id="0x8003-诊断消极响应"><a href="#0x8003-诊断消极响应" class="headerlink" title="0x8003 诊断消极响应"></a>0x8003 诊断消极响应</h2><p>2 字节的 source address，2 字节的 target address，1 字节的 nack code</p>
-<p>后面可以携带一定字节数量的诊断报文，长度可以通过配置来决定</p>
+<h2 id="0x8003-诊断否定确认"><a href="#0x8003-诊断否定确认" class="headerlink" title="0x8003 诊断否定确认"></a>0x8003 诊断否定确认</h2><p>2 字节的 source address</p>
+<p>2 字节的 target address</p>
+<p>1 字节的 nack code</p>
+<p>后面可选携带之前收到的诊断请求报文（原样回传），其长度由报文内容本身决定</p>
 <p><img src="out/doip_diagnostic_nack.svg" alt="doip_diagnostic_nack"></p>
 <br>
 
 <br>
 
-<h1 id="Udp-type"><a href="#Udp-type" class="headerlink" title="Udp type"></a>Udp type</h1><h2 id="0x4001-实体状态请求"><a href="#0x4001-实体状态请求" class="headerlink" title="0x4001 实体状态请求"></a>0x4001 实体状态请求</h2><p>不携带任何数据</p>
+<h1 id="UDP-报文类型"><a href="#UDP-报文类型" class="headerlink" title="UDP 报文类型"></a>UDP 报文类型</h1><h2 id="0x4001-DoIP-实体状态请求"><a href="#0x4001-DoIP-实体状态请求" class="headerlink" title="0x4001 DoIP 实体状态请求"></a>0x4001 DoIP 实体状态请求</h2><p>不携带任何数据</p>
 <br>
 
-<h2 id="0x4002-实体状态响应"><a href="#0x4002-实体状态响应" class="headerlink" title="0x4002 实体状态响应"></a>0x4002 实体状态响应</h2><p>1 字节的 node type，1 字节的 最多允许 tcp 连接数量，1 字节的 tcp socket 数量（是指 socket 数，不是已经激活的 router 数量）</p>
+<h2 id="0x4002-DoIP-实体状态响应"><a href="#0x4002-DoIP-实体状态响应" class="headerlink" title="0x4002 DoIP 实体状态响应"></a>0x4002 DoIP 实体状态响应</h2><p>1 字节的 node type（0x00 表示 DoIP 网关，0x01 表示 DoIP 节点）</p>
+<p>1 字节的最大允许 tcp socket 数</p>
+<p>1 字节的当前已建立的 tcp socket 数（指 socket 数，不是已激活的路由连接数）</p>
+<p>4 字节的最大支持数据长度</p>
 <br>
 
-<h2 id="0x4003-诊断电传模式请求"><a href="#0x4003-诊断电传模式请求" class="headerlink" title="0x4003 诊断电传模式请求"></a>0x4003 诊断电传模式请求</h2><p>不携带任何数据</p>
+<h2 id="0x4003-诊断电源模式请求"><a href="#0x4003-诊断电源模式请求" class="headerlink" title="0x4003 诊断电源模式请求"></a>0x4003 诊断电源模式请求</h2><p>不携带任何数据</p>
 <br>
 
 <h2 id="0x4004-诊断电源模式响应"><a href="#0x4004-诊断电源模式响应" class="headerlink" title="0x4004 诊断电源模式响应"></a>0x4004 诊断电源模式响应</h2><p>1 字节的 diagnostic power mode</p>
@@ -431,15 +441,19 @@ Tcp type0x0005 路由激活请求2">
 <br>
 
 <h2 id="0x0002-车辆识别请求（携带-eid）"><a href="#0x0002-车辆识别请求（携带-eid）" class="headerlink" title="0x0002 车辆识别请求（携带 eid）"></a>0x0002 车辆识别请求（携带 eid）</h2><p>6 字节的 eid</p>
-<p>如果和 ecu 的 eid 不一样，需要回复 nack</p>
+<p>如果与自身 eid 不一致，则不回复（按标准要求静默丢弃该请求）</p>
 <br>
 
 <h2 id="0x0003-车辆识别请求（携带-vin）"><a href="#0x0003-车辆识别请求（携带-vin）" class="headerlink" title="0x0003 车辆识别请求（携带 vin）"></a>0x0003 车辆识别请求（携带 vin）</h2><p>17 字节的 vin</p>
-<p>如果和 ecu 的 vin 不一样，需要回复 nack</p>
+<p>如果与自身 vin 不一致，则不回复（按标准要求静默丢弃该请求）</p>
 <br>
 
-<h2 id="0x0004-车辆识别响应-车辆声明"><a href="#0x0004-车辆识别响应-车辆声明" class="headerlink" title="0x0004 车辆识别响应/车辆声明"></a>0x0004 车辆识别响应/车辆声明</h2><p>17 字节的 vin 码，2 字节的逻辑地址，6 字节的 eid，6 字节的 gid，1 字节的 further action required（都是必选项）</p>
-<p>vin/gid sync status 可选，一般是通过配置决定</p>
+<h2 id="0x0004-车辆识别响应-车辆声明"><a href="#0x0004-车辆识别响应-车辆声明" class="headerlink" title="0x0004 车辆识别响应/车辆声明"></a>0x0004 车辆识别响应/车辆声明</h2><p>17 字节的 vin 码</p>
+<p>2 字节的逻辑地址</p>
+<p>6 字节的 eid</p>
+<p>6 字节的 gid</p>
+<p>1 字节的 further action required（以上字段均为必选）</p>
+<p>vin/gid sync status 为可选字段，仅在 further action required 指示需要 vin/gid 同步时才携带</p>
 <br>
 
 <h1 id="Header-check-handler"><a href="#Header-check-handler" class="headerlink" title="Header check handler"></a>Header check handler</h1><p><img src="doip_header_check.png" alt></p>
@@ -501,7 +515,7 @@ Tcp type0x0005 路由激活请求2">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="SomeIp 协议详解">
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="SomeIp 协议详解">
                         
                         <span class="card-title">SomeIp 协议详解</span>
                     </div>
@@ -551,7 +565,7 @@ methodId
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/28.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="开发工具使用之 Gdb">
                         
                         <span class="card-title">开发工具使用之 Gdb</span>
                     </div>
@@ -695,12 +709,6 @@ gdb attach 进程号
 </main>
 
 
-<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
-    });
-</script>
 
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 <!-- 代码语言 -->
@@ -709,19 +717,17 @@ gdb attach 进程号
 <script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
 <script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
 <!-- 代码块收缩 -->
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 <!-- 代码块折行 -->
 <style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
-
-
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2022-2025 dancsmshenry. 版权所有
+            &copy; 2022-2026 dancsmshenry. 版权所有
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.3k</span>
+            <span class="white-color">122.5k</span>
             
 
             <br>
@@ -762,26 +768,7 @@ gdb attach 进程号
 
 <div class="progress-bar"></div>
 
-<!-- 不蒜子计数初始值纠正 -->
-<script>
-    $(document).ready(function () {
 
-        var int = setInterval(fixCount, 50);
-        var pvcountOffset = 80000;
-        var uvcountOffset = 20000;
-
-        function fixCount() {
-            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
-                clearInterval(int);
-            }
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
-                clearInterval(int);
-            }
-        }
-    });
-</script>
 
 <!-- <script language=javascript>
     function siteTime() {
@@ -834,7 +821,14 @@ gdb attach 进程号
 <script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    });
 });
 </script>
     <!-- 回到顶部按钮 -->

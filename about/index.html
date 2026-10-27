@@ -31,7 +31,6 @@
     </style>
 
     <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
-    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
     <script>
         var _hmt = _hmt || [];
         (function () {
@@ -260,7 +259,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                     <div class="col s12 m12 l4">
                         <div class="profile center-align">
                             <div class="avatar">
-                                <img src="/medias/avatars/roses.png" alt="dancsmshenry"
+                                <img src="/roses.jpg" alt="dancsmshenry"
                                     class="circle responsive-img avatar-img">
                             </div>
                             <div class="author">
@@ -399,7 +398,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         },
         xAxis: {
             type: 'category',
-            data: ["2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05"]
+            data: ["2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10"]
         },
         yAxis: {
             type: 'value',
@@ -409,7 +408,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 name: '文章篇数',
                 type: 'line',
                 color: ['#6772e5'],
-                data: [0,0,0,3,0,0,0,1,1,0,0,0,0],
+                data: [0,0,1,1,0,0,0,0,0,0,0,0,0],
                 markPoint: {
                     symbolSize: 45,
                     color: ['#fa755a','#3ecf8e','#82d3f4'],
@@ -475,7 +474,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         xAxis: [
             {
                 type: 'category',
-                data: ["Database","CMU 15-445","CPP","Algorithm","AutomotiveElectronic","STL","Tool","LeetCode","Paper","Distributed"]
+                data: ["Database","CMU 15-445","AutomotiveElectronic","CPP","Algorithm","STL","Tool","LeetCode","Paper","Distributed"]
             }
         ],
         yAxis: [
@@ -488,7 +487,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [16,16,5,3,3,3,3,3,2,2],
+                data: [16,16,5,5,3,3,3,3,2,2],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -565,7 +564,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         <div class="col s12 m6 l6" data-aos="fade-up">
             <div class="skillbar">
                 <div class="skillbar-title"
-                     style="background: linear-gradient(to right, #951213 0%, #961117 100%); width: 55%">
+                     style="background: linear-gradient(to right, #5C6BC0 0%, #7986CB 100%); width: 55%">
                     <span>Operating System</span>
                 </div>
                 <div class="skill-bar-percent">55%</div>
@@ -576,8 +575,8 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
         <div class="col s12 m6 l6" data-aos="fade-up">
             <div class="skillbar">
                 <div class="skillbar-title"
-                     style="background: linear-gradient(to right, #F12F12 0%, #F6464F 100%); width: 55%">
-                    <span>NetWork</span>
+                     style="background: linear-gradient(to right, #26A69A 0%, #4DB6AC 100%); width: 55%">
+                    <span>Network</span>
                 </div>
                 <div class="skill-bar-percent">55%</div>
             </div>
@@ -602,6 +601,12 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             
             
             
+            <a href="/tags/AutomotiveElectronic/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">AutomotiveElectronic</span>
+            </a>
+            
+            
+            
             
             
             <a href="/tags/BinaryTree/" target="_blank">
@@ -610,14 +615,8 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             
             
             
-            <a href="/tags/DynamicProgming/" target="_blank">
-                <span class="chip center-align waves-effect waves-light chip-default">DynamicProgming</span>
-            </a>
-            
-            
-            
-            <a href="/tags/AutomotiveElectronic/" target="_blank">
-                <span class="chip center-align waves-effect waves-light chip-default">AutomotiveElectronic</span>
+            <a href="/tags/DynamicProgramming/" target="_blank">
+                <span class="chip center-align waves-effect waves-light chip-default">DynamicProgramming</span>
             </a>
             
             
@@ -709,11 +708,11 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
     <footer class="page-footer bg-color">
     <div class="container row center-align">
         <div class="col s12 m8 l8 copy-right">
-            &copy; 2022-2025 dancsmshenry. 版权所有
+            &copy; 2022-2026 dancsmshenry. 版权所有
 
             
             &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-            <span class="white-color">122.3k</span>
+            <span class="white-color">122.5k</span>
             
 
             <br>
@@ -754,26 +753,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 
 <div class="progress-bar"></div>
 
-<!-- 不蒜子计数初始值纠正 -->
-<script>
-    $(document).ready(function () {
 
-        var int = setInterval(fixCount, 50);
-        var pvcountOffset = 80000;
-        var uvcountOffset = 20000;
-
-        function fixCount() {
-            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
-                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
-                clearInterval(int);
-            }
-            if ($("#busuanzi_container_site_pv").css("display") != "none") {
-                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据
-                clearInterval(int);
-            }
-        }
-    });
-</script>
 
 <!-- <script language=javascript>
     function siteTime() {
@@ -826,7 +806,14 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
 <script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    });
 });
 </script>
     <!-- 回到顶部按钮 -->
