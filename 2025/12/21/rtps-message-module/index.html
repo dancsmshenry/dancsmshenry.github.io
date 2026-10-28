@@ -1,0 +1,1142 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="RTPS message module, C++">
+    <meta name="baidu-site-verification" content="fmlEuI34ir">
+    <meta name="google-site-verification" content="yCy2azpds5XSuGZvis6OuA-XIGF5GuGpYRAaGfD6o48">
+    <meta name="360-site-verification" content="b7c11a830ef90fd1464ad6206bb7b6e7">
+    <meta name="description" content="引子：从 Wireshark 的 RTPS 解析树说起RTPS 是 DDS 的互操作线协议（wire protocol），不是 DDS API 本身。DDS 规定了发布/订阅的模型和 QoS，RTPS 规定了这些语义如何落到 UDP/TCP">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>RTPS message module | dancsmshenry&#39;s blog</title>
+    <link rel="icon" type="image/jpeg" href="/roses.jpg">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?ce84511d3df71640a9378a69f6293044";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+    
+
+    <script>
+        (function(){
+        var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+        })();
+    </script>
+
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/roses.jpg" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">dancsmshenry's blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/roses.jpg" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">dancsmshenry's blog</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        RTPS message module
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                        <a href="/tags/AutomotiveElectronic/" target="_blank">
+                            <span class="chip bg-color">AutomotiveElectronic</span>
+                        </a>
+                        
+                        <a href="/tags/Data-Distribution-Service/" target="_blank">
+                            <span class="chip bg-color">Data Distribution Service</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2025-12-21
+                </div>
+
+                <div class="post-author info-break-policy">
+                    <i class="fa fa-user-o fa-fw"></i>作者:&nbsp;&nbsp;
+                    
+                    dancsmshenry
+                    
+                </div>
+
+                
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.8k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    16 分
+                </div>
+                
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="引子：从-Wireshark-的-RTPS-解析树说起"><a href="#引子：从-Wireshark-的-RTPS-解析树说起" class="headerlink" title="引子：从 Wireshark 的 RTPS 解析树说起"></a>引子：从 Wireshark 的 RTPS 解析树说起</h2><p>RTPS 是 DDS 的互操作线协议（wire protocol），不是 DDS API 本身。DDS 规定了发布/订阅的模型和 QoS，RTPS 规定了这些语义如何落到 UDP/TCP 的字节流上。也正因为如此，ROS 2 里不同 DDS 实现（Fast DDS、Cyclone DDS、Connext 等）才能在同一网段里互相发现、互相收发。</p>
+<p>在 Wireshark 里抓一条 ROS 2 或 DDS 的流量，你大概率会看到这样一棵解析树：</p>
+<pre class="line-numbers language-text"><code class="language-text">RTPS
+  INFO_TS
+  DATA<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>展开后是一串十六进制字节。它们看起来像天书，但结构其实非常规整：一条 RTPS 消息就是 <strong>一个固定 20 字节的消息头，后面跟着若干条子消息</strong>。子消息各管一件事：有的承载用户数据，有的确认收包，有的请求重传，有的只是给后续子消息设置时间戳或目标地址。</p>
+<p>本文按 Header、SubmessageHeader、13 种子消息的顺序逐个拆解报文结构。读完你应该能独立看懂 Wireshark 里一条 RTPS 报文的字段布局。</p>
+<h2 id="一条-RTPS-消息长什么样"><a href="#一条-RTPS-消息长什么样" class="headerlink" title="一条 RTPS 消息长什么样"></a>一条 RTPS 消息长什么样</h2><p>RTPS 消息的结构可以用一句话概括：</p>
+<blockquote>
+<p><strong>Message = Header（20 B）+ Submessage × N</strong></p>
+</blockquote>
+<p>每个 Submessage 又由 <strong>4 字节的 SubmessageHeader + 可变长度的 body</strong> 组成。所有子消息都相对消息起点按 32 位（4 字节）边界对齐，必要时用 <code>PAD</code> 子消息填充。RTPS 协议本身不携带整条消息的总长度：走 UDP 时，UDP payload 的长度就是消息长度；走 TCP 时，需要额外的长度前缀来界定消息边界。</p>
+<p><img src="fig01-message-overview.png" alt="图 1：RTPS 消息由 20 字节 Header 和若干子消息组成"></p>
+<p>解析一条 RTPS 消息的过程，本质上是一个循环：</p>
+<ol>
+<li>先读固定的 20 字节 Header；</li>
+<li>读 4 字节 SubmessageHeader；</li>
+<li>从 <code>octetsToNextHeader</code> 得到这条子消息内容的长度；</li>
+<li>解完当前子消息，跳到下一条的头部，直到消息结束。</li>
+</ol>
+<p><code>octetsToNextHeader</code> 是这套格式的关键。它让接收者可以跳过不认识的子消息，也让 RTPS 能在不破坏兼容性的前提下扩展新类型。32 位对齐也不是形式主义：它让多字节字段落在自然的边界上，接收者可以用固定步长读取，实现也更容易把字节流映射成结构体（端序一致时）。</p>
+<h2 id="Header（20-字节）"><a href="#Header（20-字节）" class="headerlink" title="Header（20 字节）"></a>Header（20 字节）</h2><p>Header 固定 20 字节，字段很少，但信息量不小。</p>
+<p><img src="fig02-header-structure.png" alt="图 2：Header 字段布局"></p>
+<table>
+<thead>
+<tr>
+<th>偏移</th>
+<th>长度</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0x00</code></td>
+<td>4 B</td>
+<td><code>protocol</code></td>
+<td>固定 ASCII <code>&quot;RTPS&quot;</code>，即 <code>52 54 50 53</code></td>
+</tr>
+<tr>
+<td><code>0x04</code></td>
+<td>2 B</td>
+<td><code>version</code></td>
+<td>协议版本，major/minor 各 1 字节，如 <code>02 03</code> 表示 2.3</td>
+</tr>
+<tr>
+<td><code>0x06</code></td>
+<td>2 B</td>
+<td><code>vendorId</code></td>
+<td>中间件厂商 ID，如 RTI <code>01 01</code>、eProsima <code>01 0F</code></td>
+</tr>
+<tr>
+<td><code>0x08</code></td>
+<td>12 B</td>
+<td><code>guidPrefix</code></td>
+<td>该 Participant 的 GUID 前缀</td>
+</tr>
+</tbody></table>
+<p><code>guidPrefix</code> 是 Header 里最值得展开的字段。RTPS 里的全局唯一标识叫 <strong>GUID</strong>，由两部分组成：</p>
+<pre class="line-numbers language-text"><code class="language-text">GUID (16 B) = guidPrefix (12 B) + EntityId (4 B)
+EntityId (4 B) = entityKey (3 B) + entityKind (1 B)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>guidPrefix</code> 标识一个 DomainParticipant，同一个 Participant 内的所有 Writer、Reader 共享它；<code>EntityId</code> 则区分 Participant 内部的具体实体。<code>entityKind</code> 的高 2 位表示实体类别（<code>11</code> 内置、<code>00</code> 用户自定义、<code>01</code> 厂商自定义），低 6 位表示实体类型。几个常见的内置 EntityId：</p>
+<ul>
+<li>Participant：<code>00 00 01 C1</code></li>
+<li>SPDP writer：<code>00 01 00 C2</code></li>
+<li>SEDP publications writer：<code>00 00 03 C2</code></li>
+<li>用户自定义、带 key 的 writer：kind 为 <code>0x02</code>，例如 <code>00 00 01 02</code></li>
+</ul>
+<p>规范还要求 <code>guidPrefix</code> 的前 2 字节等于 <code>vendorId</code>，这样即使同一个 DDS Domain 里混用多家实现，GUID 也不会冲突。</p>
+<p>把 GUID 拆成”Participant 前缀 + 实体内标识”的好处是省带宽：一条消息的 Header 只需要带一次 12 字节的 <code>guidPrefix</code>，后续子消息里的 <code>readerId</code>/<code>writerId</code> 都只写 4 字节 EntityId。接收者用 Header（或 <code>INFO_SRC</code>）里的前缀把 EntityId 还原成完整 GUID。</p>
+<p>Header 里的 <code>guidPrefix</code> 只是”默认源”。后续子消息可以用 <code>INFO_SRC</code> 改写逻辑源，用 <code>INFO_DST</code> 改写目标 Participant——这也是 RTPS 子消息具有上下文依赖的原因。</p>
+<h2 id="SubmessageHeader（4-字节）"><a href="#SubmessageHeader（4-字节）" class="headerlink" title="SubmessageHeader（4 字节）"></a>SubmessageHeader（4 字节）</h2><p>每条子消息都以 4 字节开头：</p>
+<p><img src="fig03-submessage-header-structure.png" alt="图 3：SubmessageHeader 与 flags 位结构"></p>
+<table>
+<thead>
+<tr>
+<th>偏移</th>
+<th>长度</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>+0</code></td>
+<td>1 B</td>
+<td><code>submessageId</code></td>
+<td>子消息类型</td>
+</tr>
+<tr>
+<td><code>+1</code></td>
+<td>1 B</td>
+<td><code>flags</code></td>
+<td>bit0 是端序位 <code>E</code>，其余位按类型解释</td>
+</tr>
+<tr>
+<td><code>+2</code></td>
+<td>2 B</td>
+<td><code>octetsToNextHeader</code></td>
+<td>从本子消息内容开始（4 字节头之后）到下一子消息头部的字节数</td>
+</tr>
+</tbody></table>
+<p><strong>ID 分区</strong>：<code>0x00–0x7F</code> 是协议定义范围；其中 <code>0x30–0x3F</code> 被 DDS-Security 保留；<code>0x80–0xFF</code> 是厂商自定义范围。协议范围之外、或者来自未知厂商的 ID，接收者必须用 <code>octetsToNextHeader</code> 跳过，并继续解析后面的子消息。</p>
+<p>这种”ID + 长度”的自描述设计，是 RTPS 可扩展性的基础：新版本增加子消息类型时，旧实现只要按长度跳过即可，不需要重新协商协议版本；厂商也可以在自己的 ID 区间里做私有扩展，而不会和标准子消息冲突。</p>
+<p><strong>flags</strong>：bit0 永远是 <code>E</code>（EndiannessFlag）。<code>E=0</code> 表示该子消息用大端编码，<code>E=1</code> 表示小端。注意这是”每条子消息各自决定”的，不是整条消息统一。其余位按类型解释：</p>
+<ul>
+<li><code>DATA</code>：<code>Q</code>（inline QoS）、<code>D</code>（data）、<code>K</code>（key）、<code>N</code>（非标准 payload）</li>
+<li><code>DATA_FRAG</code>：<code>Q</code>、<code>K</code>、<code>N</code>——注意 <code>K/N</code> 的位置和 <code>DATA</code> 不同</li>
+<li><code>HEARTBEAT</code>：<code>F</code>（final）、<code>L</code>（liveliness）</li>
+<li><code>ACKNACK</code>：<code>F</code></li>
+<li><code>INFO_TS</code>：<code>I</code>（invalidate）</li>
+<li><code>INFO_REPLY</code> / <code>INFO_REPLY_IP4</code>：<code>M</code>（multicast）</li>
+</ul>
+<p>发送者应把未定义位置 0，接收者应忽略不认识的位——这是 RTPS 向前兼容的一部分。</p>
+<p><strong><code>octetsToNextHeader</code></strong> 有三种情况：</p>
+<ol>
+<li>大于 0：从本子消息内容开始，到下一子消息头部开始的字节数；</li>
+<li>等于 0：本子消息是消息的最后一条，内容一直延伸到消息末尾。这让单条子消息可以超过 64 KB；</li>
+<li>等于 0 且类型是 <code>PAD</code> 或 <code>INFO_TS</code>：下一条子消息头紧跟在当前 4 字节头之后，或者当前子消息就是最后一条。</li>
+</ol>
+<h2 id="标准子消息总览"><a href="#标准子消息总览" class="headerlink" title="标准子消息总览"></a>标准子消息总览</h2><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>子消息</th>
+<th>方向</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0x01</code></td>
+<td><code>PAD</code></td>
+<td>任意</td>
+<td>对齐填充</td>
+</tr>
+<tr>
+<td><code>0x06</code></td>
+<td><code>ACKNACK</code></td>
+<td>Reader → Writer</td>
+<td>确认收到 / 请求重传</td>
+</tr>
+<tr>
+<td><code>0x07</code></td>
+<td><code>HEARTBEAT</code></td>
+<td>Writer → Reader</td>
+<td>宣告可用序号范围</td>
+</tr>
+<tr>
+<td><code>0x08</code></td>
+<td><code>GAP</code></td>
+<td>Writer → Reader</td>
+<td>宣告某段序号不可用</td>
+</tr>
+<tr>
+<td><code>0x09</code></td>
+<td><code>INFO_TS</code></td>
+<td>任意</td>
+<td>为后续子消息设置时间戳</td>
+</tr>
+<tr>
+<td><code>0x0C</code></td>
+<td><code>INFO_SRC</code></td>
+<td>任意</td>
+<td>修改后续子消息的逻辑源</td>
+</tr>
+<tr>
+<td><code>0x0D</code></td>
+<td><code>INFO_REPLY_IP4</code></td>
+<td>Reader → Writer</td>
+<td>紧凑的 IPv4 回复地址</td>
+</tr>
+<tr>
+<td><code>0x0E</code></td>
+<td><code>INFO_DST</code></td>
+<td>任意</td>
+<td>修改后续子消息的目标 Participant</td>
+</tr>
+<tr>
+<td><code>0x0F</code></td>
+<td><code>INFO_REPLY</code></td>
+<td>Reader → Writer</td>
+<td>回复地址列表</td>
+</tr>
+<tr>
+<td><code>0x12</code></td>
+<td><code>NACK_FRAG</code></td>
+<td>Reader → Writer</td>
+<td>请求分片重传</td>
+</tr>
+<tr>
+<td><code>0x13</code></td>
+<td><code>HEARTBEAT_FRAG</code></td>
+<td>Writer → Reader</td>
+<td>分片可用范围</td>
+</tr>
+<tr>
+<td><code>0x15</code></td>
+<td><code>DATA</code></td>
+<td>Writer → Reader</td>
+<td>数据或生命周期变更</td>
+</tr>
+<tr>
+<td><code>0x16</code></td>
+<td><code>DATA_FRAG</code></td>
+<td>Writer → Reader</td>
+<td>分片数据</td>
+</tr>
+</tbody></table>
+<p>按职责可以分成四类：</p>
+<ul>
+<li><strong>数据面</strong>：<code>DATA</code>、<code>DATA_FRAG</code>、<code>GAP</code></li>
+<li><strong>可靠性</strong>：<code>HEARTBEAT</code>、<code>ACKNACK</code>、<code>HEARTBEAT_FRAG</code>、<code>NACK_FRAG</code></li>
+<li><strong>上下文</strong>：<code>INFO_TS</code>、<code>INFO_SRC</code>、<code>INFO_DST</code>、<code>INFO_REPLY</code>、<code>INFO_REPLY_IP4</code></li>
+<li><strong>辅助</strong>：<code>PAD</code></li>
+</ul>
+<p>Header 初始化接收者上下文，<code>INFO_*</code> 修改上下文；其余子消息只影响对应的端点状态，不改变后续子消息的解释方式。</p>
+<blockquote>
+<p>一个常见坑：网上有些旧资料把 <code>ACKNACK</code> 写成 <code>0x02</code>、<code>HEARTBEAT</code> 写成 <code>0x03</code>。在 RTPS 2.x 里它们是 <code>0x06</code> 和 <code>0x07</code>；<code>0x02/0x03</code> 并不对应这两个子消息。以规范枚举为准。</p>
+</blockquote>
+<h2 id="子消息逐类介绍"><a href="#子消息逐类介绍" class="headerlink" title="子消息逐类介绍"></a>子消息逐类介绍</h2><p>从这一节开始，每一种标准子消息单独成节。每节的顺序统一为：</p>
+<ol>
+<li><strong>先放报文结构图</strong>：每行 4 个字节，图中只保留偏移、字段边界和字段名，不写字段说明；</li>
+<li><strong>再给字段列表</strong>：列出每个字段的名称、偏移、长度和简短说明；</li>
+<li><strong>最后解释语义</strong>：说明标志位、方向和典型用法。</li>
+</ol>
+<h3 id="DATA（0x15）"><a href="#DATA（0x15）" class="headerlink" title="DATA（0x15）"></a>DATA（0x15）</h3><p><img src="fig04-data-structure.png" alt="图 4：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，DATA 为 <code>0x15</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>Q</code>；bit2 <code>D</code>；bit3 <code>K</code>；bit4 <code>N</code>。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>extraFlags</code>（0x04，2 B）：额外标志位，本版本置 0。</li>
+<li><code>octetsToInlineQos</code>（0x06，2 B）：到 inline QoS 的字节偏移；无 inline QoS 时指向 payload 起点。</li>
+<li><code>readerId</code>（0x08，4 B）：目标 Reader；全 0 表示所有 Reader。</li>
+<li><code>writerId</code>（0x0C，4 B）：源 Writer 的 EntityId。</li>
+<li><code>writerSN</code>（0x10，8 B）：64 位序号，从 1 开始。</li>
+<li><code>inlineQoS</code>（0x18，0 B，可选）：<code>Q=1</code> 时存在。</li>
+<li><code>serializedPayload</code>（0x18，20 B）：序列化 payload，前 4 字节是表示头。</li>
+</ul>
+<p>DATA 由 Writer 发给 Reader，承载一次数据变更。<code>writerSN</code> 编码时拆成两个 32 位字；<code>readerId=0</code> 表示目标 Participant 内该 Writer 的所有 Reader。flags 的 <code>Q/D/K/N</code> 组合决定 payload 的含义：<code>D=1,K=0</code> 是数据，<code>D=0,K=1</code> 是 key，<code>D=0,K=0</code> 不带 payload，<code>D=1,K=1</code> 在 RTPS 2.3 中是非法组合。</p>
+<h3 id="DATA-FRAG（0x16）"><a href="#DATA-FRAG（0x16）" class="headerlink" title="DATA_FRAG（0x16）"></a>DATA_FRAG（0x16）</h3><p><img src="fig05-data-frag-structure.png" alt="图 5：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x16</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>Q</code>；bit2 <code>K</code>；bit3 <code>N</code>。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>extraFlags</code>（0x04，2 B）：额外标志位，置 0。</li>
+<li><code>octetsToInlineQos</code>（0x06，2 B）：到 inline QoS 的字节偏移；无 inline QoS 时指向 payload 起点。</li>
+<li><code>readerId</code>（0x08，4 B）：目标 Reader。</li>
+<li><code>writerId</code>（0x0C，4 B）：源 Writer。</li>
+<li><code>writerSN</code>（0x10，8 B）：所属数据的序号。</li>
+<li><code>fragmentStartingNum</code>（0x18，4 B）：起始分片号，从 1 开始。</li>
+<li><code>fragmentsInSubmessage</code>（0x1C，2 B）：本子消息包含的分片数。</li>
+<li><code>fragmentSize</code>（0x1E，2 B）：每个分片的大小。</li>
+<li><code>sampleSize</code>（0x20，4 B）：原始数据总大小。</li>
+<li><code>serializedPayload</code>（0x24，8 B）：本分片数据。</li>
+</ul>
+<p>DATA_FRAG 把 DATA 的 payload 拆成分片；<code>sampleSize</code> 是原始数据总长，<code>fragmentsInSubmessage × fragmentSize</code> 应覆盖本次携带的分片数据。注意 <code>DATA_FRAG</code> 的 <code>K/N</code> 位在 bit2/bit3，而 <code>DATA</code> 的 <code>D/K/N</code> 在 bit2/bit3/bit4，解析时不能直接套用。</p>
+<h3 id="GAP（0x08）"><a href="#GAP（0x08）" class="headerlink" title="GAP（0x08）"></a>GAP（0x08）</h3><p><img src="fig06-gap-structure.png" alt="图 6：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x08</code>。</li>
+<li><code>flags</code>（0x01，1 B）：<code>E</code> 端序位。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>readerId</code>（0x04，4 B）：目标 Reader。</li>
+<li><code>writerId</code>（0x08，4 B）：源 Writer。</li>
+<li><code>gapStart</code>（0x0C，8 B）：不可用区间的起始序号。</li>
+<li><code>bitmapBase</code>（0x14，8 B）：<code>gapList</code> 的起始序号。</li>
+<li><code>numBits</code>（0x1C，4 B）：<code>gapList</code> 的有效位数；0 表示只有连续区间。</li>
+</ul>
+<p>GAP 告诉 Reader“某段序号不用再等”：<code>gapStart</code> 到 <code>gapList.base - 1</code> 之间的序号被视为不可用；<code>gapList</code> 可以再列出额外的不可用序号。GAP 不携带用户数据。</p>
+<h3 id="HEARTBEAT（0x07）"><a href="#HEARTBEAT（0x07）" class="headerlink" title="HEARTBEAT（0x07）"></a>HEARTBEAT（0x07）</h3><p><img src="fig07-heartbeat-structure.png" alt="图 7：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x07</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>F</code>；bit2 <code>L</code>。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>readerId</code>（0x04，4 B）：目标 Reader。</li>
+<li><code>writerId</code>（0x08，4 B）：源 Writer。</li>
+<li><code>firstSN</code>（0x0C，8 B）：可用范围的起始序号。</li>
+<li><code>lastSN</code>（0x14，8 B）：可用范围的结束序号。</li>
+<li><code>count</code>（0x1C，4 B）：发送计数器，用于识别重复。</li>
+</ul>
+<p>HEARTBEAT 由 Writer 发出，宣告 <code>firstSN..lastSN</code> 范围内的序号可用。<code>F=0</code> 表示 Reader 必须回一个 ACKNACK，<code>F=1</code> 表示不需要；<code>L=1</code> 用于刷新手动 liveliness；<code>count</code> 每发一次递增。</p>
+<h3 id="ACKNACK（0x06）"><a href="#ACKNACK（0x06）" class="headerlink" title="ACKNACK（0x06）"></a>ACKNACK（0x06）</h3><p><img src="fig08-acknack-structure.png" alt="图 8：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x06</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>F</code>。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>readerId</code>（0x04，4 B）：发起确认的 Reader。</li>
+<li><code>writerId</code>（0x08，4 B）：被确认的 Writer。</li>
+<li><code>bitmapBase</code>（0x0C，8 B）：位图的起始序号。</li>
+<li><code>numBits</code>（0x14，4 B）：有效位数。</li>
+<li><code>bitmap[0]</code>（0x18，4 B）：第一个位图字，MSB 对应 <code>bitmapBase</code>。</li>
+<li><code>count</code>（0x1C，4 B）：发送计数器。</li>
+</ul>
+<p>ACKNACK 由 Reader 发出，用 <code>SequenceNumberSet</code> 告诉 Writer 缺哪些序号。<code>F=0</code> 表示 Writer 必须回一个 HEARTBEAT；<code>count</code> 用于识别重复。位图是 MSB-first：最高位对应 <code>bitmapBase</code>，某位为 1 表示该序号缺失。</p>
+<h3 id="HEARTBEAT-FRAG（0x13）"><a href="#HEARTBEAT-FRAG（0x13）" class="headerlink" title="HEARTBEAT_FRAG（0x13）"></a>HEARTBEAT_FRAG（0x13）</h3><p><img src="fig09-heartbeat-frag-structure.png" alt="图 9：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x13</code>。</li>
+<li><code>flags</code>（0x01，1 B）：<code>E</code> 端序位。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>readerId</code>（0x04，4 B）：目标 Reader。</li>
+<li><code>writerId</code>（0x08，4 B）：源 Writer。</li>
+<li><code>writerSN</code>（0x0C，8 B）：所属数据的序号。</li>
+<li><code>lastFragmentNum</code>（0x14，4 B）：可用分片的上界。</li>
+<li><code>count</code>（0x18，4 B）：发送计数器。</li>
+</ul>
+<p>HEARTBEAT_FRAG 针对单个 <code>writerSN</code> 通告分片可用范围：<code>lastFragmentNum</code> 表示 1..N 号分片可用。Reader 如果缺分片，用 NACK_FRAG 请求重传。</p>
+<h3 id="NACK-FRAG（0x12）"><a href="#NACK-FRAG（0x12）" class="headerlink" title="NACK_FRAG（0x12）"></a>NACK_FRAG（0x12）</h3><p><img src="fig10-nack-frag-structure.png" alt="图 10：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x12</code>。</li>
+<li><code>flags</code>（0x01，1 B）：<code>E</code> 端序位。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>readerId</code>（0x04，4 B）：发起请求的 Reader。</li>
+<li><code>writerId</code>（0x08，4 B）：被请求的 Writer。</li>
+<li><code>writerSN</code>（0x0C，8 B）：所属数据的序号。</li>
+<li><code>bitmapBase</code>（0x14，4 B）：分片位图的起始分片号。</li>
+<li><code>numBits</code>（0x18，4 B）：有效位数。</li>
+<li><code>bitmap[0]</code>（0x1C，4 B）：第一个位图字。</li>
+<li><code>count</code>（0x20，4 B）：发送计数器。</li>
+</ul>
+<p>NACK_FRAG 是分片级的 ACKNACK：<code>FragmentNumberSet</code> 由 <code>bitmapBase(4) + numBits(4) + bitmap(4×M)</code> 组成，位图含义与序号位图相同，只是对象换成分片号。</p>
+<h3 id="INFO-TS（0x09）"><a href="#INFO-TS（0x09）" class="headerlink" title="INFO_TS（0x09）"></a>INFO_TS（0x09）</h3><p><img src="fig11-info-ts-structure.png" alt="图 11：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x09</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>I</code>。</li>
+<li><code>length</code>（0x02，2 B）：带 timestamp 时为 8；<code>I=1</code> 时为 0。</li>
+<li><code>seconds</code>（0x04，4 B）：秒数，<code>int32</code>。</li>
+<li><code>fraction</code>（0x08，4 B）：秒的小数部分，单位 <code>2^-32</code> 秒。</li>
+</ul>
+<p>INFO_TS 给后续子消息设置时间戳。<code>I=1</code> 时 timestamp 被省略，子消息只有 4 字节头，表示后续子消息没有有效时间戳。</p>
+<h3 id="INFO-DST（0x0E）"><a href="#INFO-DST（0x0E）" class="headerlink" title="INFO_DST（0x0E）"></a>INFO_DST（0x0E）</h3><p><img src="fig12-info-dst-structure.png" alt="图 12：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x0E</code>。</li>
+<li><code>flags</code>（0x01，1 B）：<code>E</code> 端序位。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>guidPrefix</code>（0x04，12 B）：新的目标 Participant 前缀。</li>
+</ul>
+<p>INFO_DST 只带一个 12 字节 <code>guidPrefix</code>，用于修改后续子消息的目标 Participant。它不承载用户数据，属于上下文类子消息。</p>
+<h3 id="INFO-SRC（0x0C）"><a href="#INFO-SRC（0x0C）" class="headerlink" title="INFO_SRC（0x0C）"></a>INFO_SRC（0x0C）</h3><p><img src="fig13-info-src-structure.png" alt="图 13：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x0C</code>。</li>
+<li><code>flags</code>（0x01，1 B）：<code>E</code> 端序位。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>unused</code>（0x04，4 B）：保留字段，必须为 0。</li>
+<li><code>version</code>（0x08，2 B）：协议版本。</li>
+<li><code>vendorId</code>（0x0A，2 B）：厂商 ID。</li>
+<li><code>guidPrefix</code>（0x0C，12 B）：新的源 Participant 前缀。</li>
+</ul>
+<p>INFO_SRC 修改后续子消息的逻辑源；收到后，接收者用新的 <code>guidPrefix</code> 还原后续子消息里的 EntityId。</p>
+<h3 id="INFO-REPLY（0x0F）"><a href="#INFO-REPLY（0x0F）" class="headerlink" title="INFO_REPLY（0x0F）"></a>INFO_REPLY（0x0F）</h3><p><img src="fig14-info-reply-structure.png" alt="图 14：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x0F</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>M</code>。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>numLocators</code>（0x04，4 B）：单播 locator 数量。</li>
+<li><code>kind</code>（0x08，4 B）：locator 类型，UDPv4 为 1。</li>
+<li><code>port</code>（0x0C，4 B）：端口。</li>
+<li><code>address</code>（0x10，16 B）：地址，IPv4 只占前 4 字节。</li>
+<li>multicast LocatorList：可选，<code>M=1</code> 时追加。</li>
+</ul>
+<p>INFO_REPLY 告诉 Writer 回复时应该发到哪里。<code>LocatorList = numLocators(4) + N × Locator_t</code>，每个 <code>Locator_t = kind(4) + port(4) + address(16)</code>。</p>
+<h3 id="INFO-REPLY-IP4（0x0D）"><a href="#INFO-REPLY-IP4（0x0D）" class="headerlink" title="INFO_REPLY_IP4（0x0D）"></a>INFO_REPLY_IP4（0x0D）</h3><p><img src="fig15-info-reply-ip4-structure.png" alt="图 15：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x0D</code>。</li>
+<li><code>flags</code>（0x01，1 B）：bit0 <code>E</code>；bit1 <code>M</code>。</li>
+<li><code>length</code>（0x02，2 B）：<code>octetsToNextHeader</code>，即本子消息内容的长度。</li>
+<li><code>address</code>（0x04，4 B）：IPv4 地址。</li>
+<li><code>port</code>（0x08，4 B）：端口。</li>
+<li>multicast address/port：可选，<code>M=1</code> 时追加。</li>
+</ul>
+<p>INFO_REPLY_IP4 是 INFO_REPLY 的 UDP/IPv4 紧凑版本，语义与 INFO_REPLY 中的单个 UDPv4 locator 等价。</p>
+<h3 id="PAD（0x01）"><a href="#PAD（0x01）" class="headerlink" title="PAD（0x01）"></a>PAD（0x01）</h3><p><img src="fig16-pad-structure.png" alt="图 16：报文结构示意图"></p>
+<ul>
+<li><code>ID</code>（0x00，1 B）：子消息类型，<code>0x01</code>。</li>
+<li><code>flags</code>（0x01，1 B）：<code>E</code> 端序位。</li>
+<li><code>length</code>（0x02，2 B）：填充字节数。</li>
+<li><code>padding</code>（0x04，N B）：填充内容，接收者忽略。</li>
+</ul>
+<p>PAD 用于让下一条子消息从 32 位边界开始。<code>octetsToNextHeader=0</code> 时有一个特殊规则：下一条子消息头紧跟在当前 4 字节头之后，或者当前 PAD 就是最后一条。</p>
+<h2 id="Qos"><a href="#Qos" class="headerlink" title="Qos"></a>Qos</h2><p>user_data，字符串类型，用于传递一些信息（比如网络绑定的 service name 等），用于 domain，participant，datareader 和 datawriter</p>
+<p>topic_data，字符串类型，用于传递一些信息，用于 topic</p>
+<p>group_data，字符串类型，用于传递一些信息，用于 publisher 和 subscriber</p>
+<p>durability，枚举类型，表示是否需要对收到的 change 进行 cache，可选值有 volatile（不 cache），transient_local，transient（在内存 cache） 和 persistent（持久化存储），用于 topic，datareader 和 datawriter</p>
+<p>Deadline，数值类型，表示 endpoint 预期在一定的时间内需要收到对端的消息，如果没有收到，就会调用 onrequesteddeadlinemissed（周期性）</p>
+<p>latency_budget，数值类型，表示 writer 的消息，到 reader，允许的最大时延（如果超过了，会怎样，规范没有说）</p>
+<p>Ownership，表示是否允许多个 writer 写入同一个 topic，同时多个 writer 有优先级的区分</p>
+<p>liveliness，保活机制，表示是在哪些范畴之间的</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>OMG DDSI-RTPS 2.3 规范：<a href="https://www.omg.org/spec/DDSI-RTPS/2.3/PDF" target="_blank" rel="noopener">https://www.omg.org/spec/DDSI-RTPS/2.3/PDF</a></li>
+<li>Fast-DDS <code>RTPS_messages.hpp</code>（子消息 ID 与结构定义）：<a href="https://github.com/eProsima/Fast-DDS/blob/master/include/fastdds/rtps/messages/RTPS_messages.hpp" target="_blank" rel="noopener">https://github.com/eProsima/Fast-DDS/blob/master/include/fastdds/rtps/messages/RTPS_messages.hpp</a></li>
+</ul>
+
+            </div>
+            <hr />
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<!-- <div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div> -->
+<!-- 注释了上面的代码，就可以关闭文章下面的分享功能 -->
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2026/01/06/fastdds-ku-shi-yong-ji-xiang-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="FastDds 库使用及详解">
+                        
+                        <span class="card-title">FastDds 库使用及详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Recv message消息流
+
+
+
+类之间的交互
+
+
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2026-01-06
+                        </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/AutomotiveElectronic/" target="_blank">
+                        <span class="chip bg-color">AutomotiveElectronic</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2025/08/21/spdlog-ku-shi-yong-ji-xiang-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Spdlog 库使用及详解">
+                        
+                        <span class="card-title">Spdlog 库使用及详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            前置知识
+函数 fwrite 是 glibc 封装的一层有关 write 的接口，会在应用层再创建一个缓冲的 buffer，当调用的 fwrite 到一定的数量时，才会调用一次操作系统原生的 write。也因此有了函数 fflush，将这个
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2025-08-21
+                            </span>
+                        <span class="publish-author">
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CPP/" target="_blank">
+                        <span class="chip bg-color">CPP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
+    <footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            &copy; 2022-2026 dancsmshenry. 版权所有
+
+            
+            &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+            <span class="white-color">126.1k</span>
+            
+
+            <br>
+            <span id="sitetime"></span>
+
+            
+            
+        </div>
+        <div class="col s12 m4 l4 social-link ">
+    <a href="https://github.com/dancsmshenry" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:dancsmshenry@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="https://zhihu.com/people/ai-ni-de-dian-zhen-shi-tai-hao-la" class="tooltipped" target="_blank" data-tooltip="访问我的知乎" data-position="top" data-delay="50">
+        <i class="fa fa-inverse">知</i>
+    </a>
+
+
+<!-- 
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+ --></div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+
+<!-- <script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+        year - 作为date对象的年份，为4位年份值
+        month - 0-11之间的整数，做为date对象的月份
+        day - 1-31之间的整数，做为date对象的天数
+        hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+        minutes - 0-59之间的整数，做为date对象的分钟数
+        seconds - 0-59之间的整数，做为date对象的秒数
+        microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+        var t1 = Date.UTC(2017, 09, 11, 00, 00, 00); //北京时间2018-2-13 00:00:00
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime();
+</script> -->
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    var searchLoaded = false;
+    $('a[href="#searchModal"]').on('click', function () {
+        if (searchLoaded) {
+            return;
+        }
+        searchLoaded = true;
+        searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+    });
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <script type="text/javascript"> var OriginTitile = document.title, st; document.addEventListener("visibilitychange", function () { document.hidden ? (document.title = "Σ(っ °Д °;)っ喔哟，崩溃啦！", clearTimeout(st)) : (document.title = "φ(゜▽゜*)♪咦，又好了！", st = setTimeout(function () { document.title = OriginTitile }, 3e3)) })
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+</body>
+
+</html>

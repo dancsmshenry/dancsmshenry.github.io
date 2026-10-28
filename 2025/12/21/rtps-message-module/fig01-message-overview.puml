@@ -1,0 +1,18 @@
+@startditaa(scale=2)
+RTPS message consists of header + N submessages
+
+ 0                    20              28              36        40
++--------------------+---------------+---------------+-----------+
+|cBLU                |cGRE           |cGRE           |cPNK       |
+|       HEADER       |   SUBMSG 1    |   SUBMSG 2    | ... / PAD |
+|                    | 4B hdr + body | 4B hdr + body |           |
+|        20B         |      8B       |      8B       |    4B     |
++--------------------+---------------+---------------+-----------+
+
++---------------------------------------------+
+| UDP payload length is one RTPS message      |
+| Each submessage starts on a 32 bit boundary |
+| SubmessageHeader is 4 B. rest is body       |
++---------------------------------------------+
+
+@endditaa
